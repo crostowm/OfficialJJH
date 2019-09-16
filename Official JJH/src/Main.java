@@ -6,5 +6,6 @@ public class Main
   {
     WSRMap wsrMap = new WSRMap("WeeklySalesRS08-crostowm.csv");
     System.out.println(wsrMap.getDataForShift(WSRMap.ADJUSTED_SALES, 5));
+    System.out.println("Woot it pushed");
   }
 }
