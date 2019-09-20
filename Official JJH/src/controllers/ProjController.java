@@ -9,7 +9,7 @@ import readers.WSRMap;
 public class ProjController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
-      projFields;
+      projFields, totalTrayField;
 
   @FXML
   private TextField a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14;
@@ -25,6 +25,9 @@ public class ProjController
 
   @FXML
   private TextField p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14;
+  
+  @FXML
+  private TextField tt1, tt2, tt3, tt4, tt5, tt6, tt7, tt8, tt9, tt10, tt11, tt12, tt13, tt14;
 
   public void initialize()
   {
@@ -43,6 +46,7 @@ public class ProjController
     averageFields.add(a12);
     averageFields.add(a13);
     averageFields.add(a14);
+    
     average20Fields = new ArrayList<TextField>();
     average20Fields.add(a21);
     average20Fields.add(a22);
@@ -58,6 +62,8 @@ public class ProjController
     average20Fields.add(a212);
     average20Fields.add(a213);
     average20Fields.add(a214);
+    fillAverageTextFields();
+    
     cateringFields = new ArrayList<TextField>();
     cateringFields.add(c1);
     cateringFields.add(c2);
@@ -73,6 +79,7 @@ public class ProjController
     cateringFields.add(c12);
     cateringFields.add(c13);
     cateringFields.add(c14);
+    
     samplingFields = new ArrayList<TextField>();
     samplingFields.add(s1);
     samplingFields.add(s2);
@@ -88,6 +95,7 @@ public class ProjController
     samplingFields.add(s12);
     samplingFields.add(s13);
     samplingFields.add(s14);
+    
     projFields = new ArrayList<TextField>();
     projFields.add(p1);
     projFields.add(p2);
@@ -103,12 +111,31 @@ public class ProjController
     projFields.add(p12);
     projFields.add(p13);
     projFields.add(p14);
-    fillAverageTextFields();
+    
+    totalTrayField = new ArrayList<TextField>();
+    totalTrayField.add(tt1);
+    totalTrayField.add(tt2);
+    totalTrayField.add(tt3);
+    totalTrayField.add(tt4);
+    totalTrayField.add(tt5);
+    totalTrayField.add(tt6);
+    totalTrayField.add(tt7);
+    totalTrayField.add(tt8);
+    totalTrayField.add(tt9);
+    totalTrayField.add(tt10);
+    totalTrayField.add(tt11);
+    totalTrayField.add(tt12);
+    totalTrayField.add(tt13);
+    totalTrayField.add(tt14);
     updateProjFields();
   }
 
+  /**
+   * Adds up avg*1.2 + catering + sampling for each shift and updates proj fields
+   */
   private void updateProjFields()
   {
+    int btv = 200;
     for (int ii = 0; ii < 14; ii++)
     {
       try
@@ -126,7 +153,9 @@ public class ProjController
         {
           s = Double.parseDouble(samplingFields.get(ii).getText());
         }
-        projFields.get(ii).setText(String.format("%.2f", a + c + s));
+        double proj = a + c + s;
+        projFields.get(ii).setText(String.format("%.2f", proj));
+        if(ii%2 == 0) totalTrayField.get(ii).setText(String.format("%.0f", Math.ceil(proj/btv)));
       }
       catch (NumberFormatException nfe)
       {
@@ -135,6 +164,9 @@ public class ProjController
     }
   }
 
+  /**
+   * Pulls info from wsr to fill avgs
+   */
   private void fillAverageTextFields()
   {
     WSRMap w1 = new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv");
