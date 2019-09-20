@@ -1,24 +1,16 @@
 import java.io.IOException;
 
-import controllers.ProjController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import readers.WSRMap;
-import util.Email;
 
 public class Main extends Application
 {
   public static void main(String[] args)
   {
     launch(args);
-    WSRMap wsrMap = new WSRMap("resources/WeeklySalesRS08-crostowm.csv");
-    System.out.println(wsrMap.getDataForShift(WSRMap.ADJUSTED_SALES, 5));
-
-    Email email = new Email("essentialsandwich@gmail.com", "Automated JimmyHub Email",
-        "This is an automated email, text me if you get this. Beep. Boop.");
   }
 
   @Override
