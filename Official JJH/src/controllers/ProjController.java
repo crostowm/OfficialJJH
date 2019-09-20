@@ -1,7 +1,10 @@
 package controllers;
 
+import java.io.File;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import readers.WSRMap;
 
 public class ProjController
 {
@@ -13,6 +16,13 @@ public class ProjController
 
   public void initialize()
   {
-    System.out.println("On init");
+    System.out.println(new File(".").getAbsolutePath());
+    WSRMap w1 = new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv");
+    WSRMap w2 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv");
+    WSRMap w3 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv");
+    WSRMap w4 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (3).csv");
+    double avg1 = (w1.getDataForShift(WSRMap.ROYALTY_SALES, 1) + w2.getDataForShift(WSRMap.ROYALTY_SALES, 1) + w3.getDataForShift(WSRMap.ROYALTY_SALES, 1) + w4.getDataForShift(WSRMap.ROYALTY_SALES, 1)) / 4;
+    a1.setText(avg1 + "");
+    a21.setText((avg1 * 1.2) + "");
   }
 }
