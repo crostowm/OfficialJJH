@@ -27,6 +27,7 @@ public class Main extends Application
       stage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
       Scene scene = new Scene(root);
       stage.setScene(scene);
+      stage.setMaximized(true);
       stage.show();
     }
     catch (IOException e)

@@ -10,7 +10,7 @@ import readers.WSRMap;
 public class ProjController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
-      projFields, totalTrayField, percentageFields;
+      projFields, thawedTrayField, percentageFields, wheatFields;
 
   @FXML
   private TextField a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14;
@@ -33,6 +33,9 @@ public class ProjController
   @FXML
   private TextField perc1, perc2, perc3, perc4, perc5, perc6, perc7, perc8, perc9, perc10, perc11,
       perc12, perc13, perc14;
+
+  @FXML
+  private TextField w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14;
 
   public void initialize()
   {
@@ -117,22 +120,22 @@ public class ProjController
     projFields.add(p13);
     projFields.add(p14);
 
-    totalTrayField = new ArrayList<TextField>();
-    totalTrayField.add(tt1);
-    totalTrayField.add(tt2);
-    totalTrayField.add(tt3);
-    totalTrayField.add(tt4);
-    totalTrayField.add(tt5);
-    totalTrayField.add(tt6);
-    totalTrayField.add(tt7);
-    totalTrayField.add(tt8);
-    totalTrayField.add(tt9);
-    totalTrayField.add(tt10);
-    totalTrayField.add(tt11);
-    totalTrayField.add(tt12);
-    totalTrayField.add(tt13);
-    totalTrayField.add(tt14);
-    
+    thawedTrayField = new ArrayList<TextField>();
+    thawedTrayField.add(tt1);
+    thawedTrayField.add(tt2);
+    thawedTrayField.add(tt3);
+    thawedTrayField.add(tt4);
+    thawedTrayField.add(tt5);
+    thawedTrayField.add(tt6);
+    thawedTrayField.add(tt7);
+    thawedTrayField.add(tt8);
+    thawedTrayField.add(tt9);
+    thawedTrayField.add(tt10);
+    thawedTrayField.add(tt11);
+    thawedTrayField.add(tt12);
+    thawedTrayField.add(tt13);
+    thawedTrayField.add(tt14);
+
     percentageFields = new ArrayList<TextField>();
     percentageFields.add(perc1);
     percentageFields.add(perc2);
@@ -148,47 +151,105 @@ public class ProjController
     percentageFields.add(perc12);
     percentageFields.add(perc13);
     percentageFields.add(perc14);
+
+    wheatFields = new ArrayList<TextField>();
+    wheatFields.add(w1);
+    wheatFields.add(w2);
+    wheatFields.add(w3);
+    wheatFields.add(w4);
+    wheatFields.add(w5);
+    wheatFields.add(w6);
+    wheatFields.add(w7);
+    wheatFields.add(w8);
+    wheatFields.add(w9);
+    wheatFields.add(w10);
+    wheatFields.add(w11);
+    wheatFields.add(w12);
+    wheatFields.add(w13);
+    wheatFields.add(w14);
     updateProjFields();
   }
 
   /**
-   * Adds up avg*1.2 + catering + sampling for each shift and updates proj fields
+   * Adds up avg*1.2 + catering + sampling for each shift and updates proj fields am/pmbuffer Amount
+   * baked at shift change 8am total pm - bakedsc - 25%am
    */
   private void updateProjFields()
   {
+    // TODO Data set in settings
     int btv = 200;
     int b9tv = 150;
-    int wbtv = 900;
+    int wlv = 900;
+    double amProj = 0;
+    double bakedAt11 = .75;
+    double bakedAtSC = .5;
     for (int ii = 0; ii < 14; ii++)
     {
       try
       {
-        double a = 0, c = 0, s = 0;
+        // Fill avg, catering, and sample vals
+        double averagePlusBuffer = 0, catering = 0, sampling = 0;
         if (!average20Fields.get(ii).getText().equals(""))
         {
-          a = Double.parseDouble(average20Fields.get(ii).getText());
+          averagePlusBuffer = Double.parseDouble(average20Fields.get(ii).getTooltip().getText());
         }
         if (!cateringFields.get(ii).getText().equals(""))
         {
-          c = Double.parseDouble(cateringFields.get(ii).getText());
+          catering = Double.parseDouble(cateringFields.get(ii).getText());
         }
         if (!samplingFields.get(ii).getText().equals(""))
         {
-          s = Double.parseDouble(samplingFields.get(ii).getText());
+          sampling = Double.parseDouble(samplingFields.get(ii).getText());
         }
-        double proj = a + c + s;
-        projFields.get(ii).setText(String.format("%.2f", proj));
+        double currentProjection = averagePlusBuffer + catering + sampling;
+
+        projFields.get(ii).setText(String.format("%.2f", currentProjection));
+        // AM Shifts (Index 0)
         if (ii % 2 == 0)
         {
-          totalTrayField.get(ii).setText(String.format("%.0f", Math.ceil(proj / btv)));
-          totalTrayField.get(ii).setTooltip(new Tooltip(String.format("%.2f", proj / btv)));
-          percentageFields.get(ii).setText(String.format("%.0f", (proj*.75)/btv));
-          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f", proj*.75, (proj*.75)/btv)));
+          amProj = currentProjection;
+          // Thawed at Open
+          thawedTrayField.get(ii)
+              .setText(String.format("%.0f", Math.ceil(currentProjection / btv)));
+          thawedTrayField.get(ii)
+              .setTooltip(new Tooltip(String.format("%.2f", currentProjection / btv)));
+          // Baked 75% @ 11
+          percentageFields.get(ii)
+              .setText(String.format("%.0f", (currentProjection * bakedAt11) / btv));
+          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
+              currentProjection * bakedAt11, (currentProjection * bakedAt11) / btv)));
         }
+        // PM Shifts
         else
         {
-          percentageFields.get(ii).setText(String.format("%.0f", (proj*.5)/b9tv));
-          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f", proj*.5, (proj*.5)/b9tv)));
+          // Laid out at 8am
+          thawedTrayField.get(ii)
+              .setText(String.format("%.0f",
+                  Math.ceil((currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj)))
+                      / btv));
+          thawedTrayField.get(ii)
+              .setTooltip(new Tooltip(String.format("%.2f/%.2f",
+                  (currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj)),
+                  ((currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj))) / btv)));
+
+          // PM percentage fields, Baked at SC
+          percentageFields.get(ii)
+              .setText(String.format("%.0f", (currentProjection * bakedAtSC) / b9tv));
+          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
+              currentProjection * bakedAtSC, (currentProjection * bakedAtSC) / b9tv)));
+
+          // AM Wheat Field, All for day
+          wheatFields.get(ii - 1)
+              .setText(String.format("%.0f", Math.ceil((amProj + currentProjection) / wlv)));
+          wheatFields.get(ii - 1)
+              .setTooltip(new Tooltip(String.format("%.2f", (amProj + currentProjection) / wlv)));
+
+          // PM Wheat Field, Needed for PM
+          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(currentProjection / wlv)));
+          wheatFields.get(ii)
+              .setTooltip(new Tooltip(String.format("%.2f", currentProjection / wlv)));
+
+          amProj = 0;
         }
       }
       catch (NumberFormatException nfe)
@@ -203,11 +264,13 @@ public class ProjController
    */
   private void fillAverageTextFields()
   {
+    // TODO pull data for amBuffer/pmBuffer
+    double amBuffer = 1.2, pmBuffer = 1.2;
     WSRMap w1 = new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv");
     WSRMap w2 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv");
     WSRMap w3 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv");
     WSRMap w4 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (3).csv");
-    for (int ii = 0; ii < averageFields.size(); ii++)
+    for (int ii = 0; ii < 14; ii++)
     {
       double avg = (w1.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
           + w2.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
@@ -215,8 +278,16 @@ public class ProjController
           + w4.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
       averageFields.get(ii).setText(String.format("%.0f", avg));
       averageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg)));
-      average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
-      average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * 1.2)));
+      if (ii % 2 == 0)
+      {
+        average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
+        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * amBuffer)));
+      }
+      else
+      {
+        average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
+        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * pmBuffer)));
+      }
     }
   }
 
