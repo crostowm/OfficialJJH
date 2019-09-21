@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import readers.WSRMap;
 
 public class ProjController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
-      projFields, totalTrayField;
+      projFields, totalTrayField, percentageFields;
 
   @FXML
   private TextField a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14;
@@ -25,9 +26,13 @@ public class ProjController
 
   @FXML
   private TextField p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14;
-  
+
   @FXML
   private TextField tt1, tt2, tt3, tt4, tt5, tt6, tt7, tt8, tt9, tt10, tt11, tt12, tt13, tt14;
+
+  @FXML
+  private TextField perc1, perc2, perc3, perc4, perc5, perc6, perc7, perc8, perc9, perc10, perc11,
+      perc12, perc13, perc14;
 
   public void initialize()
   {
@@ -46,7 +51,7 @@ public class ProjController
     averageFields.add(a12);
     averageFields.add(a13);
     averageFields.add(a14);
-    
+
     average20Fields = new ArrayList<TextField>();
     average20Fields.add(a21);
     average20Fields.add(a22);
@@ -63,7 +68,7 @@ public class ProjController
     average20Fields.add(a213);
     average20Fields.add(a214);
     fillAverageTextFields();
-    
+
     cateringFields = new ArrayList<TextField>();
     cateringFields.add(c1);
     cateringFields.add(c2);
@@ -79,7 +84,7 @@ public class ProjController
     cateringFields.add(c12);
     cateringFields.add(c13);
     cateringFields.add(c14);
-    
+
     samplingFields = new ArrayList<TextField>();
     samplingFields.add(s1);
     samplingFields.add(s2);
@@ -95,7 +100,7 @@ public class ProjController
     samplingFields.add(s12);
     samplingFields.add(s13);
     samplingFields.add(s14);
-    
+
     projFields = new ArrayList<TextField>();
     projFields.add(p1);
     projFields.add(p2);
@@ -111,7 +116,7 @@ public class ProjController
     projFields.add(p12);
     projFields.add(p13);
     projFields.add(p14);
-    
+
     totalTrayField = new ArrayList<TextField>();
     totalTrayField.add(tt1);
     totalTrayField.add(tt2);
@@ -127,6 +132,22 @@ public class ProjController
     totalTrayField.add(tt12);
     totalTrayField.add(tt13);
     totalTrayField.add(tt14);
+    
+    percentageFields = new ArrayList<TextField>();
+    percentageFields.add(perc1);
+    percentageFields.add(perc2);
+    percentageFields.add(perc3);
+    percentageFields.add(perc4);
+    percentageFields.add(perc5);
+    percentageFields.add(perc6);
+    percentageFields.add(perc7);
+    percentageFields.add(perc8);
+    percentageFields.add(perc9);
+    percentageFields.add(perc10);
+    percentageFields.add(perc11);
+    percentageFields.add(perc12);
+    percentageFields.add(perc13);
+    percentageFields.add(perc14);
     updateProjFields();
   }
 
@@ -136,6 +157,8 @@ public class ProjController
   private void updateProjFields()
   {
     int btv = 200;
+    int b9tv = 150;
+    int wbtv = 900;
     for (int ii = 0; ii < 14; ii++)
     {
       try
@@ -155,7 +178,18 @@ public class ProjController
         }
         double proj = a + c + s;
         projFields.get(ii).setText(String.format("%.2f", proj));
-        if(ii%2 == 0) totalTrayField.get(ii).setText(String.format("%.0f", Math.ceil(proj/btv)));
+        if (ii % 2 == 0)
+        {
+          totalTrayField.get(ii).setText(String.format("%.0f", Math.ceil(proj / btv)));
+          totalTrayField.get(ii).setTooltip(new Tooltip(String.format("%.2f", proj / btv)));
+          percentageFields.get(ii).setText(String.format("%.0f", (proj*.75)/btv));
+          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f", proj*.75, (proj*.75)/btv)));
+        }
+        else
+        {
+          percentageFields.get(ii).setText(String.format("%.0f", (proj*.5)/b9tv));
+          percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f", proj*.5, (proj*.5)/b9tv)));
+        }
       }
       catch (NumberFormatException nfe)
       {
@@ -179,8 +213,10 @@ public class ProjController
           + w2.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
           + w3.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
           + w4.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
-      averageFields.get(ii).setText(String.format("%.2f", avg));
-      average20Fields.get(ii).setText(String.format("%.2f", avg * 1.2));
+      averageFields.get(ii).setText(String.format("%.0f", avg));
+      averageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg)));
+      average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
+      average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * 1.2)));
     }
   }
 
