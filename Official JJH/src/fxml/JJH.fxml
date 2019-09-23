@@ -31,51 +31,51 @@
                           <tabs>
                             <Tab closable="false" text="Projections">
                               <content>
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                        <children>
-                                          <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints fillHeight="false" maxHeight="350.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="7.0" GridPane.columnSpan="2" GridPane.valignment="TOP">
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="4.333333492279053" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <content>
+                                                <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="7.0">
                                                   <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="200.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="165.0" prefWidth="165.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="1.0" />
                                                   </columnConstraints>
                                                   <rowConstraints>
-                                                    <RowConstraints minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints prefHeight="17.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints prefHeight="12.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
                                                       <Label text="Tuesday" GridPane.columnIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
@@ -106,7 +106,8 @@
                                                       <Label text="Projections" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></Label>
+                                                         </GridPane.margin>
+                                                      </Label>
                                                       <TextField fx:id="c1" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c1Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="c2" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c2Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="c3" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c3Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
@@ -122,7 +123,7 @@
                                                       <TextField fx:id="c13" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c13Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="c14" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c14Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="a21" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                                      <TextField fx:id="a1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                                      <TextField fx:id="a1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="70.0" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="a2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="a22" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="a3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
@@ -152,44 +153,52 @@
                                                       <TextField fx:id="s1" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s1Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s2" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s2Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s3" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s3Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s4" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s4Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s5" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s5Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s6" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s6Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s7" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s7Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="p7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="s8" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s8Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="s9" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s9Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="s11" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s11Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
@@ -200,31 +209,38 @@
                                                       <TextField fx:id="p8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <TextField fx:id="p14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
-                                                         </GridPane.margin></TextField>
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                       <Label maxHeight="15.0" prefHeight="15.0" text="Total Trays Thawed Open/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
                                                       <Label maxHeight="15.0" prefHeight="15.0" text="Baked 75%@11(12) / @SC(9)" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
                                                       <Label maxHeight="15.0" prefHeight="15.0" text="Wheat Total / SC" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
@@ -270,13 +286,19 @@
                                                       <TextField fx:id="w12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="w13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="w14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
+                                                      <Label maxHeight="15.0" prefHeight="15.0" text="Produce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                                                      <Label maxHeight="15.0" prefHeight="15.0" text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                                                      <Label maxHeight="15.0" prefHeight="15.0" text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                                                      <Label text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
+                                                      <Label text="Cucumbers" GridPane.halignment="RIGHT" GridPane.rowIndex="18" />
+                                                      <Label text="Pickles" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
                                                    </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
                                                 </GridPane>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </GridPane>
+                                             </content>
+                                          </ScrollPane>
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -317,9 +339,47 @@
                                 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" />
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Tomorrow">
+                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Settings">
                               <content>
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" />
+                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                                       <children>
+                                          <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <content>
+                                                <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TextField fx:id="amBufferField" maxWidth="75.0" onKeyTyped="#amBufferFieldChanged" prefWidth="60.0" text="1.2" GridPane.columnIndex="1" />
+                                                      <Label text="AM Buffer (Decimal)" GridPane.halignment="RIGHT" />
+                                                      <TextField fx:id="pmBufferField" maxWidth="75.0" onKeyTyped="#pmBufferFieldChanged" prefWidth="60.0" text="1.2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="btvField" maxWidth="75.0" onKeyTyped="#btvFieldChanged" prefWidth="60.0" text="200" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="b9tvField" maxWidth="75.0" onKeyTyped="#b9tvFieldChanged" prefWidth="60.0" text="150" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <Label text="PM Buffer (Decimal)" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                      <Label text="Tray of 12 Value" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                                      <Label text="Tray of 9 Value" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                                      <Label text="Wheat Loaf Value" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="wlvField" maxWidth="75.0" onKeyTyped="#wlvFieldChanged" prefWidth="60.0" text="800" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="bakedAt11Field" maxWidth="75.0" onKeyTyped="#bakedAt11FieldChanged" prefWidth="60.0" text=".75" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <TextField fx:id="bakedAtSCField" maxWidth="75.0" onKeyTyped="#bakedAtSCFieldChanged" prefWidth="60.0" text=".5" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                      <Label text="Baked at 11 (Decimal)" GridPane.rowIndex="5" />
+                                                      <Label text="Baked at SC (Decimal)" GridPane.rowIndex="6" />
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </children></AnchorPane>
                               </content>
                             </TitledPane>
                           </panes>

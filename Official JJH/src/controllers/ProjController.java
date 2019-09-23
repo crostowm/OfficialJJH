@@ -11,7 +11,10 @@ public class ProjController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayField, percentageFields, wheatFields;
+  
+  private double amBuffer, pmBuffer, btv, b9tv, wlv, bakedAt11, bakedAtSC;
 
+  //ToolBox
   @FXML
   private TextField a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14;
 
@@ -36,9 +39,28 @@ public class ProjController
 
   @FXML
   private TextField w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14;
+  
+  //Settings
+  @FXML
+  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field, bakedAtSCField;
 
   public void initialize()
   {
+    //Read in Settings
+    try
+    {
+      amBuffer = Double.parseDouble(amBufferField.getText());
+      pmBuffer = Double.parseDouble(pmBufferField.getText());
+      btv = Double.parseDouble(btvField.getText());
+      b9tv = Double.parseDouble(b9tvField.getText());
+      wlv = Double.parseDouble(wlvField.getText());
+      bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
+      bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
+    }
+    catch(NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
     averageFields = new ArrayList<TextField>();
     averageFields.add(a1);
     averageFields.add(a2);
@@ -167,22 +189,33 @@ public class ProjController
     wheatFields.add(w12);
     wheatFields.add(w13);
     wheatFields.add(w14);
-    updateProjFields();
+    updateAllFields();
   }
 
   /**
    * Adds up avg*1.2 + catering + sampling for each shift and updates proj fields am/pmbuffer Amount
    * baked at shift change 8am total pm - bakedsc - 25%am
    */
-  private void updateProjFields()
+  private void updateAllFields()
   {
-    // TODO Data set in settings
-    int btv = 200;
-    int b9tv = 150;
-    int wlv = 900;
     double amProj = 0;
-    double bakedAt11 = .75;
-    double bakedAtSC = .5;
+    //Update Settings
+    try
+    {
+      amBuffer = Double.parseDouble(amBufferField.getText());
+      pmBuffer = Double.parseDouble(pmBufferField.getText());
+      btv = Double.parseDouble(btvField.getText());
+      b9tv = Double.parseDouble(b9tvField.getText());
+      wlv = Double.parseDouble(wlvField.getText());
+      bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
+      bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
+    }
+    catch(NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+    
+    //Update Toolbox
     for (int ii = 0; ii < 14; ii++)
     {
       try
@@ -254,7 +287,7 @@ public class ProjController
       }
       catch (NumberFormatException nfe)
       {
-        System.out.println("NFE");
+        System.out.println("NFE, Could not parse a text field on Projections tab:\n" + nfe.getMessage());
       }
     }
   }
@@ -265,7 +298,6 @@ public class ProjController
   private void fillAverageTextFields()
   {
     // TODO pull data for amBuffer/pmBuffer
-    double amBuffer = 1.2, pmBuffer = 1.2;
     WSRMap w1 = new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv");
     WSRMap w2 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv");
     WSRMap w3 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv");
@@ -292,60 +324,77 @@ public class ProjController
   }
 
   //@formatter:off
-  @FXML public void c1Changed(){updateProjFields();}
+  //ToolBox
+  @FXML public void c1Changed(){updateAllFields();}
 
-  @FXML public void c2Changed(){updateProjFields();}
+  @FXML public void c2Changed(){updateAllFields();}
 
-  @FXML public void c3Changed(){updateProjFields();}
+  @FXML public void c3Changed(){updateAllFields();}
 
-  @FXML public void c4Changed(){updateProjFields();}
+  @FXML public void c4Changed(){updateAllFields();}
 
-  @FXML public void c5Changed(){updateProjFields();}
+  @FXML public void c5Changed(){updateAllFields();}
 
-  @FXML public void c6Changed(){updateProjFields();}
+  @FXML public void c6Changed(){updateAllFields();}
 
-  @FXML public void c7Changed(){updateProjFields();}
+  @FXML public void c7Changed(){updateAllFields();}
 
-  @FXML public void c8Changed(){updateProjFields();}
+  @FXML public void c8Changed(){updateAllFields();}
 
-  @FXML public void c9Changed(){updateProjFields();}
+  @FXML public void c9Changed(){updateAllFields();}
 
-  @FXML public void c10Changed(){updateProjFields();}
+  @FXML public void c10Changed(){updateAllFields();}
 
-  @FXML public void c11Changed(){updateProjFields();}
+  @FXML public void c11Changed(){updateAllFields();}
 
-  @FXML public void c12Changed(){updateProjFields();}
+  @FXML public void c12Changed(){updateAllFields();}
 
-  @FXML public void c13Changed(){updateProjFields();}
+  @FXML public void c13Changed(){updateAllFields();}
 
-  @FXML public void c14Changed(){updateProjFields();}
+  @FXML public void c14Changed(){updateAllFields();}
 
-  @FXML public void s1Changed(){updateProjFields();}
+  @FXML public void s1Changed(){updateAllFields();}
 
-  @FXML public void s2Changed(){updateProjFields();}
+  @FXML public void s2Changed(){updateAllFields();}
 
-  @FXML public void s3Changed(){updateProjFields();}
+  @FXML public void s3Changed(){updateAllFields();}
 
-  @FXML public void s4Changed(){updateProjFields();}
+  @FXML public void s4Changed(){updateAllFields();}
 
-  @FXML public void s5Changed(){updateProjFields();}
+  @FXML public void s5Changed(){updateAllFields();}
 
-  @FXML public void s6Changed(){updateProjFields();}
+  @FXML public void s6Changed(){updateAllFields();}
 
-  @FXML public void s7Changed(){updateProjFields();}
+  @FXML public void s7Changed(){updateAllFields();}
 
-  @FXML public void s8Changed(){updateProjFields();}
+  @FXML public void s8Changed(){updateAllFields();}
 
-  @FXML public void s9Changed(){updateProjFields();}
+  @FXML public void s9Changed(){updateAllFields();}
 
-  @FXML public void s10Changed(){updateProjFields();}
+  @FXML public void s10Changed(){updateAllFields();}
 
-  @FXML public void s11Changed(){updateProjFields();}
+  @FXML public void s11Changed(){updateAllFields();}
 
-  @FXML public void s12Changed(){updateProjFields();}
+  @FXML public void s12Changed(){updateAllFields();}
 
-  @FXML public void s13Changed(){updateProjFields();}
+  @FXML public void s13Changed(){updateAllFields();}
 
-  @FXML public void s14Changed(){updateProjFields();}
+  @FXML public void s14Changed(){updateAllFields();}
+  
+  //Settings
+  @FXML void amBufferFieldChanged() {updateAllFields();}
+
+  @FXML void pmBufferFieldChanged() {updateAllFields();}
+
+  @FXML void btvFieldChanged() {updateAllFields();}
+  
+  @FXML void b9tvFieldChanged() {updateAllFields();}
+  
+  @FXML void wlvFieldChanged() {updateAllFields();}
+
+  @FXML void bakedAt11FieldChanged() {updateAllFields();}
+
+  @FXML void bakedAtSCFieldChanged() {updateAllFields();}
+
   //@formatter:on
 }
