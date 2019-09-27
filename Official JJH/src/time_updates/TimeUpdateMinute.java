@@ -4,11 +4,11 @@ import java.util.TimerTask;
 
 import controllers.HubController;
 
-public class TimeUpdateSecond extends TimerTask
+public class TimeUpdateMinute extends TimerTask
 {
   private HubController controller;
   
-  public TimeUpdateSecond(HubController controller)
+  public TimeUpdateMinute(HubController controller)
   {
     this.controller = controller;
   }
@@ -16,7 +16,7 @@ public class TimeUpdateSecond extends TimerTask
   @Override
   public void run()
   {
-    controller.timeUpdateSecond();
+    controller.timeUpdateMinute();
   }
 
 }

@@ -15,11 +15,16 @@ import readers.WSRMap;
 public class HubController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
-      projFields, thawedTrayField, percentageFields, wheatFields;
-  
-  private double currentShiftProjection = 0, currentDayProjection = 0, amBuffer, pmBuffer, btv, b9tv, wlv, bakedAt11, bakedAtSC, lettuceBV, tomatoBV, onionBV, cucumberBV, pickleBV;
+      projFields, thawedTrayFields, percentageFields, wheatFields;
 
-  //ToolBox
+  private double currentShiftProjection = 0, currentDayProjection = 0, amBuffer, pmBuffer, btv,
+      b9tv, wlv, bakedAt11, bakedAtSC, lettuceBV, tomatoBV, onionBV, cucumberBV, pickleBV;
+
+  private int currentShift = 0, storeSCTime = 3;
+
+  private GregorianCalendar cal = new GregorianCalendar();
+
+  // ToolBox
   @FXML
   private TextField a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14;
 
@@ -46,14 +51,18 @@ public class HubController
   private TextField w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14;
   
   @FXML
-  private Label produceLabel, clockLabel;
-  //Settings
+  private TextField lettuceField, tomatoField, onionField, cucumberField, pickleField;
+
   @FXML
-  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field, bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
+  private Label produceLabel, shiftLabel, clockLabel, dateLabel;
+  // Settings
+  @FXML
+  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
+      bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
 
   public void initialize()
   {
-    //Read in Settings
+    // Read in Settings
     try
     {
       amBuffer = Double.parseDouble(amBufferField.getText());
@@ -68,8 +77,9 @@ public class HubController
       onionBV = Double.parseDouble(onionBVField.getText());
       cucumberBV = Double.parseDouble(cucumberBVField.getText());
       pickleBV = Double.parseDouble(pickleBVField.getText());
+      // TODO storeSCTime
     }
-    catch(NumberFormatException nfe)
+    catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
@@ -154,21 +164,21 @@ public class HubController
     projFields.add(p13);
     projFields.add(p14);
 
-    thawedTrayField = new ArrayList<TextField>();
-    thawedTrayField.add(tt1);
-    thawedTrayField.add(tt2);
-    thawedTrayField.add(tt3);
-    thawedTrayField.add(tt4);
-    thawedTrayField.add(tt5);
-    thawedTrayField.add(tt6);
-    thawedTrayField.add(tt7);
-    thawedTrayField.add(tt8);
-    thawedTrayField.add(tt9);
-    thawedTrayField.add(tt10);
-    thawedTrayField.add(tt11);
-    thawedTrayField.add(tt12);
-    thawedTrayField.add(tt13);
-    thawedTrayField.add(tt14);
+    thawedTrayFields = new ArrayList<TextField>();
+    thawedTrayFields.add(tt1);
+    thawedTrayFields.add(tt2);
+    thawedTrayFields.add(tt3);
+    thawedTrayFields.add(tt4);
+    thawedTrayFields.add(tt5);
+    thawedTrayFields.add(tt6);
+    thawedTrayFields.add(tt7);
+    thawedTrayFields.add(tt8);
+    thawedTrayFields.add(tt9);
+    thawedTrayFields.add(tt10);
+    thawedTrayFields.add(tt11);
+    thawedTrayFields.add(tt12);
+    thawedTrayFields.add(tt13);
+    thawedTrayFields.add(tt14);
 
     percentageFields = new ArrayList<TextField>();
     percentageFields.add(perc1);
@@ -211,7 +221,7 @@ public class HubController
   private void updateAllFields()
   {
     double amProj = 0;
-    //Update Settings
+    // Update Settings
     try
     {
       amBuffer = Double.parseDouble(amBufferField.getText());
@@ -227,12 +237,12 @@ public class HubController
       cucumberBV = Double.parseDouble(cucumberBVField.getText());
       pickleBV = Double.parseDouble(pickleBVField.getText());
     }
-    catch(NumberFormatException nfe)
+    catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
-    
-    //Update Toolbox
+
+    // Update Toolbox
     for (int ii = 0; ii < 14; ii++)
     {
       try
@@ -251,63 +261,76 @@ public class HubController
         {
           sampling = Double.parseDouble(samplingFields.get(ii).getText());
         }
-        double currentProjection = averagePlusBuffer + catering + sampling;
+        double indexProjection = averagePlusBuffer + catering + sampling;
 
-        projFields.get(ii).setText(String.format("%.2f", currentProjection));
+        projFields.get(ii).setText(String.format("%.2f", indexProjection));
         // AM Shifts (Index 0)
         if (ii % 2 == 0)
         {
-          amProj = currentProjection;
+          amProj = indexProjection;
           // Thawed at Open
-          thawedTrayField.get(ii)
-              .setText(String.format("%.0f", Math.ceil(currentProjection / btv)));
-          thawedTrayField.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f", currentProjection / btv)));
+          thawedTrayFields.get(ii).setText(String.format("%.0f", Math.ceil(indexProjection / btv)));
+          thawedTrayFields.get(ii)
+              .setTooltip(new Tooltip(String.format("%.2f", indexProjection / btv)));
           // Baked 75% @ 11
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil((currentProjection * bakedAt11) / btv)));
+              .setText(String.format("%.0f", Math.ceil((indexProjection * bakedAt11) / btv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
-              currentProjection * bakedAt11, (currentProjection * bakedAt11) / btv)));
+              indexProjection * bakedAt11, (indexProjection * bakedAt11) / btv)));
         }
         // PM Shifts
         else
         {
           // Laid out at 8am
-          thawedTrayField.get(ii)
-              .setText(String.format("%.0f",
-                  Math.ceil((currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj)))
-                      / btv));
-          thawedTrayField.get(ii)
+          thawedTrayFields.get(ii).setText(String.format("%.0f",
+              Math.ceil((indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj))) / btv));
+          thawedTrayFields.get(ii)
               .setTooltip(new Tooltip(String.format("%.2f/%.2f",
-                  (currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj)),
-                  ((currentProjection - (currentProjection * bakedAtSC) - (.25 * amProj))) / btv)));
+                  (indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj)),
+                  ((indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj))) / btv)));
 
           // PM percentage fields, Baked at SC
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil((currentProjection * bakedAtSC) / b9tv)));
+              .setText(String.format("%.0f", Math.ceil((indexProjection * bakedAtSC) / b9tv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
-              currentProjection * bakedAtSC, (currentProjection * bakedAtSC) / b9tv)));
+              indexProjection * bakedAtSC, (indexProjection * bakedAtSC) / b9tv)));
 
           // AM Wheat Field, All for day
           wheatFields.get(ii - 1)
-              .setText(String.format("%.0f", Math.ceil((amProj + currentProjection) / wlv)));
+              .setText(String.format("%.0f", Math.ceil((amProj + indexProjection) / wlv)));
           wheatFields.get(ii - 1)
-              .setTooltip(new Tooltip(String.format("%.2f", (amProj + currentProjection) / wlv)));
+              .setTooltip(new Tooltip(String.format("%.2f", (amProj + indexProjection) / wlv)));
 
           // PM Wheat Field, Needed for PM
-          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(currentProjection / wlv)));
-          wheatFields.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f", currentProjection / wlv)));
+          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(indexProjection / wlv)));
+          wheatFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", indexProjection / wlv)));
 
           amProj = 0;
         }
-        //TODO
-        //Fill produce fields
-        //lettuceBVField.setText(String.format("%.0f", Math.ceil(a)))
+        timeUpdateSecond();
+        timeUpdateMinute();
+
+        // Fill produce fields
+        double produceProj;
+        if (currentShift % 2 == 1)
+          produceProj = currentDayProjection;
+        else
+          produceProj = currentShiftProjection;
+        lettuceField.setText(String.format("%.0f", Math.ceil(produceProj / lettuceBV)));
+        lettuceField.setTooltip(new Tooltip(String.format("%.2f", produceProj / lettuceBV)));
+        tomatoField.setText(String.format("%.0f", Math.ceil(produceProj / tomatoBV)));
+        tomatoField.setTooltip(new Tooltip(String.format("%.2f", produceProj / tomatoBV)));
+        onionField.setText(String.format("%.0f", Math.ceil(produceProj / onionBV)));
+        onionField.setTooltip(new Tooltip(String.format("%.2f", produceProj / onionBV)));
+        cucumberField.setText(String.format("%.0f", Math.ceil(produceProj / cucumberBV)));
+        cucumberField.setTooltip(new Tooltip(String.format("%.2f", produceProj / cucumberBV)));
+        pickleField.setText(String.format("%.0f", Math.ceil(produceProj / pickleBV)));
+        pickleField.setTooltip(new Tooltip(String.format("%.2f", produceProj / pickleBV)));
       }
       catch (NumberFormatException nfe)
       {
-        System.out.println("NFE, Could not parse a text field on Projections tab:\n" + nfe.getMessage());
+        System.out
+            .println("NFE, Could not parse a text field on Projections tab:\n" + nfe.getMessage());
       }
     }
   }
@@ -342,38 +365,76 @@ public class HubController
       }
     }
   }
-  
+
+  /**
+   * Handles clock
+   */
   public void timeUpdateSecond()
   {
-    //TODO
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MMM dd yyyy");
-    GregorianCalendar cal = new GregorianCalendar();
-    int currentShift = getCurrentShiftNum(cal);
-    currentShiftProjection = Double.parseDouble(projFields.get(currentShift-1).getText());
-    currentDayProjection = currentShiftProjection + Double.parseDouble(projFields.get(currentShift%2==0?currentShift-2:currentShift).getText());
-    Platform.runLater(new Runnable() {
+    SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
+    SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy");
+    cal = new GregorianCalendar();
+    Platform.runLater(new Runnable()
+    {
 
       @Override
       public void run()
       {
-        clockLabel.setText(sdf.format(cal.getTime()));
+        shiftLabel.setText("Shift: " + currentShift);
+        clockLabel.setText(tf.format(cal.getTime()));
+        dateLabel.setText(df.format(cal.getTime()));
       }
     });
-    if(cal.get(Calendar.HOUR_OF_DAY) >= 1)
+  }
+
+  public void timeUpdateMinute()
+  {
+    updateCurrentShiftNum();
+    colorCurrentShiftFields();
+    
+    // update current proj vals
+    currentShiftProjection = Double.parseDouble(projFields.get(currentShift - 1).getText());
+    currentDayProjection = currentShiftProjection + Double.parseDouble(
+        projFields.get(currentShift % 2 == 0 ? currentShift - 2 : currentShift).getText());
+    if (cal.get(Calendar.HOUR_OF_DAY) < 10)
+    {
+
+    }
+    else if (cal.get(Calendar.HOUR_OF_DAY) >= 10 && cal.get(Calendar.HOUR_OF_DAY) < 13)
+    {
+
+    }
+    else if (cal.get(Calendar.HOUR_OF_DAY) >= 13)
     {
       produceLabel.setText("Produce required for PM");
     }
-  }
-  
-  public void timeUpdateMinute()
-  {
-    //TODO
+
   }
 
-  private int getCurrentShiftNum(GregorianCalendar cal)
+  private void colorCurrentShiftFields()
   {
-    cal.get(Calendar.DAY_OF_WEEK);
-    return 0;
+    //TODO color other fields plain
+    averageFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    average20Fields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    cateringFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    samplingFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    projFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    thawedTrayFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    percentageFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    wheatFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+  }
+
+  private void updateCurrentShiftNum()
+  {
+    int dow = cal.get(Calendar.DAY_OF_WEEK);
+    if (dow > 3)
+      dow = dow - 3;
+    else
+      dow = dow + 4;
+    if (cal.get(Calendar.HOUR_OF_DAY) >= storeSCTime)
+      currentShift = dow * 2;
+    else
+      currentShift = dow * 2 - 1;
   }
 
   //@formatter:off

@@ -463,8 +463,14 @@
       </Accordion>
       <HBox prefHeight="30.0" prefWidth="200.0">
          <children>
+            <Label fx:id="shiftLabel" text="Label" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Label fx:id="clockLabel" text="Error With Clock" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="clockLabel" text="Error With Clock" />
+                  <Label fx:id="dateLabel" text="Label" />
+               </children>
+            </VBox>
          </children>
       </HBox>
   </children>
