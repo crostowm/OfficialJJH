@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import time_updates.TimeUpdate;
+import time_updates.TimeUpdateSecond;
 
 public class Main extends Application
 {
@@ -33,7 +33,7 @@ public class Main extends Application
       root = loader.load();
       
       Timer timer = new Timer();
-      timer.scheduleAtFixedRate(new TimeUpdate((HubController)loader.getController()), 0, 1000L);
+      timer.scheduleAtFixedRate(new TimeUpdateSecond((HubController)loader.getController()), 0, 1000L);
       
       stage.getIcons().add(new Image("resources/jjhr.png"));
       stage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");

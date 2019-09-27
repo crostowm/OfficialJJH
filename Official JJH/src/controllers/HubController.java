@@ -17,7 +17,7 @@ public class HubController
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayField, percentageFields, wheatFields;
   
-  private double amBuffer, pmBuffer, btv, b9tv, wlv, bakedAt11, bakedAtSC;
+  private double currentShiftProjection = 0, currentDayProjection = 0, amBuffer, pmBuffer, btv, b9tv, wlv, bakedAt11, bakedAtSC, lettuceBV, tomatoBV, onionBV, cucumberBV, pickleBV;
 
   //ToolBox
   @FXML
@@ -49,7 +49,7 @@ public class HubController
   private Label produceLabel, clockLabel;
   //Settings
   @FXML
-  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field, bakedAtSCField;
+  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field, bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
 
   public void initialize()
   {
@@ -63,6 +63,11 @@ public class HubController
       wlv = Double.parseDouble(wlvField.getText());
       bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
       bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
+      lettuceBV = Double.parseDouble(lettuceBVField.getText());
+      tomatoBV = Double.parseDouble(tomatoBVField.getText());
+      onionBV = Double.parseDouble(onionBVField.getText());
+      cucumberBV = Double.parseDouble(cucumberBVField.getText());
+      pickleBV = Double.parseDouble(pickleBVField.getText());
     }
     catch(NumberFormatException nfe)
     {
@@ -216,6 +221,11 @@ public class HubController
       wlv = Double.parseDouble(wlvField.getText());
       bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
       bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
+      lettuceBV = Double.parseDouble(lettuceBVField.getText());
+      tomatoBV = Double.parseDouble(tomatoBVField.getText());
+      onionBV = Double.parseDouble(onionBVField.getText());
+      cucumberBV = Double.parseDouble(cucumberBVField.getText());
+      pickleBV = Double.parseDouble(pickleBVField.getText());
     }
     catch(NumberFormatException nfe)
     {
@@ -291,6 +301,9 @@ public class HubController
 
           amProj = 0;
         }
+        //TODO
+        //Fill produce fields
+        //lettuceBVField.setText(String.format("%.0f", Math.ceil(a)))
       }
       catch (NumberFormatException nfe)
       {
@@ -330,10 +343,14 @@ public class HubController
     }
   }
   
-  public void timeUpdate()
+  public void timeUpdateSecond()
   {
+    //TODO
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MMM dd yyyy");
     GregorianCalendar cal = new GregorianCalendar();
+    int currentShift = getCurrentShiftNum(cal);
+    currentShiftProjection = Double.parseDouble(projFields.get(currentShift-1).getText());
+    currentDayProjection = currentShiftProjection + Double.parseDouble(projFields.get(currentShift%2==0?currentShift-2:currentShift).getText());
     Platform.runLater(new Runnable() {
 
       @Override
@@ -344,8 +361,19 @@ public class HubController
     });
     if(cal.get(Calendar.HOUR_OF_DAY) >= 1)
     {
-      
+      produceLabel.setText("Produce required for PM");
     }
+  }
+  
+  public void timeUpdateMinute()
+  {
+    //TODO
+  }
+
+  private int getCurrentShiftNum(GregorianCalendar cal)
+  {
+    cal.get(Calendar.DAY_OF_WEEK);
+    return 0;
   }
 
   //@formatter:off
@@ -421,5 +449,14 @@ public class HubController
 
   @FXML void bakedAtSCFieldChanged() {updateAllFields();}
 
+  @FXML void lettuceBVChanged() {updateAllFields();}
+  
+  @FXML void tomatoBVChanged() {updateAllFields();}
+  
+  @FXML void onionBVChanged() {updateAllFields();}
+  
+  @FXML void cucumberBVChanged() {updateAllFields();}
+  
+  @FXML void pickleBVChanged() {updateAllFields();}
   //@formatter:on
 }
