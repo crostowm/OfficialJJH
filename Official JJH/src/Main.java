@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application
 {
+  public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static void main(String[] args)
   {
     launch(args);
@@ -17,6 +18,9 @@ public class Main extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
+    
+    //HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales Report.csv");
+    //UPKMap upk = new UPKMap(BASE_DOWNLOAD_LOCATION + "\\UPK Expected Usage Report (5).csv");
     FXMLLoader loader;
     Pane root;
     try

@@ -104,7 +104,7 @@ public class WSRMap extends HashMap<Integer, HashMap<Integer, Double>>
         s = s.substring(1, s.indexOf("\"", 1));
       }
     }
-    System.out.println(s);
+    //System.out.println(s);
     return s;
   }
 

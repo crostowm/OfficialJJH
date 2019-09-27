@@ -248,7 +248,7 @@ public class ProjController
               .setTooltip(new Tooltip(String.format("%.2f", currentProjection / btv)));
           // Baked 75% @ 11
           percentageFields.get(ii)
-              .setText(String.format("%.0f", (currentProjection * bakedAt11) / btv));
+              .setText(String.format("%.0f", Math.ceil((currentProjection * bakedAt11) / btv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               currentProjection * bakedAt11, (currentProjection * bakedAt11) / btv)));
         }
@@ -267,7 +267,7 @@ public class ProjController
 
           // PM percentage fields, Baked at SC
           percentageFields.get(ii)
-              .setText(String.format("%.0f", (currentProjection * bakedAtSC) / b9tv));
+              .setText(String.format("%.0f", Math.ceil((currentProjection * bakedAtSC) / b9tv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               currentProjection * bakedAtSC, (currentProjection * bakedAtSC) / b9tv)));
 
