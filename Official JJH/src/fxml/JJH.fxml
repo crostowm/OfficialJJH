@@ -12,14 +12,18 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProjController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HubController">
   <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <content>
@@ -286,7 +290,7 @@
                                                       <TextField fx:id="w12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="w13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
                                                       <TextField fx:id="w14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
-                                                      <Label maxHeight="15.0" prefHeight="15.0" text="Produce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                                                      <Label fx:id="produceLabel" maxHeight="15.0" prefHeight="15.0" text="Produce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
                                                       <Label maxHeight="15.0" prefHeight="15.0" text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
                                                       <Label maxHeight="15.0" prefHeight="15.0" text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
                                                       <Label text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
@@ -426,6 +430,9 @@
                         </menus>
                       </MenuBar>
                      </top>
+                     <effect>
+                        <ColorAdjust />
+                     </effect>
                   </BorderPane>
             </children>
           </AnchorPane>
@@ -437,5 +444,14 @@
           <TitledPane animated="false" text="Year To Date" />
         </panes>
       </Accordion>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="clockLabel" text="Error With Clock" />
+         </children>
+      </HBox>
   </children>
+   <effect>
+      <InnerShadow />
+   </effect>
 </VBox>

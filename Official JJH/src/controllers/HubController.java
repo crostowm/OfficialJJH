@@ -1,13 +1,18 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import readers.WSRMap;
 
-public class ProjController
+public class HubController
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayField, percentageFields, wheatFields;
@@ -40,6 +45,8 @@ public class ProjController
   @FXML
   private TextField w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14;
   
+  @FXML
+  private Label produceLabel, clockLabel;
   //Settings
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field, bakedAtSCField;
@@ -320,6 +327,24 @@ public class ProjController
         average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
         average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * pmBuffer)));
       }
+    }
+  }
+  
+  public void timeUpdate()
+  {
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss MMM dd yyyy");
+    GregorianCalendar cal = new GregorianCalendar();
+    Platform.runLater(new Runnable() {
+
+      @Override
+      public void run()
+      {
+        clockLabel.setText(sdf.format(cal.getTime()));
+      }
+    });
+    if(cal.get(Calendar.HOUR_OF_DAY) >= 1)
+    {
+      
     }
   }
 

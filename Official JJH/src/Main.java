@@ -1,11 +1,15 @@
 import java.io.IOException;
+import java.util.Date;
+import java.util.Timer;
 
+import controllers.HubController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import time_updates.TimeUpdate;
 
 public class Main extends Application
 {
@@ -27,6 +31,10 @@ public class Main extends Application
     {
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJH.fxml"));
       root = loader.load();
+      
+      Timer timer = new Timer();
+      timer.scheduleAtFixedRate(new TimeUpdate((HubController)loader.getController()), 0, 1000L);
+      
       stage.getIcons().add(new Image("resources/jjhr.png"));
       stage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
       Scene scene = new Scene(root);
