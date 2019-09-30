@@ -1,4 +1,8 @@
+package app;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Timer;
 
 import controllers.HubController;
@@ -10,11 +14,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import readers.WSRMap;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
+import util.CateringOrder;
+import util.DataHub;
 
-public class Main extends Application
+public class MainApplication extends Application
 {
+  public static final String cateringOrderFileName = "Catering_Orders.dat";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final int storeSC = 3;
   public static void main(String[] args)
@@ -25,9 +33,12 @@ public class Main extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
-    
     //HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales Report.csv");
     //UPKMap upk = new UPKMap(BASE_DOWNLOAD_LOCATION + "\\UPK Expected Usage Report (5).csv");
+    DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv"), 1);
+    DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv"), 2);
+    DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv"), 3);
+    DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (3).csv"), 4);
     FXMLLoader loader;
     Pane root;
     try
@@ -40,8 +51,8 @@ public class Main extends Application
       
       Timer timerMin = new Timer();
       timerMin.scheduleAtFixedRate(new TimeUpdateMinute((HubController)loader.getController()), 0, 60000L);
-      stage.getIcons().add(new Image("resources/jjhr.png"));
       stage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
+      stage.getIcons().add(new Image("resources/jjhr.png"));
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.setMaximized(true);
@@ -54,6 +65,23 @@ public class Main extends Application
         {
           timerSec.cancel();
           timerMin.cancel();
+          try 
+          {
+              FileOutputStream out = new FileOutputStream(cateringOrderFileName);
+              ObjectOutputStream serializer = new ObjectOutputStream(out);
+        
+              for(CateringOrder co: DataHub.getCateringOrders())
+              {
+                serializer.writeObject(co);
+              }
+              
+              serializer.flush();
+              out.close();
+          } 
+          catch (Exception e) 
+          {
+            System.out.println("Failed to save catering orders");
+          }
         }
       });
     }
@@ -63,5 +91,5 @@ public class Main extends Application
       e.printStackTrace();
     }
   }
-
 }
+

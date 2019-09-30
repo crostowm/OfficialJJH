@@ -5,14 +5,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import app.CateringApplication;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import observers.DataObserver;
 import readers.WSRMap;
+import util.CateringOrder;
+import util.DataHub;
+import util.JimmyCalendarUtil;
 
-public class HubController
+public class HubController implements DataObserver
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayFields, percentageFields, wheatFields;
@@ -20,9 +28,9 @@ public class HubController
   private double currentShiftProjection = 0, currentDayProjection = 0, amBuffer, pmBuffer, btv,
       b9tv, wlv, bakedAt11, bakedAtSC, lettuceBV, tomatoBV, onionBV, cucumberBV, pickleBV;
 
-  private int currentShift = 0, storeSCTime = 3;
+  private int currentShift = 0, storeSCTime = 15;
 
-  private GregorianCalendar cal = new GregorianCalendar();
+  private GregorianCalendar currentTimeAndDate = new GregorianCalendar();
 
   // ToolBox
   @FXML
@@ -49,12 +57,19 @@ public class HubController
 
   @FXML
   private TextField w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14;
-  
+
   @FXML
   private TextField lettuceField, tomatoField, onionField, cucumberField, pickleField;
 
   @FXML
   private Label produceLabel, shiftLabel, clockLabel, dateLabel;
+
+  @FXML
+  private Button addCateringButton;
+
+  // Catering
+  @FXML
+  private ChoiceBox<CateringOrder> cateringChoiceBox;
   // Settings
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
@@ -62,6 +77,7 @@ public class HubController
 
   public void initialize()
   {
+    DataHub.addObserver(this);
     // Read in Settings
     try
     {
@@ -341,16 +357,13 @@ public class HubController
   private void fillAverageTextFields()
   {
     // TODO pull data for amBuffer/pmBuffer
-    WSRMap w1 = new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv");
-    WSRMap w2 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv");
-    WSRMap w3 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv");
-    WSRMap w4 = new WSRMap("src/resources/WeeklySalesRS08-crostowm (3).csv");
+
     for (int ii = 0; ii < 14; ii++)
     {
-      double avg = (w1.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + w2.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + w3.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + w4.getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
+      double avg = (DataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + DataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + DataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + DataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
       averageFields.get(ii).setText(String.format("%.0f", avg));
       averageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg)));
       if (ii % 2 == 0)
@@ -373,7 +386,7 @@ public class HubController
   {
     SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss");
     SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy");
-    cal = new GregorianCalendar();
+    currentTimeAndDate = new GregorianCalendar();
     Platform.runLater(new Runnable()
     {
 
@@ -381,30 +394,34 @@ public class HubController
       public void run()
       {
         shiftLabel.setText("Shift: " + currentShift);
-        clockLabel.setText(tf.format(cal.getTime()));
-        dateLabel.setText(df.format(cal.getTime()));
+        clockLabel.setText(tf.format(currentTimeAndDate.getTime()));
+        dateLabel.setText(df.format(currentTimeAndDate.getTime()));
       }
     });
   }
 
+  /**
+   * Update shiftNum Color fields Update current proj vals
+   */
   public void timeUpdateMinute()
   {
     updateCurrentShiftNum();
     colorCurrentShiftFields();
-    
+
     // update current proj vals
     currentShiftProjection = Double.parseDouble(projFields.get(currentShift - 1).getText());
     currentDayProjection = currentShiftProjection + Double.parseDouble(
         projFields.get(currentShift % 2 == 0 ? currentShift - 2 : currentShift).getText());
-    if (cal.get(Calendar.HOUR_OF_DAY) < 10)
+    if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
     {
 
     }
-    else if (cal.get(Calendar.HOUR_OF_DAY) >= 10 && cal.get(Calendar.HOUR_OF_DAY) < 13)
+    else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
+        && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 13)
     {
 
     }
-    else if (cal.get(Calendar.HOUR_OF_DAY) >= 13)
+    else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 13)
     {
       produceLabel.setText("Produce required for PM");
     }
@@ -413,32 +430,71 @@ public class HubController
 
   private void colorCurrentShiftFields()
   {
-    //TODO color other fields plain
-    averageFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    average20Fields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    cateringFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    samplingFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    projFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    thawedTrayFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    percentageFields.get(currentShift-1).setStyle("-fx-background-color: lime");
-    wheatFields.get(currentShift-1).setStyle("-fx-background-color: lime");
+    // TODO color other fields plain
+    averageFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    average20Fields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    cateringFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    samplingFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    projFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    thawedTrayFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    percentageFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    wheatFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
   }
 
+  /**
+   * Sets the value of the current shift num
+   */
   private void updateCurrentShiftNum()
   {
-    int dow = cal.get(Calendar.DAY_OF_WEEK);
+    int dow = currentTimeAndDate.get(Calendar.DAY_OF_WEEK);
     if (dow > 3)
       dow = dow - 3;
     else
       dow = dow + 4;
-    if (cal.get(Calendar.HOUR_OF_DAY) >= storeSCTime)
+    if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= storeSCTime)
       currentShift = dow * 2;
     else
       currentShift = dow * 2 - 1;
   }
 
+  // ToolBox
+  @FXML
+  public void addCateringButtonPressed()
+  {
+    CateringApplication ca = new CateringApplication();
+    ca.show();
+  }
+
+  @Override
+  public void cateringOrderAdded(CateringOrder co)
+  {
+    cateringChoiceBox.setItems(FXCollections.observableArrayList(DataHub.getCateringOrders()));
+    System.out.println("CO Info: " + co.getTime().get(Calendar.DAY_OF_MONTH));
+    if (JimmyCalendarUtil.isInCurrentWeek(currentTimeAndDate, co.getTime()))
+    {
+      double currentCat = 0;
+      int cateringShiftNum = JimmyCalendarUtil.getShiftNumber(co.getTime(), storeSCTime);
+      System.out.println("Adding catering order to shift" + cateringShiftNum);
+      if (cateringFields.get(cateringShiftNum - 1).getText().length() > 0)
+        currentCat = Double.parseDouble(cateringFields.get(cateringShiftNum - 1).getText());
+      cateringFields.get(cateringShiftNum - 1).setText(currentCat + co.getDollarValue() + "");
+    }
+  }
+
+  @Override
+  public void cateringOrderRemoved(CateringOrder co)
+  {
+    cateringChoiceBox.setItems(FXCollections.observableArrayList(DataHub.getCateringOrders()));
+  }
+
+  @Override
+  public void projectionDataReady()
+  {
+    // TODO Auto-generated method stub
+
+  }
+
   //@formatter:off
-  //ToolBox
   @FXML public void c1Changed(){updateAllFields();}
 
   @FXML public void c2Changed(){updateAllFields();}
@@ -520,4 +576,5 @@ public class HubController
   
   @FXML void pickleBVChanged() {updateAllFields();}
   //@formatter:on
+
 }
