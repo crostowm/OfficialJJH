@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 import util.CateringOrder;
 import util.DataHub;
 
@@ -22,7 +23,7 @@ public class CateringController
   private ChoiceBox<String> ampmChoice;
   
   @FXML
-  private TextField dollarField;
+  private TextField dollarField, numSticksField;
 
   @FXML
   private Button addButton;
@@ -87,11 +88,16 @@ public class CateringController
       cal.set(Calendar.HOUR, hourChoice.getValue() + (ampmChoice.getValue().equals("PM")?12:0));
       cal.set(Calendar.MINUTE, minuteChoice.getValue());
       
-      DataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal));
+      int numSticks = -1;
+      if(numSticksField.getText().length() > 0)
+        numSticks = Integer.parseInt(numSticksField.getText());
+      
+      DataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks));
     }
     catch (NumberFormatException e)
     {
       // TODO: handle exception
+      System.out.println("Unable to parse Catering order");
     }
   }
 }

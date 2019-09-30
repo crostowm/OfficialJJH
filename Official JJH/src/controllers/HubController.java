@@ -31,6 +31,8 @@ public class HubController implements DataObserver
   private int currentShift = 0, storeSCTime = 15;
 
   private GregorianCalendar currentTimeAndDate = new GregorianCalendar();
+  
+  private CateringApplication ca;
 
   // ToolBox
   @FXML
@@ -70,6 +72,7 @@ public class HubController implements DataObserver
   // Catering
   @FXML
   private ChoiceBox<CateringOrder> cateringChoiceBox;
+  
   // Settings
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
@@ -405,7 +408,7 @@ public class HubController implements DataObserver
    */
   public void timeUpdateMinute()
   {
-    updateCurrentShiftNum();
+    currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate, storeSCTime);
     colorCurrentShiftFields();
 
     // update current proj vals
@@ -441,27 +444,10 @@ public class HubController implements DataObserver
     wheatFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
   }
 
-  /**
-   * Sets the value of the current shift num
-   */
-  private void updateCurrentShiftNum()
-  {
-    int dow = currentTimeAndDate.get(Calendar.DAY_OF_WEEK);
-    if (dow > 3)
-      dow = dow - 3;
-    else
-      dow = dow + 4;
-    if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= storeSCTime)
-      currentShift = dow * 2;
-    else
-      currentShift = dow * 2 - 1;
-  }
-
-  // ToolBox
   @FXML
   public void addCateringButtonPressed()
   {
-    CateringApplication ca = new CateringApplication();
+    ca = new CateringApplication();
     ca.show();
   }
 
@@ -469,16 +455,16 @@ public class HubController implements DataObserver
   public void cateringOrderAdded(CateringOrder co)
   {
     cateringChoiceBox.setItems(FXCollections.observableArrayList(DataHub.getCateringOrders()));
-    System.out.println("CO Info: " + co.getTime().get(Calendar.DAY_OF_MONTH));
     if (JimmyCalendarUtil.isInCurrentWeek(currentTimeAndDate, co.getTime()))
     {
       double currentCat = 0;
       int cateringShiftNum = JimmyCalendarUtil.getShiftNumber(co.getTime(), storeSCTime);
-      System.out.println("Adding catering order to shift" + cateringShiftNum);
       if (cateringFields.get(cateringShiftNum - 1).getText().length() > 0)
         currentCat = Double.parseDouble(cateringFields.get(cateringShiftNum - 1).getText());
       cateringFields.get(cateringShiftNum - 1).setText(currentCat + co.getDollarValue() + "");
     }
+    if(ca != null)
+      ca.close();
   }
 
   @Override
@@ -494,6 +480,7 @@ public class HubController implements DataObserver
 
   }
 
+  // ToolBox
   //@formatter:off
   @FXML public void c1Changed(){updateAllFields();}
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AreaManagerReportController">
+   <children>
+      <VBox alignment="CENTER" layoutX="239.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <Label alignment="CENTER" text="Area Manager Report">
+               <font>
+                  <Font name="Bell MT" size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </Label>
+            <GridPane hgap="5.0" vgap="5.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <CheckBox fx:id="equipmentCheck" mnemonicParsing="false" text="All Equipment in perfect working order" GridPane.rowIndex="6" />
+                  <CheckBox fx:id="punchlistCheck" mnemonicParsing="false" text="Punchlist executed for you last night" GridPane.rowIndex="7" />
+                  <Label text="Anything else you need help with?" GridPane.rowIndex="8" />
+                  <TextArea fx:id="explanationArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="9" />
+                  <Label text="AM" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label text="PM" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <Label text="Data from yesterday" GridPane.halignment="RIGHT" />
+                  <Label text="Sales" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label text="Over/Under Deposit" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label text="Labor %" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label fx:id="salesLabelAM" text="00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label fx:id="overUnderLabelAM" text="00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label fx:id="laborLabelAM" text="00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Label fx:id="salesLabelPM" text="00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label fx:id="overUnderLabelPM" text="00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label fx:id="laborLabelPM" text="00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="staffCheck" mnemonicParsing="false" text="Have enough staff to execute the day" GridPane.rowIndex="5" />
+                  <ChoiceBox fx:id="cateringChoice" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <Label text="Today's Catering" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label text="Time Label" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <Label text="Dollar Value" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+               </children>
+            </GridPane>
+            <Button fx:id="sendReportButton" mnemonicParsing="false" text="Send Report" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
