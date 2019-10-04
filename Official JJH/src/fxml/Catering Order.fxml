@@ -32,10 +32,10 @@
          <children>
             <HBox alignment="CENTER" spacing="5.0" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <children>
-                  <Label text="Day" />
-                  <ChoiceBox fx:id="dayChoice" HBox.hgrow="NEVER" />
                   <Label text="Month" />
                   <ChoiceBox fx:id="monthChoice" />
+                  <Label text="Day" />
+                  <ChoiceBox fx:id="dayChoice" HBox.hgrow="NEVER" />
                   <Label text="Year" />
                   <ChoiceBox fx:id="yearChoice" />
                </children>

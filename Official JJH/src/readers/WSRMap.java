@@ -13,11 +13,11 @@ public class WSRMap extends HashMap<Integer, HashMap<Integer, Double>>
   private static final long serialVersionUID = 1L;
   private Scanner scanner;
 
-  public WSRMap(String fileName)
+  public WSRMap(File file)
   {
     try
     {
-      scanner = new Scanner(new File(fileName));
+      scanner = new Scanner(file);
       scanner.useDelimiter(
           "Sales Item,Summary,#EA,Wed-1,Wed-2,Thur-3,Thur-4,Fri-5,Fri-6,Sat-7,Sat-8,Sun-9,Sun-10,Mon-11,Mon-12,Tues-13,Tues-14");
       while (scanner.hasNext())

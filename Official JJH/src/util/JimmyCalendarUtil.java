@@ -47,4 +47,16 @@ public class JimmyCalendarUtil
     }
     return -1;
   }
+
+  public static int convertTo24Hr(int value, String ampm)
+  {
+    if(value != 12)
+    {
+      return value + (ampm.equals("PM")?12:0);
+    }
+    else
+    {
+      return ampm.equals("PM")?12:24;
+    }
+  }
 }

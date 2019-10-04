@@ -1,5 +1,6 @@
 package app;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -14,11 +15,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import readers.WSRMap;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.CateringOrder;
 import util.DataHub;
+import util.ReportFinder;
 
 public class MainApplication extends Application
 {
@@ -36,31 +37,32 @@ public class MainApplication extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
+    ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION, true);
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
     // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales
     // Report.csv");
     // UPKMap upk = new UPKMap(BASE_DOWNLOAD_LOCATION + "\\UPK Expected Usage Report (5).csv");
-    if (fullRun)
+    /*if (fullRun)
     {
-      //ReportGrabber rg = new ReportGrabber();
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv"), 1);
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv"),
+      ReportGrabber rg = new ReportGrabber();
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
           2);
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv"),
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
           3);
-      DataHub.addWSRMapForProjections(new WSRMap(BASE_DOWNLOAD_LOCATION + "\\WeeklySalesRS08-crostowm.csv"), 4);
+      DataHub.addWSRMapForProjections(new WSRMap(new File(BASE_DOWNLOAD_LOCATION + "\\WeeklySalesRS08-crostowm.csv")), 4);
     }
     else
     {
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm.csv"), 1);
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (1).csv"),
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
           2);
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (2).csv"),
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
           3);
-      DataHub.addWSRMapForProjections(new WSRMap("src/resources/WeeklySalesRS08-crostowm (3).csv"),
+      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (3).csv")),
           4);
-    }
+    }*/
     FXMLLoader loader;
     Pane root;
     try

@@ -10,9 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 import util.CateringOrder;
 import util.DataHub;
+import util.JimmyCalendarUtil;
 
 public class CateringController
 {
@@ -44,7 +44,7 @@ public class CateringController
       months.add(ii);
     }
     monthChoice.setItems(FXCollections.observableArrayList(months));
-    monthChoice.setValue(new GregorianCalendar().get(Calendar.MONTH));
+    monthChoice.setValue(new GregorianCalendar().get(Calendar.MONTH) + 1);
     
     ArrayList<Integer> days = new ArrayList<Integer>();
     for(int ii = 1; ii < 32; ii++)
@@ -74,7 +74,7 @@ public class CateringController
     ampm.add("AM");
     ampm.add("PM");
     ampmChoice.setItems(FXCollections.observableArrayList(ampm));
-    ampmChoice.setValue("AM");
+    ampmChoice.setValue("PM");
   }
   
   @FXML
@@ -83,9 +83,9 @@ public class CateringController
     {
       GregorianCalendar cal = new GregorianCalendar();
       cal.set(Calendar.YEAR, yearChoice.getValue());
-      cal.set(Calendar.MONTH, monthChoice.getValue());
+      cal.set(Calendar.MONTH, monthChoice.getValue() - 1);
       cal.set(Calendar.DAY_OF_MONTH, dayChoice.getValue());
-      cal.set(Calendar.HOUR, hourChoice.getValue() + (ampmChoice.getValue().equals("PM")?12:0));
+      cal.set(Calendar.HOUR, JimmyCalendarUtil.convertTo24Hr(hourChoice.getValue(), ampmChoice.getValue()));
       cal.set(Calendar.MINUTE, minuteChoice.getValue());
       
       int numSticks = -1;

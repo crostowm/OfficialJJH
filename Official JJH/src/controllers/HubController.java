@@ -465,6 +465,7 @@ public class HubController implements DataObserver
     }
     if(ca != null)
       ca.close();
+    updateAllFields();
   }
 
   @Override
