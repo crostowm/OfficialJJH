@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import app.CateringApplication;
+import app.MainApplication;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -25,14 +26,15 @@ public class HubController implements DataObserver
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayFields, percentageFields, wheatFields;
 
-  private double currentShiftProjection = 0, currentDayProjection = 0, amBuffer, pmBuffer, btv,
-      b9tv, wlv, bakedAt11, bakedAtSC, lettuceBV, tomatoBV, onionBV, cucumberBV, pickleBV;
+  private double currentShiftProjection = 0, currentDayProjection = 0;
 
   private int currentShift = 0, storeSCTime = 15;
 
   private GregorianCalendar currentTimeAndDate = new GregorianCalendar();
-  
+
   private CateringApplication ca;
+
+  private DataHub data = MainApplication.dataHub;
 
   // ToolBox
   @FXML
@@ -72,7 +74,7 @@ public class HubController implements DataObserver
   // Catering
   @FXML
   private ChoiceBox<CateringOrder> cateringChoiceBox;
-  
+
   // Settings
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
@@ -80,28 +82,7 @@ public class HubController implements DataObserver
 
   public void initialize()
   {
-    DataHub.addObserver(this);
-    // Read in Settings
-    try
-    {
-      amBuffer = Double.parseDouble(amBufferField.getText());
-      pmBuffer = Double.parseDouble(pmBufferField.getText());
-      btv = Double.parseDouble(btvField.getText());
-      b9tv = Double.parseDouble(b9tvField.getText());
-      wlv = Double.parseDouble(wlvField.getText());
-      bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
-      bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
-      lettuceBV = Double.parseDouble(lettuceBVField.getText());
-      tomatoBV = Double.parseDouble(tomatoBVField.getText());
-      onionBV = Double.parseDouble(onionBVField.getText());
-      cucumberBV = Double.parseDouble(cucumberBVField.getText());
-      pickleBV = Double.parseDouble(pickleBVField.getText());
-      // TODO storeSCTime
-    }
-    catch (NumberFormatException nfe)
-    {
-      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
-    }
+    data.addObserver(this);
     averageFields = new ArrayList<TextField>();
     averageFields.add(a1);
     averageFields.add(a2);
@@ -239,92 +220,88 @@ public class HubController implements DataObserver
    */
   private void updateAllFields()
   {
-    double amProj = 0;
     // Update Settings
     try
     {
-      amBuffer = Double.parseDouble(amBufferField.getText());
-      pmBuffer = Double.parseDouble(pmBufferField.getText());
-      btv = Double.parseDouble(btvField.getText());
-      b9tv = Double.parseDouble(b9tvField.getText());
-      wlv = Double.parseDouble(wlvField.getText());
-      bakedAt11 = Double.parseDouble(bakedAt11Field.getText());
-      bakedAtSC = Double.parseDouble(bakedAtSCField.getText());
-      lettuceBV = Double.parseDouble(lettuceBVField.getText());
-      tomatoBV = Double.parseDouble(tomatoBVField.getText());
-      onionBV = Double.parseDouble(onionBVField.getText());
-      cucumberBV = Double.parseDouble(cucumberBVField.getText());
-      pickleBV = Double.parseDouble(pickleBVField.getText());
+      data.changeSetting(DataHub.AMBUFFER, Double.parseDouble(amBufferField.getText()));
+      data.changeSetting(DataHub.PMBUFFER, Double.parseDouble(pmBufferField.getText()));
+      data.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
+      data.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
+      data.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
+      data.changeSetting(DataHub.BAKEDAT11, Double.parseDouble(bakedAt11Field.getText()));
+      data.changeSetting(DataHub.BAKEDATSC, Double.parseDouble(bakedAtSCField.getText()));
+      data.changeSetting(DataHub.LETTUCEBV, Double.parseDouble(lettuceBVField.getText()));
+      data.changeSetting(DataHub.TOMATOBV, Double.parseDouble(tomatoBVField.getText()));
+      data.changeSetting(DataHub.ONIONBV, Double.parseDouble(onionBVField.getText()));
+      data.changeSetting(DataHub.CUCUMBERBV, Double.parseDouble(cucumberBVField.getText()));
+      data.changeSetting(DataHub.PICKLEBV, Double.parseDouble(pickleBVField.getText()));
     }
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
-
+    double btv = data.getSetting(DataHub.BTV);
+    double b9tv = data.getSetting(DataHub.B9TV);
+    double wlv = data.getSetting(DataHub.WLV);
     // Update Toolbox
     for (int ii = 0; ii < 14; ii++)
     {
       try
       {
         // Fill avg, catering, and sample vals
-        double averagePlusBuffer = 0, catering = 0, sampling = 0;
-        if (!average20Fields.get(ii).getText().equals(""))
-        {
-          averagePlusBuffer = Double.parseDouble(average20Fields.get(ii).getTooltip().getText());
-        }
-        if (!cateringFields.get(ii).getText().equals(""))
-        {
-          catering = Double.parseDouble(cateringFields.get(ii).getText());
-        }
-        if (!samplingFields.get(ii).getText().equals(""))
-        {
-          sampling = Double.parseDouble(samplingFields.get(ii).getText());
-        }
-        double indexProjection = averagePlusBuffer + catering + sampling;
+        /*
+         * double averagePlusBuffer = 0, catering = 0, sampling = 0; if
+         * (!average20Fields.get(ii).getText().equals("")) { averagePlusBuffer =
+         * Double.parseDouble(average20Fields.get(ii).getTooltip().getText()); } if
+         * (!cateringFields.get(ii).getText().equals("")) { catering =
+         * Double.parseDouble(cateringFields.get(ii).getText()); } if
+         * (!samplingFields.get(ii).getText().equals("")) { sampling =
+         * Double.parseDouble(samplingFields.get(ii).getText()); } double indexProjection =
+         * averagePlusBuffer + catering + sampling;
+         */
 
-        projFields.get(ii).setText(String.format("%.2f", indexProjection));
+        projFields.get(ii).setText(String.format("%.2f", data.getProjectionDataForIndex(ii)));
         // AM Shifts (Index 0)
         if (ii % 2 == 0)
         {
-          amProj = indexProjection;
           // Thawed at Open
-          thawedTrayFields.get(ii).setText(String.format("%.0f", Math.ceil(indexProjection / btv)));
+          thawedTrayFields.get(ii).setText(String.format("%.0f",
+              Math.ceil(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f", indexProjection / btv)));
+              .setTooltip(new Tooltip(String.format("%.2f/%.2f", data.getThawedDataForIndex(ii),
+                  data.getThawedDataForIndex(ii) / btv)));
           // Baked 75% @ 11
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil((indexProjection * bakedAt11) / btv)));
+              .setText(String.format("%.0f", Math.ceil(data.getPercentageDataForIndex(ii) / btv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
-              indexProjection * bakedAt11, (indexProjection * bakedAt11) / btv)));
+              data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / btv)));
+          
+          // AM Wheat Field, All for day
+          wheatFields.get(ii)
+          .setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
+          wheatFields.get(ii)
+          .setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
         }
         // PM Shifts
         else
         {
           // Laid out at 8am
           thawedTrayFields.get(ii).setText(String.format("%.0f",
-              Math.ceil((indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj))) / btv));
+              Math.ceil(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f/%.2f",
-                  (indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj)),
-                  ((indexProjection - (indexProjection * bakedAtSC) - (.25 * amProj))) / btv)));
+              .setTooltip(new Tooltip(String.format("%.2f/%.2f", data.getThawedDataForIndex(ii),
+                  data.getThawedDataForIndex(ii) / btv)));
 
           // PM percentage fields, Baked at SC
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil((indexProjection * bakedAtSC) / b9tv)));
+              .setText(String.format("%.0f", Math.ceil(data.getPercentageDataForIndex(ii) / b9tv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
-              indexProjection * bakedAtSC, (indexProjection * bakedAtSC) / b9tv)));
-
-          // AM Wheat Field, All for day
-          wheatFields.get(ii - 1)
-              .setText(String.format("%.0f", Math.ceil((amProj + indexProjection) / wlv)));
-          wheatFields.get(ii - 1)
-              .setTooltip(new Tooltip(String.format("%.2f", (amProj + indexProjection) / wlv)));
+              data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / b9tv)));
 
           // PM Wheat Field, Needed for PM
-          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(indexProjection / wlv)));
-          wheatFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", indexProjection / wlv)));
+          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
+          wheatFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
 
-          amProj = 0;
         }
         timeUpdateSecond();
         timeUpdateMinute();
@@ -332,19 +309,19 @@ public class HubController implements DataObserver
         // Fill produce fields
         double produceProj;
         if (currentShift % 2 == 1)
-          produceProj = currentDayProjection;
+          produceProj = data.getProjectionDataForIndex(currentShift - 1) + data.getProjectionDataForIndex(currentShift);
         else
-          produceProj = currentShiftProjection;
-        lettuceField.setText(String.format("%.0f", Math.ceil(produceProj / lettuceBV)));
-        lettuceField.setTooltip(new Tooltip(String.format("%.2f", produceProj / lettuceBV)));
-        tomatoField.setText(String.format("%.0f", Math.ceil(produceProj / tomatoBV)));
-        tomatoField.setTooltip(new Tooltip(String.format("%.2f", produceProj / tomatoBV)));
-        onionField.setText(String.format("%.0f", Math.ceil(produceProj / onionBV)));
-        onionField.setTooltip(new Tooltip(String.format("%.2f", produceProj / onionBV)));
-        cucumberField.setText(String.format("%.0f", Math.ceil(produceProj / cucumberBV)));
-        cucumberField.setTooltip(new Tooltip(String.format("%.2f", produceProj / cucumberBV)));
-        pickleField.setText(String.format("%.0f", Math.ceil(produceProj / pickleBV)));
-        pickleField.setTooltip(new Tooltip(String.format("%.2f", produceProj / pickleBV)));
+          produceProj = data.getProjectionDataForIndex(currentShift - 1);
+        lettuceField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.LETTUCEBV))));
+        lettuceField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.LETTUCEBV))));
+        tomatoField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.TOMATOBV))));
+        tomatoField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.TOMATOBV))));
+        onionField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.ONIONBV))));
+        onionField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.ONIONBV))));
+        cucumberField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.CUCUMBERBV))));
+        cucumberField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.CUCUMBERBV))));
+        pickleField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.PICKLEBV))));
+        pickleField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
       }
       catch (NumberFormatException nfe)
       {
@@ -363,21 +340,21 @@ public class HubController implements DataObserver
 
     for (int ii = 0; ii < 14; ii++)
     {
-      double avg = (DataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + DataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + DataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + DataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
+      double avg = (data.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + data.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + data.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
+          + data.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
       averageFields.get(ii).setText(String.format("%.0f", avg));
       averageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg)));
       if (ii % 2 == 0)
       {
         average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
-        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * amBuffer)));
+        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * data.getSetting(DataHub.AMBUFFER))));
       }
       else
       {
         average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
-        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * pmBuffer)));
+        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * data.getSetting(DataHub.PMBUFFER))));
       }
     }
   }
@@ -454,7 +431,7 @@ public class HubController implements DataObserver
   @Override
   public void cateringOrderAdded(CateringOrder co)
   {
-    cateringChoiceBox.setItems(FXCollections.observableArrayList(DataHub.getCateringOrders()));
+    cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
     if (JimmyCalendarUtil.isInCurrentWeek(currentTimeAndDate, co.getTime()))
     {
       double currentCat = 0;
@@ -463,7 +440,7 @@ public class HubController implements DataObserver
         currentCat = Double.parseDouble(cateringFields.get(cateringShiftNum - 1).getText());
       cateringFields.get(cateringShiftNum - 1).setText(currentCat + co.getDollarValue() + "");
     }
-    if(ca != null)
+    if (ca != null)
       ca.close();
     updateAllFields();
   }
@@ -471,7 +448,7 @@ public class HubController implements DataObserver
   @Override
   public void cateringOrderRemoved(CateringOrder co)
   {
-    cateringChoiceBox.setItems(FXCollections.observableArrayList(DataHub.getCateringOrders()));
+    cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
   }
 
   @Override
@@ -479,6 +456,13 @@ public class HubController implements DataObserver
   {
     // TODO Auto-generated method stub
 
+  }
+
+  @Override
+  public void averageUpdatedForShift(int shift, double value)
+  {
+    // TODO Auto-generated method stub
+    updateAllFields();
   }
 
   // ToolBox

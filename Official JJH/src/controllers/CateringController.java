@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import app.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import util.CateringOrder;
-import util.DataHub;
 import util.JimmyCalendarUtil;
 
 public class CateringController
@@ -92,7 +92,7 @@ public class CateringController
       if(numSticksField.getText().length() > 0)
         numSticks = Integer.parseInt(numSticksField.getText());
       
-      DataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks));
+      MainApplication.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks));
     }
     catch (NumberFormatException e)
     {

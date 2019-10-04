@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
+import app.MainApplication;
 import readers.WSRMap;
 
 public class ReportFinder
@@ -15,7 +16,7 @@ public class ReportFinder
       ArrayList<File> fs = findLatestDuplicates(getAllWSRFiles(directory), 4);
       for (int ii = 0; ii < 4; ii++)
       {
-        DataHub.addWSRMapForProjections(new WSRMap(fs.get(ii)), ii + 1);
+        MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii)), ii + 1);
       }
     }
   }

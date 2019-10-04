@@ -1,8 +1,10 @@
 package app;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Timer;
 
@@ -28,6 +30,7 @@ public class MainApplication extends Application
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
   public static boolean fullRun = true;
+  public static DataHub dataHub;
 
   public static void main(String[] args)
   {
@@ -37,6 +40,7 @@ public class MainApplication extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
+    readInDataHub();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION, true);
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
@@ -96,7 +100,7 @@ public class MainApplication extends Application
             FileOutputStream out = new FileOutputStream(cateringOrderFileName);
             ObjectOutputStream serializer = new ObjectOutputStream(out);
 
-            for (CateringOrder co : DataHub.getCateringOrders())
+            for (CateringOrder co : dataHub.getCateringOrders())
             {
               serializer.writeObject(co);
             }
@@ -115,6 +119,22 @@ public class MainApplication extends Application
     {
       System.out.println("Could not load root for " + "resources/MainMenuFXML.fxml");
       e.printStackTrace();
+    }
+  }
+
+  private void readInDataHub()
+  {
+    try
+    {
+      FileInputStream in = new FileInputStream(new File("DataHub.dat"));
+      ObjectInputStream deserializer = new ObjectInputStream(in);
+      
+      dataHub = (DataHub)deserializer.readObject();
+      deserializer.close();
+    }
+    catch(Exception e)
+    {
+      dataHub = new DataHub();
     }
   }
 }
