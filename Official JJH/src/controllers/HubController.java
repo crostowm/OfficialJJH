@@ -16,17 +16,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import observers.DataObserver;
-import readers.WSRMap;
 import util.CateringOrder;
 import util.DataHub;
 import util.JimmyCalendarUtil;
+import util.MathUtil;
 
 public class HubController implements DataObserver
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayFields, percentageFields, wheatFields;
-
-  private double currentShiftProjection = 0, currentDayProjection = 0;
 
   private int currentShift = 0, storeSCTime = 15;
 
@@ -114,7 +112,6 @@ public class HubController implements DataObserver
     average20Fields.add(a212);
     average20Fields.add(a213);
     average20Fields.add(a214);
-    fillAverageTextFields();
 
     cateringFields = new ArrayList<TextField>();
     cateringFields.add(c1);
@@ -240,6 +237,7 @@ public class HubController implements DataObserver
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
+
     double btv = data.getSetting(DataHub.BTV);
     double b9tv = data.getSetting(DataHub.B9TV);
     double wlv = data.getSetting(DataHub.WLV);
@@ -248,59 +246,53 @@ public class HubController implements DataObserver
     {
       try
       {
-        // Fill avg, catering, and sample vals
-        /*
-         * double averagePlusBuffer = 0, catering = 0, sampling = 0; if
-         * (!average20Fields.get(ii).getText().equals("")) { averagePlusBuffer =
-         * Double.parseDouble(average20Fields.get(ii).getTooltip().getText()); } if
-         * (!cateringFields.get(ii).getText().equals("")) { catering =
-         * Double.parseDouble(cateringFields.get(ii).getText()); } if
-         * (!samplingFields.get(ii).getText().equals("")) { sampling =
-         * Double.parseDouble(samplingFields.get(ii).getText()); } double indexProjection =
-         * averagePlusBuffer + catering + sampling;
-         */
-
+        averageFields.get(ii).setText(String.format("%.0f", data.getAverageDataForIndex(ii)));
+        averageFields.get(ii)
+            .setTooltip(new Tooltip(String.format("%.2f", data.getAverageDataForIndex(ii))));
+        average20Fields.get(ii).setText(String.format("%.0f", data.getAveragePlusBufferData(ii)));
+        average20Fields.get(ii)
+            .setTooltip(new Tooltip(String.format("%.2f", data.getAveragePlusBufferData(ii))));
         projFields.get(ii).setText(String.format("%.2f", data.getProjectionDataForIndex(ii)));
         // AM Shifts (Index 0)
         if (ii % 2 == 0)
         {
           // Thawed at Open
-          thawedTrayFields.get(ii).setText(String.format("%.0f",
-              Math.ceil(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f/%.2f", data.getThawedDataForIndex(ii),
-                  data.getThawedDataForIndex(ii) / btv)));
+              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
+          thawedTrayFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
+              data.getThawedDataForIndex(ii), data.getThawedDataForIndex(ii) / btv)));
           // Baked 75% @ 11
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil(data.getPercentageDataForIndex(ii) / btv)));
+              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / btv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / btv)));
-          
+
           // AM Wheat Field, All for day
           wheatFields.get(ii)
-          .setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
+              .setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
           wheatFields.get(ii)
-          .setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
+              .setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
         }
         // PM Shifts
         else
         {
           // Laid out at 8am
-          thawedTrayFields.get(ii).setText(String.format("%.0f",
-              Math.ceil(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
-              .setTooltip(new Tooltip(String.format("%.2f/%.2f", data.getThawedDataForIndex(ii),
-                  data.getThawedDataForIndex(ii) / btv)));
+              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
+          thawedTrayFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
+              data.getThawedDataForIndex(ii), data.getThawedDataForIndex(ii) / btv)));
 
           // PM percentage fields, Baked at SC
           percentageFields.get(ii)
-              .setText(String.format("%.0f", Math.ceil(data.getPercentageDataForIndex(ii) / b9tv)));
+              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / b9tv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / b9tv)));
 
           // PM Wheat Field, Needed for PM
-          wheatFields.get(ii).setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
-          wheatFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
+          wheatFields.get(ii)
+              .setText(String.format("%.0f", Math.ceil(data.getWheatDataForIndex(ii) / wlv)));
+          wheatFields.get(ii)
+              .setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
 
         }
         timeUpdateSecond();
@@ -309,52 +301,35 @@ public class HubController implements DataObserver
         // Fill produce fields
         double produceProj;
         if (currentShift % 2 == 1)
-          produceProj = data.getProjectionDataForIndex(currentShift - 1) + data.getProjectionDataForIndex(currentShift);
+          produceProj = data.getProjectionDataForIndex(currentShift - 1)
+              + data.getProjectionDataForIndex(currentShift);
         else
           produceProj = data.getProjectionDataForIndex(currentShift - 1);
-        lettuceField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.LETTUCEBV))));
-        lettuceField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.LETTUCEBV))));
-        tomatoField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.TOMATOBV))));
-        tomatoField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.TOMATOBV))));
-        onionField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.ONIONBV))));
-        onionField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.ONIONBV))));
-        cucumberField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.CUCUMBERBV))));
-        cucumberField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.CUCUMBERBV))));
-        pickleField.setText(String.format("%.0f", Math.ceil(produceProj / data.getSetting(DataHub.PICKLEBV))));
-        pickleField.setTooltip(new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
+        lettuceField.setText(
+            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.LETTUCEBV))));
+        lettuceField.setTooltip(
+            new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.LETTUCEBV))));
+        tomatoField.setText(
+            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.TOMATOBV))));
+        tomatoField.setTooltip(
+            new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.TOMATOBV))));
+        onionField.setText(
+            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.ONIONBV))));
+        onionField.setTooltip(
+            new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.ONIONBV))));
+        cucumberField.setText(
+            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.CUCUMBERBV))));
+        cucumberField.setTooltip(
+            new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.CUCUMBERBV))));
+        pickleField.setText(
+            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.PICKLEBV))));
+        pickleField.setTooltip(
+            new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
       }
       catch (NumberFormatException nfe)
       {
         System.out
             .println("NFE, Could not parse a text field on Projections tab:\n" + nfe.getMessage());
-      }
-    }
-  }
-
-  /**
-   * Pulls info from wsr to fill avgs
-   */
-  private void fillAverageTextFields()
-  {
-    // TODO pull data for amBuffer/pmBuffer
-
-    for (int ii = 0; ii < 14; ii++)
-    {
-      double avg = (data.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + data.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + data.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)
-          + data.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii + 1)) / 4;
-      averageFields.get(ii).setText(String.format("%.0f", avg));
-      averageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg)));
-      if (ii % 2 == 0)
-      {
-        average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
-        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * data.getSetting(DataHub.AMBUFFER))));
-      }
-      else
-      {
-        average20Fields.get(ii).setText(String.format("%.0f", avg * 1.2));
-        average20Fields.get(ii).setTooltip(new Tooltip(String.format("%.2f", avg * data.getSetting(DataHub.PMBUFFER))));
       }
     }
   }
@@ -389,9 +364,6 @@ public class HubController implements DataObserver
     colorCurrentShiftFields();
 
     // update current proj vals
-    currentShiftProjection = Double.parseDouble(projFields.get(currentShift - 1).getText());
-    currentDayProjection = currentShiftProjection + Double.parseDouble(
-        projFields.get(currentShift % 2 == 0 ? currentShift - 2 : currentShift).getText());
     if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
     {
 

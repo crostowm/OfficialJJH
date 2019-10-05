@@ -17,6 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import readers.WSRMap;
+import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.CateringOrder;
@@ -42,6 +44,7 @@ public class MainApplication extends Application
   {
     readInDataHub();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION, true);
+    // ReportGrabber rg = new ReportGrabber();
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
     // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales
@@ -49,24 +52,32 @@ public class MainApplication extends Application
     // UPKMap upk = new UPKMap(BASE_DOWNLOAD_LOCATION + "\\UPK Expected Usage Report (5).csv");
     /*if (fullRun)
     {
-      ReportGrabber rg = new ReportGrabber();
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
           2);
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
           3);
-      DataHub.addWSRMapForProjections(new WSRMap(new File(BASE_DOWNLOAD_LOCATION + "\\WeeklySalesRS08-crostowm.csv")), 4);
+      dataHub.addWSRMapForProjections(new WSRMap(new File(BASE_DOWNLOAD_LOCATION + "\\WeeklySalesRS08-crostowm.csv")), 4);
     }
     else
     {
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")),
           2);
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (2).csv")),
           3);
-      DataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (3).csv")),
+      dataHub.addWSRMapForProjections(new WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (3).csv")),
           4);
     }*/
+    for (int ii = 1; ii < 15; ii++)
+    {
+      System.out.println(dataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " " + dataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " " + dataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " " + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii));
+      double avg = (dataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+          + dataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+          + dataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+          + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii)) / 4;
+      dataHub.setAverageForShift(ii, avg);
+    }
     FXMLLoader loader;
     Pane root;
     try

@@ -91,7 +91,7 @@ public class DataHub implements Serializable
   {
     average.set(shift - 1, value);
     averagePlusBuffer.set(shift - 1,
-        value * shift % 2 == 0 ? settings.get(PMBUFFER) : settings.get(AMBUFFER));
+        value * (shift % 2 == 0 ? settings.get(PMBUFFER) : settings.get(AMBUFFER)));
     updateProjForShift(shift);
     for (DataObserver dato : observers)
     {
@@ -106,6 +106,7 @@ public class DataHub implements Serializable
   {
     int index = shift - 1;
     double proj = averagePlusBuffer.get(index) + catering.get(index) + sampling.get(index);
+    System.out.println(proj);
     projections.set(index,
         proj);
     if (shift % 2 == 1)
@@ -185,5 +186,15 @@ public class DataHub implements Serializable
   public double getWheatDataForIndex(int ii)
   {
     return wheat.get(ii);
+  }
+
+  public double getAverageDataForIndex(int ii)
+  {
+    return average.get(ii);
+  }
+
+  public double getAveragePlusBufferData(int ii)
+  {
+    return averagePlusBuffer.get(ii);
   }
 }

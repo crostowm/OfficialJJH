@@ -26,7 +26,6 @@ public class ReportFinder
     ArrayList<File> wsrFiles = new ArrayList<File>();
     for (File f : allWSRFiles)
     {
-      System.out.println("Run");
       int highestIndex = -1;
       if (wsrFiles.size() == 0)
         wsrFiles.add(f);
@@ -34,7 +33,6 @@ public class ReportFinder
       {
         for (int ii = 0; ii < wsrFiles.size(); ii++)
         {
-          System.out.println("Next");
           if (getDupVal(f) > getDupVal(wsrFiles.get(ii)))
           {
             if (ii > highestIndex)
