@@ -21,7 +21,7 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
   private double adjustedSales = -1;
   private int count = 22;
 
-  public UPKMap(String fileName)
+  public UPKMap(File file)
   {
     for(int ii = 1; ii < 8; ii++)
     {
@@ -29,7 +29,7 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
     }
     try
     {
-      Scanner scan = new Scanner(new File(fileName));
+      Scanner scan = new Scanner(file);
       while(scan.hasNext())
       {
         String line = scan.nextLine();

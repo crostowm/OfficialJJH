@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 
 import app.CateringApplication;
 import app.MainApplication;
+import error_handling.ErrorHandler;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -257,13 +258,13 @@ public class HubController implements DataObserver
         if (ii % 2 == 0)
         {
           // Thawed at Open
-          thawedTrayFields.get(ii)
-              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
+          thawedTrayFields.get(ii).setText(
+              String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getThawedDataForIndex(ii), data.getThawedDataForIndex(ii) / btv)));
           // Baked 75% @ 11
-          percentageFields.get(ii)
-              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / btv)));
+          percentageFields.get(ii).setText(
+              String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / btv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / btv)));
 
@@ -277,14 +278,14 @@ public class HubController implements DataObserver
         else
         {
           // Laid out at 8am
-          thawedTrayFields.get(ii)
-              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
+          thawedTrayFields.get(ii).setText(
+              String.format("%.1f", MathUtil.ceilHalf(data.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getThawedDataForIndex(ii), data.getThawedDataForIndex(ii) / btv)));
 
           // PM percentage fields, Baked at SC
-          percentageFields.get(ii)
-              .setText(String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / b9tv)));
+          percentageFields.get(ii).setText(
+              String.format("%.1f", MathUtil.ceilHalf(data.getPercentageDataForIndex(ii) / b9tv)));
           percentageFields.get(ii).setTooltip(new Tooltip(String.format("%.2f/%.2f",
               data.getPercentageDataForIndex(ii), data.getPercentageDataForIndex(ii) / b9tv)));
 
@@ -305,24 +306,24 @@ public class HubController implements DataObserver
               + data.getProjectionDataForIndex(currentShift);
         else
           produceProj = data.getProjectionDataForIndex(currentShift - 1);
-        lettuceField.setText(
-            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.LETTUCEBV))));
+        lettuceField.setText(String.format("%.1f",
+            MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.LETTUCEBV))));
         lettuceField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.LETTUCEBV))));
-        tomatoField.setText(
-            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.TOMATOBV))));
+        tomatoField.setText(String.format("%.1f",
+            MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.TOMATOBV))));
         tomatoField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.TOMATOBV))));
-        onionField.setText(
-            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.ONIONBV))));
+        onionField.setText(String.format("%.1f",
+            MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.ONIONBV))));
         onionField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.ONIONBV))));
-        cucumberField.setText(
-            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.CUCUMBERBV))));
+        cucumberField.setText(String.format("%.1f",
+            MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.CUCUMBERBV))));
         cucumberField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.CUCUMBERBV))));
-        pickleField.setText(
-            String.format("%.1f", MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.PICKLEBV))));
+        pickleField.setText(String.format("%.1f",
+            MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.PICKLEBV))));
         pickleField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
       }
@@ -423,78 +424,260 @@ public class HubController implements DataObserver
     cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
   }
 
-  @Override
-  public void projectionDataReady()
-  {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void averageUpdatedForShift(int shift, double value)
-  {
-    // TODO Auto-generated method stub
-    updateAllFields();
-  }
-
   // ToolBox
+
+  @FXML
+  public void s1Changed()
+  {
+    try
+    {
+      if (!s1.getText().equals(""))
+        data.setSamplingForShift(1, Integer.parseInt(s1.getText()));
+      else
+        data.setSamplingForShift(1, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s2Changed()
+  {
+    try
+    {
+      if (!s2.getText().equals(""))
+        data.setSamplingForShift(2, Integer.parseInt(s2.getText()));
+      else
+        data.setSamplingForShift(2, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s3Changed()
+  {
+    try
+    {
+      if (!s3.getText().equals(""))
+        data.setSamplingForShift(3, Integer.parseInt(s3.getText()));
+      else
+        data.setSamplingForShift(3, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s4Changed()
+  {
+    try
+    {
+      if (!s4.getText().equals(""))
+        data.setSamplingForShift(4, Integer.parseInt(s4.getText()));
+      else
+        data.setSamplingForShift(4, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s5Changed()
+  {
+    try
+    {
+      if (!s5.getText().equals(""))
+        data.setSamplingForShift(5, Integer.parseInt(s5.getText()));
+      else
+        data.setSamplingForShift(5, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s6Changed()
+  {
+    try
+    {
+      if (!s6.getText().equals(""))
+        data.setSamplingForShift(6, Integer.parseInt(s6.getText()));
+      else
+        data.setSamplingForShift(1, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s7Changed()
+  {
+    try
+    {
+      if (!s7.getText().equals(""))
+        data.setSamplingForShift(7, Integer.parseInt(s7.getText()));
+      else
+        data.setSamplingForShift(1, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s8Changed()
+  {
+    try
+    {
+      if (!s8.getText().equals(""))
+        data.setSamplingForShift(8, Integer.parseInt(s8.getText()));
+      else
+        data.setSamplingForShift(1, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s9Changed()
+  {
+    try
+    {
+      if (!s9.getText().equals(""))
+        data.setSamplingForShift(9, Integer.parseInt(s9.getText()));
+      else
+        data.setSamplingForShift(9, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s10Changed()
+  {
+    try
+    {
+      if (!s10.getText().equals(""))
+        data.setSamplingForShift(10, Integer.parseInt(s10.getText()));
+      else
+        data.setSamplingForShift(10, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s11Changed()
+  {
+    try
+    {
+      if (!s11.getText().equals(""))
+        data.setSamplingForShift(11, Integer.parseInt(s11.getText()));
+      else
+        data.setSamplingForShift(11, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s12Changed()
+  {
+    try
+    {
+      if (!s12.getText().equals(""))
+        data.setSamplingForShift(12, Integer.parseInt(s12.getText()));
+      else
+        data.setSamplingForShift(12, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s13Changed()
+  {
+    try
+    {
+      if (!s13.getText().equals(""))
+        data.setSamplingForShift(13, Integer.parseInt(s13.getText()));
+      else
+        data.setSamplingForShift(13, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
+  @FXML
+  public void s14Changed()
+  {
+    try
+    {
+      if (!s14.getText().equals(""))
+        data.setSamplingForShift(14, Integer.parseInt(s14.getText()));
+      else
+        data.setSamplingForShift(14, 0);
+    }
+    catch (NumberFormatException nfe)
+    {
+      ErrorHandler.addError(nfe.toString());
+    }
+  }
+
   //@formatter:off
   @FXML public void c1Changed(){updateAllFields();}
-
-  @FXML public void c2Changed(){updateAllFields();}
-
-  @FXML public void c3Changed(){updateAllFields();}
-
-  @FXML public void c4Changed(){updateAllFields();}
-
-  @FXML public void c5Changed(){updateAllFields();}
-
-  @FXML public void c6Changed(){updateAllFields();}
-
-  @FXML public void c7Changed(){updateAllFields();}
-
-  @FXML public void c8Changed(){updateAllFields();}
-
-  @FXML public void c9Changed(){updateAllFields();}
-
-  @FXML public void c10Changed(){updateAllFields();}
-
-  @FXML public void c11Changed(){updateAllFields();}
-
-  @FXML public void c12Changed(){updateAllFields();}
-
-  @FXML public void c13Changed(){updateAllFields();}
-
-  @FXML public void c14Changed(){updateAllFields();}
-
-  @FXML public void s1Changed(){updateAllFields();}
-
-  @FXML public void s2Changed(){updateAllFields();}
-
-  @FXML public void s3Changed(){updateAllFields();}
-
-  @FXML public void s4Changed(){updateAllFields();}
-
-  @FXML public void s5Changed(){updateAllFields();}
-
-  @FXML public void s6Changed(){updateAllFields();}
-
-  @FXML public void s7Changed(){updateAllFields();}
-
-  @FXML public void s8Changed(){updateAllFields();}
-
-  @FXML public void s9Changed(){updateAllFields();}
-
-  @FXML public void s10Changed(){updateAllFields();}
-
-  @FXML public void s11Changed(){updateAllFields();}
-
-  @FXML public void s12Changed(){updateAllFields();}
-
-  @FXML public void s13Changed(){updateAllFields();}
-
-  @FXML public void s14Changed(){updateAllFields();}
   
+  @FXML public void c2Changed(){updateAllFields();}
+  
+  @FXML public void c3Changed(){updateAllFields();}
+  
+  @FXML public void c4Changed(){updateAllFields();}
+  
+  @FXML public void c5Changed(){updateAllFields();}
+  
+  @FXML public void c6Changed(){updateAllFields();}
+  
+  @FXML public void c7Changed(){updateAllFields();}
+  
+  @FXML public void c8Changed(){updateAllFields();}
+  
+  @FXML public void c9Changed(){updateAllFields();}
+  
+  @FXML public void c10Changed(){updateAllFields();}
+  
+  @FXML public void c11Changed(){updateAllFields();}
+  
+  @FXML public void c12Changed(){updateAllFields();}
+  
+  @FXML public void c13Changed(){updateAllFields();}
+  
+  @FXML public void c14Changed(){updateAllFields();}
   //Settings
   @FXML void amBufferFieldChanged() {updateAllFields();}
 
@@ -520,5 +703,12 @@ public class HubController implements DataObserver
   
   @FXML void pickleBVChanged() {updateAllFields();}
   //@formatter:on
+
+  @Override
+  public void toolBoxDataUpdated()
+  {
+    // TODO Auto-generated method stub
+    updateAllFields();
+  }
 
 }

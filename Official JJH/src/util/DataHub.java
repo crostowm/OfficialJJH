@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import observers.DataObserver;
+import readers.UPKMap;
 import readers.WSRMap;
 
 public class DataHub implements Serializable
@@ -14,6 +15,7 @@ public class DataHub implements Serializable
       STORESC_TIME = 13;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
+  private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
   private ArrayList<Double> averagePlusBuffer = new ArrayList<Double>();
@@ -23,8 +25,8 @@ public class DataHub implements Serializable
   private ArrayList<Double> thawed = new ArrayList<Double>();
   private ArrayList<Double> percentage = new ArrayList<Double>();
   private ArrayList<Double> wheat = new ArrayList<Double>();
-  private WSRMap[] last4WeeksWSR = new WSRMap[4];
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
+  private UPKMap currentUPKMap;
 
   public DataHub()
   {
@@ -65,10 +67,8 @@ public class DataHub implements Serializable
     last4WeeksWSR[week - 1] = wsr;
     if (last4WeeksWSR[0] != null && last4WeeksWSR[1] != null && last4WeeksWSR[2] != null
         && last4WeeksWSR[3] != null)
-      for (DataObserver dato : observers)
-      {
-        dato.projectionDataReady();
-      }
+      ;
+    // All proj ready
   }
 
   /**
@@ -90,12 +90,22 @@ public class DataHub implements Serializable
   public void setAverageForShift(int shift, double value)
   {
     average.set(shift - 1, value);
-    averagePlusBuffer.set(shift - 1,
-        value * (shift % 2 == 0 ? settings.get(PMBUFFER) : settings.get(AMBUFFER)));
+    updateAveragePlusBufferForShift(shift);
+  }
+
+  public void updateAveragePlusBufferForShift(int shift)
+  {
+    averagePlusBuffer.set(shift - 1, average.get(shift - 1)
+        * (shift % 2 == 0 ? settings.get(PMBUFFER) : settings.get(AMBUFFER)));
     updateProjForShift(shift);
-    for (DataObserver dato : observers)
+  }
+
+  public void updateAllAveragePlusBuffer()
+  {
+    for (int ii = 0; ii < 14; ii++)
     {
-      dato.averageUpdatedForShift(shift, value);
+      averagePlusBuffer.set(ii,
+          average.get(ii) * (ii % 2 == 0 ? settings.get(AMBUFFER) : settings.get(PMBUFFER)));
     }
   }
 
@@ -106,35 +116,39 @@ public class DataHub implements Serializable
   {
     int index = shift - 1;
     double proj = averagePlusBuffer.get(index) + catering.get(index) + sampling.get(index);
-    System.out.println(proj);
-    projections.set(index,
-        proj);
+    projections.set(index, proj);
     if (shift % 2 == 1)
     {
-      double pmProj = averagePlusBuffer.get(index + 1) + catering.get(index + 1) + sampling.get(index + 1);
+      double pmProj = averagePlusBuffer.get(index + 1) + catering.get(index + 1)
+          + sampling.get(index + 1);
       thawed.set(index, proj);
       percentage.set(index, proj * settings.get(BAKEDAT11));
-      //wheat
       wheat.set(index, proj + pmProj);
-      //produce
     }
     else
     {
-      double amProj = averagePlusBuffer.get(index - 1) + catering.get(index - 1) + sampling.get(index - 1);
-      thawed.set(index, proj - (proj * settings.get(BAKEDATSC)) - ((1 - settings.get(BAKEDAT11)) * amProj));
+      double amProj = averagePlusBuffer.get(index - 1) + catering.get(index - 1)
+          + sampling.get(index - 1);
+      thawed.set(index, Math.max(0,
+          proj - (proj * settings.get(BAKEDATSC)) - ((1 - settings.get(BAKEDAT11)) * amProj)));
       percentage.set(index, proj * settings.get(BAKEDATSC));
+    }
+    for (DataObserver dato : observers)
+    {
+      dato.toolBoxDataUpdated();
     }
   }
 
   public double getThawedDataForShift(int shift)
   {
-    return thawed.get(shift-1);
+    return thawed.get(shift - 1);
   }
-  
+
   public double getThawedDataForIndex(int index)
   {
     return thawed.get(index);
   }
+
   public void addCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.add(cateringOrder);
@@ -196,5 +210,16 @@ public class DataHub implements Serializable
   public double getAveragePlusBufferData(int ii)
   {
     return averagePlusBuffer.get(ii);
+  }
+
+  public void setSamplingForShift(int shift, int val)
+  {
+    sampling.set(shift - 1, val);
+    updateProjForShift(shift);
+  }
+
+  public void setCurrentUPKMap(UPKMap upkMap)
+  {
+    this.currentUPKMap = upkMap;
   }
 }
