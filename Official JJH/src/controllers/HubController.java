@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import observers.DataObserver;
+import readers.UPKMap;
 import util.CateringOrder;
 import util.DataHub;
 import util.JimmyCalendarUtil;
@@ -69,6 +70,13 @@ public class HubController implements DataObserver
 
   @FXML
   private Button addCateringButton;
+
+  // Slicing Pars
+  @FXML
+  private TextField cheeseMSCField, hamMSCField, turkeyMSCField, beefMSCField, vitoMSCField,
+      cheeseGECField, hamGECField, turkeyGECField, beefGECField, vitoGECField, cheeseMSNField,
+      hamMSNField, turkeyMSNField, beefMSNField, vitoMSNField, cheeseGENField, hamGENField,
+      turkeyGENField, beefGENField, vitoGENField;
 
   // Catering
   @FXML
@@ -326,6 +334,28 @@ public class HubController implements DataObserver
             MathUtil.ceilHalf(produceProj / data.getSetting(DataHub.PICKLEBV))));
         pickleField.setTooltip(
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
+        
+        //Slicing Pars
+        cheeseMSCField.setText(data.getSlicingPars("Cheese", "msc", currentShift) + "");
+        cheeseGECField.setText(data.getSlicingPars("Cheese", "gec", currentShift) + "");
+        cheeseMSNField.setText(data.getSlicingPars("Cheese", "msn", currentShift) + "");
+        cheeseGENField.setText(data.getSlicingPars("Cheese", "gen", currentShift) + "");
+        hamMSCField.setText(data.getSlicingPars("Ham", "msc", currentShift) + "");
+        hamGECField.setText(data.getSlicingPars("Ham", "gec", currentShift) + "");
+        hamMSNField.setText(data.getSlicingPars("Ham", "msn", currentShift) + "");
+        hamGENField.setText(data.getSlicingPars("Ham", "gen", currentShift) + "");
+        turkeyMSCField.setText(data.getSlicingPars("Turkey", "msc", currentShift) + "");
+        turkeyGECField.setText(data.getSlicingPars("Turkey", "gec", currentShift) + "");
+        turkeyMSNField.setText(data.getSlicingPars("Turkey", "msn", currentShift) + "");
+        turkeyGENField.setText(data.getSlicingPars("Turkey", "gen", currentShift) + "");
+        beefMSCField.setText(data.getSlicingPars("Beef", "msc", currentShift) + "");
+        beefGECField.setText(data.getSlicingPars("Beef", "gec", currentShift) + "");
+        beefMSNField.setText(data.getSlicingPars("Beef", "msn", currentShift) + "");
+        beefGENField.setText(data.getSlicingPars("Beef", "gen", currentShift) + "");
+        vitoMSCField.setText((data.getSlicingPars("Salami", "msc", currentShift) + data.getSlicingPars("Capicola", "msc", currentShift)) + "");
+        vitoGECField.setText((data.getSlicingPars("Salami", "gec", currentShift) + data.getSlicingPars("Capicola", "gec", currentShift)) + "");
+        vitoMSNField.setText((data.getSlicingPars("Salami", "msn", currentShift) + data.getSlicingPars("Capicola", "msn", currentShift)) + "");
+        vitoGENField.setText((data.getSlicingPars("Salami", "gen", currentShift) + data.getSlicingPars("Capicola", "gen", currentShift)) + "");
       }
       catch (NumberFormatException nfe)
       {

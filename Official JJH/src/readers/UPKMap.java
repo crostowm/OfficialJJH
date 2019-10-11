@@ -130,4 +130,9 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
   {
     return adjustedSales;
   }
+  
+  public double getData(int category, String name, int dataType)
+  {
+    return get(category).get(name).get(dataType);
+  }
 }

@@ -44,15 +44,17 @@ public class MainApplication extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
-    Runtime.getRuntime().addShutdownHook(new Thread() {
+    /*Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {
         ErrorHandler.writeErrors();
           System.out.println("System was shutdown");
       }
-  });
+  });*/
     readInDataHub();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
+    rf.uploadWSRToDataHub();
+    rf.uploadUPKToDataHub();
     // ReportGrabber rg = new ReportGrabber();
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
@@ -77,6 +79,7 @@ public class MainApplication extends Application
      */
     for (int ii = 1; ii < 15; ii++)
     {
+      System.out.println(dataHub.getProjectionWSR(1));
       System.out.println(dataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
           + dataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
           + dataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "

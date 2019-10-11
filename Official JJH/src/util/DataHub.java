@@ -27,6 +27,7 @@ public class DataHub implements Serializable
   private ArrayList<Double> wheat = new ArrayList<Double>();
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
   private UPKMap currentUPKMap;
+  private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
 
   public DataHub()
   {
@@ -40,6 +41,13 @@ public class DataHub implements Serializable
       thawed.add(0.0);
       percentage.add(0.0);
       wheat.add(0.0);
+      slicingPars.add(new HashMap<String, HashMap<String, Double>>());
+      slicingPars.get(ii).put("Cheese", new HashMap<String, Double>());
+      slicingPars.get(ii).put("Ham", new HashMap<String, Double>());
+      slicingPars.get(ii).put("Turkey", new HashMap<String, Double>());
+      slicingPars.get(ii).put("Beef", new HashMap<String, Double>());
+      slicingPars.get(ii).put("Salami", new HashMap<String, Double>());
+      slicingPars.get(ii).put("Capicola", new HashMap<String, Double>());
     }
 
     settings.put(AMBUFFER, 1.2);
@@ -55,6 +63,7 @@ public class DataHub implements Serializable
     settings.put(CUCUMBERBV, 2200.0);
     settings.put(PICKLEBV, 1200.0);
     settings.put(STORESC_TIME, 15.0);
+
   }
 
   /**
@@ -133,10 +142,43 @@ public class DataHub implements Serializable
           proj - (proj * settings.get(BAKEDATSC)) - ((1 - settings.get(BAKEDAT11)) * amProj)));
       percentage.set(index, proj * settings.get(BAKEDATSC));
     }
+    // Slicing Pars
+    updateSlicingPars(index, "Cheese");
+    updateSlicingPars(index, "Ham");
+    updateSlicingPars(index, "Turkey");
+    updateSlicingPars(index, "Beef");
+    updateSlicingPars(index, "Salami");
+    updateSlicingPars(index, "Capicola");
     for (DataObserver dato : observers)
     {
       dato.toolBoxDataUpdated();
     }
+  }
+
+  private void updateSlicingPars(int index, String name)
+  {
+    System.out.println("Updating s pars for shift" + (index+1));
+    int nextShiftIndex = index + 1 >= 14 ? index - 13 : index + 1;
+    int nextNextShiftIndex = index + 2 >= 14 ? index - 12 : index + 2;
+    int nextNextNextShiftIndex = index + 3 >= 14 ? index - 11 : index + 3;
+    // TODO Auto-generated method stub
+    slicingPars.get(index).get(name).put("msc",
+        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
+            / 1000) / 3.307);
+    slicingPars.get(index).get(name).put("gec",
+        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+            * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
+            / 3.307);
+    System.out.println("gec" + ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+            * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
+            / 3.307);
+    slicingPars.get(index).get(name).put("msn",
+        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+            * projections.get(nextShiftIndex)) / 1000) / 3.307);
+    slicingPars.get(index).get(name).put("gen",
+        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+            * (projections.get(nextNextShiftIndex) + projections.get(nextNextNextShiftIndex)))
+            / 1000) / 3.307);
   }
 
   public double getThawedDataForShift(int shift)
@@ -221,5 +263,16 @@ public class DataHub implements Serializable
   public void setCurrentUPKMap(UPKMap upkMap)
   {
     this.currentUPKMap = upkMap;
+  }
+
+  public UPKMap getCurrentUPKMap()
+  {
+    return currentUPKMap;
+  }
+  
+  public double getSlicingPars(String food, String dataType, int shift)
+  {
+    int index = shift - 1;
+    return slicingPars.get(index).get(food).get(dataType);
   }
 }

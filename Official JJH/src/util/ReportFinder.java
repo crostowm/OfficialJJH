@@ -17,7 +17,7 @@ public class ReportFinder
     this.directory = directory;
   }
 
-  public void uploadWSR()
+  public void uploadWSRToDataHub()
   {
     ArrayList<File> fs = findLatestDuplicates(getAllWSRFiles(directory), 4);
     for (int ii = 0; ii < 4; ii++)
@@ -26,7 +26,7 @@ public class ReportFinder
     }
   }
   
-  public void uploadUPK()
+  public void uploadUPKToDataHub()
   {
     ArrayList<File> fs = findLatestDuplicates(getAllUPKFiles(directory), 1);
     MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(0)));
