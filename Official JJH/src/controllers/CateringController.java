@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import util.CateringOrder;
 import util.JimmyCalendarUtil;
@@ -24,6 +25,9 @@ public class CateringController
   
   @FXML
   private TextField dollarField, numSticksField;
+  
+  @FXML
+  private TextArea infoArea;
 
   @FXML
   private Button addButton;
@@ -60,7 +64,7 @@ public class CateringController
       hours.add(ii);
     }
     hourChoice.setItems(FXCollections.observableArrayList(hours));
-    hourChoice.setValue(12);
+    hourChoice.setValue(10);
     
     ArrayList<Integer> minutes = new ArrayList<Integer>();
     for(int ii = 0; ii < 60; ii+=5)
@@ -74,7 +78,7 @@ public class CateringController
     ampm.add("AM");
     ampm.add("PM");
     ampmChoice.setItems(FXCollections.observableArrayList(ampm));
-    ampmChoice.setValue("PM");
+    ampmChoice.setValue("AM");
   }
   
   @FXML
@@ -92,7 +96,7 @@ public class CateringController
       if(numSticksField.getText().length() > 0)
         numSticks = Integer.parseInt(numSticksField.getText());
       
-      MainApplication.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks));
+      MainApplication.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks, infoArea.getText()));
     }
     catch (NumberFormatException e)
     {

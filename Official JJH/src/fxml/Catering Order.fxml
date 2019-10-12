@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,9 +12,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CateringController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CateringController">
    <children>
       <GridPane alignment="CENTER" hgap="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <columnConstraints>
@@ -21,21 +22,30 @@
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <HBox alignment="CENTER" spacing="5.0" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <children>
                   <Label text="Month" />
-                  <ChoiceBox fx:id="monthChoice" />
+                  <ChoiceBox fx:id="monthChoice">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></ChoiceBox>
                   <Label text="Day" />
-                  <ChoiceBox fx:id="dayChoice" HBox.hgrow="NEVER" />
+                  <ChoiceBox fx:id="dayChoice" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></ChoiceBox>
                   <Label text="Year" />
                   <ChoiceBox fx:id="yearChoice" />
                </children>
@@ -44,22 +54,25 @@
             <HBox alignment="CENTER" spacing="5.0" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <children>
                   <Label text="Hour" />
-                  <ChoiceBox fx:id="hourChoice" />
+                  <ChoiceBox fx:id="hourChoice">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin></ChoiceBox>
                   <Label alignment="CENTER_RIGHT" text="Minute" />
-                  <ChoiceBox fx:id="minuteChoice" />
+                  <ChoiceBox fx:id="minuteChoice">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></ChoiceBox>
                   <ChoiceBox fx:id="ampmChoice" />
                </children>
             </HBox>
             <Label text="Dollar Value" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <TextField fx:id="dollarField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addButtonPressed" text="Add" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addButtonPressed" text="Add" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <TextField fx:id="numSticksField" prefWidth="40.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <children>
-                  <Label alignment="CENTER" text="Number of Sticks" />
-                  <Label alignment="CENTER" text="(Optional)" />
-               </children>
-            </VBox>
+            <Label text="Additional Info" GridPane.rowIndex="4" />
+            <TextArea fx:id="infoArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="5" />
+            <Label alignment="CENTER" text="Number of Sticks" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

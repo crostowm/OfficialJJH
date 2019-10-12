@@ -2,8 +2,10 @@ package util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import bread.BreadRequest;
 import observers.DataObserver;
 import readers.UPKMap;
 import readers.WSRMap;
@@ -16,6 +18,7 @@ public class DataHub implements Serializable
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
+  private transient ArrayList<BreadRequest> breadRequests = new ArrayList<BreadRequest>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
   private ArrayList<Double> averagePlusBuffer = new ArrayList<Double>();
@@ -143,33 +146,30 @@ public class DataHub implements Serializable
       percentage.set(index, proj * settings.get(BAKEDATSC));
     }
     // Slicing Pars
-    updateSlicingPars(index, "Cheese");
-    updateSlicingPars(index, "Ham");
-    updateSlicingPars(index, "Turkey");
-    updateSlicingPars(index, "Beef");
-    updateSlicingPars(index, "Salami");
-    updateSlicingPars(index, "Capicola");
+    updateAllSlicingPars("Cheese");
+    updateAllSlicingPars("Ham");
+    updateAllSlicingPars("Turkey");
+    updateAllSlicingPars("Beef");
+    updateAllSlicingPars("Salami");
+    updateAllSlicingPars("Capicola");
     for (DataObserver dato : observers)
     {
       dato.toolBoxDataUpdated();
     }
   }
 
-  private void updateSlicingPars(int index, String name)
+  private void updateAllSlicingPars(String name)
   {
-    System.out.println("Updating s pars for shift" + (index+1));
+    for(int index = 0; index < 14; index++)
+    {
     int nextShiftIndex = index + 1 >= 14 ? index - 13 : index + 1;
     int nextNextShiftIndex = index + 2 >= 14 ? index - 12 : index + 2;
     int nextNextNextShiftIndex = index + 3 >= 14 ? index - 11 : index + 3;
-    // TODO Auto-generated method stub
     slicingPars.get(index).get(name).put("msc",
         ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
             / 1000) / 3.307);
     slicingPars.get(index).get(name).put("gec",
         ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-            * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
-            / 3.307);
-    System.out.println("gec" + ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
             * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
             / 3.307);
     slicingPars.get(index).get(name).put("msn",
@@ -179,6 +179,7 @@ public class DataHub implements Serializable
         ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
             * (projections.get(nextNextShiftIndex) + projections.get(nextNextNextShiftIndex)))
             / 1000) / 3.307);
+    }
   }
 
   public double getThawedDataForShift(int shift)
@@ -194,6 +195,11 @@ public class DataHub implements Serializable
   public void addCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.add(cateringOrder);
+    if(JimmyCalendarUtil.isInCurrentWeek(new GregorianCalendar(), cateringOrder.getTime()))
+    {
+      catering.add(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(), settings.get(DataHub.STORESC_TIME).intValue()) - 1, cateringOrder.getDollarValue());
+      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(), settings.get(DataHub.STORESC_TIME).intValue()));
+    }
     for (DataObserver dato : observers)
     {
       dato.cateringOrderAdded(cateringOrder);
@@ -203,6 +209,14 @@ public class DataHub implements Serializable
   public void removeCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.remove(cateringOrder);
+    //TODO Check for a better way to do this
+    Double eq = Double.valueOf(0);
+    for(Double d: catering)
+    {
+      if(d.equals(cateringOrder.getDollarValue()))
+        eq = d;
+    }
+    catering.remove(eq);
     for (DataObserver dato : observers)
     {
       dato.cateringOrderRemoved(cateringOrder);
