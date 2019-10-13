@@ -86,4 +86,9 @@ public class CateringOrder implements Serializable
   {
     this.numBreadSticks = numBreadSticks;
   }
+  
+  public String getDetails()
+  {
+    return details;
+  }
 }

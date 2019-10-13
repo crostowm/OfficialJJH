@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-import bread.BreadRequest;
 import observers.DataObserver;
 import readers.UPKMap;
 import readers.WSRMap;
@@ -18,7 +17,6 @@ public class DataHub implements Serializable
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
-  private transient ArrayList<BreadRequest> breadRequests = new ArrayList<BreadRequest>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
   private ArrayList<Double> averagePlusBuffer = new ArrayList<Double>();

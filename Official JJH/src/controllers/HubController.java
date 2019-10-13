@@ -9,6 +9,8 @@ import app.CateringApplication;
 import app.MainApplication;
 import error_handling.ErrorHandler;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +18,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import observers.DataObserver;
@@ -72,16 +78,29 @@ public class HubController implements DataObserver
   @FXML
   private Button addCateringButton;
 
+  // Order Guide
+  @FXML
+  private ChoiceBox<String> orderGuideCategoryChoice = new ChoiceBox<String>();
+
+  // Catering
+  @FXML
+  private ChoiceBox<CateringOrder> cateringChoiceBox;
+  
+  @FXML
+  private Spinner<Integer> blSpinner;
+  
+  @FXML
+  private TextField blBoxField;
+  
+  @FXML
+  private TextArea cateringOrderDetailsArea;
+
   // Slicing Pars
   @FXML
   private TextField cheeseMSCField, hamMSCField, turkeyMSCField, beefMSCField, vitoMSCField,
       cheeseGECField, hamGECField, turkeyGECField, beefGECField, vitoGECField, cheeseMSNField,
       hamMSNField, turkeyMSNField, beefMSNField, vitoMSNField, cheeseGENField, hamGENField,
       turkeyGENField, beefGENField, vitoGENField;
-
-  // Catering
-  @FXML
-  private ChoiceBox<CateringOrder> cateringChoiceBox;
 
   // Settings
   @FXML
@@ -219,14 +238,29 @@ public class HubController implements DataObserver
     wheatFields.add(w13);
     wheatFields.add(w14);
     updateAllFields();
-    
+
+    //Catering
     cateringChoiceBox.setOnAction(new EventHandler<ActionEvent>()
     {
-      
+
       @Override
       public void handle(ActionEvent arg0)
       {
-        
+        if (cateringChoiceBox.getValue() != null)
+        {
+          cateringOrderDetailsArea.setText(cateringChoiceBox.getValue().getDetails());
+        }
+
+      }
+    });
+    SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500, 0);
+    blSpinner.setValueFactory(valueFactory);
+    blSpinner.valueProperty().addListener(new ChangeListener<Integer>()
+    {
+      @Override
+      public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
+      {
+        blBoxField.setText(newVal + "");
       }
     });
   }
@@ -347,22 +381,38 @@ public class HubController implements DataObserver
             new Tooltip(String.format("%.2f", produceProj / data.getSetting(DataHub.PICKLEBV))));
 
         // Slicing Pars
-        cheeseMSCField.setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "msc", currentShift)) + "");
-        cheeseGECField.setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "gec", currentShift)) + "");
-        cheeseMSNField.setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "msn", currentShift)) + "");
-        cheeseGENField.setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "gen", currentShift)) + "");
-        hamMSCField.setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "msc", currentShift)) + "");
-        hamGECField.setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "gec", currentShift)) + "");
-        hamMSNField.setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "msn", currentShift)) + "");
-        hamGENField.setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "gen", currentShift)) + "");
-        turkeyMSCField.setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "msc", currentShift)) + "");
-        turkeyGECField.setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "gec", currentShift)) + "");
-        turkeyMSNField.setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "msn", currentShift)) + "");
-        turkeyGENField.setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "gen", currentShift)) + "");
-        beefMSCField.setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "msc", currentShift)) + "");
-        beefGECField.setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "gec", currentShift)) + "");
-        beefMSNField.setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "msn", currentShift)) + "");
-        beefGENField.setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "gen", currentShift)) + "");
+        cheeseMSCField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "msc", currentShift)) + "");
+        cheeseGECField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "gec", currentShift)) + "");
+        cheeseMSNField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "msn", currentShift)) + "");
+        cheeseGENField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Cheese", "gen", currentShift)) + "");
+        hamMSCField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "msc", currentShift)) + "");
+        hamGECField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "gec", currentShift)) + "");
+        hamMSNField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "msn", currentShift)) + "");
+        hamGENField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Ham", "gen", currentShift)) + "");
+        turkeyMSCField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "msc", currentShift)) + "");
+        turkeyGECField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "gec", currentShift)) + "");
+        turkeyMSNField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "msn", currentShift)) + "");
+        turkeyGENField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Turkey", "gen", currentShift)) + "");
+        beefMSCField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "msc", currentShift)) + "");
+        beefGECField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "gec", currentShift)) + "");
+        beefMSNField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "msn", currentShift)) + "");
+        beefGENField
+            .setText(MathUtil.ceilHalf(data.getSlicingPars("Beef", "gen", currentShift)) + "");
         vitoMSCField.setText((MathUtil.ceilHalf(data.getSlicingPars("Salami", "msc", currentShift)
             + data.getSlicingPars("Capicola", "msc", currentShift))) + "");
         vitoGECField.setText((MathUtil.ceilHalf(data.getSlicingPars("Salami", "gec", currentShift)
@@ -454,7 +504,7 @@ public class HubController implements DataObserver
     {
       double currentCat = 0;
       int cateringShiftNum = JimmyCalendarUtil.getShiftNumber(co.getTime(), storeSCTime);
-      //Have catering list update in datahub call to update all fields then have these update there 
+      // Have catering list update in datahub call to update all fields then have these update there
       if (cateringFields.get(cateringShiftNum - 1).getText().length() > 0)
         currentCat = Double.parseDouble(cateringFields.get(cateringShiftNum - 1).getText());
       cateringFields.get(cateringShiftNum - 1).setText(currentCat + co.getDollarValue() + "");
@@ -470,8 +520,8 @@ public class HubController implements DataObserver
     cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
   }
 
-  //TODO if you highlight an entire sampling field and backspace it will not update
-  
+  // TODO if you highlight an entire sampling field and backspace it will not update
+
   // ToolBox
   @FXML
   public void s1Changed()
@@ -725,32 +775,165 @@ public class HubController implements DataObserver
   @FXML public void c13Changed(){updateAllFields();}
   
   @FXML public void c14Changed(){updateAllFields();}
-  //Settings
-  //TODO needs to update setting in datahub
-  @FXML void amBufferFieldChanged() {updateAllFields();}
-
-  @FXML void pmBufferFieldChanged() {updateAllFields();}
-
-  @FXML void btvFieldChanged() {updateAllFields();}
-  
-  @FXML void b9tvFieldChanged() {updateAllFields();}
-  
-  @FXML void wlvFieldChanged() {updateAllFields();}
-
-  @FXML void bakedAt11FieldChanged() {updateAllFields();}
-
-  @FXML void bakedAtSCFieldChanged() {updateAllFields();}
-
-  @FXML void lettuceBVChanged() {updateAllFields();}
-  
-  @FXML void tomatoBVChanged() {updateAllFields();}
-  
-  @FXML void onionBVChanged() {updateAllFields();}
-  
-  @FXML void cucumberBVChanged() {updateAllFields();}
-  
-  @FXML void pickleBVChanged() {updateAllFields();}
   //@formatter:on
+
+  // Settings
+  // TODO needs to update setting in datahub
+  @FXML
+  void amBufferFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.AMBUFFER, Double.parseDouble(amBufferField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void pmBufferFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.PMBUFFER, Double.parseDouble(pmBufferField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void btvFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void b9tvFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void wlvFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void bakedAt11FieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.BAKEDAT11, Double.parseDouble(bakedAt11Field.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void bakedAtSCFieldChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.BAKEDATSC, Double.parseDouble(bakedAtSCField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void lettuceBVChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.LETTUCEBV, Double.parseDouble(lettuceBVField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void tomatoBVChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.TOMATOBV, Double.parseDouble(tomatoBVField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void onionBVChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.ONIONBV, Double.parseDouble(onionBVField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void cucumberBVChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.CUCUMBERBV, Double.parseDouble(cucumberBVField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
+
+  @FXML
+  void pickleBVChanged()
+  {
+    try
+    {
+      data.changeSetting(DataHub.PICKLEBV, Double.parseDouble(pickleBVField.getText()));
+    }
+    catch (NumberFormatException nfe)
+    {
+      System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+    }
+  }
 
   @Override
   public void toolBoxDataUpdated()
