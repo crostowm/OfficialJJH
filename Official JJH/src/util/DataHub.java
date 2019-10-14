@@ -275,6 +275,10 @@ public class DataHub implements Serializable
   public void setCurrentUPKMap(UPKMap upkMap)
   {
     this.currentUPKMap = upkMap;
+    for(DataObserver dato: observers)
+    {
+      dato.upkSet();
+    }
   }
 
   public UPKMap getCurrentUPKMap()

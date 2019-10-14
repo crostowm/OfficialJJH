@@ -8,6 +8,8 @@ import java.util.GregorianCalendar;
 import app.CateringApplication;
 import app.MainApplication;
 import error_handling.ErrorHandler;
+import gui.GuiUtilFactory;
+import gui.UsageAnalysisHBox;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,12 +20,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.VBox;
 import observers.DataObserver;
 import util.CateringOrder;
 import util.DataHub;
@@ -85,13 +87,13 @@ public class HubController implements DataObserver
   // Catering
   @FXML
   private ChoiceBox<CateringOrder> cateringChoiceBox;
-  
+
   @FXML
   private Spinner<Integer> blSpinner;
-  
+
   @FXML
-  private TextField blBoxField;
-  
+  private TextField blBoxField, blBagField;
+
   @FXML
   private TextArea cateringOrderDetailsArea;
 
@@ -101,6 +103,13 @@ public class HubController implements DataObserver
       cheeseGECField, hamGECField, turkeyGECField, beefGECField, vitoGECField, cheeseMSNField,
       hamMSNField, turkeyMSNField, beefMSNField, vitoMSNField, cheeseGENField, hamGENField,
       turkeyGENField, beefGENField, vitoGENField;
+
+  // Usage Analysis
+  @FXML
+  private ChoiceBox<String> usageAnalysisCategoryChoice;
+
+  @FXML
+  private VBox usageAnalysisVBox;
 
   // Settings
   @FXML
@@ -239,7 +248,32 @@ public class HubController implements DataObserver
     wheatFields.add(w14);
     updateAllFields();
 
-    //Catering
+    // Order Guide
+    ArrayList<String> categories = new ArrayList<String>();
+    categories.add("Bread");
+    categories.add("Food");
+    categories.add("Sides");
+    categories.add("Paper");
+    categories.add("Produce");
+    categories.add("Beverage");
+    categories.add("Catering");
+    orderGuideCategoryChoice.setItems(FXCollections.observableArrayList(categories));
+
+    // Catering
+    SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+        0, 500, 0);
+    blSpinner.setValueFactory(valueFactory);
+
+    blSpinner.valueProperty().addListener(new ChangeListener<Integer>()
+    {
+      @Override
+      public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
+      {
+        blBoxField.setText(newVal + "");
+        blBagField.setText((Math.ceil(newVal.doubleValue() / 10)) + "");
+      }
+    });
+
     cateringChoiceBox.setOnAction(new EventHandler<ActionEvent>()
     {
 
@@ -249,20 +283,60 @@ public class HubController implements DataObserver
         if (cateringChoiceBox.getValue() != null)
         {
           cateringOrderDetailsArea.setText(cateringChoiceBox.getValue().getDetails());
+          blBoxField.setText("");
+          blBagField.setText("");
+          valueFactory.setValue(0);
         }
 
       }
     });
-    SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500, 0);
-    blSpinner.setValueFactory(valueFactory);
-    blSpinner.valueProperty().addListener(new ChangeListener<Integer>()
+
+    // Usage Analysis
+    usageAnalysisCategoryChoice.setItems(FXCollections.observableArrayList(categories));
+    usageAnalysisCategoryChoice.setOnAction(new EventHandler<ActionEvent>()
     {
+
       @Override
-      public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
+      public void handle(ActionEvent arg0)
       {
-        blBoxField.setText(newVal + "");
+        if (usageAnalysisCategoryChoice.getValue() != null)
+        {
+          usageAnalysisVBox.getChildren().clear();
+          usageAnalysisVBox.getChildren().add(GuiUtilFactory.createUsageAnalysisHBoxTitle());
+          int category = -1;
+          switch(usageAnalysisCategoryChoice.getValue())
+          {
+            case "Bread":
+              category = 1;
+              break;
+            case "Food":
+              category = 2;
+              break;
+            case "Sides":
+              category = 3;
+              break;
+            case "Paper":
+              category = 4;
+              break;
+            case "Produce":
+              category = 5;
+              break;
+            case "Beverage":
+              category = 6;
+              break;
+            case "Catering":
+              category = 7;
+              break;
+          }
+          for(String name: data.getCurrentUPKMap().get(category).keySet())
+          {
+            if(!name.equals("COGs"))
+            usageAnalysisVBox.getChildren().add(new UsageAnalysisHBox(name, data.getCurrentUPKMap().get(category).get(name)));
+          }
+        }
       }
     });
+
   }
 
   /**
@@ -940,6 +1014,13 @@ public class HubController implements DataObserver
   {
     // TODO Auto-generated method stub
     updateAllFields();
+  }
+
+  @Override
+  public void upkSet()
+  {
+    // TODO Auto-generated method stub
+
   }
 
 }

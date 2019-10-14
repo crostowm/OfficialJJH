@@ -29,43 +29,48 @@ public class ReportFinder
   public void uploadUPKToDataHub()
   {
     ArrayList<File> fs = findLatestDuplicates(getAllUPKFiles(directory), 1);
-    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(0)));
+    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size()-1)));
   }
   
 
-  private ArrayList<File> findLatestDuplicates(File[] allWSRFiles, int i)
+  /**
+   * @param allFiles
+   * @param i
+   * @return Highest index = newest
+   */
+  private ArrayList<File> findLatestDuplicates(File[] allFiles, int i)
   {
-    ArrayList<File> wsrFiles = new ArrayList<File>();
-    for (File f : allWSRFiles)
+    ArrayList<File> latestFiles = new ArrayList<File>();
+    for (File f : allFiles)
     {
       int highestIndex = -1;
-      if (wsrFiles.size() == 0)
-        wsrFiles.add(f);
+      if (latestFiles.size() == 0)
+        latestFiles.add(f);
       else
       {
-        for (int ii = 0; ii < wsrFiles.size(); ii++)
+        for (int ii = 0; ii < latestFiles.size(); ii++)
         {
-          if (getDupVal(f) > getDupVal(wsrFiles.get(ii)))
+          if (getDupVal(f) > getDupVal(latestFiles.get(ii)))
           {
             if (ii > highestIndex)
               highestIndex = ii;
           }
         }
-        if (wsrFiles.size() < 4 && highestIndex == -1)
+        if (latestFiles.size() < 4 && highestIndex == -1)
         {
-          wsrFiles.add(0, f);
+          latestFiles.add(0, f);
         }
         else if (highestIndex >= 0)
         {
-          wsrFiles.add(highestIndex, f);
-          if (wsrFiles.size() > 4)
+          latestFiles.add(highestIndex, f);
+          if (latestFiles.size() > 4)
           {
-            wsrFiles.remove(0);
+            latestFiles.remove(0);
           }
         }
       }
     }
-    return wsrFiles;
+    return latestFiles;
   }
 
   private int getDupVal(File f)
