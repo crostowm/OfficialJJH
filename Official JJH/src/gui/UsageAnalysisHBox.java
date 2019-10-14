@@ -11,9 +11,9 @@ import readers.UPKMap;
 public class UsageAnalysisHBox extends UPKHBox
 {
 
-  public UsageAnalysisHBox(String n, HashMap<Integer, Double> data)
+  public UsageAnalysisHBox(int category, String n, HashMap<Integer, Double> data)
   {
-    super(n, data);
+    super(category, n, data);
     setSpacing(10);
     Label name = new Label(n);
     name.setPrefWidth(200);

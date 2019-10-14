@@ -28,6 +28,7 @@ public class DataHub implements Serializable
   private ArrayList<Double> wheat = new ArrayList<Double>();
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
   private UPKMap currentUPKMap;
+  private ArrayList<UPKMap> past5UPKMaps;
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
 
   public DataHub()
@@ -290,5 +291,16 @@ public class DataHub implements Serializable
   {
     int index = shift - 1;
     return slicingPars.get(index).get(food).get(dataType);
+  }
+
+  
+  public void setPast5UPKMaps(ArrayList<UPKMap> past5UPKMaps)
+  {
+    this.past5UPKMaps = past5UPKMaps;
+  }
+  
+  public ArrayList<UPKMap> getPast5UPKMaps()
+  {
+    return past5UPKMaps;
   }
 }

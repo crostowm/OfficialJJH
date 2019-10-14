@@ -28,17 +28,24 @@ public class ReportFinder
   
   public void uploadUPKToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllUPKFiles(directory), 1);
+    ArrayList<File> fs = findLatestDuplicates(getAllUPKFiles(directory), 6);
+    System.out.println(fs.size() + " SIZZEE");
     MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size()-1)));
+    ArrayList<UPKMap> past5UPKMaps = new ArrayList<UPKMap>();
+    for(int ii = 0; ii < fs.size()-1; ii++)
+    {
+      past5UPKMaps.add(new UPKMap(fs.get(ii)));
+    }
+    MainApplication.dataHub.setPast5UPKMaps(past5UPKMaps);
   }
   
 
   /**
    * @param allFiles
-   * @param i
+   * @param numFiles
    * @return Highest index = newest
    */
-  private ArrayList<File> findLatestDuplicates(File[] allFiles, int i)
+  private ArrayList<File> findLatestDuplicates(File[] allFiles, int numFiles)
   {
     ArrayList<File> latestFiles = new ArrayList<File>();
     for (File f : allFiles)
@@ -56,14 +63,14 @@ public class ReportFinder
               highestIndex = ii;
           }
         }
-        if (latestFiles.size() < 4 && highestIndex == -1)
+        if (latestFiles.size() < numFiles && highestIndex == -1)
         {
           latestFiles.add(0, f);
         }
         else if (highestIndex >= 0)
         {
           latestFiles.add(highestIndex, f);
-          if (latestFiles.size() > 4)
+          if (latestFiles.size() > numFiles)
           {
             latestFiles.remove(0);
           }
@@ -87,13 +94,15 @@ public class ReportFinder
   private File[] getAllUPKFiles(String directory2)
   {
     File f = new File(directory);
-    return f.listFiles(new FilenameFilter()
+    File[] files = f.listFiles(new FilenameFilter()
     {
       public boolean accept(File dir, String name)
       {
         return name.startsWith("UPK Expected Usage Report") && name.endsWith("csv");
       }
     });
+    System.out.println(files.length + " LENGTTHHH");
+    return files;
   }
   
   public File[] getAllWSRFiles(String directory)

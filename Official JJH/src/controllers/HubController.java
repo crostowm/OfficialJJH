@@ -20,11 +20,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
 import util.CateringOrder;
@@ -110,6 +112,9 @@ public class HubController implements DataObserver
 
   @FXML
   private VBox usageAnalysisVBox;
+  
+  @FXML
+  private ScrollPane usageAnalysisGraphPane;
 
   // Settings
   @FXML
@@ -304,7 +309,7 @@ public class HubController implements DataObserver
           usageAnalysisVBox.getChildren().clear();
           usageAnalysisVBox.getChildren().add(GuiUtilFactory.createUsageAnalysisHBoxTitle());
           int category = -1;
-          switch(usageAnalysisCategoryChoice.getValue())
+          switch (usageAnalysisCategoryChoice.getValue())
           {
             case "Bread":
               category = 1;
@@ -328,10 +333,29 @@ public class HubController implements DataObserver
               category = 7;
               break;
           }
-          for(String name: data.getCurrentUPKMap().get(category).keySet())
+          for (String name : data.getCurrentUPKMap().get(category).keySet())
           {
-            if(!name.equals("COGs"))
-            usageAnalysisVBox.getChildren().add(new UsageAnalysisHBox(name, data.getCurrentUPKMap().get(category).get(name)));
+            if (!name.equals("COGs"))
+            {
+              UsageAnalysisHBox uah = new UsageAnalysisHBox(category, name,
+                  data.getCurrentUPKMap().get(category).get(name));
+              uah.setOnMouseClicked(new EventHandler<MouseEvent>()
+              {
+
+                @Override
+                public void handle(MouseEvent arg0)
+                {
+                  displayUsageAnalysisGraphFor(uah);
+                }
+                private void displayUsageAnalysisGraphFor(UsageAnalysisHBox uah)
+                {
+                  // TODO Auto-generated method stub
+                  usageAnalysisGraphPane.setContent(GuiUtilFactory.createLineChart(uah, data.getPast5UPKMaps(), JimmyCalendarUtil.getWeekNumber(currentTimeAndDate)));
+                }
+                
+              });
+              usageAnalysisVBox.getChildren().add(uah);
+            }
           }
         }
       }
