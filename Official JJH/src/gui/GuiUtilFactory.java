@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -74,52 +75,40 @@ public class GuiUtilFactory
     return box;
   }
 
-  public static LineChart<Number, Number> createLineChart(UsageAnalysisHBox uah,
-      ArrayList<UPKMap> arrayList, int currentWeekNumber)
+  public static LineChart<Number, Number> createUsageAnalysisLineChart(UsageAnalysisHBox uah, int currentWeekNumber)
   {
+    //TODO show adj sales
     // defining the axes
     final NumberAxis xAxis = new NumberAxis(currentWeekNumber - 6, currentWeekNumber - 1, 1);
     final NumberAxis yAxis = new NumberAxis();
+    yAxis.setForceZeroInRange(false);
     xAxis.setLabel("Week Number");
     // creating the chart
     final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 
     lineChart.setTitle("Usage Evaluation of " + uah.getName() + " Over The Past 6 Weeks");
-    // defining a series
-    XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-    series.setName("Actual Usage");
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 6,
-        arrayList.get(0).getData(uah.getCategory(), uah.getName(), UPKMap.ACTUAL_USAGE)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 5,
-        arrayList.get(1).getData(uah.getCategory(), uah.getName(), UPKMap.ACTUAL_USAGE)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 4,
-        arrayList.get(2).getData(uah.getCategory(), uah.getName(), UPKMap.ACTUAL_USAGE)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 3,
-        arrayList.get(3).getData(uah.getCategory(), uah.getName(), UPKMap.ACTUAL_USAGE)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 2,
-        arrayList.get(4).getData(uah.getCategory(), uah.getName(), UPKMap.ACTUAL_USAGE)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 1,
-        uah.getData().get(UPKMap.ACTUAL_USAGE)));
-    lineChart.getData().add(series);
-    
- // defining a series
-    XYChart.Series<Number, Number> series2 = new XYChart.Series<Number, Number>();
-    series2.setName("Theoretical Usage");
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 6,
-        arrayList.get(0).getData(uah.getCategory(), uah.getName(), UPKMap.THEORETICAL_USAGE)));
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 5,
-        arrayList.get(1).getData(uah.getCategory(), uah.getName(), UPKMap.THEORETICAL_USAGE)));
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 4,
-        arrayList.get(2).getData(uah.getCategory(), uah.getName(), UPKMap.THEORETICAL_USAGE)));
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 3,
-        arrayList.get(3).getData(uah.getCategory(), uah.getName(), UPKMap.THEORETICAL_USAGE)));
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 2,
-        arrayList.get(4).getData(uah.getCategory(), uah.getName(), UPKMap.THEORETICAL_USAGE)));
-    series2.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 1,
-        uah.getData().get(UPKMap.THEORETICAL_USAGE)));
-    lineChart.getData().add(series2);
     
     return lineChart;
   }
 
+  public static XYChart.Series<Number, Number> getSeriesFor(UsageAnalysisHBox uah,
+      ArrayList<UPKMap> arrayList, int currentWeekNumber, String seriesName, int upkMapCategory)
+  {
+    XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+    series.setName(seriesName);
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 6,
+        arrayList.get(0).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 5,
+        arrayList.get(1).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 4,
+        arrayList.get(2).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 3,
+        arrayList.get(3).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 2,
+        arrayList.get(4).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
+    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 1,
+        uah.getData().get(upkMapCategory)));
+    
+    return series;
+  }
 }

@@ -17,18 +17,22 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
+import readers.UPKMap;
 import util.CateringOrder;
 import util.DataHub;
 import util.JimmyCalendarUtil;
@@ -94,7 +98,7 @@ public class HubController implements DataObserver
   private Spinner<Integer> blSpinner;
 
   @FXML
-  private TextField blBoxField, blBagField;
+  private TextField blBagField;
 
   @FXML
   private TextArea cateringOrderDetailsArea;
@@ -112,9 +116,16 @@ public class HubController implements DataObserver
 
   @FXML
   private VBox usageAnalysisVBox;
-  
+
+  @FXML
+  private RadioButton usageAnalysisActualUsageRadio, usageAnalysisTheoreticalUsageRadio,
+      usageAnalysisActualUPKRadio, usageAnalysisAverageUPKRadio;
+
   @FXML
   private ScrollPane usageAnalysisGraphPane;
+
+  private UsageAnalysisHBox currentlySelectedUAH = null;
+  private ArrayList<RadioButton> usageAnalysisCategoryGroup;
 
   // Settings
   @FXML
@@ -265,16 +276,15 @@ public class HubController implements DataObserver
     orderGuideCategoryChoice.setItems(FXCollections.observableArrayList(categories));
 
     // Catering
-    SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+    SpinnerValueFactory<Integer> blValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
         0, 500, 0);
-    blSpinner.setValueFactory(valueFactory);
+    blSpinner.setValueFactory(blValueFactory);
 
     blSpinner.valueProperty().addListener(new ChangeListener<Integer>()
     {
       @Override
       public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
       {
-        blBoxField.setText(newVal + "");
         blBagField.setText((Math.ceil(newVal.doubleValue() / 10)) + "");
       }
     });
@@ -288,9 +298,8 @@ public class HubController implements DataObserver
         if (cateringChoiceBox.getValue() != null)
         {
           cateringOrderDetailsArea.setText(cateringChoiceBox.getValue().getDetails());
-          blBoxField.setText("");
           blBagField.setText("");
-          valueFactory.setValue(0);
+          blValueFactory.setValue(0);
         }
 
       }
@@ -298,6 +307,7 @@ public class HubController implements DataObserver
 
     // Usage Analysis
     usageAnalysisCategoryChoice.setItems(FXCollections.observableArrayList(categories));
+    usageAnalysisCategoryChoice.setValue("Select a Category");
     usageAnalysisCategoryChoice.setOnAction(new EventHandler<ActionEvent>()
     {
 
@@ -345,14 +355,10 @@ public class HubController implements DataObserver
                 @Override
                 public void handle(MouseEvent arg0)
                 {
-                  displayUsageAnalysisGraphFor(uah);
+                  currentlySelectedUAH = uah;
+                  handleNewUsageAnalysisCategorySelection();
                 }
-                private void displayUsageAnalysisGraphFor(UsageAnalysisHBox uah)
-                {
-                  // TODO Auto-generated method stub
-                  usageAnalysisGraphPane.setContent(GuiUtilFactory.createLineChart(uah, data.getPast5UPKMaps(), JimmyCalendarUtil.getWeekNumber(currentTimeAndDate)));
-                }
-                
+
               });
               usageAnalysisVBox.getChildren().add(uah);
             }
@@ -360,7 +366,11 @@ public class HubController implements DataObserver
         }
       }
     });
-
+    usageAnalysisCategoryGroup = new ArrayList<RadioButton>();
+    usageAnalysisCategoryGroup.add(usageAnalysisActualUsageRadio);
+    usageAnalysisCategoryGroup.add(usageAnalysisTheoreticalUsageRadio);
+    usageAnalysisCategoryGroup.add(usageAnalysisActualUPKRadio);
+    usageAnalysisCategoryGroup.add(usageAnalysisAverageUPKRadio);
   }
 
   /**
@@ -1031,6 +1041,73 @@ public class HubController implements DataObserver
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
+  }
+
+  private void handleNewUsageAnalysisCategorySelection()
+  {
+    if (currentlySelectedUAH != null)
+    {
+      int weekNumber = JimmyCalendarUtil.getWeekNumber(currentTimeAndDate);
+      LineChart<Number, Number> chart = GuiUtilFactory
+          .createUsageAnalysisLineChart(currentlySelectedUAH, weekNumber);
+      // TODO Auto-generated method stub
+      for (RadioButton rb : usageAnalysisCategoryGroup)
+      {
+        if (rb.isSelected())
+        {
+          switch (rb.getText())
+          {
+            case "Actual Usage":
+              chart.getData().add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  data.getPast5UPKMaps(), weekNumber, rb.getText(), UPKMap.ACTUAL_USAGE));
+              break;
+            case "Theoretical Usage":
+              chart.getData().add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  data.getPast5UPKMaps(), weekNumber, rb.getText(), UPKMap.THEORETICAL_USAGE));
+              break;
+            case "Actual UPK":
+              chart.getData().add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  data.getPast5UPKMaps(), weekNumber, rb.getText(), UPKMap.ACTUAL_UPK));
+              break;
+            case "Average UPK":
+              chart.getData().add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  data.getPast5UPKMaps(), weekNumber, rb.getText(), UPKMap.AVERAGE_UPK));
+              break;
+          }
+        }
+      }
+      usageAnalysisGraphPane.setContent(chart);
+    }
+  }
+
+  @FXML
+  void usageAnalysisActualUsageRadioClicked()
+  {
+    handleNewUsageAnalysisCategorySelection();
+  }
+
+  @FXML
+  void usageAnalysisTheoreticalUsageRadioClicked()
+  {
+    handleNewUsageAnalysisCategorySelection();
+  }
+
+  @FXML
+  void usageAnalysisActualUPKRadioClicked()
+  {
+    handleNewUsageAnalysisCategorySelection();
+  }
+
+  @FXML
+  void usageAnalysisAverageUPKRadioClicked()
+  {
+    handleNewUsageAnalysisCategorySelection();
+  }
+
+  @FXML
+  void usageAnalysisRadioUPKClicked()
+  {
+    // TODO
   }
 
   @Override

@@ -13,7 +13,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import util.CateringOrder;
-import util.JimmyCalendarUtil;
 
 public class CateringController
 {
@@ -89,7 +88,8 @@ public class CateringController
       cal.set(Calendar.YEAR, yearChoice.getValue());
       cal.set(Calendar.MONTH, monthChoice.getValue() - 1);
       cal.set(Calendar.DAY_OF_MONTH, dayChoice.getValue());
-      cal.set(Calendar.HOUR, JimmyCalendarUtil.convertTo24Hr(hourChoice.getValue(), ampmChoice.getValue()));
+      cal.set(Calendar.HOUR, hourChoice.getValue());
+      cal.set(Calendar.AM_PM, ampmChoice.getValue().equals("AM")?Calendar.AM:Calendar.PM);
       cal.set(Calendar.MINUTE, minuteChoice.getValue());
       
       int numSticks = -1;
