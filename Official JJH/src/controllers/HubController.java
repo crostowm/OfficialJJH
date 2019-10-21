@@ -410,6 +410,11 @@ public class HubController implements DataObserver
     vitoMSNField.setStyle(basicTextFieldStyle);
     vitoGENField.setStyle(basicTextFieldStyle);
 
+    lettuceField.setStyle(basicTextFieldStyle);
+    tomatoField.setStyle(basicTextFieldStyle);
+    onionField.setStyle(basicTextFieldStyle);
+    cucumberField.setStyle(basicTextFieldStyle);
+    pickleField.setStyle(basicTextFieldStyle);
   }
 
   /**

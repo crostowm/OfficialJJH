@@ -311,9 +311,13 @@ public class DataHub implements Serializable
   {
     int startIndex = startShift - 1;
     int totalProj = 0;
-    for(int ii = startIndex; ii < endShift; ii++)
+    int ii = startIndex;
+    while(ii != endShift)
     {
       totalProj += projections.get(ii);
+      ii++;
+      if(ii > 13)
+        ii = ii -14;
     }
     return totalProj;
   }
@@ -329,12 +333,12 @@ public class DataHub implements Serializable
   {
     double proj = getProjectionsForShifts(startShift, endShift);
     double upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
-    return ((proj * upk)/1000)/unit;
+    double req = ((proj * upk)/1000)/unit;
+    return req;
   }
 
   public void uploadAreaManagerPhoneAudit(AMPhoneAuditMap amPhoneAuditMap)
   {
-    // TODO Auto-generated method stub
     this.amPhoneAuditMap = amPhoneAuditMap;
   }
   
