@@ -1,5 +1,6 @@
 package controllers;
 
+import app.MainApplication;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -16,7 +17,17 @@ public class LoginController
   @FXML
   private Button loginButton;
 
+  private MainApplication mainApplication;
+
   @FXML
   void loginButtonPressed() {
+    mainApplication.runAMPhoneAudit(userField.getText(), passField.getText());
+    
+  }
+
+  public void setMainApp(MainApplication mainApplication)
+  {
+    // TODO Auto-generated method stub
+    this.mainApplication = mainApplication;
   }
 }

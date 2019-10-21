@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import app.MainApplication;
+import readers.AMPhoneAuditMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -17,9 +18,15 @@ public class ReportFinder
     this.directory = directory;
   }
 
+  public void uploadAreaManagerPhoneAuditToDataHub()
+  {
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 1);
+    MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditMap(fs.get(0)));
+  }
+  
   public void uploadWSRToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllWSRFiles(directory), 4);
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 4);
     for (int ii = 0; ii < 4; ii++)
     {
       MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii)), ii + 1);
@@ -28,8 +35,7 @@ public class ReportFinder
   
   public void uploadUPKToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllUPKFiles(directory), 6);
-    System.out.println(fs.size() + " SIZZEE");
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
     MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size()-1)));
     ArrayList<UPKMap> past5UPKMaps = new ArrayList<UPKMap>();
     for(int ii = 0; ii < fs.size()-1; ii++)
@@ -91,29 +97,16 @@ public class ReportFinder
     return 0;
   }
 
-  private File[] getAllUPKFiles(String directory2)
+  private File[] getAllCSVFilesThatStartWith(String sw)
   {
     File f = new File(directory);
     File[] files = f.listFiles(new FilenameFilter()
     {
       public boolean accept(File dir, String name)
       {
-        return name.startsWith("UPK Expected Usage Report") && name.endsWith("csv");
+        return name.startsWith(sw) && name.endsWith("csv");
       }
     });
-    System.out.println(files.length + " LENGTTHHH");
     return files;
-  }
-  
-  public File[] getAllWSRFiles(String directory)
-  {
-    File f = new File(directory);
-    return f.listFiles(new FilenameFilter()
-    {
-      public boolean accept(File dir, String name)
-      {
-        return name.startsWith("WeeklySalesRS08") && name.endsWith("csv");
-      }
-    });
   }
 }

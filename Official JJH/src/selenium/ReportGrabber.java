@@ -1,6 +1,5 @@
 package selenium;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -9,31 +8,92 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import util.JimmyCalendarUtil;
 
 public class ReportGrabber
 {
-  private ArrayList<String> xPathForReports = new ArrayList<String>();
-  //private String store1528 = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[4]/div/label/input";
-  private String store2048 = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[5]/div/label/input";
+  private String storeNumber;
+  private String storeXPath;
   private WebDriver driver;
 
-  public ReportGrabber()
+  public ReportGrabber(int storeNumber)
   {
-    populateReports();
-
-    runChromeReportGrabber();
+    this.storeNumber = storeNumber + "";
+    switch(storeNumber)
+    {
+      case 1131:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
+        break;
+      case 1300:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[2]/div/label/input";
+        break;
+      case 1427:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[3]/div/label/input";
+        break;
+      case 1528:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[4]/div/label/input";
+        break;
+      case 2048:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[5]/div/label/input";
+        break;
+      case 2581:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[6]/div/label/input";
+        break;
+    }
   }
 
-  private void populateReports()
+  public void runTester()
   {
-    xPathForReports.add(
-        "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/span");
-    // *[@id="ctl00_ph_ListBoxReports"]/option[23]
+    driver = new ChromeDriver();
+    try
+    {
+      // Open Chrome to reports
+      driver.get("https://jimmyjohns.macromatix.net/MMS_System_Reports.aspx?MenuCustomItemID=254");
+
+      // Login$UserName
+      WebElement loginBox = driver.findElement(By.id("Login_UserName"));
+      loginBox.sendKeys("crostowm");
+
+      // Login$Password
+      WebElement passBox = driver.findElement(By.id("Login_Password"));
+      passBox.sendKeys("Zulu9495" + Keys.ENTER);
+      
+      driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+      //clickSendToDownloadCenter();
+      downloadLast4WSR();
+    }
+    finally
+    {
+      driver.quit();
+    }
   }
 
-  private void runChromeReportGrabber()
+  private void selectStoreNumberFromDropdown()
+  {
+    WebElement storeComboBox = driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListStore_Input\"]"));
+    storeComboBox.click();
+    for(int ii = 0; ii < storeNumber.length(); ii++)
+    {
+      storeComboBox.sendKeys(storeNumber.charAt(ii) + "");
+    }
+    storeComboBox.sendKeys(Keys.ENTER);
+  }
+
+  private void downloadLast4WSR()
+  {
+    selectStoreNumberFromDropdown();
+    int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
+    for(int ii = 4; ii > 0; ii--)
+    {
+      Select select = new Select(driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+      select.selectByIndex(currentWeekIndex-ii);
+      changeToCSVAndDownload();
+    }
+  }
+
+  public void runChromeReportGrabber()
   {
     driver = new ChromeDriver();
     // System.setProperty("webdriver.chrome.driver", "C:/Users/crost/Webdriver/bin");
@@ -96,7 +156,7 @@ public class ReportGrabber
 
   private void chooseStore()
   {
-    driver.findElement(By.xpath(store2048)).click();
+    driver.findElement(By.xpath(storeXPath)).click();
   }
 
   private void clickSendToDownloadCenter()

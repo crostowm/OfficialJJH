@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AreaManagerReportController">
    <children>
       <VBox alignment="CENTER" layoutX="239.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
@@ -68,7 +67,7 @@
                   <Label text="Dollar Value" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
                </children>
             </GridPane>
-            <Button fx:id="sendReportButton" mnemonicParsing="false" text="Send Report" />
+            <Button fx:id="sendReportButton" mnemonicParsing="false" onAction="#sendReportButtonPressed" text="Send Report" />
          </children>
       </VBox>
    </children>

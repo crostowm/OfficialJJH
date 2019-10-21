@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import observers.DataObserver;
+import readers.AMPhoneAuditMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -30,6 +31,7 @@ public class DataHub implements Serializable
   private UPKMap currentUPKMap;
   private ArrayList<UPKMap> past5UPKMaps;
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
+  private AMPhoneAuditMap amPhoneAuditMap;
 
   public DataHub()
   {
@@ -143,6 +145,7 @@ public class DataHub implements Serializable
       thawed.set(index, Math.max(0,
           proj - (proj * settings.get(BAKEDATSC)) - ((1 - settings.get(BAKEDAT11)) * amProj)));
       percentage.set(index, proj * settings.get(BAKEDATSC));
+      wheat.set(index, proj);
     }
     // Slicing Pars
     updateAllSlicingPars("Cheese");
@@ -302,5 +305,41 @@ public class DataHub implements Serializable
   public ArrayList<UPKMap> getPast5UPKMaps()
   {
     return past5UPKMaps;
+  }
+  
+  private double getProjectionsForShifts(int startShift, int endShift)
+  {
+    int startIndex = startShift - 1;
+    int totalProj = 0;
+    for(int ii = startIndex; ii < endShift; ii++)
+    {
+      totalProj += projections.get(ii);
+    }
+    return totalProj;
+  }
+  
+  /**
+   * @param startShift am shift of day after order
+   * @param endShift pm shift of day after order next
+   * @param produceName
+   * @param unit
+   * @return
+   */
+  public double getProduceRequiredForShifts(int startShift, int endShift, String produceName, int unit)
+  {
+    double proj = getProjectionsForShifts(startShift, endShift);
+    double upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
+    return ((proj * upk)/1000)/unit;
+  }
+
+  public void uploadAreaManagerPhoneAudit(AMPhoneAuditMap amPhoneAuditMap)
+  {
+    // TODO Auto-generated method stub
+    this.amPhoneAuditMap = amPhoneAuditMap;
+  }
+  
+  public AMPhoneAuditMap getAMPhoneAudit()
+  {
+    return amPhoneAuditMap;
   }
 }

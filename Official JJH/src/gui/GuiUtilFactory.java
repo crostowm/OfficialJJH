@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -75,11 +74,10 @@ public class GuiUtilFactory
     return box;
   }
 
-  public static LineChart<Number, Number> createUsageAnalysisLineChart(UsageAnalysisHBox uah, int currentWeekNumber)
+  public static LineChart<Number, Number> createUsageAnalysisLineChart(UsageAnalysisHBox uah,
+      int currentWeekNumber)
   {
-    //TODO show adj sales
-    // defining the axes
-    final NumberAxis xAxis = new NumberAxis(currentWeekNumber - 6, currentWeekNumber - 1, 1);
+    final NumberAxis xAxis = new NumberAxis(currentWeekNumber - 7, currentWeekNumber, 1);
     final NumberAxis yAxis = new NumberAxis();
     yAxis.setForceZeroInRange(false);
     xAxis.setLabel("Week Number");
@@ -87,28 +85,52 @@ public class GuiUtilFactory
     final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 
     lineChart.setTitle("Usage Evaluation of " + uah.getName() + " Over The Past 6 Weeks");
-    
+
     return lineChart;
   }
 
   public static XYChart.Series<Number, Number> getSeriesFor(UsageAnalysisHBox uah,
-      ArrayList<UPKMap> arrayList, int currentWeekNumber, String seriesName, int upkMapCategory)
+      ArrayList<UPKMap> arrayList, int weekNumber, String seriesName, int upkMapCategory)
   {
     XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
     series.setName(seriesName);
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 6,
-        arrayList.get(0).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 5,
-        arrayList.get(1).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 4,
-        arrayList.get(2).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 3,
-        arrayList.get(3).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 2,
-        arrayList.get(4).getData(uah.getCategory(), uah.getName(), upkMapCategory)));
-    series.getData().add(new XYChart.Data<Number, Number>(currentWeekNumber - 1,
-        uah.getData().get(upkMapCategory)));
-    
+
+    double usage1 = arrayList.get(0).getData(uah.getCategory(), uah.getName(), upkMapCategory);
+    double sales1 = arrayList.get(0).getAdjustedSales();
+    XYChart.Data<Number, Number> w1 = new XYChart.Data<Number, Number>(weekNumber - 6, usage1);
+    w1.setNode(new DataPointNode(usage1, sales1));
+    series.getData().add(w1);
+
+    double usage2 = arrayList.get(1).getData(uah.getCategory(), uah.getName(), upkMapCategory);
+    double sales2 = arrayList.get(1).getAdjustedSales();
+    XYChart.Data<Number, Number> w2 = new XYChart.Data<Number, Number>(weekNumber - 5, usage2);
+    w2.setNode(new DataPointNode(usage2, sales2));
+    series.getData().add(w2);
+
+    double usage3 = arrayList.get(2).getData(uah.getCategory(), uah.getName(), upkMapCategory);
+    double sales3 = arrayList.get(2).getAdjustedSales();
+    XYChart.Data<Number, Number> w3 = new XYChart.Data<Number, Number>(weekNumber - 4, usage3);
+    w3.setNode(new DataPointNode(usage3, sales3));
+    series.getData().add(w3);
+
+    double usage4 = arrayList.get(3).getData(uah.getCategory(), uah.getName(), upkMapCategory);
+    double sales4 = arrayList.get(3).getAdjustedSales();
+    XYChart.Data<Number, Number> w4 = new XYChart.Data<Number, Number>(weekNumber - 3, usage4);
+    w4.setNode(new DataPointNode(usage4, sales4));
+    series.getData().add(w4);
+
+    double usage5 = arrayList.get(4).getData(uah.getCategory(), uah.getName(), upkMapCategory);
+    double sales5 = arrayList.get(4).getAdjustedSales();
+    XYChart.Data<Number, Number> w5 = new XYChart.Data<Number, Number>(weekNumber - 2, usage5);
+    w5.setNode(new DataPointNode(usage5, sales5));
+    series.getData().add(w5);
+
+    double usage6 = uah.getData().get(upkMapCategory);
+    double sales6 = uah.getAdjustedSales();
+    XYChart.Data<Number, Number> w6 = new XYChart.Data<Number, Number>(weekNumber - 1, usage6);
+    w6.setNode(new DataPointNode(sales6));
+    series.getData().add(w6);
+
     return series;
   }
 }

@@ -8,7 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Timer;
 
+import controllers.AreaManagerReportController;
 import controllers.HubController;
+import controllers.LoginController;
 import error_handling.ErrorHandler;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -35,6 +37,13 @@ public class MainApplication extends Application
   public static boolean fullRun = true;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
+  private Stage stage;
+  private Stage amrStage;
+  private Stage loginStage;
+  
+  //Need to be checked for null if not set
+  private static String username;
+  private static String pass;
 
   public static void main(String[] args)
   {
@@ -44,39 +53,20 @@ public class MainApplication extends Application
   @Override
   public void start(Stage stage) throws Exception
   {
-    /*Runtime.getRuntime().addShutdownHook(new Thread() {
-      @Override
-      public void run() {
-        ErrorHandler.writeErrors();
-          System.out.println("System was shutdown");
-      }
-  });*/
+    this.stage = stage;
+    setShutdownHook();
     readInDataHub();
+    // ReportGrabber rg = new ReportGrabber(2048);
+    // rg.runTester();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
-    // ReportGrabber rg = new ReportGrabber();
+    rf.uploadAreaManagerPhoneAuditToDataHub();
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
     // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales
     // Report.csv");
-    // UPKMap upk = new UPKMap(BASE_DOWNLOAD_LOCATION + "\\UPK Expected Usage Report (5).csv");
-    /*
-     * if (fullRun) { dataHub.addWSRMapForProjections(new WSRMap(new
-     * File("src/resources/WeeklySalesRS08-crostowm.csv")), 1); dataHub.addWSRMapForProjections(new
-     * WSRMap(new File("src/resources/WeeklySalesRS08-crostowm (1).csv")), 2);
-     * dataHub.addWSRMapForProjections(new WSRMap(new
-     * File("src/resources/WeeklySalesRS08-crostowm (2).csv")), 3);
-     * dataHub.addWSRMapForProjections(new WSRMap(new File(BASE_DOWNLOAD_LOCATION +
-     * "\\WeeklySalesRS08-crostowm.csv")), 4); } else { dataHub.addWSRMapForProjections(new
-     * WSRMap(new File("src/resources/WeeklySalesRS08-crostowm.csv")), 1);
-     * dataHub.addWSRMapForProjections(new WSRMap(new
-     * File("src/resources/WeeklySalesRS08-crostowm (1).csv")), 2);
-     * dataHub.addWSRMapForProjections(new WSRMap(new
-     * File("src/resources/WeeklySalesRS08-crostowm (2).csv")), 3);
-     * dataHub.addWSRMapForProjections(new WSRMap(new
-     * File("src/resources/WeeklySalesRS08-crostowm (3).csv")), 4); }
-     */
+
     for (int ii = 1; ii < 15; ii++)
     {
       System.out.println(dataHub.getProjectionWSR(1));
@@ -90,6 +80,40 @@ public class MainApplication extends Application
           + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii)) / 4;
       dataHub.setAverageForShift(ii, avg);
     }
+    if(fullRun)
+      runLogin();
+    else
+    runApplication();
+  }
+
+  private void runLogin()
+  {
+    // TODO Auto-generated method stub
+    loginStage = new Stage();
+    FXMLLoader loader;
+    Pane root;
+    try
+    {
+      loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJHLogin.fxml"));
+      root = loader.load();
+      LoginController lc = (LoginController)loader.getController();
+      lc.setMainApp(this);
+      loginStage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
+      loginStage.getIcons().add(new Image("resources/jjhr.png"));
+      Scene scene = new Scene(root);
+      loginStage.setScene(scene);
+      loginStage.show();
+    }
+    catch (IOException e)
+    {
+      ErrorHandler.addError("Could not load root for " + "fxml/JJHLogin.fxml");
+      e.printStackTrace();
+    }
+  }
+
+  public void runApplication()
+  {
+    amrStage.close();
     FXMLLoader loader;
     Pane root;
     try
@@ -118,8 +142,8 @@ public class MainApplication extends Application
         {
           timerSec.cancel();
           timerMin.cancel();
-          
-          //Save Catering Orders
+
+          // Save Catering Orders
           try
           {
             FileOutputStream out = new FileOutputStream(cateringOrderFileName);
@@ -137,14 +161,14 @@ public class MainApplication extends Application
           {
             ErrorHandler.addError("Failed to save catering orders");
           }
-          
-        //Save Data Hub
+
+          // Save Data Hub
           try
           {
             FileOutputStream out = new FileOutputStream(dataHubFileName);
             ObjectOutputStream serializer = new ObjectOutputStream(out);
 
-              serializer.writeObject(dataHub);
+            serializer.writeObject(dataHub);
 
             serializer.flush();
             out.close();
@@ -163,6 +187,19 @@ public class MainApplication extends Application
     }
   }
 
+  private void setShutdownHook()
+  {
+    Runtime.getRuntime().addShutdownHook(new Thread()
+    {
+      @Override
+      public void run()
+      {
+        ErrorHandler.writeErrors();
+        System.out.println("System was shutdown");
+      }
+    });
+  }
+
   private void readInDataHub()
   {
     try
@@ -177,5 +214,42 @@ public class MainApplication extends Application
     {
       dataHub = new DataHub();
     }
+  }
+
+  public void runAMPhoneAudit(String user, String pass)
+  {
+    loginStage.close();
+    MainApplication.username = user;
+    MainApplication.pass = pass;
+    amrStage = new Stage();
+    FXMLLoader loader;
+    Pane root;
+    try
+    {
+      loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Area Manager Report.fxml"));
+      root = loader.load();
+      AreaManagerReportController amrc = (AreaManagerReportController)loader.getController();
+      amrc.setMain(this);
+      amrStage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
+      amrStage.getIcons().add(new Image("resources/jjhr.png"));
+      Scene scene = new Scene(root);
+      amrStage.setScene(scene);
+      amrStage.show();
+    }
+    catch (IOException e)
+    {
+      ErrorHandler.addError("Could not load root for " + "fxml/Area Manager Report.fxml");
+      e.printStackTrace();
+    }
+  }
+  
+  public static String getUser()
+  {
+    return username;
+  }
+  
+  public static String getPass()
+  {
+    return pass;
   }
 }

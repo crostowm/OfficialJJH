@@ -12,7 +12,7 @@ public class AMPhoneAuditMap extends HashMap<Integer, HashMap<Integer, Double>>
   
   private int index = 4;
   
-  public AMPhoneAuditMap(String fileName)
+  public AMPhoneAuditMap(File file)
   {
     for(int ii = 1; ii < 5; ii++)
     {
@@ -20,7 +20,7 @@ public class AMPhoneAuditMap extends HashMap<Integer, HashMap<Integer, Double>>
     }
     try
     {
-      Scanner scan = new Scanner(new File(fileName));
+      Scanner scan = new Scanner(file);
       while(scan.hasNext())
       {
         String line = scan.nextLine();

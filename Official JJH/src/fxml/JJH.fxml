@@ -45,7 +45,7 @@
                                        <children>
                                           <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="4.333333492279053" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <content>
-                                                <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="7.0">
+                                                <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="3.0">
                                                   <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="165.0" prefWidth="165.0" />
                                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
@@ -336,9 +336,6 @@
                                                       <TextField fx:id="beefGENField" GridPane.columnIndex="7" GridPane.rowIndex="16" />
                                                       <TextField fx:id="vitoGENField" GridPane.columnIndex="8" GridPane.rowIndex="16" />
                                                    </children>
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
                                                 </GridPane>
                                              </content>
                                           </ScrollPane>
@@ -346,7 +343,58 @@
                                     </AnchorPane>
                               </content>
                             </Tab>
-                            <Tab text="Order Guide">
+                              <Tab text="Produce Order Guide">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <GridPane layoutX="395.0" layoutY="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                             <children>
+                                                <GridPane hgap="5.0" GridPane.columnIndex="1">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="If you do not have this much produce you must order today after morning prep" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+                                                      <Label text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                      <Label text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                                      <Label text="Sprouts" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                                                      <Label text="Celery" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                                      <Label text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                                      <Label fx:id="produceOrderGuideSproutMin" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <Label fx:id="produceOrderGuideCeleryMin" layoutX="270.0" layoutY="137.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <Label fx:id="produceOrderGuideOnionMin" layoutX="270.0" layoutY="137.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <Label fx:id="produceOrderGuideTomatoMin" layoutX="270.0" layoutY="137.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <Label fx:id="produceOrderGuideLettuceMin" layoutX="270.0" layoutY="137.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </Tab>
+                            <Tab text="Truck Order Guide">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>

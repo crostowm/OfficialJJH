@@ -27,7 +27,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -86,7 +85,12 @@ public class HubController implements DataObserver
   @FXML
   private Button addCateringButton;
 
-  // Order Guide
+  // Produce Order Guide
+  @FXML
+  private Label produceOrderGuideLettuceMin, produceOrderGuideTomatoMin, produceOrderGuideOnionMin,
+      produceOrderGuideCeleryMin, produceOrderGuideSproutMin;
+
+  // Truck Order Guide
   @FXML
   private ChoiceBox<String> orderGuideCategoryChoice = new ChoiceBox<String>();
 
@@ -131,6 +135,10 @@ public class HubController implements DataObserver
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
       bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
+
+  // Styles
+  String basicTextFieldStyle = "-fx-background-color: white;-fx-border-color: black;"
+      + "-fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;";
 
   public void initialize()
   {
@@ -262,6 +270,7 @@ public class HubController implements DataObserver
     wheatFields.add(w12);
     wheatFields.add(w13);
     wheatFields.add(w14);
+    setStyles();
     updateAllFields();
 
     // Order Guide
@@ -347,7 +356,8 @@ public class HubController implements DataObserver
           {
             if (!name.equals("COGs"))
             {
-              UsageAnalysisHBox uah = new UsageAnalysisHBox(category, name,
+              UsageAnalysisHBox uah = new UsageAnalysisHBox(category,
+                  data.getCurrentUPKMap().getAdjustedSales(), name,
                   data.getCurrentUPKMap().get(category).get(name));
               uah.setOnMouseClicked(new EventHandler<MouseEvent>()
               {
@@ -371,6 +381,35 @@ public class HubController implements DataObserver
     usageAnalysisCategoryGroup.add(usageAnalysisTheoreticalUsageRadio);
     usageAnalysisCategoryGroup.add(usageAnalysisActualUPKRadio);
     usageAnalysisCategoryGroup.add(usageAnalysisAverageUPKRadio);
+  }
+
+  private void setStyles()
+  {
+    // TODO Auto-generated method stub
+    for(int ii = 0; ii < 14; ii++)
+    {
+    }
+    cheeseMSCField.setStyle(basicTextFieldStyle);
+    cheeseGECField.setStyle(basicTextFieldStyle);
+    cheeseMSNField.setStyle(basicTextFieldStyle);
+    cheeseGENField.setStyle(basicTextFieldStyle);
+    hamMSCField.setStyle(basicTextFieldStyle);
+    hamGECField.setStyle(basicTextFieldStyle);
+    hamMSNField.setStyle(basicTextFieldStyle);
+    hamGENField.setStyle(basicTextFieldStyle);
+    turkeyMSCField.setStyle(basicTextFieldStyle);
+    turkeyGECField.setStyle(basicTextFieldStyle);
+    turkeyMSNField.setStyle(basicTextFieldStyle);
+    turkeyGENField.setStyle(basicTextFieldStyle);
+    beefMSCField.setStyle(basicTextFieldStyle);
+    beefGECField.setStyle(basicTextFieldStyle);
+    beefMSNField.setStyle(basicTextFieldStyle);
+    beefGENField.setStyle(basicTextFieldStyle);
+    vitoMSCField.setStyle(basicTextFieldStyle);
+    vitoGECField.setStyle(basicTextFieldStyle);
+    vitoMSNField.setStyle(basicTextFieldStyle);
+    vitoGENField.setStyle(basicTextFieldStyle);
+
   }
 
   /**
@@ -529,6 +568,23 @@ public class HubController implements DataObserver
             + data.getSlicingPars("Capicola", "msn", currentShift))) + "");
         vitoGENField.setText((MathUtil.ceilHalf(data.getSlicingPars("Salami", "gen", currentShift)
             + data.getSlicingPars("Capicola", "gen", currentShift))) + "");
+
+        // Produce Order Guide
+        int nextAMShift = JimmyCalendarUtil.getNextAMShift(currentShift);
+        produceOrderGuideLettuceMin.setText(
+            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24))
+                + "");
+        produceOrderGuideTomatoMin.setText(Math.ceil(
+            data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Tomatoes", 25)) + "");
+        produceOrderGuideOnionMin.setText(
+            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Onions", 50))
+                + "");
+        produceOrderGuideCeleryMin.setText(
+            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1))
+                + "");
+        // produceOrderGuideSproutMin.setText(data.getProduceRequiredForShifts(nextAMShift,
+        // nextAMShift + 3, "Sprout", 1) + "");
+
       }
       catch (NumberFormatException nfe)
       {
@@ -586,15 +642,23 @@ public class HubController implements DataObserver
 
   private void colorCurrentShiftFields()
   {
-    // TODO color other fields plain
-    averageFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    average20Fields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    cateringFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    samplingFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    projFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    thawedTrayFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    percentageFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
-    wheatFields.get(currentShift - 1).setStyle("-fx-background-color: lime");
+    for (int ii = 0; ii < 14; ii++)
+    {
+      String style = basicTextFieldStyle;
+      if (ii == currentShift - 1)
+      {
+        style = "-fx-border-color: black;-fx-background-color: lime;-fx-border-radius: 10 10 0 0;-fx-background-radius: 10 10 0 0;";
+      }
+      // TODO color other fields plain
+      averageFields.get(ii).setStyle(style);
+      average20Fields.get(ii).setStyle(style);
+      cateringFields.get(ii).setStyle(style);
+      samplingFields.get(ii).setStyle(style);
+      projFields.get(ii).setStyle(style);
+      thawedTrayFields.get(ii).setStyle(style);
+      percentageFields.get(ii).setStyle(style);
+      wheatFields.get(ii).setStyle(style);
+    }
   }
 
   @FXML
@@ -1050,7 +1114,6 @@ public class HubController implements DataObserver
       int weekNumber = JimmyCalendarUtil.getWeekNumber(currentTimeAndDate);
       LineChart<Number, Number> chart = GuiUtilFactory
           .createUsageAnalysisLineChart(currentlySelectedUAH, weekNumber);
-      // TODO Auto-generated method stub
       for (RadioButton rb : usageAnalysisCategoryGroup)
       {
         if (rb.isSelected())
