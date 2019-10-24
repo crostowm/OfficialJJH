@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import observers.DataObserver;
 import readers.AMPhoneAuditMap;
+import readers.HourlySalesMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -30,6 +31,7 @@ public class DataHub implements Serializable
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
   private UPKMap currentUPKMap;
   private ArrayList<UPKMap> past5UPKMaps;
+  private ArrayList<HourlySalesMap> past4HourlySales;
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private AMPhoneAuditMap amPhoneAuditMap;
 
@@ -279,10 +281,6 @@ public class DataHub implements Serializable
   public void setCurrentUPKMap(UPKMap upkMap)
   {
     this.currentUPKMap = upkMap;
-    for(DataObserver dato: observers)
-    {
-      dato.upkSet();
-    }
   }
 
   public UPKMap getCurrentUPKMap()
@@ -345,5 +343,15 @@ public class DataHub implements Serializable
   public AMPhoneAuditMap getAMPhoneAudit()
   {
     return amPhoneAuditMap;
+  }
+
+  public void setPast4HourlySalesMaps(ArrayList<HourlySalesMap> past4HourlySales)
+  {
+    this.past4HourlySales = past4HourlySales;
+  }
+  
+  public ArrayList<HourlySalesMap> getPast4HourlySalesMaps()
+  {
+    return past4HourlySales;
   }
 }

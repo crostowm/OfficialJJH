@@ -31,6 +31,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
+import readers.HourlySalesMap;
 import readers.UPKMap;
 import util.CateringOrder;
 import util.DataHub;
@@ -642,7 +643,13 @@ public class HubController implements DataObserver
     {
       produceLabel.setText("Produce required for PM");
     }
-
+    
+    //Handle current bread needs
+    double salesHour1 = 0, salesHour2 = 0, salesHour3 = 0, salesHour4 = 0;
+    for(int ii = 0; ii < data.getPast4HourlySalesMaps().size(); ii++)
+    {
+      //salesHour1 += data.getPast4HourlySalesMaps().get(ii).getData(HourlySalesMap.TOTAL$, dataType, time)
+    }
   }
 
   private void colorCurrentShiftFields()
@@ -654,7 +661,6 @@ public class HubController implements DataObserver
       {
         style = "-fx-border-color: black;-fx-background-color: lime;-fx-border-radius: 10 10 0 0;-fx-background-radius: 10 10 0 0;";
       }
-      // TODO color other fields plain
       averageFields.get(ii).setStyle(style);
       average20Fields.get(ii).setStyle(style);
       cateringFields.get(ii).setStyle(style);
@@ -1184,12 +1190,4 @@ public class HubController implements DataObserver
     // TODO Auto-generated method stub
     updateAllFields();
   }
-
-  @Override
-  public void upkSet()
-  {
-    // TODO Auto-generated method stub
-
-  }
-
 }

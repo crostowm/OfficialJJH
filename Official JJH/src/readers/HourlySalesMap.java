@@ -16,7 +16,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer,HashMap<Int
   public static final int TAKE_OUT = 1, PICKUP = 2, DELIVERY = 3, EAT_IN = 4, ONLINE_PICKUP = 5,
       ONLINE_DELIVERY = 6, VALUE = 7, COUNT = 8, TOTAL$ = 9, TOTAL_COUNT = 10, TOTAL_PERCENT = 11;
 
-  public HourlySalesMap(String fileName)
+  public HourlySalesMap(File file)
   {
     for(int ii = 1; ii < 7; ii++)
     {
@@ -29,7 +29,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer,HashMap<Int
     Scanner scanner;
     try
     {
-      scanner = new Scanner(new File(fileName));
+      scanner = new Scanner(file);
       while (scanner.hasNext())
       {
         int currentCat;

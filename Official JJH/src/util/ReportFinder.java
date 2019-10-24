@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import app.MainApplication;
 import readers.AMPhoneAuditMap;
+import readers.HourlySalesMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -45,6 +46,16 @@ public class ReportFinder
     MainApplication.dataHub.setPast5UPKMaps(past5UPKMaps);
   }
   
+  public void uploadHourlySalesToDataHub()
+  {
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"), 4);
+    ArrayList<HourlySalesMap> past4HourlySales = new ArrayList<HourlySalesMap>();
+    for(int ii = 0; ii < fs.size(); ii++)
+    {
+      past4HourlySales.add(new HourlySalesMap(fs.get(ii)));
+    }
+    MainApplication.dataHub.setPast4HourlySalesMaps(past4HourlySales);
+  }
 
   /**
    * @param allFiles
@@ -109,4 +120,5 @@ public class ReportFinder
     });
     return files;
   }
+
 }
