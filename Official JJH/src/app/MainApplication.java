@@ -62,7 +62,7 @@ public class MainApplication extends Application
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
-    //rf.uploadHourlySalesToDataHub();
+    rf.uploadHourlySalesToDataHub();
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
     // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales

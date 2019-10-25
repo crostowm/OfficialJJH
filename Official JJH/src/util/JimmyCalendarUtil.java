@@ -69,4 +69,15 @@ public class JimmyCalendarUtil
   {
     return i > 14 ? i - 14 : i;
   }
+
+  public static String convertTo12Hour(int currentHour)
+  {
+    if(currentHour == 0)
+      return "12am";
+    else if(currentHour == 12)
+      return "12pm";
+    else if(currentHour>12)
+      return (currentHour - 12) + "pm";
+    return currentHour + "am";
+  }
 }

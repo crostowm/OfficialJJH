@@ -43,7 +43,7 @@ public class HubController implements DataObserver
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
       projFields, thawedTrayFields, percentageFields, wheatFields;
 
-  private int currentShift = 0, storeSCTime = 15;
+  private int currentShift = 1, storeSCTime = 15;
 
   private GregorianCalendar currentTimeAndDate = new GregorianCalendar();
 
@@ -136,6 +136,19 @@ public class HubController implements DataObserver
   @FXML
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
       bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
+
+  // TitledPanes
+  // Current
+  @FXML
+  private Label currentPaneFirstHourLabel, currentPaneSecondHourLabel, currentPaneThirdHourLabel,
+      currentPaneFourthHourLabel, currentPaneBaked9Label, currentPaneInProcess12Label,
+      currentPaneFirstInPercLabel, currentPaneSecondInPercLabel, currentPaneThirdInPercLabel,
+      currentPaneFourthInPercLabel, currentPaneFirstDelPercLabel, currentPaneSecondDelPercLabel,
+      currentPaneThirdDelPercLabel, currentPaneFourthDelPercLabel;
+
+  @FXML
+  private TextField currentPaneFirstHourField, currentPaneSecondHourField,
+      currentPaneThirdHourField, currentPaneFourthHourField;
 
   // Styles
   String basicTextFieldStyle = "-fx-background-color: white;-fx-border-color: black;"
@@ -387,7 +400,7 @@ public class HubController implements DataObserver
   private void setStyles()
   {
     // TODO Auto-generated method stub
-    for(int ii = 0; ii < 14; ii++)
+    for (int ii = 0; ii < 14; ii++)
     {
     }
     cheeseMSCField.setStyle(basicTextFieldStyle);
@@ -577,17 +590,14 @@ public class HubController implements DataObserver
 
         // Produce Order Guide
         int nextAMShift = JimmyCalendarUtil.getNextAMShift(currentShift);
-        produceOrderGuideLettuceMin.setText(
-            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24))
-                + "");
-        produceOrderGuideTomatoMin.setText(Math.ceil(
-            data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Tomatoes", 25)) + "");
-        produceOrderGuideOnionMin.setText(
-            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Onions", 50))
-                + "");
-        produceOrderGuideCeleryMin.setText(
-            Math.ceil(data.getProduceRequiredForShifts(nextAMShift, JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1))
-                + "");
+        produceOrderGuideLettuceMin.setText(Math.ceil(data.getProduceRequiredForShifts(nextAMShift,
+            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24)) + "");
+        produceOrderGuideTomatoMin.setText(Math.ceil(data.getProduceRequiredForShifts(nextAMShift,
+            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Tomatoes", 25)) + "");
+        produceOrderGuideOnionMin.setText(Math.ceil(data.getProduceRequiredForShifts(nextAMShift,
+            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Onions", 50)) + "");
+        produceOrderGuideCeleryMin.setText(Math.ceil(data.getProduceRequiredForShifts(nextAMShift,
+            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1)) + "");
         // produceOrderGuideSproutMin.setText(data.getProduceRequiredForShifts(nextAMShift,
         // nextAMShift + 3, "Sprout", 1) + "");
 
@@ -626,30 +636,98 @@ public class HubController implements DataObserver
    */
   public void timeUpdateMinute()
   {
-    currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate, storeSCTime);
-    colorCurrentShiftFields();
-
-    // update current proj vals
-    if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
+    Platform.runLater(new Runnable()
     {
 
-    }
-    else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
-        && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 13)
-    {
+      @Override
+      public void run()
+      {
+        currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate, storeSCTime);
+        colorCurrentShiftFields();
 
-    }
-    else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 13)
-    {
-      produceLabel.setText("Produce required for PM");
-    }
-    
-    //Handle current bread needs
-    double salesHour1 = 0, salesHour2 = 0, salesHour3 = 0, salesHour4 = 0;
-    for(int ii = 0; ii < data.getPast4HourlySalesMaps().size(); ii++)
-    {
-      //salesHour1 += data.getPast4HourlySalesMaps().get(ii).getData(HourlySalesMap.TOTAL$, dataType, time)
-    }
+        // update current proj vals
+        if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
+        {
+
+        }
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
+            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 13)
+        {
+
+        }
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 13
+            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 15)
+        {
+
+        }
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 15)
+        {
+          produceLabel.setText("Produce required for PM");
+        }
+
+        // Current Titled Pane
+        double salesHour1 = 0, salesHour2 = 0, salesHour3 = 0, salesHour4 = 0, iSalesHour1 = 0,
+            iSalesHour2 = 0, iSalesHour3 = 0, iSalesHour4 = 0, dSalesHour1 = 0, dSalesHour2 = 0,
+            dSalesHour3 = 0, dSalesHour4 = 0;
+        int currentHour = currentTimeAndDate.get(Calendar.HOUR_OF_DAY);
+        for (int ii = 0; ii < data.getPast4HourlySalesMaps().size(); ii++)
+        {
+          salesHour1 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
+              currentHour);
+          iSalesHour1 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour);
+          dSalesHour1 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour);
+          
+          salesHour2 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
+              currentHour + 1);
+          iSalesHour2 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 1);
+          dSalesHour2 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 1);
+          
+          salesHour3 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
+              currentHour + 2);
+          iSalesHour3 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 2);
+          dSalesHour3 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 2);
+          
+          salesHour4 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
+              currentHour + 3);
+          iSalesHour4 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 3);
+          dSalesHour4 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 3);
+          
+        }
+        double avgSH1 = salesHour1 / 4;
+        double avgSH2 = salesHour2 / 4;
+        double avgSH3 = salesHour3 / 4;
+        double avgSH4 = salesHour4 / 4;
+        
+        currentPaneFirstHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour) + "-"
+            + JimmyCalendarUtil.convertTo12Hour(currentHour + 1));
+        currentPaneSecondHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 1) + "-"
+            + JimmyCalendarUtil.convertTo12Hour(currentHour + 2));
+        currentPaneThirdHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 2) + "-"
+            + JimmyCalendarUtil.convertTo12Hour(currentHour + 3));
+        currentPaneFourthHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 3) + "-"
+            + JimmyCalendarUtil.convertTo12Hour(currentHour + 4));
+
+        currentPaneFirstInPercLabel.setText(String.format("%.0f", (iSalesHour1/salesHour1)*100));
+        currentPaneSecondInPercLabel.setText(String.format("%.0f", (iSalesHour2/salesHour2)*100));
+        currentPaneThirdInPercLabel.setText(String.format("%.0f", (iSalesHour3/salesHour3)*100));
+        currentPaneFourthInPercLabel.setText(String.format("%.0f", (iSalesHour4/salesHour4)*100));
+        
+        currentPaneFirstDelPercLabel.setText(String.format("%.0f", (dSalesHour1/salesHour1)*100));
+        currentPaneSecondDelPercLabel.setText(String.format("%.0f", (dSalesHour2/salesHour2)*100));
+        currentPaneThirdDelPercLabel.setText(String.format("%.0f", (dSalesHour3/salesHour3)*100));
+        currentPaneFourthDelPercLabel.setText(String.format("%.0f", (dSalesHour4/salesHour4)*100));
+
+        currentPaneFirstHourField.setText(String.format("%.2f", avgSH1));
+        currentPaneSecondHourField.setText(String.format("%.2f", avgSH2));
+        currentPaneThirdHourField.setText(String.format("%.2f", avgSH3));
+        currentPaneFourthHourField.setText(String.format("%.2f", avgSH4));
+
+        currentPaneBaked9Label
+            .setText(String.format("%.1f", (avgSH1 + avgSH2) / data.getSetting(DataHub.B9TV)));
+        currentPaneInProcess12Label
+            .setText(String.format("%.1f", (avgSH3 + avgSH4) / data.getSetting(DataHub.BTV)));
+      }
+    });
   }
 
   private void colorCurrentShiftFields()
