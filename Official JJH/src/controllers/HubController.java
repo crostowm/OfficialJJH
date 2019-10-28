@@ -100,10 +100,10 @@ public class HubController implements DataObserver
   private ChoiceBox<CateringOrder> cateringChoiceBox;
 
   @FXML
-  private Spinner<Integer> blSpinner;
+  private Spinner<Integer> blSpinner, mj24Spinner, mj12Spinner;
 
   @FXML
-  private TextField blBagField;
+  private TextField blBagField, mj24NapField, mj24BoxField, mj24MenuField, mj12NapField, mj12BoxField, mj12MenuField;
 
   @FXML
   private TextArea cateringOrderDetailsArea;
@@ -141,14 +141,14 @@ public class HubController implements DataObserver
   // Current
   @FXML
   private Label currentPaneFirstHourLabel, currentPaneSecondHourLabel, currentPaneThirdHourLabel,
-      currentPaneFourthHourLabel, currentPaneBaked9Label, currentPaneInProcess12Label,
-      currentPaneFirstInPercLabel, currentPaneSecondInPercLabel, currentPaneThirdInPercLabel,
-      currentPaneFourthInPercLabel, currentPaneFirstDelPercLabel, currentPaneSecondDelPercLabel,
-      currentPaneThirdDelPercLabel, currentPaneFourthDelPercLabel;
+      currentPaneFourthHourLabel, currentPaneFirstInPercLabel, currentPaneSecondInPercLabel,
+      currentPaneThirdInPercLabel, currentPaneFourthInPercLabel, currentPaneFirstDelPercLabel,
+      currentPaneSecondDelPercLabel, currentPaneThirdDelPercLabel, currentPaneFourthDelPercLabel;
 
   @FXML
   private TextField currentPaneFirstHourField, currentPaneSecondHourField,
-      currentPaneThirdHourField, currentPaneFourthHourField;
+      currentPaneThirdHourField, currentPaneFourthHourField, currentPaneBaked9Field,
+      currentPaneInProcess12Field;
 
   // Styles
   String basicTextFieldStyle = "-fx-background-color: white;-fx-border-color: black;"
@@ -308,7 +308,40 @@ public class HubController implements DataObserver
       @Override
       public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
       {
+        cateringChoiceBox.getValue().setNumBL(newVal);
         blBagField.setText((Math.ceil(newVal.doubleValue() / 10)) + "");
+      }
+    });
+    
+    SpinnerValueFactory<Integer> mj24ValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+        0, 500, 0);
+    mj24Spinner.setValueFactory(mj24ValueFactory);
+
+    mj24Spinner.valueProperty().addListener(new ChangeListener<Integer>()
+    {
+      @Override
+      public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
+      {
+        cateringChoiceBox.getValue().setNum24P(newVal);
+        mj24NapField.setText((newVal*24) + "");
+        mj24BoxField.setText(newVal + "");
+        mj24MenuField.setText((newVal * 2) + "");
+      }
+    });
+    
+    SpinnerValueFactory<Integer> mj12ValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+        0, 500, 0);
+    mj12Spinner.setValueFactory(mj12ValueFactory);
+
+    mj12Spinner.valueProperty().addListener(new ChangeListener<Integer>()
+    {
+      @Override
+      public void changed(ObservableValue<? extends Integer> arg0, Integer old, Integer newVal)
+      {
+        cateringChoiceBox.getValue().setNum12P(newVal);
+        mj12NapField.setText((newVal * 12) + "");
+        mj12BoxField.setText(newVal + "");
+        mj12MenuField.setText(newVal + "");
       }
     });
 
@@ -322,7 +355,17 @@ public class HubController implements DataObserver
         {
           cateringOrderDetailsArea.setText(cateringChoiceBox.getValue().getDetails());
           blBagField.setText("");
-          blValueFactory.setValue(0);
+          blValueFactory.setValue(cateringChoiceBox.getValue().getNumBL());
+          
+          mj24NapField.setText("");
+          mj24BoxField.setText("");
+          mj24MenuField.setText("");
+          mj24ValueFactory.setValue(cateringChoiceBox.getValue().getNum24P());
+          
+          mj12NapField.setText("");
+          mj12BoxField.setText("");
+          mj12MenuField.setText("");
+          mj12ValueFactory.setValue(cateringChoiceBox.getValue().getNum12P());
         }
 
       }
@@ -515,6 +558,21 @@ public class HubController implements DataObserver
               .setTooltip(new Tooltip(String.format("%.2f", data.getWheatDataForIndex(ii) / wlv)));
 
         }
+        
+        //Catering Fields
+        cateringFields.get(ii).setText("");
+        for(CateringOrder co: data.getCateringOrders())
+        {
+          if(JimmyCalendarUtil.getShiftNumber(co.getTime(), storeSCTime) == ii+1)
+          {
+            double currentCat = 0;
+            if (cateringFields.get(ii).getText().length() > 0)
+              currentCat = Double.parseDouble(cateringFields.get(ii).getText());
+            System.out.println(currentCat + " " + co.getDollarValue());
+            cateringFields.get(ii).setText(currentCat + co.getDollarValue() + "");
+          }
+        }
+        cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
         timeUpdateSecond();
         timeUpdateMinute();
 
@@ -674,30 +732,37 @@ public class HubController implements DataObserver
         {
           salesHour1 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
               currentHour);
-          iSalesHour1 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour);
+          iSalesHour1 += data.getPast4HourlySalesMaps().get(ii)
+              .getTakeoutPickupEatin$ForHour(currentHour);
           dSalesHour1 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour);
-          
+
           salesHour2 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
               currentHour + 1);
-          iSalesHour2 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 1);
-          dSalesHour2 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 1);
-          
+          iSalesHour2 += data.getPast4HourlySalesMaps().get(ii)
+              .getTakeoutPickupEatin$ForHour(currentHour + 1);
+          dSalesHour2 += data.getPast4HourlySalesMaps().get(ii)
+              .getDelivery$ForHour(currentHour + 1);
+
           salesHour3 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
               currentHour + 2);
-          iSalesHour3 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 2);
-          dSalesHour3 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 2);
-          
+          iSalesHour3 += data.getPast4HourlySalesMaps().get(ii)
+              .getTakeoutPickupEatin$ForHour(currentHour + 2);
+          dSalesHour3 += data.getPast4HourlySalesMaps().get(ii)
+              .getDelivery$ForHour(currentHour + 2);
+
           salesHour4 += data.getPast4HourlySalesMaps().get(ii).getData(1, HourlySalesMap.TOTAL$,
               currentHour + 3);
-          iSalesHour4 += data.getPast4HourlySalesMaps().get(ii).getTakeoutPickupEatin$ForHour(currentHour + 3);
-          dSalesHour4 += data.getPast4HourlySalesMaps().get(ii).getDelivery$ForHour(currentHour + 3);
-          
+          iSalesHour4 += data.getPast4HourlySalesMaps().get(ii)
+              .getTakeoutPickupEatin$ForHour(currentHour + 3);
+          dSalesHour4 += data.getPast4HourlySalesMaps().get(ii)
+              .getDelivery$ForHour(currentHour + 3);
+
         }
         double avgSH1 = salesHour1 / 4;
         double avgSH2 = salesHour2 / 4;
         double avgSH3 = salesHour3 / 4;
         double avgSH4 = salesHour4 / 4;
-        
+
         currentPaneFirstHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour) + "-"
             + JimmyCalendarUtil.convertTo12Hour(currentHour + 1));
         currentPaneSecondHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 1) + "-"
@@ -707,24 +772,32 @@ public class HubController implements DataObserver
         currentPaneFourthHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 3) + "-"
             + JimmyCalendarUtil.convertTo12Hour(currentHour + 4));
 
-        currentPaneFirstInPercLabel.setText(String.format("%.0f", (iSalesHour1/salesHour1)*100));
-        currentPaneSecondInPercLabel.setText(String.format("%.0f", (iSalesHour2/salesHour2)*100));
-        currentPaneThirdInPercLabel.setText(String.format("%.0f", (iSalesHour3/salesHour3)*100));
-        currentPaneFourthInPercLabel.setText(String.format("%.0f", (iSalesHour4/salesHour4)*100));
-        
-        currentPaneFirstDelPercLabel.setText(String.format("%.0f", (dSalesHour1/salesHour1)*100));
-        currentPaneSecondDelPercLabel.setText(String.format("%.0f", (dSalesHour2/salesHour2)*100));
-        currentPaneThirdDelPercLabel.setText(String.format("%.0f", (dSalesHour3/salesHour3)*100));
-        currentPaneFourthDelPercLabel.setText(String.format("%.0f", (dSalesHour4/salesHour4)*100));
+        currentPaneFirstInPercLabel
+            .setText(String.format("%.0f", (iSalesHour1 / salesHour1) * 100));
+        currentPaneSecondInPercLabel
+            .setText(String.format("%.0f", (iSalesHour2 / salesHour2) * 100));
+        currentPaneThirdInPercLabel
+            .setText(String.format("%.0f", (iSalesHour3 / salesHour3) * 100));
+        currentPaneFourthInPercLabel
+            .setText(String.format("%.0f", (iSalesHour4 / salesHour4) * 100));
+
+        currentPaneFirstDelPercLabel
+            .setText(String.format("%.0f", (dSalesHour1 / salesHour1) * 100));
+        currentPaneSecondDelPercLabel
+            .setText(String.format("%.0f", (dSalesHour2 / salesHour2) * 100));
+        currentPaneThirdDelPercLabel
+            .setText(String.format("%.0f", (dSalesHour3 / salesHour3) * 100));
+        currentPaneFourthDelPercLabel
+            .setText(String.format("%.0f", (dSalesHour4 / salesHour4) * 100));
 
         currentPaneFirstHourField.setText(String.format("%.2f", avgSH1));
         currentPaneSecondHourField.setText(String.format("%.2f", avgSH2));
         currentPaneThirdHourField.setText(String.format("%.2f", avgSH3));
         currentPaneFourthHourField.setText(String.format("%.2f", avgSH4));
 
-        currentPaneBaked9Label
+        currentPaneBaked9Field
             .setText(String.format("%.1f", (avgSH1 + avgSH2) / data.getSetting(DataHub.B9TV)));
-        currentPaneInProcess12Label
+        currentPaneInProcess12Field
             .setText(String.format("%.1f", (avgSH3 + avgSH4) / data.getSetting(DataHub.BTV)));
       }
     });
@@ -760,16 +833,6 @@ public class HubController implements DataObserver
   @Override
   public void cateringOrderAdded(CateringOrder co)
   {
-    cateringChoiceBox.setItems(FXCollections.observableArrayList(data.getCateringOrders()));
-    if (JimmyCalendarUtil.isInCurrentWeek(currentTimeAndDate, co.getTime()))
-    {
-      double currentCat = 0;
-      int cateringShiftNum = JimmyCalendarUtil.getShiftNumber(co.getTime(), storeSCTime);
-      // Have catering list update in datahub call to update all fields then have these update there
-      if (cateringFields.get(cateringShiftNum - 1).getText().length() > 0)
-        currentCat = Double.parseDouble(cateringFields.get(cateringShiftNum - 1).getText());
-      cateringFields.get(cateringShiftNum - 1).setText(currentCat + co.getDollarValue() + "");
-    }
     if (ca != null)
       ca.close();
     updateAllFields();

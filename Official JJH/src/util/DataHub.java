@@ -8,6 +8,7 @@ import java.util.HashMap;
 import observers.DataObserver;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
+import readers.TrendSheetMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -15,7 +16,7 @@ public class DataHub implements Serializable
 {
   public static final int AMBUFFER = 1, PMBUFFER = 2, BTV = 3, B9TV = 4, WLV = 5, BAKEDAT11 = 6,
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
-      STORESC_TIME = 13;
+      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
@@ -34,6 +35,7 @@ public class DataHub implements Serializable
   private ArrayList<HourlySalesMap> past4HourlySales;
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private AMPhoneAuditMap amPhoneAuditMap;
+  private TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
 
   public DataHub()
   {
@@ -69,7 +71,10 @@ public class DataHub implements Serializable
     settings.put(CUCUMBERBV, 2200.0);
     settings.put(PICKLEBV, 1200.0);
     settings.put(STORESC_TIME, 15.0);
-
+    settings.put(NUMDECKS, 4.0);
+    settings.put(PROOF_TIME, 50.0);
+    settings.put(BAKE_TIME, 20.0);
+    settings.put(COOL_TIME, 25.0);
   }
 
   /**
@@ -79,6 +84,8 @@ public class DataHub implements Serializable
    */
   public void addWSRMapForProjections(WSRMap wsr, int week)
   {
+    if(last4WeeksWSR == null)
+      last4WeeksWSR = new WSRMap[4];
     last4WeeksWSR[week - 1] = wsr;
     if (last4WeeksWSR[0] != null && last4WeeksWSR[1] != null && last4WeeksWSR[2] != null
         && last4WeeksWSR[3] != null)
@@ -354,4 +361,32 @@ public class DataHub implements Serializable
   {
     return past4HourlySales;
   }
+
+  public void setLastYearTrendSheet(TrendSheetMap trendSheetMap)
+  {
+    this.lastYearTrendSheet = trendSheetMap;
+  }
+  
+  public TrendSheetMap getLastYearTrendSheet()
+  {
+    return lastYearTrendSheet;
+  }
+
+  public void setCurrentYearTrendSheet(TrendSheetMap trendSheetMap)
+  {
+    this.currentYearTrendSheet = trendSheetMap;
+  }
+  
+  public TrendSheetMap getCurrentYearTrendSheet()
+  {
+    return currentYearTrendSheet;
+  }
+
+  public void initializeTransientValues()
+  {
+    // TODO Auto-generated method stub
+    last4WeeksWSR = new WSRMap[4];
+    observers = new ArrayList<DataObserver>();
+  }
+
 }

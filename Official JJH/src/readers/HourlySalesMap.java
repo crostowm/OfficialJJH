@@ -195,7 +195,6 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
   
   public double getTakeoutPickupEatin$ForHour(int hour)
   {
-    System.out.println(get(TAKE_OUT).get(hour).get(VALUE) + " " + get(PICKUP).get(hour).get(VALUE) + " " + get(EAT_IN).get(hour).get(VALUE) + " " + get(ONLINE_PICKUP).get(hour).get(VALUE) + " UUBIBDIDBJDB");
     return get(TAKE_OUT).get(hour).get(VALUE) + get(PICKUP).get(hour).get(VALUE) + get(EAT_IN).get(hour).get(VALUE) + get(ONLINE_PICKUP).get(hour).get(VALUE);
   }
 }

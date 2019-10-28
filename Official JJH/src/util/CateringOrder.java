@@ -12,8 +12,8 @@ public class CateringOrder implements Serializable
   
   private GregorianCalendar time;
   
-  private int numBreadSticks = -1;
-
+  private int numBreadSticks = -1, numBL = 0, num12P = 0, num24P = 0;
+  
   private String details;
   
   /**
@@ -63,7 +63,7 @@ public class CateringOrder implements Serializable
   
   public String toString()
   {
-    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm");
+    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mma");
     return new String(sdf.format(time.getTime()) + "  $" + dollarValue + " " + numBreadSticks + " Sticks");
   }
 
@@ -90,5 +90,53 @@ public class CateringOrder implements Serializable
   public String getDetails()
   {
     return details;
+  }
+
+  /**
+   * @return the numBL
+   */
+  public int getNumBL()
+  {
+    return numBL;
+  }
+
+  /**
+   * @param numBL the numBL to set
+   */
+  public void setNumBL(int numBL)
+  {
+    this.numBL = numBL;
+  }
+
+  /**
+   * @return the num12P
+   */
+  public int getNum12P()
+  {
+    return num12P;
+  }
+
+  /**
+   * @param num12p the num12P to set
+   */
+  public void setNum12P(int num12p)
+  {
+    num12P = num12p;
+  }
+
+  /**
+   * @return the num24P
+   */
+  public int getNum24P()
+  {
+    return num24P;
+  }
+
+  /**
+   * @param num24p the num24P to set
+   */
+  public void setNum24P(int num24p)
+  {
+    num24P = num24p;
   }
 }

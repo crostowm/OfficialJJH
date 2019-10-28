@@ -80,4 +80,9 @@ public class JimmyCalendarUtil
       return (currentHour - 12) + "pm";
     return currentHour + "am";
   }
+
+  public static boolean isToday(GregorianCalendar time)
+  {
+    return time.get(Calendar.DAY_OF_YEAR) == (new GregorianCalendar()).get(Calendar.DAY_OF_YEAR);
+  }
 }

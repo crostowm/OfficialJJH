@@ -20,7 +20,7 @@ public class TrendSheetMap extends HashMap<Integer, HashMap<Integer, Double>>
       PRODUCEP = 13, BEVERAGEP = 14, CATERINGP = 15;
   private Scanner scanner;
 
-  public TrendSheetMap(String fileName)
+  public TrendSheetMap(File file)
   {
     for (int ii = 1; ii < 16; ii++)
     {
@@ -28,7 +28,7 @@ public class TrendSheetMap extends HashMap<Integer, HashMap<Integer, Double>>
     }
     try
     {
-      scanner = new Scanner(new File(fileName));
+      scanner = new Scanner(file);
 
       //TODO Fix Year for reusability
       scanner.useDelimiter(

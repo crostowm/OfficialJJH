@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.GregorianCalendar;
 import java.util.Timer;
 
+import bread.BreadHandler;
+import bread.BreadRequest;
 import controllers.AreaManagerReportController;
 import controllers.HubController;
 import controllers.LoginController;
@@ -21,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import readers.WSRMap;
+import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.CateringOrder;
@@ -34,7 +38,7 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
-  public static boolean fullRun = false;
+  public static boolean fullRun = true;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
   private Stage stage;
@@ -56,13 +60,28 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    // ReportGrabber rg = new ReportGrabber(2048);
-    // rg.runTester();
+    ReportGrabber rg = new ReportGrabber(2048);
+    rg.runTester();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
+    rf.uploadTrendSheetsToDataHub();
+    
+    BreadHandler bh = new BreadHandler();
+    GregorianCalendar gc1 = new GregorianCalendar(2019, 8, 7, 16, 22, 1);
+    GregorianCalendar gc2 = new GregorianCalendar(2019, 8, 7, 8, 22, 1);
+    GregorianCalendar gc3 = new GregorianCalendar(2019, 8, 7, 21, 22, 1);
+    GregorianCalendar gc4 = new GregorianCalendar(2019, 7, 7, 16, 22, 1);
+
+    bh.sendRequest(new BreadRequest(14, gc1));
+    bh.sendRequest(new BreadRequest(24, gc2));
+    bh.sendRequest(new BreadRequest(35, gc3));
+    bh.sendRequest(new BreadRequest(10, gc4));
+
+    bh.analyzeBread();
+    System.out.println(bh.toString());
     // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
     // Audit Report.csv");
     // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales
@@ -142,6 +161,7 @@ public class MainApplication extends Application
         @Override
         public void handle(WindowEvent arg0)
         {
+          System.out.println("Close");
           timerSec.cancel();
           timerMin.cancel();
 
@@ -206,14 +226,16 @@ public class MainApplication extends Application
   {
     try
     {
-      FileInputStream in = new FileInputStream(new File("DataHub.dat"));
+      FileInputStream in = new FileInputStream(new File("Data_Hub.dat"));
       ObjectInputStream deserializer = new ObjectInputStream(in);
 
       dataHub = (DataHub) deserializer.readObject();
+      dataHub.initializeTransientValues();
       deserializer.close();
     }
     catch (Exception e)
     {
+      System.out.println("Did not read in data hub\n" + e.getMessage());
       dataHub = new DataHub();
     }
   }

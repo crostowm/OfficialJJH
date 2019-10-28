@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import app.MainApplication;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
+import readers.TrendSheetMap;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -55,6 +56,20 @@ public class ReportFinder
       past4HourlySales.add(new HourlySalesMap(fs.get(ii)));
     }
     MainApplication.dataHub.setPast4HourlySalesMaps(past4HourlySales);
+  }
+
+  /**
+   * First download is previous year, second is current
+   */
+  public void uploadTrendSheetsToDataHub()
+  {
+    // TODO Auto-generated method stub
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
+    if(fs.size() == 2)
+    {
+      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0)));
+      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(0)));
+    }
   }
 
   /**
@@ -120,5 +135,6 @@ public class ReportFinder
     });
     return files;
   }
+
 
 }

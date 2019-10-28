@@ -1,6 +1,12 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 import app.MainApplication;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -9,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import readers.AMPhoneAuditMap;
 import util.CateringOrder;
+import util.JimmyCalendarUtil;
 
 public class AreaManagerReportController
 {
@@ -29,6 +36,7 @@ public class AreaManagerReportController
   private Button sendReportButton;
 
   private MainApplication mainApplication;
+  private ArrayList<CateringOrder> todaysOrders = new ArrayList<CateringOrder>();
 
   public void initialize()
   {
@@ -39,6 +47,26 @@ public class AreaManagerReportController
     overUnderLabelPM.setText(map.getData(AMPhoneAuditMap.OVER_UNDER, AMPhoneAuditMap.PM) + "");
     laborLabelAM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.AM) + "");
     laborLabelPM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.PM) + "");
+    
+    for(CateringOrder co: MainApplication.dataHub.getCateringOrders())
+    {
+      if(JimmyCalendarUtil.isToday(co.getTime()))
+      {
+        todaysOrders.add(co);
+      }
+    }
+    cateringChoice.setItems(FXCollections.observableArrayList(todaysOrders));
+    cateringChoice.setOnAction(new EventHandler<ActionEvent>()
+    {
+      
+      @Override
+      public void handle(ActionEvent ae)
+      {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
+        cateringTimeLabel.setText("Time: " + sdf.format(cateringChoice.getValue().getTime().getTime()));
+        cateringDollarLabel.setText("Dollar Value: " + cateringChoice.getValue().getDollarValue());
+      }
+    });
   }
 
   public void setMain(MainApplication mainApplication)
@@ -63,7 +91,18 @@ public class AreaManagerReportController
     email += "Staff: " + (staffCheck.isSelected()?"OK\n":"Need Help\n");
     email += "Equipment: " + (equipmentCheck.isSelected()?"OK\n":"Need Fixin\n");
     email += "Punchlist: " + (punchlistCheck.isSelected()?"OK\n":"Incomplete\n");
-    email += explanationArea.getText();
+    email += explanationArea.getText() + "\n";
+    //Catering
+    if(todaysOrders.size() ==0)
+      email += "No Catering";
+    else
+    {
+      email += "Catering:\n";
+      for(CateringOrder co: todaysOrders)
+      {
+        email += co.toString() + "\n";
+      }
+    }
     return email;
   }
 }
