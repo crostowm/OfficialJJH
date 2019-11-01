@@ -22,10 +22,15 @@ public class ReportFinder
 
   public void uploadAreaManagerPhoneAuditToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 1);
+    ArrayList<File> fs = findLatestDuplicates(
+        getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 4);
+    for (File f : fs)
+    {
+      System.out.println(f.getName() + "DIJSDBSKJBDKJ");
+    }
     MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditMap(fs.get(0)));
   }
-  
+
   public void uploadWSRToDataHub()
   {
     ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 4);
@@ -34,24 +39,26 @@ public class ReportFinder
       MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii)), ii + 1);
     }
   }
-  
+
   public void uploadUPKToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
-    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size()-1)));
+    ArrayList<File> fs = findLatestDuplicates(
+        getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
+    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size() - 1)));
     ArrayList<UPKMap> past5UPKMaps = new ArrayList<UPKMap>();
-    for(int ii = 0; ii < fs.size()-1; ii++)
+    for (int ii = 0; ii < fs.size() - 1; ii++)
     {
       past5UPKMaps.add(new UPKMap(fs.get(ii)));
     }
     MainApplication.dataHub.setPast5UPKMaps(past5UPKMaps);
   }
-  
+
   public void uploadHourlySalesToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"), 4);
+    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
+        4);
     ArrayList<HourlySalesMap> past4HourlySales = new ArrayList<HourlySalesMap>();
-    for(int ii = 0; ii < fs.size(); ii++)
+    for (int ii = 0; ii < fs.size(); ii++)
     {
       past4HourlySales.add(new HourlySalesMap(fs.get(ii)));
     }
@@ -65,7 +72,7 @@ public class ReportFinder
   {
     // TODO Auto-generated method stub
     ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
-    if(fs.size() == 2)
+    if (fs.size() == 2)
     {
       MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0)));
       MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(0)));
@@ -89,10 +96,12 @@ public class ReportFinder
       {
         for (int ii = 0; ii < latestFiles.size(); ii++)
         {
+          System.out.println(getDupVal(f) + " " + getDupVal(latestFiles.get(ii)) + "aKJdakbsfkjabfk");
           if (getDupVal(f) > getDupVal(latestFiles.get(ii)))
           {
             if (ii > highestIndex)
               highestIndex = ii;
+            System.out.println(highestIndex);
           }
         }
         if (latestFiles.size() < numFiles && highestIndex == -1)
@@ -135,6 +144,5 @@ public class ReportFinder
     });
     return files;
   }
-
 
 }

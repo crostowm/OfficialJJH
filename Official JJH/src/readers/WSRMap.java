@@ -2,7 +2,6 @@ package readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.StringTokenizer;

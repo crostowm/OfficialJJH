@@ -302,7 +302,6 @@ public class HubController implements DataObserver
     SpinnerValueFactory<Integer> blValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
         0, 500, 0);
     blSpinner.setValueFactory(blValueFactory);
-
     blSpinner.valueProperty().addListener(new ChangeListener<Integer>()
     {
       @Override
@@ -316,7 +315,6 @@ public class HubController implements DataObserver
     SpinnerValueFactory<Integer> mj24ValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
         0, 500, 0);
     mj24Spinner.setValueFactory(mj24ValueFactory);
-
     mj24Spinner.valueProperty().addListener(new ChangeListener<Integer>()
     {
       @Override
@@ -332,7 +330,6 @@ public class HubController implements DataObserver
     SpinnerValueFactory<Integer> mj12ValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
         0, 500, 0);
     mj12Spinner.setValueFactory(mj12ValueFactory);
-
     mj12Spinner.valueProperty().addListener(new ChangeListener<Integer>()
     {
       @Override
@@ -409,6 +406,7 @@ public class HubController implements DataObserver
               category = 7;
               break;
           }
+          //Iterate through upk items
           for (String name : data.getCurrentUPKMap().get(category).keySet())
           {
             if (!name.equals("COGs"))
@@ -418,14 +416,12 @@ public class HubController implements DataObserver
                   data.getCurrentUPKMap().get(category).get(name));
               uah.setOnMouseClicked(new EventHandler<MouseEvent>()
               {
-
                 @Override
                 public void handle(MouseEvent arg0)
                 {
                   currentlySelectedUAH = uah;
                   handleNewUsageAnalysisCategorySelection();
                 }
-
               });
               usageAnalysisVBox.getChildren().add(uah);
             }

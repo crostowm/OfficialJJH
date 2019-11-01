@@ -21,7 +21,7 @@ public class ReportGrabber
   public ReportGrabber(int storeNumber)
   {
     this.storeNumber = storeNumber + "";
-    switch(storeNumber)
+    switch (storeNumber)
     {
       case 1131:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
@@ -59,9 +59,9 @@ public class ReportGrabber
       // Login$Password
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
-      
-      driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
-      //clickSendToDownloadCenter();
+
+      // clickSendToDownloadCenter();
+      downloadLastAMPhoneAuditReport();
       downloadLast4WSR();
     }
     finally
@@ -72,23 +72,39 @@ public class ReportGrabber
 
   private void selectStoreNumberFromDropdown()
   {
-    WebElement storeComboBox = driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListStore_Input\"]"));
+    WebElement storeComboBox = driver
+        .findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListStore_Input\"]"));
     storeComboBox.click();
-    for(int ii = 0; ii < storeNumber.length(); ii++)
+    for (int ii = 0; ii < storeNumber.length(); ii++)
     {
       storeComboBox.sendKeys(storeNumber.charAt(ii) + "");
     }
     storeComboBox.sendKeys(Keys.ENTER);
   }
 
+  private void selectStoreCheckBox()
+  {
+    if (!driver.findElement(By.xpath(storeXPath)).isSelected())
+      driver.findElement(By.xpath(storeXPath)).click();
+  }
+
+  private void downloadLastAMPhoneAuditReport()
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[2]")).click();
+    selectStoreCheckBox();
+    changeToCSVAndDownload();
+  }
+
   private void downloadLast4WSR()
   {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-    for(int ii = 4; ii > 0; ii--)
+    for (int ii = 4; ii > 0; ii--)
     {
-      Select select = new Select(driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-      select.selectByIndex(currentWeekIndex-ii);
+      Select select = new Select(
+          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+      select.selectByIndex(currentWeekIndex - ii);
       changeToCSVAndDownload();
     }
   }
@@ -112,17 +128,21 @@ public class ReportGrabber
 
       // WSR
       driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[23]")).click();
-      clickSendToDownloadCenter();
+      sendToDownloadCenter();
       chooseStore();
       driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]")).click();
       int currentWeekNum = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar());
-      scrollNumberOfItemsAndSelect("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]", currentWeekNum - 3);
+      scrollNumberOfItemsAndSelect("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]",
+          currentWeekNum - 3);
       changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]")).sendKeys(Keys.ARROW_DOWN);
+      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
+          .sendKeys(Keys.ARROW_DOWN);
       changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]")).sendKeys(Keys.ARROW_DOWN);
+      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
+          .sendKeys(Keys.ARROW_DOWN);
       changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]")).sendKeys(Keys.ARROW_DOWN);
+      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
+          .sendKeys(Keys.ARROW_DOWN);
       driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListFiscalYear\"]")).click();
       driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListFiscalYear\"]"))
           .sendKeys("" + (new GregorianCalendar().get(Calendar.YEAR) - 1) + Keys.ENTER);
@@ -136,7 +156,7 @@ public class ReportGrabber
               By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb_i4_i0_ctl00\"]/ul/li[4]/a"))
           .click();
       ;
-      //driver.findElement(By.xpath("//*[@id=\"ctl00_ph_GridCachedReport_ctl00_ctl04_LbDownload\"]")).click();
+      // driver.findElement(By.xpath("//*[@id=\"ctl00_ph_GridCachedReport_ctl00_ctl04_LbDownload\"]")).click();
     }
     finally
     {
@@ -159,9 +179,11 @@ public class ReportGrabber
     driver.findElement(By.xpath(storeXPath)).click();
   }
 
-  private void clickSendToDownloadCenter()
+  private void sendToDownloadCenter()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_CheckBoxSendToDownloadCentre\"]")).click();
+    if (!driver.findElement(By.xpath("//*[@id=\"ctl00_ph_CheckBoxSendToDownloadCentre\"]"))
+        .isSelected())
+      driver.findElement(By.xpath("//*[@id=\"ctl00_ph_CheckBoxSendToDownloadCentre\"]")).click();
   }
 
   private void changeToCSVAndDownload()

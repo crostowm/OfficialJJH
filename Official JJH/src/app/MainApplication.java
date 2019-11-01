@@ -39,6 +39,9 @@ public class MainApplication extends Application
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
   public static boolean fullRun = true;
+  public static boolean sendAMEmail = true;
+  public static String AMEmail = "maxc.esg@gmail.com";
+  public static int storeNumber = 2048;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
   private Stage stage;
@@ -60,8 +63,8 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    ReportGrabber rg = new ReportGrabber(2048);
-    rg.runTester();
+    //ReportGrabber rg = new ReportGrabber(2048);
+    //rg.runTester();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
@@ -69,6 +72,7 @@ public class MainApplication extends Application
     rf.uploadHourlySalesToDataHub();
     rf.uploadTrendSheetsToDataHub();
     
+    //Testing
     BreadHandler bh = new BreadHandler();
     GregorianCalendar gc1 = new GregorianCalendar(2019, 8, 7, 16, 22, 1);
     GregorianCalendar gc2 = new GregorianCalendar(2019, 8, 7, 8, 22, 1);
@@ -82,11 +86,8 @@ public class MainApplication extends Application
 
     bh.analyzeBread();
     System.out.println(bh.toString());
-    // AMPhoneAuditMap ampam = new AMPhoneAuditMap(BASE_DOWNLOAD_LOCATION + "\\Area Manager Phone
-    // Audit Report.csv");
-    // HourlySalesMap hsm = new HourlySalesMap(BASE_DOWNLOAD_LOCATION + "\\Hourly Sales
-    // Report.csv");
-
+    //Testing--
+    
     for (int ii = 1; ii < 15; ii++)
     {
       System.out.println(dataHub.getProjectionWSR(1));
@@ -108,7 +109,6 @@ public class MainApplication extends Application
 
   private void runLogin()
   {
-    // TODO Auto-generated method stub
     loginStage = new Stage();
     FXMLLoader loader;
     Pane root;

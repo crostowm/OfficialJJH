@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import readers.AMPhoneAuditMap;
 import util.CateringOrder;
+import util.Email;
 import util.JimmyCalendarUtil;
 
 public class AreaManagerReportController
@@ -47,10 +48,10 @@ public class AreaManagerReportController
     overUnderLabelPM.setText(map.getData(AMPhoneAuditMap.OVER_UNDER, AMPhoneAuditMap.PM) + "");
     laborLabelAM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.AM) + "");
     laborLabelPM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.PM) + "");
-    
-    for(CateringOrder co: MainApplication.dataHub.getCateringOrders())
+
+    for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
     {
-      if(JimmyCalendarUtil.isToday(co.getTime()))
+      if (JimmyCalendarUtil.isToday(co.getTime()))
       {
         todaysOrders.add(co);
       }
@@ -58,12 +59,13 @@ public class AreaManagerReportController
     cateringChoice.setItems(FXCollections.observableArrayList(todaysOrders));
     cateringChoice.setOnAction(new EventHandler<ActionEvent>()
     {
-      
+
       @Override
       public void handle(ActionEvent ae)
       {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
-        cateringTimeLabel.setText("Time: " + sdf.format(cateringChoice.getValue().getTime().getTime()));
+        cateringTimeLabel
+            .setText("Time: " + sdf.format(cateringChoice.getValue().getTime().getTime()));
         cateringDollarLabel.setText("Dollar Value: " + cateringChoice.getValue().getDollarValue());
       }
     });
@@ -78,6 +80,12 @@ public class AreaManagerReportController
   @FXML
   private void sendReportButtonPressed()
   {
+    if(MainApplication.sendAMEmail)
+    {
+      Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store " + MainApplication.storeNumber, toEmail());
+      email.send();
+    }
+    else
     System.out.println(toEmail());
     mainApplication.runApplication();
   }
@@ -85,24 +93,26 @@ public class AreaManagerReportController
   public String toEmail()
   {
     String email = String.format(
-        "Sales\nAM: %s\nPM: %s\nOver/Under\nAM: %s\nPM: %s\nLabor\nAM: %s\nPM: %s\n",
-        salesLabelAM.getText(), salesLabelPM.getText(), overUnderLabelAM.getText(),
-        overUnderLabelPM.getText(), laborLabelAM.getText(), laborLabelPM.getText());
-    email += "Staff: " + (staffCheck.isSelected()?"OK\n":"Need Help\n");
-    email += "Equipment: " + (equipmentCheck.isSelected()?"OK\n":"Need Fixin\n");
-    email += "Punchlist: " + (punchlistCheck.isSelected()?"OK\n":"Incomplete\n");
-    email += explanationArea.getText() + "\n";
-    //Catering
-    if(todaysOrders.size() ==0)
+        "This is an automated JimmyHub email from store %d\n"
+            + "Sales AM/PM\n%s | %s\nOver/Under AM/PM\n%s | %s\nLabor AM/PM\n%s | %s\n",
+        MainApplication.storeNumber, salesLabelAM.getText(), salesLabelPM.getText(),
+        overUnderLabelAM.getText(), overUnderLabelPM.getText(), laborLabelAM.getText(),
+        laborLabelPM.getText());
+    email += "Staff: " + (staffCheck.isSelected() ? "OK\n" : "Need Help\n");
+    email += "Equipment: " + (equipmentCheck.isSelected() ? "OK\n" : "Need Fixin\n");
+    email += "Punchlist: " + (punchlistCheck.isSelected() ? "OK\n" : "Incomplete\n");
+    // Catering
+    if (todaysOrders.size() == 0)
       email += "No Catering";
     else
     {
       email += "Catering:\n";
-      for(CateringOrder co: todaysOrders)
+      for (CateringOrder co : todaysOrders)
       {
         email += co.toString() + "\n";
       }
     }
+    email += explanationArea.getText() + "\n";
     return email;
   }
 }
