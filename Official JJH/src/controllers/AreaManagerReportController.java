@@ -82,6 +82,7 @@ public class AreaManagerReportController
   {
     if(MainApplication.sendAMEmail)
     {
+      sendReportButton.setDisable(true);
       Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store " + MainApplication.storeNumber, toEmail());
       email.send();
     }
@@ -103,7 +104,7 @@ public class AreaManagerReportController
     email += "Punchlist: " + (punchlistCheck.isSelected() ? "OK\n" : "Incomplete\n");
     // Catering
     if (todaysOrders.size() == 0)
-      email += "No Catering";
+      email += "No Catering\n";
     else
     {
       email += "Catering:\n";

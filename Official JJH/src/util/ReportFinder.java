@@ -3,6 +3,7 @@ package util;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import app.MainApplication;
 import readers.AMPhoneAuditMap;
@@ -22,45 +23,41 @@ public class ReportFinder
 
   public void uploadAreaManagerPhoneAuditToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(
-        getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 4);
-    for (File f : fs)
-    {
-      System.out.println(f.getName() + "DIJSDBSKJBDKJ");
-    }
-    MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditMap(fs.get(0)));
+    ArrayList<DupFile> fs = findLatestDuplicates(
+        getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 1);
+    MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditMap(fs.get(0).getFile()));
   }
 
   public void uploadWSRToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 4);
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 4);
     for (int ii = 0; ii < 4; ii++)
     {
-      MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii)), ii + 1);
+      MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii).getFile()), ii + 1);
     }
   }
 
   public void uploadUPKToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(
+    ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
-    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size() - 1)));
+    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size() - 1).getFile()));
     ArrayList<UPKMap> past5UPKMaps = new ArrayList<UPKMap>();
     for (int ii = 0; ii < fs.size() - 1; ii++)
     {
-      past5UPKMaps.add(new UPKMap(fs.get(ii)));
+      past5UPKMaps.add(new UPKMap(fs.get(ii).getFile()));
     }
     MainApplication.dataHub.setPast5UPKMaps(past5UPKMaps);
   }
 
   public void uploadHourlySalesToDataHub()
   {
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
         4);
     ArrayList<HourlySalesMap> past4HourlySales = new ArrayList<HourlySalesMap>();
     for (int ii = 0; ii < fs.size(); ii++)
     {
-      past4HourlySales.add(new HourlySalesMap(fs.get(ii)));
+      past4HourlySales.add(new HourlySalesMap(fs.get(ii).getFile()));
     }
     MainApplication.dataHub.setPast4HourlySalesMaps(past4HourlySales);
   }
@@ -71,11 +68,11 @@ public class ReportFinder
   public void uploadTrendSheetsToDataHub()
   {
     // TODO Auto-generated method stub
-    ArrayList<File> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
     if (fs.size() == 2)
     {
-      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0)));
-      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(0)));
+      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0).getFile()));
+      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(0).getFile()));
     }
   }
 
@@ -84,52 +81,39 @@ public class ReportFinder
    * @param numFiles
    * @return Highest index = newest
    */
-  private ArrayList<File> findLatestDuplicates(File[] allFiles, int numFiles)
+  private ArrayList<DupFile> findLatestDuplicates(File[] allFiles, int numFiles)
   {
-    ArrayList<File> latestFiles = new ArrayList<File>();
+    ArrayList<DupFile> latestFiles = new ArrayList<DupFile>();
+
     for (File f : allFiles)
     {
-      int highestIndex = -1;
-      if (latestFiles.size() == 0)
-        latestFiles.add(f);
-      else
-      {
-        for (int ii = 0; ii < latestFiles.size(); ii++)
-        {
-          System.out.println(getDupVal(f) + " " + getDupVal(latestFiles.get(ii)) + "aKJdakbsfkjabfk");
-          if (getDupVal(f) > getDupVal(latestFiles.get(ii)))
-          {
-            if (ii > highestIndex)
-              highestIndex = ii;
-            System.out.println(highestIndex);
-          }
-        }
-        if (latestFiles.size() < numFiles && highestIndex == -1)
-        {
-          latestFiles.add(0, f);
-        }
-        else if (highestIndex >= 0)
-        {
-          latestFiles.add(highestIndex, f);
-          if (latestFiles.size() > numFiles)
-          {
-            latestFiles.remove(0);
-          }
-        }
-      }
+      latestFiles.add(new DupFile(f));
     }
-    return latestFiles;
-  }
-
-  private int getDupVal(File f)
-  {
-    // TODO Auto-generated method stub
-    String name = f.getName();
-    if (name.endsWith(").csv"))
+    for (DupFile f : latestFiles)
     {
-      return Integer.parseInt(name.substring(name.lastIndexOf('(') + 1, name.lastIndexOf(')')));
+      System.out.println(f.getName());
     }
-    return 0;
+    Collections.sort(latestFiles);
+    for (DupFile f : latestFiles)
+    {
+      System.out.println(f.getName());
+    }
+    /*
+     * { System.out.println("Analyzing " + f.getName()); for (File fi : latestFiles) {
+     * System.out.println(fi.getName()); } int highestIndex = -1; if (latestFiles.size() == 0)
+     * latestFiles.add(f); else { for (int ii = 0; ii < latestFiles.size(); ii++) { System.out
+     * .println(getDupVal(f) + " " + getDupVal(latestFiles.get(ii)) + "aKJdakbsfkjabfk"); if
+     * (getDupVal(f) > getDupVal(latestFiles.get(ii))) { if (ii > highestIndex) highestIndex = ii;
+     * System.out.println(highestIndex + " " + getDupVal(f)); } } if (latestFiles.size() < numFiles
+     * && highestIndex == -1) { latestFiles.add(0, f); } else if (highestIndex >= 0) {
+     * latestFiles.add(highestIndex, f); if (latestFiles.size() > numFiles) { latestFiles.remove(0);
+     * } } } }
+     */
+    if (latestFiles.size() >= numFiles)
+      return new ArrayList<DupFile>(
+          latestFiles.subList(latestFiles.size() - (numFiles + 1), latestFiles.size() - 1));
+    else
+      return latestFiles;
   }
 
   private File[] getAllCSVFilesThatStartWith(String sw)

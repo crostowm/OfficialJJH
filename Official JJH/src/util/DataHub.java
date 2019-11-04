@@ -84,13 +84,16 @@ public class DataHub implements Serializable
    */
   public void addWSRMapForProjections(WSRMap wsr, int week)
   {
-    if(last4WeeksWSR == null)
+    if (last4WeeksWSR == null)
       last4WeeksWSR = new WSRMap[4];
     last4WeeksWSR[week - 1] = wsr;
     if (last4WeeksWSR[0] != null && last4WeeksWSR[1] != null && last4WeeksWSR[2] != null
         && last4WeeksWSR[3] != null)
-      ;
-    // All proj ready
+    {
+      // All proj ready
+      // TODO create a new map for hour averages
+
+    }
   }
 
   /**
@@ -171,25 +174,25 @@ public class DataHub implements Serializable
 
   private void updateAllSlicingPars(String name)
   {
-    for(int index = 0; index < 14; index++)
+    for (int index = 0; index < 14; index++)
     {
-    int nextShiftIndex = index + 1 >= 14 ? index - 13 : index + 1;
-    int nextNextShiftIndex = index + 2 >= 14 ? index - 12 : index + 2;
-    int nextNextNextShiftIndex = index + 3 >= 14 ? index - 11 : index + 3;
-    slicingPars.get(index).get(name).put("msc",
-        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
-            / 1000) / 3.307);
-    slicingPars.get(index).get(name).put("gec",
-        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-            * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
-            / 3.307);
-    slicingPars.get(index).get(name).put("msn",
-        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-            * projections.get(nextShiftIndex)) / 1000) / 3.307);
-    slicingPars.get(index).get(name).put("gen",
-        ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-            * (projections.get(nextNextShiftIndex) + projections.get(nextNextNextShiftIndex)))
-            / 1000) / 3.307);
+      int nextShiftIndex = index + 1 >= 14 ? index - 13 : index + 1;
+      int nextNextShiftIndex = index + 2 >= 14 ? index - 12 : index + 2;
+      int nextNextNextShiftIndex = index + 3 >= 14 ? index - 11 : index + 3;
+      slicingPars.get(index).get(name).put("msc",
+          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
+              / 1000) / 3.307);
+      slicingPars.get(index).get(name).put("gec",
+          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+              * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
+              / 3.307);
+      slicingPars.get(index).get(name).put("msn",
+          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+              * projections.get(nextShiftIndex)) / 1000) / 3.307);
+      slicingPars.get(index).get(name).put("gen",
+          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+              * (projections.get(nextNextShiftIndex) + projections.get(nextNextNextShiftIndex)))
+              / 1000) / 3.307);
     }
   }
 
@@ -206,10 +209,15 @@ public class DataHub implements Serializable
   public void addCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.add(cateringOrder);
-    if(JimmyCalendarUtil.isInCurrentWeek(new GregorianCalendar(), cateringOrder.getTime()))
+    if (JimmyCalendarUtil.isInCurrentWeek(new GregorianCalendar(), cateringOrder.getTime()))
     {
-      catering.add(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(), settings.get(DataHub.STORESC_TIME).intValue()) - 1, cateringOrder.getDollarValue());
-      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(), settings.get(DataHub.STORESC_TIME).intValue()));
+      catering
+          .add(
+              JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(),
+                  settings.get(DataHub.STORESC_TIME).intValue()) - 1,
+              cateringOrder.getDollarValue());
+      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(),
+          settings.get(DataHub.STORESC_TIME).intValue()));
     }
     for (DataObserver dato : observers)
     {
@@ -220,11 +228,11 @@ public class DataHub implements Serializable
   public void removeCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.remove(cateringOrder);
-    //TODO Check for a better way to do this
+    // TODO Check for a better way to do this
     Double eq = Double.valueOf(0);
-    for(Double d: catering)
+    for (Double d : catering)
     {
-      if(d.equals(cateringOrder.getDollarValue()))
+      if (d.equals(cateringOrder.getDollarValue()))
         eq = d;
     }
     catering.remove(eq);
@@ -294,51 +302,53 @@ public class DataHub implements Serializable
   {
     return currentUPKMap;
   }
-  
+
   public double getSlicingPars(String food, String dataType, int shift)
   {
     int index = shift - 1;
     return slicingPars.get(index).get(food).get(dataType);
   }
 
-  
   public void setPast5UPKMaps(ArrayList<UPKMap> past5UPKMaps)
   {
     this.past5UPKMaps = past5UPKMaps;
   }
-  
+
   public ArrayList<UPKMap> getPast5UPKMaps()
   {
     return past5UPKMaps;
   }
-  
+
   private double getProjectionsForShifts(int startShift, int endShift)
   {
     int startIndex = startShift - 1;
     int totalProj = 0;
     int ii = startIndex;
-    while(ii != endShift)
+    while (ii != endShift)
     {
       totalProj += projections.get(ii);
       ii++;
-      if(ii > 13)
-        ii = ii -14;
+      if (ii > 13)
+        ii = ii - 14;
     }
     return totalProj;
   }
-  
+
   /**
-   * @param startShift am shift of day after order
-   * @param endShift pm shift of day after order next
+   * @param startShift
+   *          am shift of day after order
+   * @param endShift
+   *          pm shift of day after order next
    * @param produceName
    * @param unit
    * @return
    */
-  public double getProduceRequiredForShifts(int startShift, int endShift, String produceName, int unit)
+  public double getProduceRequiredForShifts(int startShift, int endShift, String produceName,
+      int unit)
   {
     double proj = getProjectionsForShifts(startShift, endShift);
     double upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
-    double req = ((proj * upk)/1000)/unit;
+    double req = ((proj * upk) / 1000) / unit;
     return req;
   }
 
@@ -346,7 +356,7 @@ public class DataHub implements Serializable
   {
     this.amPhoneAuditMap = amPhoneAuditMap;
   }
-  
+
   public AMPhoneAuditMap getAMPhoneAudit()
   {
     return amPhoneAuditMap;
@@ -356,7 +366,28 @@ public class DataHub implements Serializable
   {
     this.past4HourlySales = past4HourlySales;
   }
-  
+
+  /**
+   * @param type
+   *          Inshop, Delivery, or Total
+   * @param hour
+   * @return
+   */
+  public double getAverageHourlySales(String type, int hour)
+  {
+    double total = 0;
+    for (HourlySalesMap hsm : past4HourlySales)
+    {
+      if (type.equals("Total"))
+        total += hsm.getTakeoutPickupEatin$ForHour(hour) + hsm.getDelivery$ForHour(hour);
+      else if (type.equals("Inshop"))
+        total += hsm.getTakeoutPickupEatin$ForHour(hour);
+      else
+        total += hsm.getDelivery$ForHour(hour);
+    }
+    return total / past4HourlySales.size();
+  }
+
   public ArrayList<HourlySalesMap> getPast4HourlySalesMaps()
   {
     return past4HourlySales;
@@ -366,7 +397,7 @@ public class DataHub implements Serializable
   {
     this.lastYearTrendSheet = trendSheetMap;
   }
-  
+
   public TrendSheetMap getLastYearTrendSheet()
   {
     return lastYearTrendSheet;
@@ -376,7 +407,7 @@ public class DataHub implements Serializable
   {
     this.currentYearTrendSheet = trendSheetMap;
   }
-  
+
   public TrendSheetMap getCurrentYearTrendSheet()
   {
     return currentYearTrendSheet;

@@ -24,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import readers.WSRMap;
-import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.CateringOrder;
@@ -38,8 +37,8 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
-  public static boolean fullRun = true;
-  public static boolean sendAMEmail = true;
+  public static boolean fullRun = false;
+  public static boolean sendAMEmail = false;
   public static String AMEmail = "maxc.esg@gmail.com";
   public static int storeNumber = 2048;
   public static DataHub dataHub;
