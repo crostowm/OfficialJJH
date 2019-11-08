@@ -307,6 +307,23 @@ public class HubController implements DataObserver
     daysOfTheWeek.add("Friday");
     daysOfTheWeek.add("Saturday");
     orderingOnChoice.setItems(FXCollections.observableArrayList(daysOfTheWeek));
+    orderingOnChoice.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent arg0)
+      {
+        if(orderingOnChoice.getValue() != null && forDeliveryOnChoice.getValue() != null)
+        {
+          int numDiff;
+          if(orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue()) == forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue()))
+            numDiff = 0;
+          else if(orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue()) > forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue()))
+            numDiff = (7 - orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue())) + forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue());
+          else
+            numDiff = forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue())- orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue());
+        }
+      }
+    });
     forDeliveryOnChoice.setItems(FXCollections.observableArrayList(daysOfTheWeek));
 
     ArrayList<String> categories = new ArrayList<String>();

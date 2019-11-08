@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import readers.WSRMap;
+import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.CateringOrder;
@@ -39,7 +40,7 @@ public class MainApplication extends Application
   public static final int storeSC = 3;
   public static boolean fullRun = false;
   public static boolean sendAMEmail = false;
-  public static String AMEmail = "maxc.esg@gmail.com";
+  public static String AMEmail = "jakec.esg@gmail.com";
   public static int storeNumber = 2048;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();

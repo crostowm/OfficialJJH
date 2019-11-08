@@ -2,6 +2,7 @@ package controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import app.MainApplication;
 import javafx.collections.FXCollections;
@@ -80,22 +81,24 @@ public class AreaManagerReportController
   @FXML
   private void sendReportButtonPressed()
   {
-    if(MainApplication.sendAMEmail)
+    if (MainApplication.sendAMEmail)
     {
       sendReportButton.setDisable(true);
-      Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store " + MainApplication.storeNumber, toEmail());
+      SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
+      Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store "
+          + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime()), toEmail());
       email.send();
     }
     else
-    System.out.println(toEmail());
+      System.out.println(toEmail());
     mainApplication.runApplication();
   }
 
   public String toEmail()
   {
     String email = String.format(
-        "This is an automated JimmyHub email from store %d\n"
-            + "Sales AM/PM\n%s | %s\nOver/Under AM/PM\n%s | %s\nLabor AM/PM\n%s | %s\n",
+        "This is an automated JimmyHub email from store %d\n\n"
+            + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n",
         MainApplication.storeNumber, salesLabelAM.getText(), salesLabelPM.getText(),
         overUnderLabelAM.getText(), overUnderLabelPM.getText(), laborLabelAM.getText(),
         laborLabelPM.getText());
@@ -116,4 +119,17 @@ public class AreaManagerReportController
     email += explanationArea.getText() + "\n";
     return email;
   }
+  
+  /*private String fixedLengthString(int length, String str)
+  {
+    return String.format("%0$" + length + "s", str);
+  }
+  
+  String email = String.format("This is an automated JimmyHub email from store %d\n\n", MainApplication.storeNumber);
+  email += fixedLengthString(20, "Sales AM/PM") + fixedLengthString(8, salesLabelAM.getText()) + " | " + fixedLengthString(8, salesLabelPM.getText()) + "\n\n";
+  email += fixedLengthString(20, "Over/Under AM/PM") + fixedLengthString(8, overUnderLabelAM.getText()) + " | " + fixedLengthString(8, overUnderLabelPM.getText()) + "\n\n";
+  email += fixedLengthString(20, "Labor AM/PM") + fixedLengthString(8, laborLabelAM.getText()) + " | " + fixedLengthString(8, laborLabelPM.getText()) + "\n\n";
+  email += "Staff: " + (staffCheck.isSelected() ? "OK\n" : "Need Help\n");
+  email += "Equipment: " + (equipmentCheck.isSelected() ? "OK\n" : "Need Fixin\n");
+  email += "Punchlist: " + (punchlistCheck.isSelected() ? "OK\n" : "Incomplete\n");*/
 }
