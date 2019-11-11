@@ -16,13 +16,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 import util.Email;
 
 public class WeeklySupplyController
 {
   @FXML
-  private GridPane supplyGrid;
+  private FlowPane supplyGrid;
 
   @FXML
   private Button submitButton, addItemButton;
@@ -34,7 +34,6 @@ public class WeeklySupplyController
   private TextField itemField;
 
   private ArrayList<WeeklySupplyItemBox> itemBoxList = new ArrayList<WeeklySupplyItemBox>();
-  private int col = 0, row = 0;
 
   private WeeklySupplyStage weeklySupplyStage;
 
@@ -50,10 +49,11 @@ public class WeeklySupplyController
       @Override
       public void handle(KeyEvent ke)
       {
-        if(ke.getCode().equals(KeyCode.ENTER))
+        if (ke.getCode().equals(KeyCode.ENTER))
           handleAddItem();
       }
     });
+    supplyGrid.setHgap(10);
   }
 
   protected void handleAddItem()
@@ -66,18 +66,7 @@ public class WeeklySupplyController
   {
     WeeklySupplyItemBox wsib = new WeeklySupplyItemBox(item);
     itemBoxList.add(wsib);
-    if (col < 5)
-    {
-      supplyGrid.add(wsib, col, row);
-      col++;
-    }
-    else
-    {
-      row++;
-      col = 0;
-      supplyGrid.add(wsib, col, row);
-      col++;
-    }
+    supplyGrid.getChildren().add(wsib);
   }
 
   @FXML
@@ -85,7 +74,8 @@ public class WeeklySupplyController
   {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
     String email = "--This is an automated JimmyHub email: \nWeekly Supply Order from Store #"
-        + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime()) + "--\n";
+        + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime())
+        + "--\n";
     for (WeeklySupplyItemBox wsib : itemBoxList)
     {
       if (wsib.isNeeded())

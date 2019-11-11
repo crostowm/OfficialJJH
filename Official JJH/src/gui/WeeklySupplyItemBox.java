@@ -20,6 +20,7 @@ public class WeeklySupplyItemBox extends HBox
     super();
     this.name = name;
     setMaxWidth(240);
+    setMinWidth(240);
     checkBox = new CheckBox(name);
     checkBox.setMinWidth(150);
     count = new Spinner<Integer>();
