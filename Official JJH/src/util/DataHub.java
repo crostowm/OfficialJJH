@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import observers.DataObserver;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
@@ -36,6 +38,7 @@ public class DataHub implements Serializable
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private AMPhoneAuditMap amPhoneAuditMap;
   private TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
+  private ObservableList<String> weeklySupplyItems;
 
   public DataHub()
   {
@@ -57,7 +60,8 @@ public class DataHub implements Serializable
       slicingPars.get(ii).put("Salami", new HashMap<String, Double>());
       slicingPars.get(ii).put("Capicola", new HashMap<String, Double>());
     }
-
+    if (weeklySupplyItems == null)
+      setupWeeklySupplyItems();
     settings.put(AMBUFFER, 1.2);
     settings.put(PMBUFFER, 1.2);
     settings.put(BTV, 200.0);
@@ -420,4 +424,30 @@ public class DataHub implements Serializable
     observers = new ArrayList<DataObserver>();
   }
 
+  public ObservableList<String> getWeeklySupplyItems()
+  {
+    return weeklySupplyItems;
+  }
+
+  public void addWeeklySupplyItem(String item)
+  {
+    weeklySupplyItems.add(item);
+  }
+
+  public void removeWeeklySupplyItem(String item)
+  {
+    weeklySupplyItems.remove(item);
+  }
+
+  private void setupWeeklySupplyItems()
+  {
+    weeklySupplyItems = FXCollections.observableArrayList("Clorox Bleach", "Windex Refill",
+        "Windex Multi-Surface Vinegar", "Simple Green", "Scotch Brite pads",
+        "Stainless Steel Polish", "Magic Erasers", "Dawn", "Hand Soap", "Toilet Bowl Cleaner",
+        "Toilet Paper", "Morton Salt", "Snack Baggies", "Greased Lightning", "Mop Heads",
+        "Computer Paper", "Goo Gone", "Bar Keeper's Friend", "Gloves", "Hydrogen Peroxide",
+        "Band-aids", "Gauze Pads", "Burn Cream", "Neosporin", "Dasani", "Letter Envelopes",
+        "Manilla Envelopes", "Staples (Standard)", "Staples (Bostich)", "Grease Pencil", "Sharpies",
+        "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives");
+  }
 }

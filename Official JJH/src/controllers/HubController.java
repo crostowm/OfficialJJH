@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import app.CateringApplication;
+import app.CateringStage;
 import app.MainApplication;
+import app.WeeklySupplyStage;
 import error_handling.ErrorHandler;
 import gui.GuiUtilFactory;
 import gui.TruckOrderHBox;
@@ -47,7 +48,7 @@ public class HubController implements DataObserver
 
   private GregorianCalendar currentTimeAndDate = new GregorianCalendar();
 
-  private CateringApplication ca;
+  private CateringStage ca;
 
   private DataHub data = MainApplication.dataHub;
 
@@ -574,6 +575,7 @@ public class HubController implements DataObserver
    */
   private void updateAllFields()
   {
+    System.out.println("Updating all");
     // Update Settings
     try
     {
@@ -899,7 +901,7 @@ public class HubController implements DataObserver
   @FXML
   public void addCateringButtonPressed()
   {
-    ca = new CateringApplication();
+    ca = new CateringStage();
     ca.show();
   }
 
@@ -1408,5 +1410,12 @@ public class HubController implements DataObserver
   public void toolBoxDataUpdated()
   {
     updateAllFields();
+  }
+  
+  @FXML
+  public void createWeeklySupplyButtonPressed()
+  {
+    WeeklySupplyStage wss = new WeeklySupplyStage();
+    wss.show();
   }
 }
