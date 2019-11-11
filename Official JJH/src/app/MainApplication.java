@@ -6,11 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.GregorianCalendar;
 import java.util.Timer;
 
-import bread.BreadHandler;
-import bread.BreadRequest;
 import controllers.AreaManagerReportController;
 import controllers.HubController;
 import controllers.LoginController;
@@ -26,7 +23,6 @@ import javafx.stage.WindowEvent;
 import readers.WSRMap;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
-import util.CateringOrder;
 import util.DataHub;
 import util.ReportFinder;
 
@@ -47,8 +43,8 @@ public class MainApplication extends Application
   private Stage stage;
   private Stage amrStage;
   private Stage loginStage;
-  
-  //Need to be checked for null if not set
+
+  // Need to be checked for null if not set
   private static String username;
   private static String pass;
 
@@ -63,31 +59,16 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    //ReportGrabber rg = new ReportGrabber(2048);
-    //rg.runTester();
+    // ReportGrabber rg = new ReportGrabber(2048);
+    // rg.runTester();
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadTrendSheetsToDataHub();
-    
-    //Testing
-    BreadHandler bh = new BreadHandler();
-    GregorianCalendar gc1 = new GregorianCalendar(2019, 8, 7, 16, 22, 1);
-    GregorianCalendar gc2 = new GregorianCalendar(2019, 8, 7, 8, 22, 1);
-    GregorianCalendar gc3 = new GregorianCalendar(2019, 8, 7, 21, 22, 1);
-    GregorianCalendar gc4 = new GregorianCalendar(2019, 7, 7, 16, 22, 1);
 
-    bh.sendRequest(new BreadRequest(14, gc1));
-    bh.sendRequest(new BreadRequest(24, gc2));
-    bh.sendRequest(new BreadRequest(35, gc3));
-    bh.sendRequest(new BreadRequest(10, gc4));
-
-    bh.analyzeBread();
-    System.out.println(bh.toString());
-    //Testing--
-    
+    // Testing--
     for (int ii = 1; ii < 15; ii++)
     {
       System.out.println(dataHub.getProjectionWSR(1));
@@ -101,10 +82,10 @@ public class MainApplication extends Application
           + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii)) / 4;
       dataHub.setAverageForShift(ii, avg);
     }
-    if(fullRun)
+    if (fullRun)
       runLogin();
     else
-    runApplication();
+      runApplication();
   }
 
   private void runLogin()
@@ -116,7 +97,7 @@ public class MainApplication extends Application
     {
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJHLogin.fxml"));
       root = loader.load();
-      LoginController lc = (LoginController)loader.getController();
+      LoginController lc = (LoginController) loader.getController();
       lc.setMainApp(this);
       loginStage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
       loginStage.getIcons().add(new Image("resources/jjhr.png"));
@@ -133,8 +114,8 @@ public class MainApplication extends Application
 
   public void runApplication()
   {
-    if(amrStage != null)
-    amrStage.close();
+    if (amrStage != null)
+      amrStage.close();
     FXMLLoader loader;
     Pane root;
     try
@@ -164,25 +145,6 @@ public class MainApplication extends Application
           System.out.println("Close");
           timerSec.cancel();
           timerMin.cancel();
-
-          // Save Catering Orders
-          try
-          {
-            FileOutputStream out = new FileOutputStream(cateringOrderFileName);
-            ObjectOutputStream serializer = new ObjectOutputStream(out);
-
-            for (CateringOrder co : dataHub.getCateringOrders())
-            {
-              serializer.writeObject(co);
-            }
-
-            serializer.flush();
-            out.close();
-          }
-          catch (Exception e)
-          {
-            ErrorHandler.addError("Failed to save catering orders");
-          }
 
           // Save Data Hub
           try
@@ -250,9 +212,10 @@ public class MainApplication extends Application
     Pane root;
     try
     {
-      loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Area Manager Report.fxml"));
+      loader = new FXMLLoader(
+          getClass().getClassLoader().getResource("fxml/Area Manager Report.fxml"));
       root = loader.load();
-      AreaManagerReportController amrc = (AreaManagerReportController)loader.getController();
+      AreaManagerReportController amrc = (AreaManagerReportController) loader.getController();
       amrc.setMain(this);
       amrStage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
       amrStage.getIcons().add(new Image("resources/jjhr.png"));
@@ -266,12 +229,12 @@ public class MainApplication extends Application
       e.printStackTrace();
     }
   }
-  
+
   public static String getUser()
   {
     return username;
   }
-  
+
   public static String getPass()
   {
     return pass;

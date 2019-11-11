@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 import app.MainApplication;
 import app.WeeklySupplyStage;
 import gui.WeeklySupplyItemBox;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,7 +24,7 @@ public class WeeklySupplyController
   private FlowPane supplyGrid;
 
   @FXML
-  private Button submitButton, addItemButton;
+  private Button submitButton, addItemButton, removeItemsButton;
 
   @FXML
   private TextArea commentArea;
@@ -39,8 +38,7 @@ public class WeeklySupplyController
 
   public void initialize()
   {
-    ObservableList<String> items = MainApplication.dataHub.getWeeklySupplyItems();
-    for (String item : items)
+    for (String item : MainApplication.dataHub.getWeeklySupplyItems())
     {
       addItemToList(item);
     }
@@ -59,6 +57,7 @@ public class WeeklySupplyController
   protected void handleAddItem()
   {
     addItemToList(itemField.getText());
+    MainApplication.dataHub.addWeeklySupplyItem(itemField.getText());
     itemField.setText("");
   }
 
@@ -101,6 +100,23 @@ public class WeeklySupplyController
   void addItemButtonPressed()
   {
     handleAddItem();
+  }
+  
+  @FXML
+  void removeItemsButtonPressed()
+  {
+    ArrayList<WeeklySupplyItemBox> itemsToRemove = new ArrayList<WeeklySupplyItemBox>();
+    for(WeeklySupplyItemBox wsib: itemBoxList)
+    {
+      if(wsib.isNeeded())
+        itemsToRemove.add(wsib);
+    }
+    for(WeeklySupplyItemBox wsib: itemsToRemove)
+    {
+      MainApplication.dataHub.removeWeeklySupplyItem(wsib.getName());
+      itemBoxList.remove(wsib);
+      supplyGrid.getChildren().remove(wsib);
+    }
   }
 
   public void setStage(WeeklySupplyStage weeklySupplyStage)

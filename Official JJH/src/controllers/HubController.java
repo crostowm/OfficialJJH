@@ -322,6 +322,7 @@ public class HubController implements DataObserver
             numDiff = (7 - orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue())) + forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue());
           else
             numDiff = forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue())- orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue());
+          System.out.println(numDiff + " " + currentlySelectedTOH);
         }
       }
     });

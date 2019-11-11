@@ -1,2 +1,0 @@
-Failed to save data hub
-com.sun.javafx.collections.ObservableListWrapperjava.io.NotSerializableException: com.sun.javafx.collections.ObservableListWrapper

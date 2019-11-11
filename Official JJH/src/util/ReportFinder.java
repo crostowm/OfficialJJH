@@ -89,26 +89,7 @@ public class ReportFinder
     {
       latestFiles.add(new DupFile(f));
     }
-    for (DupFile f : latestFiles)
-    {
-      System.out.println(f.getName());
-    }
     Collections.sort(latestFiles);
-    for (DupFile f : latestFiles)
-    {
-      System.out.println(f.getName());
-    }
-    /*
-     * { System.out.println("Analyzing " + f.getName()); for (File fi : latestFiles) {
-     * System.out.println(fi.getName()); } int highestIndex = -1; if (latestFiles.size() == 0)
-     * latestFiles.add(f); else { for (int ii = 0; ii < latestFiles.size(); ii++) { System.out
-     * .println(getDupVal(f) + " " + getDupVal(latestFiles.get(ii)) + "aKJdakbsfkjabfk"); if
-     * (getDupVal(f) > getDupVal(latestFiles.get(ii))) { if (ii > highestIndex) highestIndex = ii;
-     * System.out.println(highestIndex + " " + getDupVal(f)); } } if (latestFiles.size() < numFiles
-     * && highestIndex == -1) { latestFiles.add(0, f); } else if (highestIndex >= 0) {
-     * latestFiles.add(highestIndex, f); if (latestFiles.size() > numFiles) { latestFiles.remove(0);
-     * } } } }
-     */
     if (latestFiles.size() >= numFiles)
       return new ArrayList<DupFile>(
           latestFiles.subList(latestFiles.size() - (numFiles + 1), latestFiles.size() - 1));

@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import observers.DataObserver;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
@@ -38,7 +37,7 @@ public class DataHub implements Serializable
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private AMPhoneAuditMap amPhoneAuditMap;
   private TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
-  private ObservableList<String> weeklySupplyItems;
+  private ArrayList<String> weeklySupplyItems;
 
   public DataHub()
   {
@@ -424,7 +423,7 @@ public class DataHub implements Serializable
     observers = new ArrayList<DataObserver>();
   }
 
-  public ObservableList<String> getWeeklySupplyItems()
+  public ArrayList<String> getWeeklySupplyItems()
   {
     return weeklySupplyItems;
   }
@@ -441,13 +440,14 @@ public class DataHub implements Serializable
 
   private void setupWeeklySupplyItems()
   {
-    weeklySupplyItems = FXCollections.observableArrayList("Clorox Bleach", "Windex Refill",
+    if(weeklySupplyItems == null)
+    weeklySupplyItems = new ArrayList<String>(FXCollections.observableArrayList("Clorox Bleach", "Windex Refill",
         "Windex Multi-Surface Vinegar", "Simple Green", "Scotch Brite pads",
         "Stainless Steel Polish", "Magic Erasers", "Dawn", "Hand Soap", "Toilet Bowl Cleaner",
         "Toilet Paper", "Morton Salt", "Snack Baggies", "Greased Lightning", "Mop Heads",
-        "Computer Paper", "Goo Gone", "Bar Keeper's Friend", "Gloves", "Hydrogen Peroxide",
+        "Printer Paper", "Goo Gone", "Bar Keeper's Friend", "Gloves", "Hydrogen Peroxide",
         "Band-aids", "Gauze Pads", "Burn Cream", "Neosporin", "Dasani", "Letter Envelopes",
         "Manilla Envelopes", "Staples (Standard)", "Staples (Bostich)", "Grease Pencil", "Sharpies",
-        "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives");
+        "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives"));
   }
 }
