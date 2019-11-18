@@ -33,6 +33,7 @@ public class CateringController
 
   public void initialize()
   {
+    //Year
     ArrayList<Integer> years = new ArrayList<Integer>();
     for(int ii = new GregorianCalendar().get(Calendar.YEAR); ii < new GregorianCalendar().get(Calendar.YEAR) + 10; ii++)
     {
@@ -41,6 +42,7 @@ public class CateringController
     yearChoice.setItems(FXCollections.observableArrayList(years));
     yearChoice.setValue(new GregorianCalendar().get(Calendar.YEAR));
     
+    //Month
     ArrayList<Integer> months = new ArrayList<Integer>();
     for(int ii = 1; ii < 13; ii++)
     {
@@ -49,6 +51,7 @@ public class CateringController
     monthChoice.setItems(FXCollections.observableArrayList(months));
     monthChoice.setValue(new GregorianCalendar().get(Calendar.MONTH) + 1);
     
+    //Day
     ArrayList<Integer> days = new ArrayList<Integer>();
     for(int ii = 1; ii < 32; ii++)
     {
@@ -57,6 +60,7 @@ public class CateringController
     dayChoice.setItems(FXCollections.observableArrayList(days));
     dayChoice.setValue(new GregorianCalendar().get(Calendar.DAY_OF_MONTH));
     
+    //Hour
     ArrayList<Integer> hours = new ArrayList<Integer>();
     for(int ii = 1; ii < 13; ii++)
     {
@@ -65,6 +69,7 @@ public class CateringController
     hourChoice.setItems(FXCollections.observableArrayList(hours));
     hourChoice.setValue(10);
     
+    //Minute
     ArrayList<Integer> minutes = new ArrayList<Integer>();
     for(int ii = 0; ii < 60; ii+=5)
     {
@@ -73,6 +78,7 @@ public class CateringController
     minuteChoice.setItems(FXCollections.observableArrayList(minutes));
     minuteChoice.setValue(0);
     
+    //AM/PM
     ArrayList<String> ampm = new ArrayList<String>();
     ampm.add("AM");
     ampm.add("PM");
@@ -100,7 +106,6 @@ public class CateringController
     }
     catch (NumberFormatException e)
     {
-      // TODO: handle exception
       System.out.println("Unable to parse Catering order");
     }
   }

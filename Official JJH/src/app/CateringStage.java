@@ -8,6 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Stage for the creation of catering orders
+ * @author crost
+ *
+ */
 public class CateringStage extends Stage
 {
 

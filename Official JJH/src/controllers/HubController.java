@@ -39,6 +39,11 @@ import util.DataHub;
 import util.JimmyCalendarUtil;
 import util.MathUtil;
 
+/**
+ * 
+ * @author crost
+ *
+ */
 public class HubController implements DataObserver
 {
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,

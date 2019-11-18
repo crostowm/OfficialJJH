@@ -9,6 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Login Stage
+ * @author crost
+ *
+ */
 public class LoginApp extends Application
 {
 

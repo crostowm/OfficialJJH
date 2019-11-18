@@ -9,6 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Weekly Supply Stage
+ * @author crost
+ *
+ */
 public class WeeklySupplyStage extends Stage
 {
   public WeeklySupplyStage()
@@ -21,6 +26,7 @@ public class WeeklySupplyStage extends Stage
       root = loader.load();
       ((WeeklySupplyController)loader.getController()).setStage(this);
       getIcons().add(new Image("resources/jjhr.png"));
+      setTitle("JimmyHub -We Kick Ass, What Do You Do?");
       Scene scene = new Scene(root);
       setScene(scene);
       setMaximized(true);

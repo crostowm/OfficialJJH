@@ -20,12 +20,16 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import readers.WSRMap;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.DataHub;
 import util.ReportFinder;
 
+/**
+ * JimmyHub
+ * @author Max Croston
+ *
+ */
 public class MainApplication extends Application
 {
   public static final String cateringOrderFileName = "Catering_Orders.dat";
@@ -59,8 +63,9 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    // ReportGrabber rg = new ReportGrabber(2048);
+    // ReportGrabber rg = new ReportGrabber(storeNumber);
     // rg.runTester();
+    
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
@@ -68,26 +73,15 @@ public class MainApplication extends Application
     rf.uploadHourlySalesToDataHub();
     rf.uploadTrendSheetsToDataHub();
 
-    // Testing--
-    for (int ii = 1; ii < 15; ii++)
-    {
-      System.out.println(dataHub.getProjectionWSR(1));
-      System.out.println(dataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
-          + dataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
-          + dataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
-          + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii));
-      double avg = (dataHub.getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii)
-          + dataHub.getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii)
-          + dataHub.getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii)
-          + dataHub.getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii)) / 4;
-      dataHub.setAverageForShift(ii, avg);
-    }
     if (fullRun)
       runLogin();
     else
       runApplication();
   }
 
+  /**
+   * Runs login followed by AMReport followed by Dash
+   */
   private void runLogin()
   {
     loginStage = new Stage();
@@ -112,6 +106,10 @@ public class MainApplication extends Application
     }
   }
 
+  /**
+   * Runs the Dash
+   * Starts Timers
+   */
   public void runApplication()
   {
     if (amrStage != null)
@@ -142,7 +140,7 @@ public class MainApplication extends Application
         @Override
         public void handle(WindowEvent arg0)
         {
-          System.out.println("Close");
+          System.out.println("Close Window");
           timerSec.cancel();
           timerMin.cancel();
 
@@ -171,6 +169,9 @@ public class MainApplication extends Application
     }
   }
 
+  /**
+   * Runs when program halts
+   */
   private void setShutdownHook()
   {
     Runtime.getRuntime().addShutdownHook(new Thread()
@@ -184,6 +185,10 @@ public class MainApplication extends Application
     });
   }
 
+  /**
+   * Reads in DataHub
+   * If no save file, will create a default datahub
+   */
   private void readInDataHub()
   {
     try
@@ -202,6 +207,10 @@ public class MainApplication extends Application
     }
   }
 
+  /**
+   * @param user Username field
+   * @param pass Password field
+   */
   public void runAMPhoneAudit(String user, String pass)
   {
     loginStage.close();

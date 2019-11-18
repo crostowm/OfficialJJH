@@ -2,10 +2,15 @@ package bread;
 
 import java.util.GregorianCalendar;
 
+/**
+ * Start Time to begin proofing
+ * @author crost
+ *
+ */
 public class BreadTray6
 {
   /**
-   * The time it needs to begin stretching process
+   * The time it needs to begin proofing process
    */
   private GregorianCalendar startTime;
   

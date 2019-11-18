@@ -3,6 +3,11 @@ package bread;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+/**
+ * Contains Number of Sticks and Time Due
+ * @author crost
+ *
+ */
 public class BreadRequest implements Comparable<BreadRequest>
 {
   private int numSticks;

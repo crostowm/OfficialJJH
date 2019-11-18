@@ -95,7 +95,19 @@ public class DataHub implements Serializable
     {
       // All proj ready
       // TODO create a new map for hour averages
-
+      for (int ii = 1; ii < 15; ii++)
+      {
+        System.out.println(getProjectionWSR(1));
+        System.out.println(getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
+            + getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
+            + getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii) + " "
+            + getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii));
+        double avg = (getProjectionWSR(1).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+            + getProjectionWSR(2).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+            + getProjectionWSR(3).getDataForShift(WSRMap.ROYALTY_SALES, ii)
+            + getProjectionWSR(4).getDataForShift(WSRMap.ROYALTY_SALES, ii)) / 4;
+        setAverageForShift(ii, avg);
+      }
     }
   }
 

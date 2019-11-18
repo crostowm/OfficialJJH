@@ -11,6 +11,11 @@ import observers.DataObserver;
 import util.CateringOrder;
 import util.DataHub;
 
+/**
+ * Maintains Bread Requests and creates a Tray Log with tray process status 
+ * @author crost
+ *
+ */
 public class BreadHandler implements DataObserver
 {
   private ArrayList<BreadRequest> breadRequests = new ArrayList<BreadRequest>();
@@ -42,6 +47,9 @@ public class BreadHandler implements DataObserver
     analyzeBread();
   }
 
+  /**
+   * Clears Tray Log and recreates by going backwards through bread requests
+   */
   public void analyzeBread()
   {
     if (breadRequests.size() > 0)
@@ -84,6 +92,10 @@ public class BreadHandler implements DataObserver
     }
   }
 
+  /**
+   * Adds Bread Request and reanalyzes
+   * @param breadRequest
+   */
   public void sendRequest(BreadRequest breadRequest)
   {
     breadRequests.add(breadRequest);

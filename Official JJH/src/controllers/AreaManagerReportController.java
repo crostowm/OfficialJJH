@@ -19,6 +19,11 @@ import util.CateringOrder;
 import util.Email;
 import util.JimmyCalendarUtil;
 
+/**
+ * Must set MainApp
+ * @author crost
+ *
+ */
 public class AreaManagerReportController
 {
   @FXML
@@ -42,6 +47,7 @@ public class AreaManagerReportController
 
   public void initialize()
   {
+    //Set All Labels with data
     AMPhoneAuditMap map = MainApplication.dataHub.getAMPhoneAudit();
     salesLabelAM.setText(map.getData(AMPhoneAuditMap.SALES, AMPhoneAuditMap.AM) + "");
     salesLabelPM.setText(map.getData(AMPhoneAuditMap.SALES, AMPhoneAuditMap.PM) + "");
@@ -50,6 +56,7 @@ public class AreaManagerReportController
     laborLabelAM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.AM) + "");
     laborLabelPM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.PM) + "");
 
+    //Add catering orders
     for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
     {
       if (JimmyCalendarUtil.isToday(co.getTime()))
@@ -74,7 +81,6 @@ public class AreaManagerReportController
 
   public void setMain(MainApplication mainApplication)
   {
-    // TODO Auto-generated method stub
     this.mainApplication = mainApplication;
   }
 
@@ -119,17 +125,4 @@ public class AreaManagerReportController
     email += explanationArea.getText() + "\n";
     return email;
   }
-  
-  /*private String fixedLengthString(int length, String str)
-  {
-    return String.format("%0$" + length + "s", str);
-  }
-  
-  String email = String.format("This is an automated JimmyHub email from store %d\n\n", MainApplication.storeNumber);
-  email += fixedLengthString(20, "Sales AM/PM") + fixedLengthString(8, salesLabelAM.getText()) + " | " + fixedLengthString(8, salesLabelPM.getText()) + "\n\n";
-  email += fixedLengthString(20, "Over/Under AM/PM") + fixedLengthString(8, overUnderLabelAM.getText()) + " | " + fixedLengthString(8, overUnderLabelPM.getText()) + "\n\n";
-  email += fixedLengthString(20, "Labor AM/PM") + fixedLengthString(8, laborLabelAM.getText()) + " | " + fixedLengthString(8, laborLabelPM.getText()) + "\n\n";
-  email += "Staff: " + (staffCheck.isSelected() ? "OK\n" : "Need Help\n");
-  email += "Equipment: " + (equipmentCheck.isSelected() ? "OK\n" : "Need Fixin\n");
-  email += "Punchlist: " + (punchlistCheck.isSelected() ? "OK\n" : "Incomplete\n");*/
 }
