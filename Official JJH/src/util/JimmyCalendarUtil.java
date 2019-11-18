@@ -3,6 +3,8 @@ package util;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import app.MainApplication;
+
 public class JimmyCalendarUtil
 {
   public static int getShiftNumber(GregorianCalendar calendar, int storeSCTime)
@@ -84,5 +86,10 @@ public class JimmyCalendarUtil
   public static boolean isToday(GregorianCalendar time)
   {
     return time.get(Calendar.DAY_OF_YEAR) == (new GregorianCalendar()).get(Calendar.DAY_OF_YEAR);
+  }
+
+  public static int getNextAMShift()
+  {
+    return getNextAMShift(getShiftNumber(new GregorianCalendar(), (int)MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)));
   }
 }

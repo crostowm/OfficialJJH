@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProjectionTabController">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="4.333333492279053" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="3.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="165.0" prefWidth="165.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="1.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints prefHeight="17.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="12.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Tuesday" GridPane.columnIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Wednesday" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Thursday" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Friday" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Saturday" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Sunday" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Monday" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Eras Medium ITC" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="13" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="12" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="11" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="10" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="9" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="8" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="7" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="6" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="5" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="4" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" text="2" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="14" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="Average" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label text="Average +20%" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="+Catering" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                  <Label text="+Sampling" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label text="Projections" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <TextField fx:id="c1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c1Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c2Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c3Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c4Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c5Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c6Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c7Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c8Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c9Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c10Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c11Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c12Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c13Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="c14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#c14Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a21" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="70.0" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a22" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a23" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a24" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a25" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a26" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a27" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a29" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a210" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a28" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1280" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a211" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a212" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a213" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="a214" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s1" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s1Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s2" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s2Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s3" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s3Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s4" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s4Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s5" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s5Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s6" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s6Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s7" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s7Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="s8" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s8Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s9" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s9Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s11" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s11Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s10" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s10Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s12" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s12Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s13" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s13Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="s14" alignment="CENTER" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" onKeyTyped="#s14Changed" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                  <TextField fx:id="p8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="p14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" text="1536" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TextField>
+                  <Label maxHeight="15.0" prefHeight="15.0" text="Total Trays Thawed Open/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                  <Label maxHeight="15.0" prefHeight="15.0" text="Baked 75%@11(12) / @SC(9)" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+                  <Label maxHeight="15.0" prefHeight="15.0" text="Wheat Total / SC" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                  <TextField fx:id="tt1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w3" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w4" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w5" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="tt14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w6" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="perc14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w7" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w8" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w9" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w10" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w11" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <TextField fx:id="w14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+                  <Label fx:id="produceLabel" maxHeight="15.0" prefHeight="15.0" text="Produce To Prep" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <Label maxHeight="15.0" prefHeight="15.0" text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <Label maxHeight="15.0" prefHeight="15.0" text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <Label text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <Label text="Cucumbers" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                  <Label text="Pickles" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
+                  <TextField fx:id="lettuceField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                  <TextField fx:id="tomatoField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                  <TextField fx:id="onionField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                  <TextField fx:id="cucumberField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                  <TextField fx:id="pickleField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                  <Label text="Slicing Pars" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <Label text="Min Start Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <Label text="Goal End Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <Label text="Min Start Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <Label text="Goal End Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                  <Label text="Cheese" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Ham" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Turkey" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Beef" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Vito" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <TextField fx:id="cheeseMSCField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="13" />
+                  <TextField fx:id="hamMSCField" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="13" />
+                  <TextField fx:id="cheeseGECField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="14" />
+                  <TextField fx:id="turkeyMSCField" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="13" />
+                  <TextField fx:id="beefMSCField" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="13" />
+                  <TextField fx:id="vitoMSCField" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+                  <TextField fx:id="hamGECField" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="14" />
+                  <TextField fx:id="turkeyGECField" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="14" />
+                  <TextField fx:id="beefGECField" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="14" />
+                  <TextField fx:id="vitoGECField" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="14" />
+                  <TextField fx:id="cheeseMSNField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="15" />
+                  <TextField fx:id="hamMSNField" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="15" />
+                  <TextField fx:id="turkeyMSNField" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="15" />
+                  <TextField fx:id="beefMSNField" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="15" />
+                  <TextField fx:id="vitoMSNField" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="15" />
+                  <TextField fx:id="cheeseGENField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="16" />
+                  <TextField fx:id="hamGENField" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="16" />
+                  <TextField fx:id="turkeyGENField" alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="16" />
+                  <TextField fx:id="beefGENField" alignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="16" />
+                  <TextField fx:id="vitoGENField" alignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="16" />
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
