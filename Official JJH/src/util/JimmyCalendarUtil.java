@@ -64,7 +64,8 @@ public class JimmyCalendarUtil
 
   public static int getNextAMShift(int currentShift)
   {
-    return currentShift + (currentShift % 2 == 0 ? 1 : 2);
+    int nextS = currentShift + (currentShift % 2 == 0 ? 1 : 2);
+    return nextS >= 14 ? nextS - 14 : nextS;
   }
 
   public static int convertToShiftNumber(int i)
@@ -74,11 +75,11 @@ public class JimmyCalendarUtil
 
   public static String convertTo12Hour(int currentHour)
   {
-    if(currentHour == 0)
+    if (currentHour == 0)
       return "12am";
-    else if(currentHour == 12)
+    else if (currentHour == 12)
       return "12pm";
-    else if(currentHour>12)
+    else if (currentHour > 12)
       return (currentHour - 12) + "pm";
     return currentHour + "am";
   }
@@ -90,6 +91,7 @@ public class JimmyCalendarUtil
 
   public static int getNextAMShift()
   {
-    return getNextAMShift(getShiftNumber(new GregorianCalendar(), (int)MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)));
+    return getNextAMShift(getShiftNumber(new GregorianCalendar(),
+        (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)));
   }
 }
