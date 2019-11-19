@@ -74,6 +74,24 @@ public class GuiUtilFactory
     return box;
   }
 
+  
+  public static HBox createTruckOrderHBoxTitle()
+  {
+    HBox box = new HBox(10);
+    Label name = new Label("Name");
+    name.setPrefWidth(200);
+    Label acUsage = new Label("Actual Usage");
+    acUsage.setPrefWidth(100);
+    acUsage.setAlignment(Pos.CENTER);
+    Label avgUPK = new Label("Average UPK");
+    avgUPK.setPrefWidth(100);
+    avgUPK.setAlignment(Pos.CENTER);
+    Label onHand = new Label("On Hand");
+    onHand.setPrefWidth(100);
+    onHand.setAlignment(Pos.CENTER);
+    box.getChildren().addAll(name, acUsage, avgUPK, onHand);
+    return box;
+  }
   public static LineChart<Number, Number> createUsageAnalysisLineChart(UsageAnalysisHBox uah,
       int currentWeekNumber)
   {

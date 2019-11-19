@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import app.MainApplication;
 import gui.GuiUtilFactory;
@@ -9,8 +10,11 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class TruckOrderGuideTabController
@@ -22,6 +26,9 @@ public class TruckOrderGuideTabController
   @FXML
   private VBox truckOrderGuideVBox;
 
+  @FXML
+  private GridPane grid;
+  
   private TruckOrderHBox currentlySelectedTOH = null;
 
   public void initialize()
@@ -81,7 +88,9 @@ public class TruckOrderGuideTabController
         if (orderGuideCategoryChoice.getValue() != null)
         {
           truckOrderGuideVBox.getChildren().clear();
-          truckOrderGuideVBox.getChildren().add(GuiUtilFactory.createUsageAnalysisHBoxTitle());
+          HBox thb = GuiUtilFactory.createTruckOrderHBoxTitle();
+          thb.setPadding(new Insets(15, 0, 0, 0));
+          grid.add(thb, 0, 1, 2, 1);
           int category = -1;
           switch (orderGuideCategoryChoice.getValue())
           {
@@ -108,7 +117,9 @@ public class TruckOrderGuideTabController
               break;
           }
           // Iterate through upk items
-          for (String name : MainApplication.dataHub.getCurrentUPKMap().get(category).keySet())
+          ArrayList<String> names = new ArrayList<String>(MainApplication.dataHub.getCurrentUPKMap().get(category).keySet());
+          Collections.sort(names);
+          for (String name : names)
           {
             if (!name.equals("COGs"))
             {
