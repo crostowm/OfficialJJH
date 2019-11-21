@@ -1,6 +1,7 @@
 package controllers;
 
 import app.MainApplication;
+import error_handling.ErrorHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import util.DataHub;
@@ -56,6 +57,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -70,6 +72,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -83,6 +86,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -96,6 +100,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -109,6 +114,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -123,6 +129,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -137,6 +144,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -151,6 +159,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -165,6 +174,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -179,6 +189,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -193,6 +204,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -207,6 +219,7 @@ public class SettingsTabController
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
+      ErrorHandler.addError(nfe);
     }
   }
 

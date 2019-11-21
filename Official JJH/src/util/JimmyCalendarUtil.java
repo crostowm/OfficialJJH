@@ -94,4 +94,12 @@ public class JimmyCalendarUtil
     return getNextAMShift(getShiftNumber(new GregorianCalendar(),
         (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)));
   }
+
+  public static int getPeriodNumber(int weekNumber)
+  {
+    int pNumber = (weekNumber/4);
+    if(weekNumber%4 != 0)
+      pNumber++;
+    return pNumber;
+  }
 }

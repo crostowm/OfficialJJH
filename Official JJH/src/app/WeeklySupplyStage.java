@@ -3,6 +3,7 @@ package app;
 import java.io.IOException;
 
 import controllers.WeeklySupplyController;
+import error_handling.ErrorHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -34,6 +35,7 @@ public class WeeklySupplyStage extends Stage
     catch(IOException io)
     {
       io.printStackTrace();
+      ErrorHandler.addError(io);
     }
   }
 }

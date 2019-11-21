@@ -12,12 +12,16 @@ import readers.UPKMap;
 public class TruckOrderHBox extends UPKHBox
 {
 
-  public TruckOrderHBox(int category, double adjustedSales, String n, HashMap<Integer, Double> data)
+  public TruckOrderHBox(int category, double adjustedSales, String n, HashMap<Integer, Double> data, String uni)
   {
     super(category, adjustedSales, n, data);
     setSpacing(10);
     Label name = new Label(n);
     name.setPrefWidth(200);
+    
+    Label unit = new Label(uni);
+    unit.setPrefWidth(70);
+    unit.setAlignment(Pos.CENTER);
     
     Label acUsage = new Label(data.get(UPKMap.ACTUAL_USAGE) + "");
     acUsage.setPrefWidth(100);
@@ -32,7 +36,13 @@ public class TruckOrderHBox extends UPKHBox
     HBox.setMargin(onHand, new Insets(0, 20, 0, 20));
     onHand.setAlignment(Pos.CENTER);
     
-    getChildren().addAll(name, acUsage, avgUPK, onHand);
+    TextField toOrder = new TextField();
+    toOrder.setPrefWidth(60);
+    HBox.setMargin(toOrder, new Insets(0, 20, 0, 20));
+    toOrder.setAlignment(Pos.CENTER);
+    toOrder.setEditable(false);
+    
+    getChildren().addAll(name, unit, acUsage, avgUPK, onHand, toOrder);
   }
 
 }

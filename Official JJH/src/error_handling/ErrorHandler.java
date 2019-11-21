@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 public class ErrorHandler
 {
-  private static ArrayList<String> errors = new ArrayList<String>();
+  private static ArrayList<Exception> errors = new ArrayList<Exception>();
   
-  public static void addError(String error)
+  public static void addError(Exception error)
   {
     errors.add(error);
   }
   
-  public ArrayList<String> getErrors()
+  public ArrayList<Exception> getErrors()
   {
      return errors;
   }
@@ -24,9 +24,10 @@ public class ErrorHandler
     try
     {
       PrintWriter pw = new PrintWriter(new File("error.txt"));
-      for(String s: errors)
+      for(Exception e: errors)
       {
-        pw.write(s + "\n");
+        e.printStackTrace(pw);
+        pw.write("\n");
       }
       pw.flush();
       pw.close();
@@ -34,6 +35,7 @@ public class ErrorHandler
     catch (FileNotFoundException e)
     {
       e.printStackTrace();
+      addError(e);
     }
   }
 }

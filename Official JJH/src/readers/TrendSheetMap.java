@@ -2,89 +2,113 @@ package readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.StringTokenizer;
+
+import error_handling.ErrorHandler;
+import javafx.collections.FXCollections;
 
 /**
- * @author crost Key1: One of the static ints below Key2: Week Number Object: Value
+ * @author crost Key1: One of the static Strings below Key2: Week Number Object: Value
  */
-public class TrendSheetMap extends HashMap<Integer, HashMap<Integer, Double>>
+public class TrendSheetMap
 {
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  public static int LY_ROYALTY = 1, CY_ROYALTY = 2, COMPS = 3, CY_LABORP = 4, CY_LABOR$ = 5,
-      LY_LABORP = 6, COGS$ = 7, COGSP = 8, BREADP = 9, FOODP = 10, SIDESP = 11, PAPERP = 12,
-      PRODUCEP = 13, BEVERAGEP = 14, CATERINGP = 15;
+  public static String LY_ROYALTY = "Last Year Royalty", CY_ROYALTY = "Current Year Royalty",
+      COMPS = "Comps", CY_LABORP = "Current Year Labor %", CY_LABOR$ = "Current Year Labor $",
+      LY_LABORP = "Last Year Labor %", CASH_OVER_UNDER = "Cash Over/Under", COGS$ = "COGs $",
+      COGSP = "COGS %", BREADP = "Bread %", FOODP = "Food %", SIDESP = "Sides %",
+      PAPERP = "Paper %", PRODUCEP = "Produce %", BEVERAGEP = "Beverage %",
+      CATERINGP = "Catering %";
+  private HashMap<String, HashMap<Integer, Double>> weeklyMap = new HashMap<String, HashMap<Integer, Double>>();
+  private HashMap<String, HashMap<Integer, Double>> periodMap = new HashMap<String, HashMap<Integer, Double>>();
   private Scanner scanner;
+  private String[] tokens;
+  private int index;
+  private int week = 0;
+  private int period = 1;
 
   public TrendSheetMap(File file)
   {
-    for (int ii = 1; ii < 16; ii++)
-    {
-      put(ii, new HashMap<Integer, Double>());
-    }
     try
     {
       scanner = new Scanner(file);
-
-      //TODO Fix Year for reusability
-      scanner.useDelimiter(
-          "Period 1,2019 Current Year Royalty Sales,2018  Last Year Royalty Sales,Variance %,2019 Labor $,2019 Labor %,2018  Labor %,2019 Cash Over / Under,COGS $,COGS%,Bread %,Food %,Sides %,Paper %,Produce %,Beverage %,Catering %,Week");
-      // scanner.next();
-      int week = 0;
       while (scanner.hasNext())
       {
-        week++;
-        StringTokenizer st = new StringTokenizer(scanner.next(), ",");
-        while (st.hasMoreTokens())
+        tokens = scanner.nextLine().split(",");
+        if (tokens[0].startsWith("\"Store"))
         {
-          String s = st.nextToken();
-          if (s.length() > 3 && s.substring(0, 4).equals("Week"))
-          {
-            insertValueIntoMap(week, CY_ROYALTY, st);
-            insertValueIntoMap(week, LY_ROYALTY, st);
-            insertValueIntoMap(week, COMPS, st);
-            insertValueIntoMap(week, CY_LABOR$, st);
-            insertValueIntoMap(week, CY_LABORP, st);
-            insertValueIntoMap(week, LY_LABORP, st);
-            st.nextToken();
-            insertValueIntoMap(week, COGS$, st);
-            insertValueIntoMap(week, COGSP, st);
-            insertValueIntoMap(week, BREADP, st);
-            insertValueIntoMap(week, FOODP, st);
-            insertValueIntoMap(week, SIDESP, st);
-            insertValueIntoMap(week, PAPERP, st);
-            insertValueIntoMap(week, PRODUCEP, st);
-            insertValueIntoMap(week, BEVERAGEP, st);
-            insertValueIntoMap(week, CATERINGP, st);
-          }
+          week++;
+          index = 21;
+          insertValueIntoWeeklyMap(CY_ROYALTY);
+          insertValueIntoWeeklyMap(LY_ROYALTY);
+          insertValueIntoWeeklyMap(COMPS);
+          insertValueIntoWeeklyMap(CY_LABOR$);
+          insertValueIntoWeeklyMap(CY_LABORP);
+          insertValueIntoWeeklyMap(LY_LABORP);
+          insertValueIntoWeeklyMap(CASH_OVER_UNDER);
+          insertValueIntoWeeklyMap(COGS$);
+          insertValueIntoWeeklyMap(COGSP);
+          insertValueIntoWeeklyMap(BREADP);
+          insertValueIntoWeeklyMap(FOODP);
+          insertValueIntoWeeklyMap(SIDESP);
+          insertValueIntoWeeklyMap(PAPERP);
+          insertValueIntoWeeklyMap(PRODUCEP);
+          insertValueIntoWeeklyMap(BEVERAGEP);
+          insertValueIntoWeeklyMap(CATERINGP);
+          index++;
+          period = Integer.parseInt((tokens[3].split(" "))[1]);
+          insertValueIntoPeriodMap(CY_ROYALTY);
+          insertValueIntoPeriodMap(LY_ROYALTY);
+          insertValueIntoPeriodMap(COMPS);
+          insertValueIntoPeriodMap(CY_LABOR$);
+          insertValueIntoPeriodMap(COGS$);
+          insertValueIntoPeriodMap(COGSP);
+          insertValueIntoPeriodMap(BREADP);
+          insertValueIntoPeriodMap(FOODP);
+          insertValueIntoPeriodMap(SIDESP);
+          insertValueIntoPeriodMap(PAPERP);
+          insertValueIntoPeriodMap(PRODUCEP);
+          insertValueIntoPeriodMap(BEVERAGEP);
+          insertValueIntoPeriodMap(CATERINGP);
         }
       }
     }
     catch (FileNotFoundException fnf)
     {
       fnf.printStackTrace();
+      ErrorHandler.addError(fnf);
     }
   }
 
-  private void insertValueIntoMap(int week, int category, StringTokenizer st)
+  private void insertValueIntoWeeklyMap(String category)
   {
-    String s = st.nextToken();
-    s = removeQuotes(s, st);
-    System.out.println(s);
-    get(category).put(week, Double.parseDouble(s));
+    String s = tokens[index];
+    s = removeQuotes(s);
+    if (weeklyMap.get(category) == null)
+      weeklyMap.put(category, new HashMap<Integer, Double>());
+    weeklyMap.get(category).put(week, Double.parseDouble(s));
+    index++;
   }
 
-  private String removeQuotes(String s, StringTokenizer st)
+  private void insertValueIntoPeriodMap(String category)
+  {
+    String s = tokens[index];
+    s = removeQuotes(s);
+    if (periodMap.get(category) == null)
+      periodMap.put(category, new HashMap<Integer, Double>());
+    periodMap.get(category).put(period, Double.parseDouble(s));
+    index++;
+  }
+
+  private String removeQuotes(String s)
   {
     if (s.length() > 0)
     {
       if (s.charAt(0) == '"')
       {
-        s += st.nextToken();
+        index++;
+        s += tokens[index];
         s = s.substring(1, s.indexOf("\"", 1));
       }
       if (s.charAt(0) == '$')
@@ -96,8 +120,32 @@ public class TrendSheetMap extends HashMap<Integer, HashMap<Integer, Double>>
         s = s.substring(0, s.length() - 1);
       }
     }
-    System.out.println(s);
     return s;
   }
-}
 
+  public ArrayList<String> getWeeklyItems()
+  {
+    // TODO split into for week and for period
+    return new ArrayList<String>(FXCollections.observableArrayList(LY_ROYALTY, CY_ROYALTY, COMPS,
+        CY_LABORP, CY_LABOR$, LY_LABORP, CASH_OVER_UNDER, COGS$, COGSP, BREADP, FOODP, SIDESP,
+        PAPERP, PRODUCEP, BEVERAGEP, CATERINGP));
+  }
+
+  public ArrayList<String> getPeriodItems()
+  {
+    // TODO split into for week and for period
+    return new ArrayList<String>(FXCollections.observableArrayList(LY_ROYALTY, CY_ROYALTY, COMPS,
+        CY_LABOR$, COGS$, COGSP, BREADP, FOODP, SIDESP, PAPERP, PRODUCEP, BEVERAGEP, CATERINGP));
+  }
+
+  public Double getDataForCategoryForWeek(String cat, int week)
+  {
+    return weeklyMap.get(cat).get(week);
+  }
+
+  public double getDataForCategoryForPeriod(String cat, int period)
+  {
+    System.out.println(cat + " " + period);
+    return periodMap.get(cat).get(period);
+  }
+}

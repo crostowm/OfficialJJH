@@ -384,6 +384,7 @@ public class ProjectionTabController implements TimeObserver
       {
         System.out
             .println("NFE, Could not parse a text field on Projections tab:\n" + nfe.getMessage());
+        ErrorHandler.addError(nfe);
       }
     }
   }
@@ -474,7 +475,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -490,7 +491,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -506,7 +507,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -522,7 +523,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -538,7 +539,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -554,7 +555,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -570,7 +571,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -586,7 +587,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -602,7 +603,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -618,7 +619,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -634,7 +635,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -650,7 +651,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -666,7 +667,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 
@@ -682,7 +683,7 @@ public class ProjectionTabController implements TimeObserver
     }
     catch (NumberFormatException nfe)
     {
-      ErrorHandler.addError(nfe.toString());
+      ErrorHandler.addError(nfe);
     }
   }
 

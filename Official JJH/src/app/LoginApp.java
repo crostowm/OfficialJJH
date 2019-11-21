@@ -2,6 +2,7 @@ package app;
 
 import java.io.IOException;
 
+import error_handling.ErrorHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,7 +36,7 @@ public class LoginApp extends Application
     }
     catch(IOException io)
     {
-      
+      ErrorHandler.addError(io);
     }
   }
 

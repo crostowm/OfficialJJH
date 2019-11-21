@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import app.MainApplication;
+import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -107,6 +108,7 @@ public class CateringController
     catch (NumberFormatException e)
     {
       System.out.println("Unable to parse Catering order");
+      ErrorHandler.addError(e);
     }
   }
 }

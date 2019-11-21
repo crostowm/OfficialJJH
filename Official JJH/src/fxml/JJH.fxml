@@ -156,7 +156,11 @@
                              		<fx:include fx:id="usageAnalysisTab" source="UsageAnalysisTab.fxml" />
                             	</content>
                               </Tab>
-                              <Tab text="Business Analysis" />
+                              <Tab text="Business Analysis">
+                              	<content>
+                              		<fx:include fx:id="businessAnalysisTab" source="BusinessAnalysisTab.fxml" />
+                              	</content>
+                              </Tab>
                               <Tab text="Settings">
                               	<content>
                              		<fx:include fx:id="settingsTab" source="SettingsTab.fxml" />

@@ -2,6 +2,7 @@ package app;
 
 import java.io.IOException;
 
+import error_handling.ErrorHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,6 +32,7 @@ public class CateringStage extends Stage
     catch(IOException io)
     {
       io.printStackTrace();
+      ErrorHandler.addError(io);
     }
   }
 

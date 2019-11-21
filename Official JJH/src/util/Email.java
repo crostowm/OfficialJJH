@@ -10,6 +10,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import error_handling.ErrorHandler;
+
 public class Email
 {
   // for example, smtp.mailgun.org
@@ -62,6 +64,7 @@ public class Email
     catch (MessagingException e)
     {
       e.printStackTrace();
+      ErrorHandler.addError(e);
     }
   }
 
@@ -74,6 +77,7 @@ public class Email
     catch (MessagingException e)
     {
       e.printStackTrace();
+      ErrorHandler.addError(e);
       return false;
     }
 

@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import error_handling.ErrorHandler;
+
 public class AMPhoneAuditMap extends HashMap<Integer, HashMap<Integer, Double>>
 {
   private static final long serialVersionUID = 5127268723476633575L;
@@ -71,11 +73,13 @@ public class AMPhoneAuditMap extends HashMap<Integer, HashMap<Integer, Double>>
     catch (FileNotFoundException e)
     {
       System.out.println("FNF AMPhoneAudit");
+      ErrorHandler.addError(e);
     }
     catch (NumberFormatException nfe)
     {
       System.out.println("Error parsing AMPhoneAudit");
       nfe.printStackTrace();
+      ErrorHandler.addError(nfe);
     }
   }
 

@@ -63,12 +63,12 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    // ReportGrabber rg = new ReportGrabber(storeNumber);
-    // rg.runTester();
+    //ReportGrabber rg = new ReportGrabber(storeNumber);
+    //rg.runTester();
     
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
-    rf.uploadWSRToDataHub();
     rf.uploadUPKToDataHub();
+    rf.uploadWSRToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadTrendSheetsToDataHub();
@@ -101,7 +101,7 @@ public class MainApplication extends Application
     }
     catch (IOException e)
     {
-      ErrorHandler.addError("Could not load root for " + "fxml/JJHLogin.fxml");
+      ErrorHandler.addError(e);
       e.printStackTrace();
     }
   }
@@ -157,14 +157,14 @@ public class MainApplication extends Application
           }
           catch (Exception e)
           {
-            ErrorHandler.addError("Failed to save data hub\n" + e.getMessage() + e.toString());
+            ErrorHandler.addError(e);
           }
         }
       });
     }
     catch (IOException e)
     {
-      ErrorHandler.addError("Could not load root for " + "resources/MainMenuFXML.fxml");
+      ErrorHandler.addError(e);
       e.printStackTrace();
     }
   }
@@ -204,6 +204,7 @@ public class MainApplication extends Application
     {
       System.out.println("Did not read in data hub\n" + e.getMessage());
       dataHub = new DataHub();
+      ErrorHandler.addError(e);
     }
   }
 
@@ -234,7 +235,7 @@ public class MainApplication extends Application
     }
     catch (IOException e)
     {
-      ErrorHandler.addError("Could not load root for " + "fxml/Area Manager Report.fxml");
+      ErrorHandler.addError(e);
       e.printStackTrace();
     }
   }

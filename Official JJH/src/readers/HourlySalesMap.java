@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import error_handling.ErrorHandler;
+
 /**
  * @author crost HashMap<Int-Order Category, HashMap<Int-Hour 24hr<HashMap<Int-Data Type Category,
  *         Double>>> 0 for total category -1 for total hour
@@ -137,6 +139,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
           }
           catch (NumberFormatException e)
           {
+            ErrorHandler.addError(e);
             break;
           }
         }
@@ -147,6 +150,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
     catch (FileNotFoundException e)
     {
       e.printStackTrace();
+      ErrorHandler.addError(e);
     }
   }
 
@@ -160,6 +164,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
     {
       System.out.println("Error getting data in hourly sales map\n");
       e.printStackTrace();
+      ErrorHandler.addError(e);
       return 0;
     }
   }

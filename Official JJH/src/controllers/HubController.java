@@ -48,6 +48,9 @@ public class HubController implements DataObserver
   @FXML
   private SettingsTabController settingsTabController;
   
+  @FXML
+  private BusinessAnalysisTabController businessAnalysisTabController;
+  
   //Outer
   @FXML
   private Label shiftLabel, clockLabel, dateLabel;

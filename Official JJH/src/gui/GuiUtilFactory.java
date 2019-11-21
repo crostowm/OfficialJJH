@@ -74,12 +74,14 @@ public class GuiUtilFactory
     return box;
   }
 
-  
   public static HBox createTruckOrderHBoxTitle()
   {
     HBox box = new HBox(10);
     Label name = new Label("Name");
     name.setPrefWidth(200);
+    Label unit = new Label("Unit");
+    unit.setPrefWidth(70);
+    unit.setAlignment(Pos.CENTER);
     Label acUsage = new Label("Actual Usage");
     acUsage.setPrefWidth(100);
     acUsage.setAlignment(Pos.CENTER);
@@ -89,9 +91,13 @@ public class GuiUtilFactory
     Label onHand = new Label("On Hand");
     onHand.setPrefWidth(100);
     onHand.setAlignment(Pos.CENTER);
-    box.getChildren().addAll(name, acUsage, avgUPK, onHand);
+    Label toOrder = new Label("To Order");
+    toOrder.setPrefWidth(100);
+    toOrder.setAlignment(Pos.CENTER);
+    box.getChildren().addAll(name, unit, acUsage, avgUPK, onHand, toOrder);
     return box;
   }
+
   public static LineChart<Number, Number> createUsageAnalysisLineChart(UsageAnalysisHBox uah,
       int currentWeekNumber)
   {
@@ -107,7 +113,7 @@ public class GuiUtilFactory
     return lineChart;
   }
 
-  public static XYChart.Series<Number, Number> getSeriesFor(UsageAnalysisHBox uah,
+  public static XYChart.Series<Number, Number> getUPKSeriesFor(UsageAnalysisHBox uah,
       ArrayList<UPKMap> arrayList, int weekNumber, String seriesName, int upkMapCategory)
   {
     XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
@@ -149,6 +155,57 @@ public class GuiUtilFactory
     w6.setNode(new DataPointNode(sales6));
     series.getData().add(w6);
 
+    return series;
+  }
+
+  /**
+   * @param <T>
+   * @param seriesNames
+   * @param xs
+   *          Should all have the same xs
+   * @param ys
+   * @return
+   */
+  public static LineChart<Number, Number> createNewPopulatedBusinessAnalysisNumberChart(String xAxisTitle,
+      String yAxisTitle, String chartTitle, ArrayList<String> seriesNames, ArrayList<Number> xs,
+      ArrayList<ArrayList<Number>> ys)
+  {
+    // TODO finish this
+    if (xs.size() > 1)
+    {
+      int diff = (Integer) xs.get(1) - (Integer) xs.get(0);
+      final NumberAxis xAxis = new NumberAxis((Integer) xs.get(0), (Integer) xs.get(xs.size() - 1),
+          diff);
+      final NumberAxis yAxis = new NumberAxis();
+      yAxis.setForceZeroInRange(false);
+      xAxis.setLabel(xAxisTitle);
+      yAxis.setLabel(yAxisTitle);
+      // creating the chart
+      final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+      lineChart.setTitle(chartTitle);
+      for(int ii = 0; ii < ys.size(); ii++)
+      {
+        lineChart.getData().add(getSeriesFor(seriesNames.get(ii), xs, ys.get(ii)));
+      }
+      return lineChart;
+    }
+    else
+    {
+      System.out.println("Line Chart Failed");
+      return null;
+    }
+  }
+
+  public static XYChart.Series<Number, Number> getSeriesFor(String seriesName, ArrayList<Number> x,
+      ArrayList<Number> y)
+  {
+    XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+    series.setName(seriesName);
+    for (int ii = 0; ii < x.size() && ii < y.size(); ii++)
+    {
+      XYChart.Data<Number, Number> data = new XYChart.Data<Number, Number>(x.get(ii), y.get(ii));
+      series.getData().add(data);
+    }
     return series;
   }
 }

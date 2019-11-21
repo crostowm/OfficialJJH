@@ -130,25 +130,25 @@ public class UsageAnalysisTabController
           {
             case "Actual Usage":
               chart.getData()
-                  .add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
                       MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
                       UPKMap.ACTUAL_USAGE));
               break;
             case "Theoretical Usage":
               chart.getData()
-                  .add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
                       MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
                       UPKMap.THEORETICAL_USAGE));
               break;
             case "Actual UPK":
               chart.getData()
-                  .add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
                       MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
                       UPKMap.ACTUAL_UPK));
               break;
             case "Average UPK":
               chart.getData()
-                  .add(GuiUtilFactory.getSeriesFor(currentlySelectedUAH,
+                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
                       MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
                       UPKMap.AVERAGE_UPK));
               break;

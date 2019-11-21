@@ -31,8 +31,10 @@ public class ReportFinder
   public void uploadWSRToDataHub()
   {
     ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 4);
+    System.out.println(fs.size());
     for (int ii = 0; ii < 4; ii++)
     {
+      System.out.println("Uploading this WSR File: " + fs.get(ii).getFile().getName());
       MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii).getFile()), ii + 1);
     }
   }
@@ -71,8 +73,9 @@ public class ReportFinder
     ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
     if (fs.size() == 2)
     {
+      System.out.println("Successfully Uploaded Trend Sheets");
       MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0).getFile()));
-      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(0).getFile()));
+      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(1).getFile()));
     }
   }
 
@@ -92,7 +95,7 @@ public class ReportFinder
     Collections.sort(latestFiles);
     if (latestFiles.size() >= numFiles)
       return new ArrayList<DupFile>(
-          latestFiles.subList(latestFiles.size() - (numFiles + 1), latestFiles.size() - 1));
+          latestFiles.subList(latestFiles.size() - (numFiles), latestFiles.size()));
     else
       return latestFiles;
   }
