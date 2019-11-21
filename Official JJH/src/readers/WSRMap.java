@@ -13,7 +13,6 @@ public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
   public static final int ADJUSTED_SALES = 0, SAMPLING = 1, WASTE = 2, ROYALTY_SALES = 3,
       PLATTERS_MINI_JIMMYS = 4, BOX_LUNCH = 5;
   private static final long serialVersionUID = 1L;
-  private Scanner scanner;
   private int index;
   private ArrayList<String> managerDeposits = new ArrayList<String>();
 
@@ -21,7 +20,7 @@ public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
   {
     try
     {
-      scanner = new Scanner(file);
+      Scanner scanner = new Scanner(file);
       while (scanner.hasNext())
       {
         String[] tokens = scanner.nextLine().split(",");
@@ -56,7 +55,7 @@ public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
           }
         }
       }
-
+      scanner.close();
     }
     catch (FileNotFoundException e)
     {

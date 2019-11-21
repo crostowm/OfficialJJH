@@ -37,7 +37,7 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
-  public static boolean fullRun = false;
+  public static boolean fullRun = true;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
   public static String AMEmail = "jakec.esg@gmail.com";

@@ -35,7 +35,7 @@
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Password" />
-                  <PasswordField fx:id="passField" alignment="CENTER" />
+                  <PasswordField fx:id="passField" />
                </children>
             </HBox>
             <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonPressed" text="Login">
@@ -43,7 +43,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
-            <Label text="Once you click login do not touch anything until the hub has opened">
+            <Label fx:id="messageLabel">
                <padding>
                   <Insets top="30.0" />
                </padding>

@@ -1,9 +1,14 @@
 package controllers;
 
+import app.AddManagerStage;
 import app.MainApplication;
 import error_handling.ErrorHandler;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import personnel.Manager;
 import util.DataHub;
 
 public class SettingsTabController
@@ -12,8 +17,20 @@ public class SettingsTabController
   private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
       bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
 
+  @FXML
+  private Button addManagerButton, removeManagerButton;
+  
+  @FXML
+  private ChoiceBox<Manager> managerChoice;
+  
+  public void initialize()
+  {
+    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
+  }
+  
   public void updateAllFields()
   {
+    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
     try
     {
       MainApplication.dataHub.changeSetting(DataHub.AMBUFFER,
@@ -44,6 +61,18 @@ public class SettingsTabController
     }
   }
 
+  @FXML
+  void addManagerButtonPressed()
+  {
+    AddManagerStage ams = new AddManagerStage();
+    ams.show();
+  }
+  
+  @FXML
+  void removeManagerButtonPressed()
+  {
+    MainApplication.dataHub.removeManager(managerChoice.getValue());
+  }
   // Settings
   // TODO needs to update setting in datahub
   @FXML

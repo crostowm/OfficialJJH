@@ -204,6 +204,7 @@ public class GuiUtilFactory
     for (int ii = 0; ii < x.size() && ii < y.size(); ii++)
     {
       XYChart.Data<Number, Number> data = new XYChart.Data<Number, Number>(x.get(ii), y.get(ii));
+      data.setNode(new DataPointNode((double)y.get(ii)));
       series.getData().add(data);
     }
     return series;

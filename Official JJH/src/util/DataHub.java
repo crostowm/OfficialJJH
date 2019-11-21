@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import observers.DataObserver;
+import personnel.Manager;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
 import readers.TrendSheetMap;
@@ -21,6 +22,12 @@ public class DataHub implements Serializable
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
+  private transient UPKMap currentUPKMap;
+  private transient ArrayList<UPKMap> past5UPKMaps;
+  private transient ArrayList<HourlySalesMap> past4HourlySales;
+  private transient AMPhoneAuditMap amPhoneAuditMap;
+  private transient TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
+  private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
   private ArrayList<Double> averagePlusBuffer = new ArrayList<Double>();
@@ -31,12 +38,7 @@ public class DataHub implements Serializable
   private ArrayList<Double> percentage = new ArrayList<Double>();
   private ArrayList<Double> wheat = new ArrayList<Double>();
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
-  private UPKMap currentUPKMap;
-  private ArrayList<UPKMap> past5UPKMaps;
-  private ArrayList<HourlySalesMap> past4HourlySales;
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
-  private AMPhoneAuditMap amPhoneAuditMap;
-  private TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
   private ArrayList<String> weeklySupplyItems;
 
   public DataHub()
@@ -460,5 +462,28 @@ public class DataHub implements Serializable
         "Band-aids", "Gauze Pads", "Burn Cream", "Neosporin", "Dasani", "Letter Envelopes",
         "Manilla Envelopes", "Staples (Standard)", "Staples (Bostich)", "Grease Pencil", "Sharpies",
         "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives"));
+  }
+  
+  public ArrayList<Manager> getManagers()
+  {
+    return managers;
+  }
+  
+  public void addManager(Manager manager)
+  {
+    managers.add(manager);
+    for(DataObserver dato: observers)
+    {
+      dato.toolBoxDataUpdated();
+    }
+  }
+  
+  public void removeManager(Manager manager)
+  {
+    managers.remove(manager);
+    for(DataObserver dato: observers)
+    {
+      dato.toolBoxDataUpdated();
+    }
   }
 }

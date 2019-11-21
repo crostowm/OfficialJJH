@@ -2,6 +2,7 @@ package readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -12,8 +13,9 @@ import javafx.collections.FXCollections;
 /**
  * @author crost Key1: One of the static Strings below Key2: Week Number Object: Value
  */
-public class TrendSheetMap
+public class TrendSheetMap implements Serializable
 {
+  private static final long serialVersionUID = -9008251803784269667L;
   public static String LY_ROYALTY = "Last Year Royalty", CY_ROYALTY = "Current Year Royalty",
       COMPS = "Comps", CY_LABORP = "Current Year Labor %", CY_LABOR$ = "Current Year Labor $",
       LY_LABORP = "Last Year Labor %", CASH_OVER_UNDER = "Cash Over/Under", COGS$ = "COGs $",
@@ -22,7 +24,6 @@ public class TrendSheetMap
       CATERINGP = "Catering %";
   private HashMap<String, HashMap<Integer, Double>> weeklyMap = new HashMap<String, HashMap<Integer, Double>>();
   private HashMap<String, HashMap<Integer, Double>> periodMap = new HashMap<String, HashMap<Integer, Double>>();
-  private Scanner scanner;
   private String[] tokens;
   private int index;
   private int week = 0;
@@ -32,7 +33,7 @@ public class TrendSheetMap
   {
     try
     {
-      scanner = new Scanner(file);
+      Scanner scanner = new Scanner(file);
       while (scanner.hasNext())
       {
         tokens = scanner.nextLine().split(",");
@@ -73,6 +74,7 @@ public class TrendSheetMap
           insertValueIntoPeriodMap(CATERINGP);
         }
       }
+      scanner.close();
     }
     catch (FileNotFoundException fnf)
     {
