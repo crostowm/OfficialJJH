@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -22,17 +20,16 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HubController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1200.0" styleClass="base-background" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HubController">
   <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" VBox.vgrow="ALWAYS">
          <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0">
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0" styleClass="base-background">
             <children>
-                  <BorderPane layoutX="172.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane layoutX="172.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
-                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
                             <Tab closable="false" text="Projections">
                             <content>
@@ -55,102 +52,6 @@
                              <fx:include fx:id="cateringCalculatorTab" source="CateringCalculatorTab.fxml" />
                             </content>
                               </Tab>
-                              <Tab text="Slicing">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <GridPane hgap="5.0" layoutX="322.0" layoutY="192.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <Label text="Cheese" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                                                <Label text="Min Start" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Label text="Goal End" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label text="1" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                                <Label text="2" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                                                <Label text="3" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                                                <Label text="4" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
-                                                <Label text="5" GridPane.columnIndex="6" GridPane.halignment="CENTER" />
-                                                <Label text="6" GridPane.columnIndex="7" GridPane.halignment="CENTER" />
-                                                <Label text="7" GridPane.columnIndex="8" GridPane.halignment="CENTER" />
-                                                <Label text="8" GridPane.columnIndex="9" GridPane.halignment="CENTER" />
-                                                <Label text="9" GridPane.columnIndex="10" GridPane.halignment="CENTER" />
-                                                <Label text="10" GridPane.columnIndex="11" GridPane.halignment="CENTER" />
-                                                <Label text="11" GridPane.columnIndex="12" GridPane.halignment="CENTER" />
-                                                <Label text="12" GridPane.columnIndex="13" GridPane.halignment="CENTER" />
-                                                <Label text="13" GridPane.columnIndex="14" GridPane.halignment="CENTER" />
-                                                <Label text="14" GridPane.columnIndex="15" GridPane.halignment="CENTER" />
-                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="8" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="8" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="9" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="9" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="10" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="10" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="11" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="12" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="11" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="12" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="13" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="13" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="14" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="14" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="15" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="15" GridPane.rowIndex="2" />
-                                                <Label text="Ham" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                                                <Label text="Turkey" GridPane.rowIndex="5" GridPane.rowSpan="2" />
-                                                <Label text="Beef" GridPane.rowIndex="7" GridPane.rowSpan="2" />
-                                                <Label text="Vito" GridPane.rowIndex="9" GridPane.rowSpan="2" />
-                                             </children>
-                                          </GridPane>
-                                          <Label layoutX="510.0" layoutY="46.0" text="Slicing Pars" AnchorPane.topAnchor="20.0">
-                                             <font>
-                                                <Font size="36.0" />
-                                             </font>
-                                          </Label>
-                                       </children></AnchorPane>
-                                </content>
-                              </Tab>
                               <Tab text="Usage Analysis">
                               	<content>
                              		<fx:include fx:id="usageAnalysisTab" source="UsageAnalysisTab.fxml" />
@@ -172,83 +73,119 @@
                      <right>
                         <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="150.0" BorderPane.alignment="CENTER_RIGHT">
                           <panes>
-                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Current">
-                              <content>
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
-                                       <children>
-                                          <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="-26.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <content>
-                                                <GridPane hgap="5.0" vgap="5.0">
+                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Current">
+                                 <content>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <GridPane hgap="5.0" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="65.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                                <ColumnConstraints hgrow="NEVER" />
+                                                <ColumnConstraints hgrow="NEVER" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Upcoming Projections" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+                                                <Label fx:id="currentPaneFirstHourLabel" text="0-1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                <Label fx:id="currentPaneSecondHourLabel" text="1-2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                                <Label fx:id="currentPaneThirdHourLabel" text="2-3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                                <Label fx:id="currentPaneFourthHourLabel" text="3-4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                                <TextField fx:id="currentPaneFirstHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="currentPaneSecondHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="currentPaneThirdHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="currentPaneFourthHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Label text="Bread Minimums" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                                <Label text="\%In" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                                <Label text="\%Del" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                                                <Label fx:id="currentPaneFirstInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Label fx:id="currentPaneFirstDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Label fx:id="currentPaneSecondInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                                <Label fx:id="currentPaneSecondDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                                <Label fx:id="currentPaneThirdInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                                <Label fx:id="currentPaneThirdDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                                <Label fx:id="currentPaneFourthInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                                                <Label fx:id="currentPaneFourthDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                                                <GridPane hgap="10.0" vgap="5.0" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="2">
                                                    <columnConstraints>
-                                                      <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="65.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                                      <ColumnConstraints hgrow="NEVER" />
-                                                      <ColumnConstraints hgrow="NEVER" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                    </columnConstraints>
                                                    <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <Label text="Upcoming Projections" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-                                                      <Label fx:id="currentPaneFirstHourLabel" text="0-1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                                      <Label fx:id="currentPaneSecondHourLabel" text="1-2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                                      <Label fx:id="currentPaneThirdHourLabel" text="2-3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                                      <Label fx:id="currentPaneFourthHourLabel" text="3-4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                                      <TextField fx:id="currentPaneFirstHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                      <TextField fx:id="currentPaneSecondHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                      <TextField fx:id="currentPaneThirdHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                      <TextField fx:id="currentPaneFourthHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                      <Label text="Bread Minimums" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                                                      <Label text="\%In" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                                      <Label text="\%Del" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                                                      <Label fx:id="currentPaneFirstInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                                      <Label fx:id="currentPaneFirstDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                                      <Label fx:id="currentPaneSecondInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                                      <Label fx:id="currentPaneSecondDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                                      <Label fx:id="currentPaneThirdInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                      <Label fx:id="currentPaneThirdDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                      <Label fx:id="currentPaneFourthInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                                                      <Label fx:id="currentPaneFourthDelPercLabel" text="19" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                                                      <GridPane hgap="10.0" vgap="5.0" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="2">
-                                                        <columnConstraints>
-                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                        </columnConstraints>
-                                                        <rowConstraints>
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                         <children>
-                                                            <Label text="Baked (9)" GridPane.halignment="RIGHT" />
-                                                            <Label text="In Process (12)" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                                            <TextField fx:id="currentPaneBaked9Field" prefWidth="50.0" GridPane.columnIndex="1" />
-                                                            <TextField fx:id="currentPaneInProcess12Field" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                         </children>
-                                                      </GridPane>
+                                                      <Label text="Baked (9)" GridPane.halignment="RIGHT" />
+                                                      <Label text="In Process (12)" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="currentPaneBaked9Field" prefWidth="50.0" GridPane.columnIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </TextField>
+                                                      <TextField fx:id="currentPaneInProcess12Field" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </TextField>
                                                    </children>
                                                 </GridPane>
-                                             </content>
-                                          </ScrollPane>
-                                       </children></AnchorPane>
-                              </content>
+                                             </children>
+                                             <styleClass>
+                                                <String fx:value="marble-background" />
+                                                <String fx:value="rounded" />
+                                             </styleClass>
+                                          </GridPane>
+                                       </content>
+                                       <styleClass>
+                                          <String fx:value="rounded" />
+                                          <String fx:value="base-background" />
+                                       </styleClass>
+                                    </ScrollPane>
+                                 </content>
                             </TitledPane>
                             <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Today">
-                              <content>
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
-                                       <children>
-                                          <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="-26.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children></AnchorPane>
-                              </content>
+                                 <content>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <GridPane hgap="5.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Today" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                <Label text="Last Year" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                                <Label text="AM" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                <Label text="PM" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                                <TextField fx:id="todayProjAMField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="todayProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <TextField fx:id="lastYearProjAMField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="lastYearProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </content>
                             </TitledPane>
                             <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Settings">
                               <content>
@@ -258,68 +195,34 @@
                           </panes>
                         </Accordion>
                      </right>
-                     <top>
-                      <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-                        <menus>
-                          <Menu mnemonicParsing="false" text="File">
-                            <items>
-                              <MenuItem mnemonicParsing="false" text="New" />
-                              <MenuItem mnemonicParsing="false" text="Open…" />
-                              <Menu mnemonicParsing="false" text="Open Recent" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Close" />
-                              <MenuItem mnemonicParsing="false" text="Save" />
-                              <MenuItem mnemonicParsing="false" text="Save As…" />
-                              <MenuItem mnemonicParsing="false" text="Revert" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Preferences…" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Quit" />
-                            </items>
-                          </Menu>
-                          <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                              <MenuItem mnemonicParsing="false" text="Undo" />
-                              <MenuItem mnemonicParsing="false" text="Redo" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Cut" />
-                              <MenuItem mnemonicParsing="false" text="Copy" />
-                              <MenuItem mnemonicParsing="false" text="Paste" />
-                              <MenuItem mnemonicParsing="false" text="Delete" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Select All" />
-                              <MenuItem mnemonicParsing="false" text="Unselect All" />
-                            </items>
-                          </Menu>
-                          <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                              <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-                            </items>
-                          </Menu>
-                        </menus>
-                      </MenuBar>
-                     </top>
                      <effect>
                         <ColorAdjust />
                      </effect>
+                     <bottom>
+                        <Accordion BorderPane.alignment="CENTER">
+                          <panes>
+                            <TitledPane animated="false" styleClass="marble-background" text="Period">
+                            <content>
+                             		<fx:include fx:id="periodFold" source="PeriodFold.fxml" />
+                            	</content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Year To Date" />
+                          </panes>
+                        </Accordion>
+                     </bottom>
                   </BorderPane>
             </children>
           </AnchorPane>
          </content>
       </ScrollPane>
-      <Accordion>
-        <panes>
-          <TitledPane animated="false" text="Period" />
-          <TitledPane animated="false" text="Year To Date" />
-        </panes>
-      </Accordion>
-      <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label fx:id="shiftLabel" text="Shift#" />
+            <Label fx:id="shiftManagerLabel" text="Shift Manager" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="createWeeklySupplyButton" mnemonicParsing="false" onAction="#createWeeklySupplyButtonPressed" text="Create Weekly Supply Order" />
+            <Button fx:id="createWeeklySupplyButton" alignment="CENTER" mnemonicParsing="false" onAction="#createWeeklySupplyButtonPressed" text="Create Weekly Supply Order" />
             <Button fx:id="addCateringButton" mnemonicParsing="false" onAction="#addCateringButtonPressed" text="Add A Catering Order" />
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <Label fx:id="shiftLabel" text="Shift#" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label fx:id="clockLabel" text="Error With Clock" />
                   <Label fx:id="dateLabel" text="Label" />

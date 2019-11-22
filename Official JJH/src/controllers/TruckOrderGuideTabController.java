@@ -118,7 +118,7 @@ public class TruckOrderGuideTabController
           }
           // Iterate through upk items
           ArrayList<String> names = new ArrayList<String>(
-              MainApplication.dataHub.getCurrentUPKMap().get(category).keySet());
+              MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet());
           Collections.sort(names);
           for (String name : names)
           {
@@ -126,7 +126,7 @@ public class TruckOrderGuideTabController
             {
               TruckOrderHBox toh = new TruckOrderHBox(category,
                   MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
-                  MainApplication.dataHub.getCurrentUPKMap().get(category).get(name),
+                  MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name),
                   MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name));
               toh.setOnMouseClicked(new EventHandler<MouseEvent>()
               {

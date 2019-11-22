@@ -1,5 +1,6 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -101,5 +102,28 @@ public class JimmyCalendarUtil
     if(weekNumber%4 != 0)
       pNumber++;
     return pNumber;
+  }
+
+  public static int getPeriodNumber()
+  {
+    return getPeriodNumber(getWeekNumber(new GregorianCalendar()));
+  }
+
+  public static ArrayList<Integer> getWeekNumbersCompletedInPeriod()
+  {
+    ArrayList<Integer> weeks = new ArrayList<Integer>();
+    int week = getCurrentWeekNumber() - 1;
+    int period = getPeriodNumber(week);
+    while(getPeriodNumber(week) == period)
+    {
+      weeks.add(week);
+      week--;
+    }
+    return weeks;
+  }
+
+  private static int getCurrentWeekNumber()
+  {
+    return getWeekNumber(new GregorianCalendar());
   }
 }

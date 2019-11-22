@@ -26,11 +26,6 @@ public class SettingsTabController
   public void initialize()
   {
     managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
-  }
-  
-  public void updateAllFields()
-  {
-    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
     try
     {
       MainApplication.dataHub.changeSetting(DataHub.AMBUFFER,
@@ -59,6 +54,11 @@ public class SettingsTabController
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
+  }
+  
+  public void updateAllFields()
+  {
+    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
   }
 
   @FXML

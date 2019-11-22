@@ -1,0 +1,18 @@
+.base-background {
+	-fx-background-color:radial-gradient(focus-distance 80%, center 50% 50%, radius 80%, reflect, black, dimgray);
+}
+
+.marble-background {
+	-fx-background-color:radial-gradient(focus-distance 0%, center 50% 50%, radius 100%, reflect, firebrick, black);
+}
+
+.large-white-label {
+	-fx-font-size: 14px;
+}
+.label {
+		-fx-text-fill: white;
+}
+
+.rounded {
+	-fx-background-radius: 10;
+}

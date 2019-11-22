@@ -70,7 +70,7 @@ public class BusinessAnalysisTabController
       case "Weekly Sales Report":
         contentScrollPane.setContent(null);
         ArrayList<String> itemNames = new ArrayList<String>(
-            MainApplication.dataHub.getProjectionWSR(4).keySet());
+            MainApplication.dataHub.getProjectionWSR(4).getMap().keySet());
         Collections.sort(itemNames);
         EventHandler<ActionEvent> wsrEvent = new EventHandler<ActionEvent>()
         {

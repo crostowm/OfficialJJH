@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import personnel.Manager;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.DataHub;
@@ -37,20 +38,17 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
-  public static boolean fullRun = true;
+  public static boolean fullRun = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
   public static String AMEmail = "jakec.esg@gmail.com";
   public static int storeNumber = 2048;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
+  public static Manager amManager, pmManager;
   private Stage stage;
   private Stage amrStage;
   private Stage loginStage;
-
-  // Need to be checked for null if not set
-  private static String username;
-  private static String pass;
 
   public static void main(String[] args)
   {
@@ -212,11 +210,10 @@ public class MainApplication extends Application
    * @param user Username field
    * @param pass Password field
    */
-  public void runAMPhoneAudit(String user, String pass)
+  public void runAMPhoneAudit(Manager mgr)
   {
     loginStage.close();
-    MainApplication.username = user;
-    MainApplication.pass = pass;
+    amManager = mgr;
     amrStage = new Stage();
     FXMLLoader loader;
     Pane root;
@@ -239,15 +236,4 @@ public class MainApplication extends Application
       e.printStackTrace();
     }
   }
-
-  public static String getUser()
-  {
-    return username;
-  }
-
-  public static String getPass()
-  {
-    return pass;
-  }
-
 }

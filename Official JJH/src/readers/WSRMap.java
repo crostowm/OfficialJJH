@@ -8,14 +8,14 @@ import java.util.Scanner;
 
 import error_handling.ErrorHandler;
 
-public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
+public class WSRMap
 {
   public static final int ADJUSTED_SALES = 0, SAMPLING = 1, WASTE = 2, ROYALTY_SALES = 3,
       PLATTERS_MINI_JIMMYS = 4, BOX_LUNCH = 5;
-  private static final long serialVersionUID = 1L;
   private int index;
   private ArrayList<String> managerDeposits = new ArrayList<String>();
-
+  private HashMap<String, HashMap<Integer, Double>> map = new HashMap<String, HashMap<Integer, Double>>();
+  
   public WSRMap(File file)
   {
     try
@@ -37,19 +37,19 @@ public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
           }
           else
           {
-            put(name, new HashMap<Integer, Double>());
+            map.put(name, new HashMap<Integer, Double>());
             // 46 Summary
             index = 46;
             String test = removeQuotes(tokens);
-            get(name).put(-1, Double.parseDouble(test));
+            map.get(name).put(-1, Double.parseDouble(test));
             index++;
             // Next Each
-            get(name).put(0, Double.parseDouble(removeQuotes(tokens)));
+            map.get(name).put(0, Double.parseDouble(removeQuotes(tokens)));
             index++;
             // Next Shifts
             for (int ii = 1; ii < 15; ii++)
             {
-              get(name).put(ii, Double.parseDouble(removeQuotes(tokens)));
+              map.get(name).put(ii, Double.parseDouble(removeQuotes(tokens)));
               index++;
             }
           }
@@ -88,21 +88,26 @@ public class WSRMap extends HashMap<String, HashMap<Integer, Double>>
 
   public double getDataForShift(String name, int shift)
   {
-    return get(name).get(shift);
+    return map.get(name).get(shift);
   }
 
   public double getEachForItem(String name)
   {
-    return get(name).get(0);
+    return map.get(name).get(0);
   }
 
   public double getSummaryForItem(String name)
   {
-    return get(name).get(-1);
+    return map.get(name).get(-1);
   }
   
   public ArrayList<String> getManagerDepositSignatures()
   {
     return managerDeposits;
+  }
+
+  public HashMap<String, HashMap<Integer, Double>> getMap()
+  {
+    return map;
   }
 }

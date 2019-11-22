@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProjectionTabController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="493.0" prefWidth="989.0" styleClass="base-background" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProjectionTabController">
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="4.333333492279053" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="4.333333492279053" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="3.0">
+            <GridPane hgap="3.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" vgap="3.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="165.0" prefWidth="165.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" prefWidth="55.0" />
@@ -55,60 +55,60 @@
                   <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Tuesday" GridPane.columnIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Tuesday" GridPane.columnIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Wednesday" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Wednesday" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Thursday" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Thursday" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Friday" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Friday" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Saturday" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Saturday" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Sunday" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Sunday" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Monday" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label styleClass="large-white-label" text="Monday" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="Eras Medium ITC" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="13" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="12" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="11" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="10" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="9" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="8" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="7" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="6" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="5" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="4" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label alignment="CENTER" text="2" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="14" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="Average" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <Label text="Average +20%" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                  <Label text="+Catering" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                  <Label text="+Sampling" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                  <Label text="Projections" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                  <Label styleClass="basic-white-label" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="13" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="12" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="11" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="10" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="9" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="8" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="7" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="6" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="5" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="4" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" styleClass="basic-white-label" text="2" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="14" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label styleClass="basic-white-label" text="Average" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label styleClass="basic-white-label" text="Average +20%" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label styleClass="basic-white-label" text="+Catering" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                  <Label styleClass="basic-white-label" text="+Sampling" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label styleClass="basic-white-label" text="Projections" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -246,9 +246,9 @@
                         <Insets />
                      </GridPane.margin>
                   </TextField>
-                  <Label maxHeight="15.0" prefHeight="15.0" text="Total Trays Thawed Open/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                  <Label maxHeight="15.0" prefHeight="15.0" text="Baked 75%@11(12) / @SC(9)" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                  <Label maxHeight="15.0" prefHeight="15.0" text="Wheat Total / SC" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Total Trays Thawed Open/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Baked 75%@11(12) / @SC(9)" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Wheat Total / SC" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
                   <TextField fx:id="tt1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
                   <TextField fx:id="tt2" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
                   <TextField fx:id="perc1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
@@ -291,27 +291,27 @@
                   <TextField fx:id="w12" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
                   <TextField fx:id="w13" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
                   <TextField fx:id="w14" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
-                  <Label fx:id="produceLabel" maxHeight="15.0" prefHeight="15.0" text="Produce To Prep" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                  <Label maxHeight="15.0" prefHeight="15.0" text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-                  <Label maxHeight="15.0" prefHeight="15.0" text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
-                  <Label text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-                  <Label text="Cucumbers" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
-                  <Label text="Pickles" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
+                  <Label fx:id="produceLabel" maxHeight="15.0" prefHeight="15.0" styleClass="large-white-label" text="Produce To Prep" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Lettuce" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Tomatoes" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <Label styleClass="basic-white-label" text="Onions" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <Label styleClass="basic-white-label" text="Cucumbers" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                  <Label styleClass="basic-white-label" text="Pickles" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
                   <TextField fx:id="lettuceField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                   <TextField fx:id="tomatoField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                   <TextField fx:id="onionField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                   <TextField fx:id="cucumberField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <TextField fx:id="pickleField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                  <Label text="Slicing Pars" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                  <Label text="Min Start Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-                  <Label text="Goal End Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
-                  <Label text="Min Start Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-                  <Label text="Goal End Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
-                  <Label text="Cheese" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label text="Ham" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label text="Turkey" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label text="Beef" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label text="Vito" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="large-white-label" text="Slicing Pars" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Min Start Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <Label styleClass="basic-white-label" text="Goal End Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <Label styleClass="basic-white-label" text="Min Start Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <Label styleClass="basic-white-label" text="Goal End Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                  <Label styleClass="basic-white-label" text="Cheese" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Ham" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Turkey" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Beef" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Vito" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
                   <TextField fx:id="cheeseMSCField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="13" />
                   <TextField fx:id="hamMSCField" alignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="13" />
                   <TextField fx:id="cheeseGECField" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="14" />

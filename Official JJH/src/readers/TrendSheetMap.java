@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
+import util.JimmyCalendarUtil;
 
 /**
  * @author crost Key1: One of the static Strings below Key2: Week Number Object: Value
@@ -16,7 +17,7 @@ import javafx.collections.FXCollections;
 public class TrendSheetMap implements Serializable
 {
   private static final long serialVersionUID = -9008251803784269667L;
-  public static String LY_ROYALTY = "Last Year Royalty", CY_ROYALTY = "Current Year Royalty",
+  public static final String LY_ROYALTY = "Last Year Royalty", CY_ROYALTY = "Current Year Royalty",
       COMPS = "Comps", CY_LABORP = "Current Year Labor %", CY_LABOR$ = "Current Year Labor $",
       LY_LABORP = "Last Year Labor %", CASH_OVER_UNDER = "Cash Over/Under", COGS$ = "COGs $",
       COGSP = "COGS %", BREADP = "Bread %", FOODP = "Food %", SIDESP = "Sides %",
@@ -24,6 +25,7 @@ public class TrendSheetMap implements Serializable
       CATERINGP = "Catering %";
   private HashMap<String, HashMap<Integer, Double>> weeklyMap = new HashMap<String, HashMap<Integer, Double>>();
   private HashMap<String, HashMap<Integer, Double>> periodMap = new HashMap<String, HashMap<Integer, Double>>();
+  private HashMap<String, Double> yearMap = new HashMap<String, Double>();
   private String[] tokens;
   private int index;
   private int week = 0;
@@ -149,5 +151,16 @@ public class TrendSheetMap implements Serializable
   {
     System.out.println(cat + " " + period);
     return periodMap.get(cat).get(period);
+  }
+
+  public double getDataForCategoryForCurrentPeriod(String cat)
+  {
+    ArrayList<Integer> weeks = JimmyCalendarUtil.getWeekNumbersCompletedInPeriod();
+    double total = 0;
+    for (Integer i : weeks)
+    {
+      total += getDataForCategoryForWeek(cat, i);
+    }
+    return total / weeks.size();
   }
 }

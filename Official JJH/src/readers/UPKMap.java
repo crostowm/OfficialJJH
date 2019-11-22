@@ -8,18 +8,15 @@ import java.util.Scanner;
 import error_handling.ErrorHandler;
 
 /**
- * @author crost
- *  Map<int-Category1-7, <String-item/cogs, <int-datatype8-18, double-data>>>
- *  Map<int-Category1-7, <Integer-cogtype, Double-cog>
- *  Map<String-item, String-unit>
+ * @author crost Map<int-Category1-7, <String-item/cogs, <int-datatype8-18, double-data>>>
+ *         Map<int-Category1-7, <Integer-cogtype, Double-cog> Map<String-item, String-unit>
  */
-public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Double>>>
+public class UPKMap
 {
-  private static final long serialVersionUID = 7042509984354219587L;
-  
+  private HashMap<Integer, HashMap<String, HashMap<Integer, Double>>> upkMap = new HashMap<Integer, HashMap<String, HashMap<Integer, Double>>>();
   private HashMap<Integer, HashMap<Integer, Double>> cogsMap = new HashMap<Integer, HashMap<Integer, Double>>();
   private HashMap<String, String> units = new HashMap<String, String>();
-  
+
   public static final int BREAD = 1, FOOD = 2, SIDES = 3, PAPER = 4, PRODUCE = 5, BEVERAGE = 6,
       CATERING = 7, UNIT = 8, ACTUAL_USAGE = 9, THEORETICAL_USAGE = 10, USAGE_VARIANCE = 11,
       USAGE_VARIANCE$ = 12, ACTUAL_UPK = 13, AVERAGE_UPK = 14, UPK_VARIANCE = 15, ACTUAL_COGS = 16,
@@ -29,26 +26,26 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
 
   public UPKMap(File file)
   {
-    for(int ii = 1; ii < 8; ii++)
+    for (int ii = 1; ii < 8; ii++)
     {
-      put(ii, new HashMap<String, HashMap<Integer, Double>>());
+      upkMap.put(ii, new HashMap<String, HashMap<Integer, Double>>());
       cogsMap.put(ii, new HashMap<Integer, Double>());
     }
     try
     {
       Scanner scan = new Scanner(file);
-      while(scan.hasNext())
+      while (scan.hasNext())
       {
         String line = scan.nextLine();
         String[] tokens = line.split(",");
-        if(tokens[0].startsWith("\"Store :"))
+        if (tokens[0].startsWith("\"Store :"))
         {
-          //3 adj sales
+          // 3 adj sales
           adjustedSales = Double.parseDouble(tokens[3].substring(17));
-          
-          //16 category
+
+          // 16 category
           int category = -1;
-          switch(tokens[16].split(" ")[0])
+          switch (tokens[16].split(" ")[0])
           {
             case "Bread":
               category = 1;
@@ -72,30 +69,30 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
               category = 7;
               break;
           }
-          //17 actual cogs
+          // 17 actual cogs
           cogsMap.get(category).put(ACTUAL_COGS, Double.parseDouble(tokens[17].split(" ")[0]));
-          //18 theoretical cogs
+          // 18 theoretical cogs
           cogsMap.get(category).put(THEORETICAL_COGS, Double.parseDouble(tokens[18].split(" ")[0]));
-          //19 cogs variance
+          // 19 cogs variance
           cogsMap.get(category).put(COGS_VARIANCE, Double.parseDouble(tokens[19].split(" ")[0]));
-          
-          //20 Item name
+
+          // 20 Item name
           String item = tokens[20];
-          get(category).put(item, new HashMap<Integer, Double>());
-          
-          //21 unit
+          upkMap.get(category).put(item, new HashMap<Integer, Double>());
+
+          // 21 unit
           units.put(item, tokens[21]);
-          
-          //Starts at count
+
+          // Starts at count
           count = 22;
-          //22 actual usage
-          get(category).get(item).put(ACTUAL_USAGE, removeQuotes(tokens));
-          get(category).get(item).put(THEORETICAL_USAGE, removeQuotes(tokens));
-          get(category).get(item).put(USAGE_VARIANCE, removeQuotes(tokens));
-          get(category).get(item).put(USAGE_VARIANCE$, removeQuotes(tokens));
-          get(category).get(item).put(ACTUAL_UPK, removeQuotes(tokens));
-          get(category).get(item).put(AVERAGE_UPK, removeQuotes(tokens));
-          get(category).get(item).put(UPK_VARIANCE, removeQuotes(tokens));
+          // 22 actual usage
+          upkMap.get(category).get(item).put(ACTUAL_USAGE, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(THEORETICAL_USAGE, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(USAGE_VARIANCE, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(USAGE_VARIANCE$, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(ACTUAL_UPK, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(AVERAGE_UPK, removeQuotes(tokens));
+          upkMap.get(category).get(item).put(UPK_VARIANCE, removeQuotes(tokens));
         }
       }
       scan.close();
@@ -105,27 +102,28 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
       System.out.println("Could not find file for upkmap");
       ErrorHandler.addError(fnf);
     }
-    catch(NumberFormatException nfe)
+    catch (NumberFormatException nfe)
     {
       System.out.println("error parsing in upkmap");
       ErrorHandler.addError(nfe);
     }
   }
-  
+
   /**
    * removes quotes and increments count
+   * 
    * @param tokens
    * @return
    */
   private double removeQuotes(String[] tokens)
   {
-    if(tokens[count].startsWith("\""))
+    if (tokens[count].startsWith("\""))
     {
       String tok1 = tokens[count];
       count++;
       String tok2 = tokens[count];
       count++;
-      return Double.parseDouble(tok1.substring(1).concat(tok2.substring(0, tok2.length()-1)));
+      return Double.parseDouble(tok1.substring(1).concat(tok2.substring(0, tok2.length() - 1)));
     }
     else
     {
@@ -139,19 +137,24 @@ public class UPKMap extends HashMap<Integer, HashMap<String, HashMap<Integer, Do
   {
     return adjustedSales;
   }
-  
+
   public double getData(int category, String name, int dataType)
   {
-    return get(category).get(name).get(dataType);
+    return upkMap.get(category).get(name).get(dataType);
   }
-  
+
   public double getCogsForCategory(int category, int cogType)
   {
     return cogsMap.get(category).get(cogType);
   }
-  
+
   public String getUnitsForItem(String item)
   {
     return units.get(item);
+  }
+
+  public HashMap<Integer, HashMap<String, HashMap<Integer, Double>>> getUPKMap()
+  {
+    return upkMap;
   }
 }

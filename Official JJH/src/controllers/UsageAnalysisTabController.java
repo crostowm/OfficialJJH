@@ -86,13 +86,13 @@ public class UsageAnalysisTabController
               break;
           }
           // Iterate through upk items
-          for (String name : MainApplication.dataHub.getCurrentUPKMap().get(category).keySet())
+          for (String name : MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet())
           {
             if (!name.equals("COGs"))
             {
               UsageAnalysisHBox uah = new UsageAnalysisHBox(category,
                   MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
-                  MainApplication.dataHub.getCurrentUPKMap().get(category).get(name));
+                  MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name));
               uah.setOnMouseClicked(new EventHandler<MouseEvent>()
               {
                 @Override

@@ -266,6 +266,10 @@ public class DataHub implements Serializable
   public void changeSetting(int setting, double val)
   {
     settings.put(setting, val);
+    for(DataObserver dato: observers)
+    {
+      dato.toolBoxDataUpdated();
+    }
   }
 
   public void addObserver(DataObserver observer)
@@ -485,5 +489,15 @@ public class DataHub implements Serializable
     {
       dato.toolBoxDataUpdated();
     }
+  }
+
+  public Manager getManager(String username, String password)
+  {
+    for(Manager m: getManagers())
+    {
+      if(m.getUsername().equals(username) && m.getPassword().equals(password))
+        return m;
+    }
+    return null;
   }
 }

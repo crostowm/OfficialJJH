@@ -51,11 +51,12 @@ public class HubController implements DataObserver
   @FXML
   private BusinessAnalysisTabController businessAnalysisTabController;
   
+  @FXML
+  private PeriodFoldController periodFoldController;
   //Outer
   @FXML
-  private Label shiftLabel, clockLabel, dateLabel;
+  private Label shiftManagerLabel, shiftLabel, clockLabel, dateLabel;
   
-  // TitledPanes
   // Current
   @FXML
   private Label currentPaneFirstHourLabel, currentPaneSecondHourLabel, currentPaneThirdHourLabel,
@@ -67,6 +68,10 @@ public class HubController implements DataObserver
   private TextField currentPaneFirstHourField, currentPaneSecondHourField,
       currentPaneThirdHourField, currentPaneFourthHourField, currentPaneBaked9Field,
       currentPaneInProcess12Field;
+  
+  //Today
+  @FXML
+  private TextField todayProjAMField, todayProjPMField, lastYearProjAMField, lastYearProjPMField;
 
   public void initialize()
   {
@@ -74,7 +79,7 @@ public class HubController implements DataObserver
     
     //Tabs that require time updates
     timeObservers.add(projectionTabController);
-    
+    shiftManagerLabel.setText(MainApplication.amManager + "");
     updateAllFields();
   }
 
@@ -84,6 +89,11 @@ public class HubController implements DataObserver
     produceOrderGuideTabController.updateAllFields();
     cateringCalculatorTabController.updateAllFields();
     settingsTabController.updateAllFields();
+    periodFoldController.updateAll();
+    
+    todayProjAMField.setText("" + MainApplication.dataHub.getProjectionDataForIndex(currentShift%2==0?currentShift-2:currentShift-1));
+    todayProjPMField.setText("" + MainApplication.dataHub.getProjectionDataForIndex(currentShift%2==0?currentShift-1:currentShift));
+
     System.out.println("Updating all");
   }
 
