@@ -62,11 +62,72 @@ public class ReportGrabber
 
       // clickSendToDownloadCenter();
       downloadLastAMPhoneAuditReport();
+      downloadLast6UPK();
       downloadLast4WSR();
+      //downloadLast4HourlySales();
+      //goToDownloadCenterAndDownloadAll();
     }
     finally
     {
-      driver.quit();
+      // driver.quit();
+    }
+  }
+
+  private void downloadLast4HourlySales()
+  {
+    // TODO Auto-generated method stub
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
+    selectStoreCheckBox();
+    selectStartDateXDaysBeforeCurrentWithinAMonth(28);
+  }
+
+  private void selectStartDateXDaysBeforeCurrentWithinAMonth(int numDays)
+  {
+    driver
+        .findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_popupButton\"]"))
+        .click();
+    WebElement startDateTable = driver.findElement(
+        By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_calendar_Top\"]"));
+    GregorianCalendar gc = new GregorianCalendar();
+    if (gc.get(Calendar.DAY_OF_MONTH) <= numDays)
+    {
+      // prevMonth
+      driver
+          .findElement(
+              By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_calendar_NP\"]"))
+          .click();
+    }
+    gc.add(Calendar.DAY_OF_YEAR, -numDays);
+    System.out.println("Start day: " + gc.get(Calendar.DAY_OF_MONTH));
+    driver.findElement(By.linkText("" + gc.get(Calendar.DAY_OF_MONTH))).click();
+
+  }
+
+  private void goToDownloadCenterAndDownloadAll()
+  {
+    // TODO Auto-generated method stub
+    driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb\"]/ul/li[5]/a")).click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb_i4_i0_ctl00\"]/ul/li[4]/a/span")).click();
+    
+  }
+
+  private void downloadLast6UPK()
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[20]")).click();
+    selectStoreCheckBox();
+    selectLastXWeeksFromWeekDropdownAndDownload(6);
+  }
+
+  private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks)
+  {
+    int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
+
+    for (int ii = numWeeks; ii > 0; ii--)
+    {
+      Select select = new Select(
+          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+      select.selectByIndex(currentWeekIndex - ii);
+      changeToCSVAndDownload();
     }
   }
 
@@ -99,14 +160,7 @@ public class ReportGrabber
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
-    int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-    for (int ii = 4; ii > 0; ii--)
-    {
-      Select select = new Select(
-          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-      select.selectByIndex(currentWeekIndex - ii);
-      changeToCSVAndDownload();
-    }
+    selectLastXWeeksFromWeekDropdownAndDownload(4);
   }
 
   public void runChromeReportGrabber()

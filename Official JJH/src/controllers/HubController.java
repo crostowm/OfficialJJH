@@ -182,7 +182,7 @@ public class HubController implements DataObserver
         currentPaneFourthInPercLabel
             .setText(String.format("%.0f", (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 3)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3)) * 100));
-
+        //TODO handle beyond midnight
         currentPaneFirstDelPercLabel
             .setText(String.format("%.0f", (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour)) * 100));

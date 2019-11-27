@@ -32,7 +32,10 @@ public class WSRMap
           {
             for(int ii = 48; ii < 62; ii++)
             {
-              managerDeposits.add(tokens[ii]);
+              if(ii >= tokens.length)
+                managerDeposits.add("");
+              else
+                managerDeposits.add(tokens[ii]);
             }
           }
           else

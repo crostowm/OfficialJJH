@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import personnel.Manager;
+import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.DataHub;

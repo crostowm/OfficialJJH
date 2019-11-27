@@ -1,11 +1,13 @@
 package controllers;
 
 import app.MainApplication;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import personnel.Manager;
 
 public class LoginController
@@ -24,6 +26,18 @@ public class LoginController
 
   private MainApplication mainApplication;
 
+  public void initialize()
+  {
+    passField.setOnKeyPressed(new EventHandler<KeyEvent>()
+    {
+      @Override
+      public void handle(KeyEvent arg0)
+      {
+        loginButtonPressed();
+      }
+    });
+  }
+  
   @FXML
   void loginButtonPressed()
   {

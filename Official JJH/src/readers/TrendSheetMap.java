@@ -74,6 +74,20 @@ public class TrendSheetMap implements Serializable
           insertValueIntoPeriodMap(PRODUCEP);
           insertValueIntoPeriodMap(BEVERAGEP);
           insertValueIntoPeriodMap(CATERINGP);
+          index++;
+          insertValueIntoYearMap(CY_ROYALTY);
+          insertValueIntoYearMap(LY_ROYALTY);
+          insertValueIntoYearMap(COMPS);
+          insertValueIntoYearMap(CY_LABOR$);
+          insertValueIntoYearMap(COGS$);
+          insertValueIntoYearMap(COGSP);
+          insertValueIntoYearMap(BREADP);
+          insertValueIntoYearMap(FOODP);
+          insertValueIntoYearMap(SIDESP);
+          insertValueIntoYearMap(PAPERP);
+          insertValueIntoYearMap(PRODUCEP);
+          insertValueIntoYearMap(BEVERAGEP);
+          insertValueIntoYearMap(CATERINGP);
         }
       }
       scanner.close();
@@ -102,6 +116,14 @@ public class TrendSheetMap implements Serializable
     if (periodMap.get(category) == null)
       periodMap.put(category, new HashMap<Integer, Double>());
     periodMap.get(category).put(period, Double.parseDouble(s));
+    index++;
+  }
+  
+  private void insertValueIntoYearMap(String category)
+  {
+    String s = tokens[index];
+    s = removeQuotes(s);
+    yearMap.put(category, Double.parseDouble(s));
     index++;
   }
 

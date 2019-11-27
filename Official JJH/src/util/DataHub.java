@@ -18,7 +18,7 @@ public class DataHub implements Serializable
 {
   public static final int AMBUFFER = 1, PMBUFFER = 2, BTV = 3, B9TV = 4, WLV = 5, BAKEDAT11 = 6,
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
-      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17;
+      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17, SPROUT_UPK = 18;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
@@ -80,6 +80,7 @@ public class DataHub implements Serializable
     settings.put(PROOF_TIME, 50.0);
     settings.put(BAKE_TIME, 20.0);
     settings.put(COOL_TIME, 25.0);
+    settings.put(SPROUT_UPK, 1.0);
   }
 
   /**
@@ -339,7 +340,7 @@ public class DataHub implements Serializable
     return past5UPKMaps;
   }
 
-  private double getProjectionsForShifts(int startShift, int endShift)
+  public double getProjectionsForShifts(int startShift, int endShift)
   {
     int startIndex = startShift - 1;
     int totalProj = 0;
@@ -367,9 +368,14 @@ public class DataHub implements Serializable
       int unit)
   {
     double proj = getProjectionsForShifts(startShift, endShift);
-    double upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
-    double req = ((proj * upk) / 1000) / unit;
-    return req;
+    double upk;
+    if(produceName.equals("Sprouts"))
+      upk = getSetting(DataHub.SPROUT_UPK);
+    else
+      upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
+    double req = ((proj / 1000) * upk) / unit;
+    System.out.println(produceName + " " + proj + " " + upk + " " + req);
+    return MathUtil.ceilHalf(req);
   }
 
   public void uploadAreaManagerPhoneAudit(AMPhoneAuditMap amPhoneAuditMap)

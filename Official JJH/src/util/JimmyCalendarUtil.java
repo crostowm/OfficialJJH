@@ -98,8 +98,8 @@ public class JimmyCalendarUtil
 
   public static int getPeriodNumber(int weekNumber)
   {
-    int pNumber = (weekNumber/4);
-    if(weekNumber%4 != 0)
+    int pNumber = (weekNumber / 4);
+    if (weekNumber % 4 != 0)
       pNumber++;
     return pNumber;
   }
@@ -114,7 +114,7 @@ public class JimmyCalendarUtil
     ArrayList<Integer> weeks = new ArrayList<Integer>();
     int week = getCurrentWeekNumber() - 1;
     int period = getPeriodNumber(week);
-    while(getPeriodNumber(week) == period)
+    while (getPeriodNumber(week) == period)
     {
       weeks.add(week);
       week--;
@@ -125,5 +125,28 @@ public class JimmyCalendarUtil
   private static int getCurrentWeekNumber()
   {
     return getWeekNumber(new GregorianCalendar());
+  }
+
+  public static int getAMShiftFor(String value)
+  {
+    switch (value)
+    {
+      case "Sunday":
+        return 9;
+      case "Monday":
+        return 11;
+      case "Tuesday":
+        return 13;
+      case "Wednesday":
+        return 1;
+      case "Thursday":
+        return 3;
+      case "Friday":
+        return 5;
+      case "Saturday":
+        return 7;
+    }
+    System.out.println("Did not recognize shift day in jimmycalendarutil");
+    return 1;
   }
 }

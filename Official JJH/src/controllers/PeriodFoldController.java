@@ -6,17 +6,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import readers.TrendSheetMap;
-import util.JimmyCalendarUtil;
 
 public class PeriodFoldController
 {
   @FXML
   private PieChart periodChart;
-
-  public void initialize()
-  {
-
-  }
 
   public void updateAll()
   {

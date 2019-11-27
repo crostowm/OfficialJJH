@@ -15,7 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import util.JimmyCalendarUtil;
 
@@ -26,7 +26,7 @@ public class BusinessAnalysisTabController
   private ScrollPane contentScrollPane;
 
   @FXML
-  private HBox itemBox;
+  private FlowPane itemBox;
 
   @FXML
   private ChoiceBox<String> reportChoice;
@@ -83,6 +83,7 @@ public class BusinessAnalysisTabController
             for (String item : itemNames)
             {
               RadioButton rb = new RadioButton(item);
+              rb.setPrefWidth(150);
               rb.setMinWidth(Region.USE_PREF_SIZE);
               rb.setOnAction(new EventHandler<ActionEvent>()
               {
@@ -193,6 +194,7 @@ public class BusinessAnalysisTabController
         {
           xs.add(ii);
         }
+        break;
       case "By Period":
         for (int ii = 1; ii < JimmyCalendarUtil
             .getPeriodNumber(JimmyCalendarUtil.getWeekNumber(new GregorianCalendar())); ii++)

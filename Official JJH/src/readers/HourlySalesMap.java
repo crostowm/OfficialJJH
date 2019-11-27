@@ -11,24 +11,23 @@ import error_handling.ErrorHandler;
  * @author crost HashMap<Int-Order Category, HashMap<Int-Hour 24hr<HashMap<Int-Data Type Category,
  *         Double>>> 0 for total category -1 for total hour
  */
-public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<Integer, Double>>>
+public class HourlySalesMap
 {
-  private static final long serialVersionUID = 8953713896638507995L;
   public static final int TOTAL = 0, TAKE_OUT = 1, PICKUP = 2, DELIVERY = 3, EAT_IN = 4,
       ONLINE_PICKUP = 5, ONLINE_DELIVERY = 6, VALUE = 7, COUNT = 8, TOTAL$ = 9, TOTAL_COUNT = 10,
       TOTAL_PERCENT = 11;
-
+  private HashMap<Integer, HashMap<Integer, HashMap<Integer, Double>>> map = new HashMap<Integer, HashMap<Integer, HashMap<Integer, Double>>>();
   public HourlySalesMap(File file)
   {
     for (int ii = 0; ii < 7; ii++)
     {
-      put(ii, new HashMap<Integer, HashMap<Integer, Double>>());
+      map.put(ii, new HashMap<Integer, HashMap<Integer, Double>>());
       for (int i = -1; i < 24; i++)
       {
-        get(ii).put(i, new HashMap<Integer, Double>());
+        map.get(ii).put(i, new HashMap<Integer, Double>());
         for(int j = 7; j < 12; j++)
         {
-          get(ii).get(i).put(j, 0.0);
+          map.get(ii).get(i).put(j, 0.0);
         }
       }
     }
@@ -100,7 +99,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
                 {
                   tok = tok.substring(0, tok.length() - 1);
                 }
-                get(currentCat).get(time).put(6 + i, Double.parseDouble(tok));
+                map.get(currentCat).get(time).put(6 + i, Double.parseDouble(tok));
               }
             }
             else
@@ -122,16 +121,16 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
                 switch (i)
                 {
                   case 1:
-                    get(currentCat).get(-1).put(TOTAL$, Double.parseDouble(tok));
+                    map.get(currentCat).get(-1).put(TOTAL$, Double.parseDouble(tok));
                     break;
                   case 2:
-                    get(currentCat).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
+                    map.get(currentCat).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
                     break;
                   case 3:
-                    get(TOTAL).get(-1).put(TOTAL$, Double.parseDouble(tok));
+                    map.get(TOTAL).get(-1).put(TOTAL$, Double.parseDouble(tok));
                     break;
                   case 4:
-                    get(TOTAL).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
+                    map.get(TOTAL).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
                     break;
                 }
               }
@@ -158,7 +157,7 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
   {
     try
     {
-      return get(orderType).get(time).get(dataType);
+      return map.get(orderType).get(time).get(dataType);
     }
     catch (Exception e)
     {
@@ -171,35 +170,35 @@ public class HourlySalesMap extends HashMap<Integer, HashMap<Integer, HashMap<In
 
   public double getTotal$ForHour(int hour)
   {
-    return get(1).get(hour).get(TOTAL$);
+    return map.get(1).get(hour).get(TOTAL$);
   }
   public double getTotal$ForCategory(int orderType)
   {
-    return get(orderType).get(-1).get(TOTAL$);
+    return map.get(orderType).get(-1).get(TOTAL$);
   }
 
   public double getTotalCountForCategory(int orderType)
   {
-    return get(orderType).get(-1).get(TOTAL_COUNT);
+    return map.get(orderType).get(-1).get(TOTAL_COUNT);
   }
 
   public double getTotal$()
   {
-    return get(TOTAL).get(-1).get(TOTAL$);
+    return map.get(TOTAL).get(-1).get(TOTAL$);
   }
 
   public double getTotalCount()
   {
-    return get(TOTAL).get(-1).get(TOTAL_COUNT);
+    return map.get(TOTAL).get(-1).get(TOTAL_COUNT);
   }
   
   public double getDelivery$ForHour(int hour)
   {
-    return get(DELIVERY).get(hour).get(VALUE) + get(ONLINE_DELIVERY).get(hour).get(VALUE);
+    return map.get(DELIVERY).get(hour).get(VALUE) + map.get(ONLINE_DELIVERY).get(hour).get(VALUE);
   }
   
   public double getTakeoutPickupEatin$ForHour(int hour)
   {
-    return get(TAKE_OUT).get(hour).get(VALUE) + get(PICKUP).get(hour).get(VALUE) + get(EAT_IN).get(hour).get(VALUE) + get(ONLINE_PICKUP).get(hour).get(VALUE);
+    return map.get(TAKE_OUT).get(hour).get(VALUE) + map.get(PICKUP).get(hour).get(VALUE) + map.get(EAT_IN).get(hour).get(VALUE) + map.get(ONLINE_PICKUP).get(hour).get(VALUE);
   }
 }
