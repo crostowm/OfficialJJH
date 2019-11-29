@@ -69,7 +69,7 @@ public class ReportGrabber
     }
     finally
     {
-      // driver.quit();
+      driver.quit();
     }
   }
 

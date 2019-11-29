@@ -37,15 +37,22 @@ public class LoginController
       }
     });
   }
-  
+
   @FXML
   void loginButtonPressed()
   {
-    Manager mgr = MainApplication.dataHub.getManager(userField.getText(), passField.getText());
-    if (mgr != null)
-      mainApplication.runAMPhoneAudit(mgr);
+    if (userField.getText().equals("") && passField.getText().equals(""))
+    {
+      mainApplication.runAMPhoneAudit(new Manager("Guest", "Guest", "123", ""));
+    }
     else
-      messageLabel.setText("Unable to login, invalid username and password");
+    {
+      Manager mgr = MainApplication.dataHub.getManager(userField.getText(), passField.getText());
+      if (mgr != null)
+        mainApplication.runAMPhoneAudit(mgr);
+      else
+        messageLabel.setText("Unable to login, invalid username and password");
+    }
   }
 
   public void setMainApp(MainApplication mainApplication)

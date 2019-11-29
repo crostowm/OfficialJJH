@@ -18,7 +18,8 @@ public class DataHub implements Serializable
 {
   public static final int AMBUFFER = 1, PMBUFFER = 2, BTV = 3, B9TV = 4, WLV = 5, BAKEDAT11 = 6,
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
-      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17, SPROUT_UPK = 18;
+      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17,
+      SPROUT_UPK = 18;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
@@ -40,6 +41,8 @@ public class DataHub implements Serializable
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
+  private ArrayList<String> managerDBLs;
+  private ArrayList<ManagerDBL> completedManagerDBLs;
 
   public DataHub()
   {
@@ -61,8 +64,8 @@ public class DataHub implements Serializable
       slicingPars.get(ii).put("Salami", new HashMap<String, Double>());
       slicingPars.get(ii).put("Capicola", new HashMap<String, Double>());
     }
-    if (weeklySupplyItems == null)
-      setupWeeklySupplyItems();
+    setupWeeklySupplyItems();
+    setupManagerDBLs();
     settings.put(AMBUFFER, 1.2);
     settings.put(PMBUFFER, 1.2);
     settings.put(BTV, 200.0);
@@ -81,6 +84,8 @@ public class DataHub implements Serializable
     settings.put(BAKE_TIME, 20.0);
     settings.put(COOL_TIME, 25.0);
     settings.put(SPROUT_UPK, 1.0);
+    
+    completedManagerDBLs = new ArrayList<ManagerDBL>();
   }
 
   /**
@@ -100,10 +105,11 @@ public class DataHub implements Serializable
       // TODO create a new map for hour averages
       for (int ii = 1; ii < 15; ii++)
       {
-        System.out.println("Shift " + ii + ":  " + getProjectionWSR(1).getDataForShift("= Royalty Sales", ii) + " "
-            + getProjectionWSR(2).getDataForShift("= Royalty Sales", ii) + " "
-            + getProjectionWSR(3).getDataForShift("= Royalty Sales", ii) + " "
-            + getProjectionWSR(4).getDataForShift("= Royalty Sales", ii));
+        System.out.println(
+            "Shift " + ii + ":  " + getProjectionWSR(1).getDataForShift("= Royalty Sales", ii) + " "
+                + getProjectionWSR(2).getDataForShift("= Royalty Sales", ii) + " "
+                + getProjectionWSR(3).getDataForShift("= Royalty Sales", ii) + " "
+                + getProjectionWSR(4).getDataForShift("= Royalty Sales", ii));
         double avg = (getProjectionWSR(1).getDataForShift("= Royalty Sales", ii)
             + getProjectionWSR(2).getDataForShift("= Royalty Sales", ii)
             + getProjectionWSR(3).getDataForShift("= Royalty Sales", ii)
@@ -267,7 +273,7 @@ public class DataHub implements Serializable
   public void changeSetting(int setting, double val)
   {
     settings.put(setting, val);
-    for(DataObserver dato: observers)
+    for (DataObserver dato : observers)
     {
       dato.toolBoxDataUpdated();
     }
@@ -369,12 +375,11 @@ public class DataHub implements Serializable
   {
     double proj = getProjectionsForShifts(startShift, endShift);
     double upk;
-    if(produceName.equals("Sprouts"))
+    if (produceName.equals("Sprouts"))
       upk = getSetting(DataHub.SPROUT_UPK);
     else
       upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
     double req = ((proj / 1000) * upk) / unit;
-    System.out.println(produceName + " " + proj + " " + upk + " " + req);
     return MathUtil.ceilHalf(req);
   }
 
@@ -463,35 +468,59 @@ public class DataHub implements Serializable
 
   private void setupWeeklySupplyItems()
   {
-    if(weeklySupplyItems == null)
-    weeklySupplyItems = new ArrayList<String>(FXCollections.observableArrayList("Clorox Bleach", "Windex Refill",
-        "Windex Multi-Surface Vinegar", "Simple Green", "Scotch Brite pads",
-        "Stainless Steel Polish", "Magic Erasers", "Dawn", "Hand Soap", "Toilet Bowl Cleaner",
-        "Toilet Paper", "Morton Salt", "Snack Baggies", "Greased Lightning", "Mop Heads",
-        "Printer Paper", "Goo Gone", "Bar Keeper's Friend", "Gloves", "Hydrogen Peroxide",
-        "Band-aids", "Gauze Pads", "Burn Cream", "Neosporin", "Dasani", "Letter Envelopes",
-        "Manilla Envelopes", "Staples (Standard)", "Staples (Bostich)", "Grease Pencil", "Sharpies",
-        "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives"));
+    if (weeklySupplyItems == null)
+      weeklySupplyItems = new ArrayList<String>(FXCollections.observableArrayList("Clorox Bleach",
+          "Windex Refill", "Windex Multi-Surface Vinegar", "Simple Green", "Scotch Brite pads",
+          "Stainless Steel Polish", "Magic Erasers", "Dawn", "Hand Soap", "Toilet Bowl Cleaner",
+          "Toilet Paper", "Morton Salt", "Snack Baggies", "Greased Lightning", "Mop Heads",
+          "Printer Paper", "Goo Gone", "Bar Keeper's Friend", "Gloves", "Hydrogen Peroxide",
+          "Band-aids", "Gauze Pads", "Burn Cream", "Neosporin", "Dasani", "Letter Envelopes",
+          "Manilla Envelopes", "Staples (Standard)", "Staples (Bostich)", "Grease Pencil",
+          "Sharpies", "Pens", "Blue Tape", "Sandwich Stickers", "Lightbulbs", "Broom", "Knives"));
+  }
+
+  private void setupManagerDBLs()
+  {
+    if (managerDBLs == null)
+      managerDBLs = new ArrayList<String>(FXCollections.observableArrayList("Detail spots",
+          "Clean ice chutes", "Detail bathroom globes", "Remove and detail 2nd CT lid, replace 1st",
+          "Remove and detail 2nd CT lid, replace 1st",
+          "Audit time and attendence for chronic lateness, provide upward feedback", "Bleach stained equipment"));
+  }
+
+  public ArrayList<String> getManagerDBLs()
+  {
+    return managerDBLs;
+  }
+  
+  public ArrayList<ManagerDBL> getCompletedManagerDBLs()
+  {
+    return completedManagerDBLs;
+  }
+  
+  public void addCompletedManagerDBL(ManagerDBL complete)
+  {
+    completedManagerDBLs.add(complete);
   }
   
   public ArrayList<Manager> getManagers()
   {
     return managers;
   }
-  
+
   public void addManager(Manager manager)
   {
     managers.add(manager);
-    for(DataObserver dato: observers)
+    for (DataObserver dato : observers)
     {
       dato.toolBoxDataUpdated();
     }
   }
-  
+
   public void removeManager(Manager manager)
   {
     managers.remove(manager);
-    for(DataObserver dato: observers)
+    for (DataObserver dato : observers)
     {
       dato.toolBoxDataUpdated();
     }
@@ -499,9 +528,9 @@ public class DataHub implements Serializable
 
   public Manager getManager(String username, String password)
   {
-    for(Manager m: getManagers())
+    for (Manager m : getManagers())
     {
-      if(m.getUsername().equals(username) && m.getPassword().equals(password))
+      if (m.getUsername().equals(username) && m.getPassword().equals(password))
         return m;
     }
     return null;

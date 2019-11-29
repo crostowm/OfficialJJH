@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Timer;
 
 import controllers.AreaManagerReportController;
@@ -39,7 +40,7 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static final int storeSC = 3;
-  public static boolean fullRun = false;
+  public static boolean fullRun = true;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
   public static String AMEmail = "jakec.esg@gmail.com";
@@ -47,6 +48,7 @@ public class MainApplication extends Application
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
   public static Manager amManager, pmManager;
+  private static ArrayList<Manager> currentManagers = new ArrayList<Manager>();
   private Stage stage;
   private Stage amrStage;
   private Stage loginStage;
@@ -215,6 +217,7 @@ public class MainApplication extends Application
   {
     loginStage.close();
     amManager = mgr;
+    currentManagers.add(amManager);
     amrStage = new Stage();
     FXMLLoader loader;
     Pane root;
@@ -236,5 +239,10 @@ public class MainApplication extends Application
       ErrorHandler.addError(e);
       e.printStackTrace();
     }
+  }
+
+  public static ArrayList<Manager> getManagers()
+  {
+    return currentManagers;
   }
 }

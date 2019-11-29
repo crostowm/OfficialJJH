@@ -260,29 +260,29 @@ public class ProduceOrderGuideTabController implements DataObserver
 
     // Usage
     double usl = (projections / 1000) * lupk;
-    usLettuce.setText(usl + "");
+    usLettuce.setText(String.format("%.2f", usl));
 
     double ust = (projections / 1000) * tupk;
-    usTomatoes.setText(ust + "");
+    usTomatoes.setText(String.format("%.2f", ust));
 
     double uso = (projections / 1000) * oupk;
-    usOnions.setText(uso + "");
+    usOnions.setText(String.format("%.2f", uso));
 
     double usce = (projections / 1000) * ceupk;
-    usCelery.setText(usce + "");
+    usCelery.setText(String.format("%.2f", usce));
 
     double uss = (projections / 1000) * supk;
-    usSprouts.setText(uss + "");
+    usSprouts.setText(String.format("%.2f", uss));
 
     double uscu = (projections / 1000) * cuupk;
-    usCucumbers.setText(uscu + "");
+    usCucumbers.setText(String.format("%.2f", uscu));
 
     if (!ohLettuce.getText().equals(""))
     {
       toLettuce.setTooltip(
           new Tooltip(String.format("%.2f", (usl - Double.parseDouble(ohLettuce.getText())) / 24)));
       toLettuce.setText(
-          String.format("%.0f", Math.ceil((usl - Double.parseDouble(ohLettuce.getText())) / 24)));
+          String.format("%.0f", Math.max(Math.ceil((usl - Double.parseDouble(ohLettuce.getText())) / 24), 0.0)));
     }
 
     if (!ohTomatoes.getText().equals(""))
@@ -290,7 +290,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toTomatoes.setTooltip(new Tooltip(
           String.format("%.2f", (ust - Double.parseDouble(ohTomatoes.getText())) / 25)));
       toTomatoes.setText(
-          String.format("%.0f", Math.ceil((ust - Double.parseDouble(ohTomatoes.getText())) / 25)));
+          String.format("%.0f", Math.max(Math.ceil((ust - Double.parseDouble(ohTomatoes.getText())) / 25), 0.0)));
     }
 
     if (!ohOnions.getText().equals(""))
@@ -298,7 +298,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toOnions.setTooltip(
           new Tooltip(String.format("%.2f", (uso - Double.parseDouble(ohOnions.getText())) / 50)));
       toOnions.setText(
-          String.format("%.0f", Math.ceil((uso - Double.parseDouble(ohOnions.getText())) / 50)));
+          String.format("%.0f", Math.max(Math.ceil((uso - Double.parseDouble(ohOnions.getText())) / 50), 0.0)));
     }
 
     if (!ohCelery.getText().equals(""))
@@ -306,7 +306,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toCelery.setTooltip(
           new Tooltip(String.format("%.2f", usce - Double.parseDouble(ohCelery.getText()))));
       toCelery
-          .setText(String.format("%.0f", Math.ceil(usce - Double.parseDouble(ohCelery.getText()))));
+          .setText(String.format("%.0f", Math.max(Math.ceil(usce - Double.parseDouble(ohCelery.getText())), 0.0)));
     }
 
     if (!ohSprouts.getText().equals(""))
@@ -314,7 +314,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toSprouts.setTooltip(
           new Tooltip(String.format("%.2f", uss - Double.parseDouble(ohSprouts.getText()))));
       toSprouts
-          .setText(String.format("%.0f", Math.ceil(uss - Double.parseDouble(ohSprouts.getText()))));
+          .setText(String.format("%.0f", Math.max(Math.ceil(uss - Double.parseDouble(ohSprouts.getText())), 0.0)));
     }
 
     if (!ohCucumbers.getText().equals(""))
@@ -322,7 +322,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toCucumbers.setTooltip(
           new Tooltip(String.format("%.2f", uscu - Double.parseDouble(ohCucumbers.getText()))));
       toCucumbers.setText(
-          String.format("%.0f", Math.ceil(uscu - Double.parseDouble(ohCucumbers.getText()))));
+          String.format("%.0f", Math.max(Math.ceil(uscu - Double.parseDouble(ohCucumbers.getText())), 0.0)));
     }
   }
 
