@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import personnel.Manager;
 import util.DataHub;
@@ -22,6 +23,9 @@ public class SettingsTabController
   
   @FXML
   private ChoiceBox<Manager> managerChoice;
+  
+  @FXML
+  private TextArea reportsUsedArea;
   
   public void initialize()
   {
@@ -59,6 +63,7 @@ public class SettingsTabController
   public void updateAllFields()
   {
     managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
+    reportsUsedArea.setText(MainApplication.reportsUsed);
   }
 
   @FXML

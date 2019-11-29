@@ -279,7 +279,8 @@ public class ProjectionTabController implements TimeObserver
         cateringFields.get(ii).setText("");
         for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
         {
-          if (JimmyCalendarUtil.getShiftNumber(co.getTime(), (int)MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)) == ii + 1)
+          if (JimmyCalendarUtil.getShiftNumber(co.getTime(),
+              (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)) == ii + 1)
           {
             double currentCat = 0;
             if (cateringFields.get(ii).getText().length() > 0)
@@ -319,6 +320,7 @@ public class ProjectionTabController implements TimeObserver
             produceProj / MainApplication.dataHub.getSetting(DataHub.PICKLEBV))));
 
         // Slicing Pars
+        int nextShift = JimmyCalendarUtil.convertToShiftNumber(currentShift + 1);
         cheeseMSCField.setText(
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "msc", currentShift))
                 + "");
@@ -326,10 +328,10 @@ public class ProjectionTabController implements TimeObserver
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "gec", currentShift))
                 + "");
         cheeseMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "msn", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "msc", nextShift))
                 + "");
         cheeseGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "gen", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "gec", nextShift))
                 + "");
         hamMSCField.setText(
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "msc", currentShift))
@@ -338,10 +340,10 @@ public class ProjectionTabController implements TimeObserver
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "gec", currentShift))
                 + "");
         hamMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "msn", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "msc", nextShift))
                 + "");
         hamGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "gen", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "gec", nextShift))
                 + "");
         turkeyMSCField.setText(
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "msc", currentShift))
@@ -350,10 +352,10 @@ public class ProjectionTabController implements TimeObserver
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "gec", currentShift))
                 + "");
         turkeyMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "msn", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "msc", nextShift))
                 + "");
         turkeyGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "gen", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "gec", nextShift))
                 + "");
         beefMSCField.setText(
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "msc", currentShift))
@@ -362,10 +364,10 @@ public class ProjectionTabController implements TimeObserver
             MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "gec", currentShift))
                 + "");
         beefMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "msn", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "msc", nextShift))
                 + "");
         beefGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "gen", currentShift))
+            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "gec", nextShift))
                 + "");
         vitoMSCField.setText(
             (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "msc", currentShift)
@@ -374,11 +376,11 @@ public class ProjectionTabController implements TimeObserver
             (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "gec", currentShift)
                 + MainApplication.dataHub.getSlicingPars("Capicola", "gec", currentShift))) + "");
         vitoMSNField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "msn", currentShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "msn", currentShift))) + "");
+            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "msc", nextShift)
+                + MainApplication.dataHub.getSlicingPars("Capicola", "msc", nextShift))) + "");
         vitoGENField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "gen", currentShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "gen", currentShift))) + "");
+            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "gec", nextShift)
+                + MainApplication.dataHub.getSlicingPars("Capicola", "gec", nextShift))) + "");
       }
       catch (NumberFormatException nfe)
       {
@@ -391,7 +393,8 @@ public class ProjectionTabController implements TimeObserver
 
   public void timeUpdateMinute()
   {
-    currentShift = JimmyCalendarUtil.getShiftNumber(new GregorianCalendar(), (int)MainApplication.dataHub.getSetting(DataHub.STORESC_TIME));
+    currentShift = JimmyCalendarUtil.getShiftNumber(new GregorianCalendar(),
+        (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME));
     colorCurrentShiftFields();
   }
 
@@ -407,7 +410,7 @@ public class ProjectionTabController implements TimeObserver
       produceLabel.setText("Produce required for PM");
     }
   }
-  
+
   private void setStyles()
   {
     // TODO Auto-generated method stub

@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import app.MainApplication;
 import javafx.collections.FXCollections;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditMap;
 import readers.HourlySalesMap;
+import readers.ManagerDBLReader;
 import readers.TrendSheetMap;
 import readers.UPKMap;
 import readers.WSRMap;
@@ -39,6 +41,7 @@ public class DataHub implements Serializable
   private ArrayList<Double> percentage = new ArrayList<Double>();
   private ArrayList<Double> wheat = new ArrayList<Double>();
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
+  //Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
   private ArrayList<String> managerDBLs;
@@ -199,9 +202,8 @@ public class DataHub implements Serializable
   {
     for (int index = 0; index < 14; index++)
     {
-      int nextShiftIndex = index + 1 >= 14 ? index - 13 : index + 1;
-      int nextNextShiftIndex = index + 2 >= 14 ? index - 12 : index + 2;
-      int nextNextNextShiftIndex = index + 3 >= 14 ? index - 11 : index + 3;
+      int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2)-1;
+      int nextNextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 3)-1;
       slicingPars.get(index).get(name).put("msc",
           ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
               / 1000) / 3.307);
@@ -209,13 +211,6 @@ public class DataHub implements Serializable
           ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
               * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
               / 3.307);
-      slicingPars.get(index).get(name).put("msn",
-          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-              * projections.get(nextShiftIndex)) / 1000) / 3.307);
-      slicingPars.get(index).get(name).put("gen",
-          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
-              * (projections.get(nextNextShiftIndex) + projections.get(nextNextNextShiftIndex)))
-              / 1000) / 3.307);
     }
   }
 
@@ -482,10 +477,10 @@ public class DataHub implements Serializable
   private void setupManagerDBLs()
   {
     if (managerDBLs == null)
-      managerDBLs = new ArrayList<String>(FXCollections.observableArrayList("Detail spots",
-          "Clean ice chutes", "Detail bathroom globes", "Remove and detail 2nd CT lid, replace 1st",
-          "Remove and detail 2nd CT lid, replace 1st",
-          "Audit time and attendence for chronic lateness, provide upward feedback", "Bleach stained equipment"));
+    {
+      ManagerDBLReader mdr = new ManagerDBLReader(MainApplication.FAKE_DOWNLOAD_LOCATION + "\\mgrdbls.txt");
+      managerDBLs = mdr.getDBLs();
+    }
   }
 
   public ArrayList<String> getManagerDBLs()

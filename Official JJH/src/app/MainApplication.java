@@ -49,6 +49,7 @@ public class MainApplication extends Application
   public static ErrorHandler errorHandler = new ErrorHandler();
   public static Manager amManager, pmManager;
   private static ArrayList<Manager> currentManagers = new ArrayList<Manager>();
+  public static String reportsUsed = "";
   private Stage stage;
   private Stage amrStage;
   private Stage loginStage;
@@ -73,7 +74,7 @@ public class MainApplication extends Application
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadTrendSheetsToDataHub();
-
+    System.out.println(reportsUsed);
     if (fullRun)
       runLogin();
     else
