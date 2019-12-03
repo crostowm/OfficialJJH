@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="687.0" vgap="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AMBreadMathController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+      <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" vgrow="NEVER" />
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="NEVER" />
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="2" GridPane.rowSpan="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="Frenchie/Lil John" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+            <Label text="Frenchie/LJ Loaves I Am Thawing And Baking For PM Shift" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <Label text="Frenchies I Am Making For PM Shift:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label text="Frenchie/LJ Loves Baked:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="Completed Frenchies Required For Shift Change:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label text="Completed Frenchies Right Now:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="haveF" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="toBakeF" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="toMakeF" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="bakedF" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="reqF" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="Wheat Loaf" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+            <Label text="Wheat Loaves I Am Thawing And Baking For PM Shift:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="Wheat Loaves Required At Shift Change:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label text="Wheat Loaves Baked Right Now:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="haveWL" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="reqWL" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="toBakeWL" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="Wheat Sub Roll" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+            <Label text="Wheat Loaves I Am Thawing And Baking For PM Shift:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="Wheat Loaves Required At Shift Change:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label text="Wheat Loaves Baked Right Now:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="toBakeWS" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="haveWS" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="reqWS" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane hgap="5.0" vgap="5.0" GridPane.rowSpan="6">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="French" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+            <Label text="Thawed [12]:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+            <Label text="Proofing/Baking [12]:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+            <Label text="Baked &amp; Consolidated [9]:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+            <Label text="French Bread I Have Right Now:" GridPane.columnSpan="2" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="val9" text="Tray of 9:" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="val12" text="Tray of 12:" GridPane.rowIndex="2" />
+            <Label text="Bread Tray Values" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Trays To Thaw [12]:" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+            <Label text="Trays To Bake [12]:" GridPane.halignment="RIGHT" GridPane.rowIndex="18" />
+            <Label text="Total Amount In Sales:" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+            <TextField fx:id="haveBaked" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="haveSales" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="9">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="haveThawed" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="haveProofBake" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="7">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="toBake" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="18">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="toThaw" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="19">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Thawed [12]:" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+            <Label text="Baked &amp; Consolidated [9]:" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+            <Label text="French Bread Required For PM:" GridPane.rowIndex="13" />
+            <Label text="Total Amount In Sales:" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+            <TextField fx:id="reqThawed" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="15">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="reqBaked" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="14">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="reqSales" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="16">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="17" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="12" />
+            <Label text="Projected Baked At Shift Change:" GridPane.rowIndex="11" />
+            <TextField fx:id="projBaked" editable="false" maxWidth="70.0" onKeyTyped="#updateAll" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <Label text="Projections" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="tilSC" text="1-3:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="pm" text="PM:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Separator prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Separator prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowSpan="6" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</GridPane>

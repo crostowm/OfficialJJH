@@ -200,7 +200,7 @@ public class ProjectionTabController implements TimeObserver
     wheatFields.add(w14);
 
     setStyles();
-
+    System.out.println("A");
   }
 
   public void updateAllFields()
@@ -279,8 +279,7 @@ public class ProjectionTabController implements TimeObserver
         cateringFields.get(ii).setText("");
         for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
         {
-          if (JimmyCalendarUtil.getShiftNumber(co.getTime(),
-              (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)) == ii + 1)
+          if (JimmyCalendarUtil.getShiftNumber(co.getTime()) == ii + 1)
           {
             double currentCat = 0;
             if (cateringFields.get(ii).getText().length() > 0)
@@ -393,8 +392,7 @@ public class ProjectionTabController implements TimeObserver
 
   public void timeUpdateMinute()
   {
-    currentShift = JimmyCalendarUtil.getShiftNumber(new GregorianCalendar(),
-        (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME));
+    currentShift = JimmyCalendarUtil.getShiftNumber(new GregorianCalendar());
     colorCurrentShiftFields();
   }
 

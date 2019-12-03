@@ -231,11 +231,9 @@ public class DataHub implements Serializable
     {
       catering
           .add(
-              JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(),
-                  settings.get(DataHub.STORESC_TIME).intValue()) - 1,
+              JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()),
               cateringOrder.getDollarValue());
-      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime(),
-          settings.get(DataHub.STORESC_TIME).intValue()));
+      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()));
     }
     for (DataObserver dato : observers)
     {
@@ -346,7 +344,7 @@ public class DataHub implements Serializable
     int startIndex = startShift - 1;
     int totalProj = 0;
     int ii = startIndex;
-    while (ii != endShift)
+    while (ii < endShift)
     {
       totalProj += projections.get(ii);
       ii++;

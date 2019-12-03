@@ -11,7 +11,10 @@ public class PeriodFoldController
 {
   @FXML
   private PieChart periodChart;
-
+  
+  public void initialize()
+  {
+  }
   public void updateAll()
   {
     TrendSheetMap current = MainApplication.dataHub.getCurrentYearTrendSheet();

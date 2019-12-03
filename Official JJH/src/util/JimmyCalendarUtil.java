@@ -8,14 +8,15 @@ import app.MainApplication;
 
 public class JimmyCalendarUtil
 {
-  public static int getShiftNumber(GregorianCalendar calendar, int storeSCTime)
+  public static int getShiftNumber(GregorianCalendar calendar)
   {
     int dow = calendar.get(Calendar.DAY_OF_WEEK);
     if (dow > 3)
       dow = dow - 3;
     else
       dow = dow + 4;
-    if (calendar.get(Calendar.HOUR_OF_DAY) >= storeSCTime)
+    if (calendar.get(Calendar.HOUR_OF_DAY) >= MainApplication.dataHub
+        .getSetting(DataHub.STORESC_TIME))
       return dow * 2;
     else
       return dow * 2 - 1;
@@ -92,8 +93,7 @@ public class JimmyCalendarUtil
 
   public static int getNextAMShift()
   {
-    return getNextAMShift(getShiftNumber(new GregorianCalendar(),
-        (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME)));
+    return getNextAMShift(getShiftNumber(new GregorianCalendar()));
   }
 
   public static int getPeriodNumber(int weekNumber)
@@ -148,5 +148,16 @@ public class JimmyCalendarUtil
     }
     System.out.println("Did not recognize shift day in jimmycalendarutil");
     return 1;
+  }
+
+  public static int getCurrentShift()
+  {
+    GregorianCalendar calendar = new GregorianCalendar();
+    return getShiftNumber(calendar);
+  }
+
+  public static int getCurrentPMShift()
+  {
+    return getCurrentShift() % 2 == 0 ? getCurrentShift() : getCurrentShift() + 1;
   }
 }

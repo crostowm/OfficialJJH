@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import app.AMBreadMathStage;
 import app.CateringStage;
 import app.MainApplication;
+import app.PMBreadMathStage;
 import app.WeeklySupplyStage;
 import gui.ManagerDBLCheckBox;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -62,6 +65,9 @@ public class HubController implements DataObserver
   @FXML
   private Label shiftManagerLabel, shiftLabel, clockLabel, dateLabel;
 
+  @FXML
+  private Button createWeeklySupplyButton, addCateringButton;
+  
   // Current
   @FXML
   private Label currentPaneFirstHourLabel, currentPaneSecondHourLabel, currentPaneThirdHourLabel,
@@ -74,6 +80,9 @@ public class HubController implements DataObserver
       currentPaneThirdHourField, currentPaneFourthHourField, currentPaneBaked9Field,
       currentPaneInProcess12Field;
 
+  @FXML
+  private VBox currentPaneVBox;
+
   // Today
   @FXML
   private TextField todayProjAMField, todayProjPMField, lastYearProjAMField, lastYearProjPMField;
@@ -82,6 +91,8 @@ public class HubController implements DataObserver
   private VBox managerDBLBox;
 
   private int numMgrDBLsVisible = 4;
+
+  private Button breadMathButton;
 
   public void initialize()
   {
@@ -147,8 +158,7 @@ public class HubController implements DataObserver
       public void run()
       {
         int preUpShift = currentShift;
-        currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate,
-            (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME));
+        currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
         if (preUpShift != currentShift)
         {
           for (TimeObserver to : timeObservers)
@@ -157,25 +167,75 @@ public class HubController implements DataObserver
           }
         }
         projectionTabController.timeUpdateMinute();
+        
+        //Testing
+        if (breadMathButton == null)
+        {
+          breadMathButton = new Button("AM Bread Math");
+          breadMathButton.setOnAction(new EventHandler<ActionEvent>()
+          {
+            @Override
+            public void handle(ActionEvent arg0)
+            {
+              AMBreadMathStage ambms = new AMBreadMathStage();
+              ambms.show();
+            }
+          });
+        }
+        if (!currentPaneVBox.getChildren().contains(breadMathButton))
+          currentPaneVBox.getChildren().add(breadMathButton);
+        
         // update current proj vals
+        double sc = MainApplication.dataHub.getSetting(DataHub.STORESC_TIME);
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
         {
 
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
-            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 13)
+            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 2)
         {
 
         }
-        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 13
-            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 15)
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 2
+            && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 1)
         {
+          System.out.println("Yup");
+          if (breadMathButton == null)
+          {
+            breadMathButton = new Button("AM Bread Math");
+            breadMathButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+              @Override
+              public void handle(ActionEvent arg0)
+              {
+                AMBreadMathStage ambms = new AMBreadMathStage();
+                ambms.show();
+              }
+            });
+          }
+          if (!currentPaneVBox.getChildren().contains(breadMathButton))
+            currentPaneVBox.getChildren().add(breadMathButton);
+        }
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 1)
+        {
+          breadMathButton.setText("PM Bread Math");
+          breadMathButton.setOnAction(new EventHandler<ActionEvent>()
+          {
+            @Override
+            public void handle(ActionEvent arg0)
+            {
+              PMBreadMathStage ambms = new PMBreadMathStage();
+              ambms.show();
+            }
+          });
 
         }
-        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 15)
+        else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc + 1)
         {
-
+          if (currentPaneVBox.getChildren().contains(breadMathButton))
+            currentPaneVBox.getChildren().remove(breadMathButton);
+          breadMathButton = null;
         }
 
         // Current Titled Pane
