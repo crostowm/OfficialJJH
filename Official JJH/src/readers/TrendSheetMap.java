@@ -171,7 +171,6 @@ public class TrendSheetMap implements Serializable
 
   public double getDataForCategoryForPeriod(String cat, int period)
   {
-    System.out.println(cat + " " + period);
     return periodMap.get(cat).get(period);
   }
 

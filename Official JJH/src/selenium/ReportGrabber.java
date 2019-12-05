@@ -1,5 +1,6 @@
 package selenium;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import error_handling.ErrorHandler;
 import util.JimmyCalendarUtil;
 
 public class ReportGrabber
@@ -17,6 +19,7 @@ public class ReportGrabber
   private String storeNumber;
   private String storeXPath;
   private WebDriver driver;
+  private int numReports = 0;
 
   public ReportGrabber(int storeNumber)
   {
@@ -51,6 +54,7 @@ public class ReportGrabber
     {
       // Open Chrome to reports
       driver.get("https://jimmyjohns.macromatix.net/MMS_System_Reports.aspx?MenuCustomItemID=254");
+      driver.manage().window().maximize();
 
       // Login$UserName
       WebElement loginBox = driver.findElement(By.id("Login_UserName"));
@@ -60,55 +64,94 @@ public class ReportGrabber
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
 
-      // clickSendToDownloadCenter();
       downloadLastAMPhoneAuditReport();
       downloadLast6UPK();
       downloadLast4WSR();
-      //downloadLast4HourlySales();
-      //goToDownloadCenterAndDownloadAll();
+      downloadLast4HourlySales();
+      goToDownloadCenterAndDownloadAll();
     }
     finally
     {
-      driver.quit();
+      // driver.quit();
     }
   }
 
   private void downloadLast4HourlySales()
   {
-    // TODO Auto-generated method stub
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
     selectStoreCheckBox();
-    selectStartDateXDaysBeforeCurrentWithinAMonth(28);
+    selectDayOfTheWeek();
+    for (int ii = 28; ii >= 7; ii -= 7)
+    {
+      selectDateXDaysBeforeCurrent(ii);
+      changeToCSVAndDownload();
+      numReports++;
+    }
   }
 
-  private void selectStartDateXDaysBeforeCurrentWithinAMonth(int numDays)
+  private void selectDayOfTheWeek()
   {
-    driver
-        .findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_popupButton\"]"))
-        .click();
-    WebElement startDateTable = driver.findElement(
-        By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_calendar_Top\"]"));
     GregorianCalendar gc = new GregorianCalendar();
-    if (gc.get(Calendar.DAY_OF_MONTH) <= numDays)
+    int day = gc.get(Calendar.DAY_OF_WEEK);
+    int index = 0;
+    switch (day)
     {
-      // prevMonth
-      driver
-          .findElement(
-              By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_calendar_NP\"]"))
-          .click();
+      case 1:
+        index = 7;
+        break;
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        index = day - 1;
+        break;
     }
-    gc.add(Calendar.DAY_OF_YEAR, -numDays);
-    System.out.println("Start day: " + gc.get(Calendar.DAY_OF_MONTH));
-    driver.findElement(By.linkText("" + gc.get(Calendar.DAY_OF_MONTH))).click();
+    Select select = new Select(driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ddlDayOfWeek\"]")));
+    select.selectByIndex(index);
+  }
 
+  private void selectDateXDaysBeforeCurrent(int numDays)
+  {
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.add(Calendar.DAY_OF_YEAR, -numDays);
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + sdf.format(gc.getTime()) + Keys.ENTER);
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + sdf.format(gc.getTime()) + Keys.ENTER);
   }
 
   private void goToDownloadCenterAndDownloadAll()
   {
-    // TODO Auto-generated method stub
     driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb\"]/ul/li[5]/a")).click();
-    driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb_i4_i0_ctl00\"]/ul/li[4]/a/span")).click();
-    
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb_i4_i0_ctl00\"]/ul/li[4]/a/span"))
+        .click();
+    System.out.println("Downloading " + numReports + " from the download center");
+    try
+    {
+      for (int ii = 0; ii < numReports; ii++)
+      {
+        driver
+            .findElement(By.xpath("//*[@id=\"ctl00_ph_GridCachedReport_ctl00_ctl04_LbDownload\"]"))
+            .click();
+      }
+    }
+    catch (Exception e)
+    {
+      ErrorHandler.addError(e);
+    }
   }
 
   private void downloadLast6UPK()
@@ -128,6 +171,7 @@ public class ReportGrabber
           driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
       select.selectByIndex(currentWeekIndex - ii);
       changeToCSVAndDownload();
+      numReports++;
     }
   }
 
@@ -154,6 +198,7 @@ public class ReportGrabber
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[2]")).click();
     selectStoreCheckBox();
     changeToCSVAndDownload();
+    numReports++;
   }
 
   private void downloadLast4WSR()
@@ -161,76 +206,6 @@ public class ReportGrabber
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     selectLastXWeeksFromWeekDropdownAndDownload(4);
-  }
-
-  public void runChromeReportGrabber()
-  {
-    driver = new ChromeDriver();
-    // System.setProperty("webdriver.chrome.driver", "C:/Users/crost/Webdriver/bin");
-    try
-    {
-      // Open Chrome to reports
-      driver.get("https://jimmyjohns.macromatix.net/MMS_System_Reports.aspx?MenuCustomItemID=254");
-
-      // Login$UserName
-      WebElement loginBox = driver.findElement(By.id("Login_UserName"));
-      loginBox.sendKeys("crostowm");
-
-      // Login$Password
-      WebElement passBox = driver.findElement(By.id("Login_Password"));
-      passBox.sendKeys("Zulu9495" + Keys.ENTER);
-
-      // WSR
-      driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[23]")).click();
-      sendToDownloadCenter();
-      chooseStore();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]")).click();
-      int currentWeekNum = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar());
-      scrollNumberOfItemsAndSelect("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]",
-          currentWeekNum - 3);
-      changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
-          .sendKeys(Keys.ARROW_DOWN);
-      changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
-          .sendKeys(Keys.ARROW_DOWN);
-      changeToCSVAndDownload();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListPeriod\"]"))
-          .sendKeys(Keys.ARROW_DOWN);
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListFiscalYear\"]")).click();
-      driver.findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListFiscalYear\"]"))
-          .sendKeys("" + (new GregorianCalendar().get(Calendar.YEAR) - 1) + Keys.ENTER);
-      changeToCSVAndDownload();
-
-      // Go to download Center
-      driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb\"]/ul/li[5]/a"))
-          .click();
-      driver
-          .findElement(
-              By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb_i4_i0_ctl00\"]/ul/li[4]/a"))
-          .click();
-      ;
-      // driver.findElement(By.xpath("//*[@id=\"ctl00_ph_GridCachedReport_ctl00_ctl04_LbDownload\"]")).click();
-    }
-    finally
-    {
-      // TODO Auto-generated catch block
-      // driver.quit();
-    }
-  }
-
-  private void scrollNumberOfItemsAndSelect(String string, int itemNum)
-  {
-    for (int ii = 0; ii < itemNum - 1; ii++)
-    {
-      driver.findElement(By.xpath(string)).sendKeys(Keys.ARROW_DOWN);
-    }
-    driver.findElement(By.xpath(string)).sendKeys(Keys.ENTER);
-  }
-
-  private void chooseStore()
-  {
-    driver.findElement(By.xpath(storeXPath)).click();
   }
 
   private void sendToDownloadCenter()

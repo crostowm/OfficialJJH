@@ -22,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import personnel.Manager;
+import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.DataHub;
@@ -39,6 +40,7 @@ public class MainApplication extends Application
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
   public static boolean fullRun = false;
+  public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
   public static String AMEmail = "jakec.esg@gmail.com";
@@ -63,8 +65,11 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
-    //ReportGrabber rg = new ReportGrabber(storeNumber);
-    //rg.runTester();
+    if(downloadReports)
+    {
+    ReportGrabber rg = new ReportGrabber(storeNumber);
+    rg.runTester();
+    }
     
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadUPKToDataHub();
