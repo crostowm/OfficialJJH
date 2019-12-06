@@ -64,7 +64,8 @@ public class ReportGrabber
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
 
-      downloadLastAMPhoneAuditReport();
+      // downloadLastAMPhoneAuditReport();
+      downloadAttendanceReport();
       downloadLast6UPK();
       downloadLast4WSR();
       downloadLast4HourlySales();
@@ -74,6 +75,25 @@ public class ReportGrabber
     {
       // driver.quit();
     }
+  }
+
+  private void downloadAttendanceReport()
+  {
+    // TODO Auto-generated method stub
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[3]")).click();
+    selectStoreNumberFromDropdown();
+    // selectDateXDaysBeforeCurrent(1);
+    selectYesterdayFromDropdown();
+    changeToCSVAndDownload();
+  }
+
+  private void selectYesterdayFromDropdown()
+  {
+    // TODO Auto-generated method stub
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DropDownListAutoDateSet_Input\"]"))
+        .sendKeys("Yesterday" + Keys.ENTER);
   }
 
   private void downloadLast4HourlySales()

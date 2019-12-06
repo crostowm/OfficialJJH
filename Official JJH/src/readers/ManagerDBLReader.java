@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import util.ManagerDBL;
+
 public class ManagerDBLReader
 {
   private ArrayList<String> mgrDBLs = new ArrayList<String>();
@@ -27,8 +29,13 @@ public class ManagerDBLReader
     }
     
   }
-  public ArrayList<String> getDBLs()
+  public ArrayList<ManagerDBL> getDBLs()
   {
-    return mgrDBLs;
+    ArrayList<ManagerDBL> dbls = new ArrayList<ManagerDBL>();
+    for(String s: mgrDBLs)
+    {
+      dbls.add(new ManagerDBL(s));
+    }
+    return dbls;
   }
 }

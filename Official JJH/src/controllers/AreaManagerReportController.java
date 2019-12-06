@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import app.MainApplication;
+import gui.AttendanceShiftBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +15,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import readers.AMPhoneAuditMap;
+import util.AttendanceShift;
 import util.CateringOrder;
 import util.Email;
 import util.JimmyCalendarUtil;
@@ -36,6 +40,9 @@ public class AreaManagerReportController
   @FXML
   private ChoiceBox<CateringOrder> cateringChoice;
 
+  @FXML
+  private VBox attendanceVBox;
+  
   @FXML
   private TextArea explanationArea;
 
@@ -77,6 +84,11 @@ public class AreaManagerReportController
         cateringDollarLabel.setText("Dollar Value: " + cateringChoice.getValue().getDollarValue());
       }
     });
+    
+    for(AttendanceShift as: MainApplication.dataHub.getAttendaceShiftsFromYesterday())
+    {
+      attendanceVBox.getChildren().add(new AttendanceShiftBox(as));
+    }
   }
 
   public void setMain(MainApplication mainApplication)

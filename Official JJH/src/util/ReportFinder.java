@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import app.MainApplication;
 import readers.AMPhoneAuditMap;
+import readers.AttendanceReader;
 import readers.HourlySalesMap;
 import readers.TrendSheetMap;
 import readers.UPKMap;
@@ -21,6 +22,15 @@ public class ReportFinder
     this.directory = directory;
   }
 
+  public void uploadAttendanceReportToDataHub()
+  {
+    ArrayList<DupFile> fs = findLatestDuplicates(
+        getAllCSVFilesThatStartWith("AttendanceWagesNoBreaks_JJ"), 1);
+    MainApplication.reportsUsed += String.format("Attendance Report\n\t%s\n",
+        fs.get(0).getFile().getName());
+    MainApplication.dataHub.uploadAttendanceShifts(new AttendanceReader(fs.get(0).getFile()).getShifts());
+  }
+  
   public void uploadAreaManagerPhoneAuditToDataHub()
   {
     ArrayList<DupFile> fs = findLatestDuplicates(

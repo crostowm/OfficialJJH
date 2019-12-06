@@ -21,7 +21,7 @@ public class DataHub implements Serializable
   public static final int AMBUFFER = 1, PMBUFFER = 2, BTV = 3, B9TV = 4, WLV = 5, BAKEDAT11 = 6,
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
       STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17,
-      SPROUT_UPK = 18;
+      SPROUT_UPK = 18, INSHOP_MIN_PAY = 19;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
@@ -30,6 +30,7 @@ public class DataHub implements Serializable
   private transient ArrayList<HourlySalesMap> past4HourlySales;
   private transient AMPhoneAuditMap amPhoneAuditMap;
   private transient TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
+  private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
   private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
@@ -44,8 +45,7 @@ public class DataHub implements Serializable
   //Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
-  private ArrayList<String> managerDBLs;
-  private ArrayList<ManagerDBL> completedManagerDBLs;
+  private ArrayList<ManagerDBL> managerDBLs;
 
   public DataHub()
   {
@@ -87,8 +87,7 @@ public class DataHub implements Serializable
     settings.put(BAKE_TIME, 20.0);
     settings.put(COOL_TIME, 25.0);
     settings.put(SPROUT_UPK, 1.0);
-    
-    completedManagerDBLs = new ArrayList<ManagerDBL>();
+    settings.put(INSHOP_MIN_PAY, 8.0);
   }
 
   /**
@@ -481,19 +480,20 @@ public class DataHub implements Serializable
     }
   }
 
-  public ArrayList<String> getManagerDBLs()
+  public ArrayList<ManagerDBL> getManagerDBLs()
   {
     return managerDBLs;
   }
   
-  public ArrayList<ManagerDBL> getCompletedManagerDBLs()
+  public ArrayList<ManagerDBL> getCompleteOrIncompleteManagerDBLs(boolean completed)
   {
-    return completedManagerDBLs;
-  }
-  
-  public void addCompletedManagerDBL(ManagerDBL complete)
-  {
-    completedManagerDBLs.add(complete);
+    ArrayList<ManagerDBL> dbls = new ArrayList<ManagerDBL>();
+    for(ManagerDBL mdbl: managerDBLs)
+    {
+      if(mdbl.isCompleted() == completed)
+        dbls.add(mdbl);
+    }
+    return dbls;
   }
   
   public ArrayList<Manager> getManagers()
@@ -527,5 +527,16 @@ public class DataHub implements Serializable
         return m;
     }
     return null;
+  }
+
+  public void uploadAttendanceShifts(ArrayList<AttendanceShift> arrayList)
+  {
+    //TODO
+    yesterdaysAttendanceShifts = arrayList;
+  }
+
+  public ArrayList<AttendanceShift> getAttendaceShiftsFromYesterday()
+  {
+    return yesterdaysAttendanceShifts;
   }
 }

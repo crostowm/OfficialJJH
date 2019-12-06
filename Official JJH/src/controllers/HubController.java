@@ -67,7 +67,7 @@ public class HubController implements DataObserver
 
   @FXML
   private Button createWeeklySupplyButton, addCateringButton;
-  
+
   // Current
   @FXML
   private Label currentPaneFirstHourLabel, currentPaneSecondHourLabel, currentPaneThirdHourLabel,
@@ -103,10 +103,7 @@ public class HubController implements DataObserver
     shiftManagerLabel.setText(MainApplication.amManager + "");
 
     // Fill mgr dbls
-    for (int ii = 0; ii < numMgrDBLsVisible; ii++)
-    {
-      addMgrDBL();
-    }
+    populateMgrDBLs();
     updateAllFields();
   }
 
@@ -167,8 +164,8 @@ public class HubController implements DataObserver
           }
         }
         projectionTabController.timeUpdateMinute();
-        
-        //Testing
+
+        // Testing
         if (breadMathButton == null)
         {
           breadMathButton = new Button("AM Bread Math");
@@ -184,7 +181,7 @@ public class HubController implements DataObserver
         }
         if (!currentPaneVBox.getChildren().contains(breadMathButton))
           currentPaneVBox.getChildren().add(breadMathButton);
-        
+
         // update current proj vals
         double sc = MainApplication.dataHub.getSetting(DataHub.STORESC_TIME);
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
@@ -352,14 +349,12 @@ public class HubController implements DataObserver
     wss.show();
   }
 
-  private void addMgrDBL()
+  private void populateMgrDBLs()
   {
-    int numDBL = MainApplication.dataHub.getCompletedManagerDBLs().size()
-        + managerDBLBox.getChildren().size();
-    if (MainApplication.dataHub.getManagerDBLs().size() > numDBL)
+    int numComplete = MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size();
+    while(numComplete + managerDBLBox.getChildren().size() < new GregorianCalendar().get(Calendar.DAY_OF_MONTH))
     {
-      ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(
-          new ManagerDBL(MainApplication.dataHub.getManagerDBLs().get(numDBL)));
+      ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs().get(numComplete + managerDBLBox.getChildren().size()));
       mdc.setOnAction(new EventHandler<ActionEvent>()
       {
         @Override
@@ -369,9 +364,9 @@ public class HubController implements DataObserver
           {
             if (MainApplication.getManagers().size() == 1)
             {
-              mdc.getDBL().complete(MainApplication.getManagers().get(0));
+              mdc.getDBL().complete(MainApplication.getManagers().get(0).getName(), new GregorianCalendar());
               managerDBLBox.getChildren().remove(mdc);
-              addMgrDBL();
+              populateMgrDBLs();
             }
           }
         }
