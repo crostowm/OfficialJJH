@@ -103,6 +103,7 @@ public class CateringCalculatorTabController
 
       }
     });
+    System.out.println("C");
   }
 
   public void updateAllFields()

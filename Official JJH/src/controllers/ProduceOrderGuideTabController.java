@@ -208,6 +208,7 @@ public class ProduceOrderGuideTabController implements DataObserver
         updateAllFields();
       }
     });
+    System.out.println("POG");
   }
 
   public void updateAllFields()
@@ -228,6 +229,7 @@ public class ProduceOrderGuideTabController implements DataObserver
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1) + "");
     produceOrderGuideSproutMin.setText(MainApplication.dataHub
         .getProduceRequiredForShifts(nextAMShift, nextAMShift + 3, "Sprouts", 1) + "");
+    System.out.println("HM");
 
     // UPKs
     double lupk = MainApplication.dataHub.getCurrentUPKMap().getData(UPKMap.PRODUCE, "Lettuce",
@@ -252,7 +254,6 @@ public class ProduceOrderGuideTabController implements DataObserver
     double cuupk = MainApplication.dataHub.getCurrentUPKMap().getData(UPKMap.PRODUCE, "Cucumbers",
         UPKMap.AVERAGE_UPK);
     uCucumbers.setText(String.format("%.2f", cuupk));
-
     // Proj
     double projections = MainApplication.dataHub
         .getProjectionsForShifts(firstShiftProduceWillBeUsed, lastShiftProduceWillBeNeededFor);

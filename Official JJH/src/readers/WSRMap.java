@@ -10,8 +10,6 @@ import error_handling.ErrorHandler;
 
 public class WSRMap
 {
-  public static final int ADJUSTED_SALES = 0, SAMPLING = 1, WASTE = 2, ROYALTY_SALES = 3,
-      PLATTERS_MINI_JIMMYS = 4, BOX_LUNCH = 5;
   private int index;
   private ArrayList<String> managerDeposits = new ArrayList<String>();
   private HashMap<String, HashMap<Integer, Double>> map = new HashMap<String, HashMap<Integer, Double>>();

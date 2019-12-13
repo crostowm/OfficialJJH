@@ -38,29 +38,34 @@ public class AMBreadMathController
       haveSales.setText((haveB + haveP + haveT) + "");
 
       double projTilSC = MainApplication.dataHub.getAverageHourlySales("Total",
-          (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME) - 2)
+          (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME) - 2, false)
           + MainApplication.dataHub.getAverageHourlySales("Total",
-              (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME) - 1);
-      tilSC.setText("" + projTilSC);
-      
+              (int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME) - 1, false);
+      tilSC.setText(JimmyCalendarUtil
+          .convertTo12Hour((int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME) - 2)
+          + "-"
+          + JimmyCalendarUtil
+              .convertTo12Hour((int) MainApplication.dataHub.getSetting(DataHub.STORESC_TIME))
+          + ": " + Math.ceil(projTilSC));
+
       double projB = (haveB + haveP) - projTilSC;
-      projBaked.setText("" + projB);
+      projBaked.setText(String.format("%.0f", projB));
 
       double reqB = MainApplication.dataHub
-          .getPercentageDataForIndex(JimmyCalendarUtil.getCurrentPMShift() - 1);
+          .getPercentageDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
       double proj = MainApplication.dataHub
-          .getProjectionDataForIndex(JimmyCalendarUtil.getCurrentPMShift() - 1);
-      pm.setText("" + proj);
+          .getProjectionDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
+      pm.setText("PM: " + Math.ceil(proj));
       double reqT = proj - reqB;
-      reqBaked.setText(reqB + "");
-      reqThawed.setText(reqT + "");
-      reqSales.setText(proj + "");
+      reqBaked.setText(String.format("%.0f", reqB));
+      reqThawed.setText(String.format("%.0f", reqT));
+      reqSales.setText(String.format("%.0f", proj));
 
       double deltBaked = reqB - projB;
-      toBake.setText(deltBaked > 0 ? deltBaked + "" : "0");
+      toBake.setText(deltBaked > 0 ? String.format("%.0f",deltBaked) : "0");
 
       double deltThawed = reqT - haveT;
-      toThaw.setText(deltThawed > 0 ? deltThawed + "" : "0");
+      toThaw.setText(deltThawed > 0 ? String.format("%.0f",deltThawed) : "0");
     }
     catch (Exception e)
     {

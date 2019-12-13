@@ -10,9 +10,13 @@ public class AttendanceShift
   private double payHours, payRate, cumulativeHours, estimatedWages;
   private GregorianCalendar start, end;
   private boolean adjusted;
+  private boolean authorized;
+  private int empNum;
   
   
   /**
+   * @param empNum 
+   * @param authorized 
    * @param firstName
    * @param lastName
    * @param position
@@ -25,10 +29,12 @@ public class AttendanceShift
    * @param end
    * @param adjusted
    */
-  public AttendanceShift(String firstName, String lastName, String position,
+  public AttendanceShift(boolean authorized, int empNum, String firstName, String lastName, String position,
       String adjustmentReason, double payHours, double payRate, double cumulativeHours,
       double estimatedWages, GregorianCalendar start, GregorianCalendar end, boolean adjusted)
   {
+    this.authorized = authorized;
+    this.empNum = empNum;
     this.firstName = firstName;
     this.lastName = lastName;
     this.position = position;
@@ -41,54 +47,76 @@ public class AttendanceShift
     this.end = end;
     this.adjusted = adjusted;
   }
+  
   public String getFirstName()
   {
     return firstName;
   }
+  
   public String getLastName()
   {
     return lastName;
   }
+  
   public String getPosition()
   {
     return position;
   }
+  
   public String getAdjustmentReason()
   {
     return adjustmentReason;
   }
+  
   public double getPayHours()
   {
     return payHours;
   }
+  
   public double getPayRate()
   {
     return payRate;
   }
+  
   public double getCumulativeHours()
   {
     return cumulativeHours;
   }
+  
   public double getEstimatedWages()
   {
     return estimatedWages;
   }
+  
   public GregorianCalendar getStart()
   {
     return start;
   }
+  
   public GregorianCalendar getEnd()
   {
     return end;
   }
+  
   public boolean isAdjusted()
   {
     return adjusted;
   }
+  
+  public boolean isAuthorized()
+  {
+    return authorized;
+  }
+  
+  public int getEmpNum()
+  {
+    return empNum;
+  }
+  
   public boolean isValid()
   {
-    boolean flag = true;
-    flag = payHours > 0 && payHours < 12;
+    boolean flag = authorized;
+    flag = flag && payHours > 0 && payHours < 12;
     switch(position)
     {
       case "In Shop":

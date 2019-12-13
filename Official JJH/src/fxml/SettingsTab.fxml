@@ -18,7 +18,7 @@
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="544.0" maxHeight="1.7976931348623157E308" maxWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <content>
-            <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="4.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -30,7 +30,7 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -55,10 +55,10 @@
                   <Label text="Tray of 9 Value" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                   <Label text="Wheat Loaf Value" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                   <TextField fx:id="wlvField" maxWidth="75.0" onKeyTyped="#wlvFieldChanged" prefWidth="60.0" text="800" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="bakedAt11Field" maxWidth="75.0" onKeyTyped="#bakedAt11FieldChanged" prefWidth="60.0" text=".75" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField fx:id="bakedAtSCField" maxWidth="75.0" onKeyTyped="#bakedAtSCFieldChanged" prefWidth="60.0" text=".5" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <Label text="Baked at 11 (Decimal)" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                  <Label text="Baked at SC (Decimal)" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                  <TextField fx:id="bakedAt11Field" maxWidth="75.0" onKeyTyped="#bakedAt11FieldChanged" prefWidth="60.0" text=".75" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                  <TextField fx:id="bakedAtSCField" maxWidth="75.0" onKeyTyped="#bakedAtSCFieldChanged" prefWidth="60.0" text=".5" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                  <Label text="Baked at 11 (Decimal)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                  <Label text="Baked at SC (Decimal)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
                   <Label text="Lettuce Bin Value" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
                   <Label text="Tomato Bin Value" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
                   <Label text="Onion Bin Value" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
@@ -69,12 +69,12 @@
                   <TextField fx:id="onionBVField" maxWidth="75.0" onKeyTyped="#onionBVChanged" prefWidth="60.0" text="1200" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                   <TextField fx:id="cucumberBVField" maxWidth="75.0" onKeyTyped="#cucumberBVChanged" prefWidth="60.0" text="2200" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                   <TextField fx:id="pickleBVField" maxWidth="75.0" onKeyTyped="#pickleBVChanged" prefWidth="60.0" text="1200" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                  <Label text="Number of Oven Decks" GridPane.columnIndex="2" />
-                  <Label text="Bake Time" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="Proof Time" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Label text="Stretch Time(12)" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Label text="Stage Time" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <Label text="Thaw Time(hr)" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <Label text="Number of Oven Decks" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                  <Label text="Bake Time" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label text="Proof Time" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label text="Stretch Time(12)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="Stage Time" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                  <Label text="Thaw Time(hr)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                   <TextField prefWidth="60.0" text="4" GridPane.columnIndex="3" />
                   <TextField prefWidth="60.0" text="21" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <TextField prefWidth="60.0" text="50" GridPane.columnIndex="3" GridPane.rowIndex="2" />
@@ -102,6 +102,14 @@
                      </content>
                   </ScrollPane>
                   <Label text="Reports Currently Being Used" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+                  <Label text="Wheat Roll Tray Value" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label text="Frenchie Stick Value ($)" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                  <TextField fx:id="fsvField" maxWidth="75.0" onKeyTyped="#wlvFieldChanged" prefWidth="60.0" text="180" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField fx:id="wrtvField" maxWidth="75.0" onKeyTyped="#wlvFieldChanged" prefWidth="60.0" text="2400" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="Sprout Pint Value ($)" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <TextField fx:id="spvField" maxWidth="75.0" onKeyTyped="#pickleBVChanged" prefWidth="60.0" text="1200" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <Label text="Inshop Starting Pay" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
+                  <TextField fx:id="inshopStartPayField" maxWidth="75.0" onKeyTyped="#bakedAtSCFieldChanged" prefWidth="60.0" text="8.00" GridPane.columnIndex="5" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

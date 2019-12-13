@@ -2,10 +2,11 @@ package readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import error_handling.ErrorHandler;
+import lineitems.HourlySalesItem;
 
 /**
  * @author crost HashMap<Int-Order Category, HashMap<Int-Hour 24hr<HashMap<Int-Data Type Category,
@@ -13,192 +14,168 @@ import error_handling.ErrorHandler;
  */
 public class HourlySalesMap
 {
-  public static final int TOTAL = 0, TAKE_OUT = 1, PICKUP = 2, DELIVERY = 3, EAT_IN = 4,
-      ONLINE_PICKUP = 5, ONLINE_DELIVERY = 6, VALUE = 7, COUNT = 8, TOTAL$ = 9, TOTAL_COUNT = 10,
-      TOTAL_PERCENT = 11;
-  private HashMap<Integer, HashMap<Integer, HashMap<Integer, Double>>> map = new HashMap<Integer, HashMap<Integer, HashMap<Integer, Double>>>();
+  private ArrayList<HourlySalesItem> items = new ArrayList<HourlySalesItem>();
+
   public HourlySalesMap(File file)
   {
-    for (int ii = 0; ii < 7; ii++)
-    {
-      map.put(ii, new HashMap<Integer, HashMap<Integer, Double>>());
-      for (int i = -1; i < 24; i++)
-      {
-        map.get(ii).put(i, new HashMap<Integer, Double>());
-        for(int j = 7; j < 12; j++)
-        {
-          map.get(ii).get(i).put(j, 0.0);
-        }
-      }
-    }
     Scanner scanner;
+    ArrayList<Double> takeoutValue = new ArrayList<Double>();
+    ArrayList<Double> pickupValue = new ArrayList<Double>();
+    ArrayList<Double> deliveryValue = new ArrayList<Double>();
+    ArrayList<Double> eatInValue = new ArrayList<Double>();
+    ArrayList<Double> onlinePickupValue = new ArrayList<Double>();
+    ArrayList<Double> onlineDeliveryValue = new ArrayList<Double>();
+    ArrayList<Integer> takeoutCount = new ArrayList<Integer>();
+    ArrayList<Integer> pickupCount = new ArrayList<Integer>();
+    ArrayList<Integer> deliveryCount = new ArrayList<Integer>();
+    ArrayList<Integer> eatInCount = new ArrayList<Integer>();
+    ArrayList<Integer> onlinePickupCount = new ArrayList<Integer>();
+    ArrayList<Integer> onlineDeliveryCount = new ArrayList<Integer>();
+    ArrayList<Double> total$ = new ArrayList<Double>();
+    ArrayList<Integer> totalCount = new ArrayList<Integer>();
+    ArrayList<Double> totalPercent = new ArrayList<Double>();
+
     try
     {
       scanner = new Scanner(file);
+      System.out.println("Reading " + file.getName());
       while (scanner.hasNext())
       {
-        int currentCat;
         String[] tokens = scanner.nextLine().split(",");
-        switch (tokens[0])
+        if (tokens.length > 1)
         {
-          case "Take Out":
-            currentCat = 1;
-            break;
-          case "Pickup":
-            currentCat = 2;
-            break;
-          case "Delivery":
-            currentCat = 3;
-            break;
-          case "Eat In":
-            currentCat = 4;
-            break;
-          case "Online Pickup":
-            currentCat = 5;
-            break;
-          case "Online Delivery":
-            currentCat = 6;
-            break;
-          default:
-            continue;
-        }
-        // Start at first time interval
-        for (int ii = 7; ii < tokens.length; ii += 6)
-        {
-          // Read Time TODO if time pm + 12
-          int time = 0;
-          try
+          if (tokens[1].equals("Time"))
           {
-            if (tokens[ii].substring(tokens[ii].length() - 2).equals("PM")
-                && !tokens[ii].substring(0, 2).equals("12"))
-              time = 12;
-            if (!tokens[ii].equals("Total"))
+            System.out.println("Reading a line");
+            // Start at first time interval
+            for (int ii = 7; ii < 151; ii += 6)
             {
-              time += Integer.parseInt((tokens[ii].split(":"))[0]);
-              // Read Categories
-              for (int i = 1; i < 6; i++)
+              // Read Time TODO if time pm + 12
+              try
               {
-                String tok = tokens[ii + i];
-                // Remove Quotes
-                if (tok.charAt(0) == '"')
+                // Value
+                double val = Double.parseDouble(tokens[ii + 1].substring(1));
+                int count = (int)Double.parseDouble(tokens[ii + 2]);
+                switch (tokens[0])
                 {
-                  tok = tok.substring(1)
-                      + tokens[++ii + i].substring(0, tokens[ii + i].length() - 1);
-                }
-
-                // Remove $
-                if (i == 1 || i == 3)
-                  tok = tok.substring(1);
-
-                // Total does not include %
-                else if (i == 4 && time == 0)
-                  break;
-
-                // Remove %
-                else if (i == 5)
-                {
-                  tok = tok.substring(0, tok.length() - 1);
-                }
-                map.get(currentCat).get(time).put(6 + i, Double.parseDouble(tok));
-              }
-            }
-            else
-            {
-              // Handle Total
-              for (int i = 1; i < 5; i++)
-              {
-                String tok = tokens[ii + i];
-                // Remove Quotes
-                if (tok.charAt(0) == '"')
-                {
-                  tok = tok.substring(1)
-                      + tokens[++ii + i].substring(0, tokens[ii + i].length() - 1);
-                }
-                // Remove $
-                if (i == 1 || i == 3)
-                  tok = tok.substring(1);
-
-                switch (i)
-                {
-                  case 1:
-                    map.get(currentCat).get(-1).put(TOTAL$, Double.parseDouble(tok));
+                  case "Take Out":
+                    takeoutValue.add(val);
+                    takeoutCount.add(count);
                     break;
-                  case 2:
-                    map.get(currentCat).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
+                  case "Pickup":
+                    pickupValue.add(val);
+                    pickupCount.add(count);
                     break;
-                  case 3:
-                    map.get(TOTAL).get(-1).put(TOTAL$, Double.parseDouble(tok));
+                  case "Delivery":
+                    deliveryValue.add(val);
+                    deliveryCount.add(count);
                     break;
-                  case 4:
-                    map.get(TOTAL).get(-1).put(TOTAL_COUNT, Double.parseDouble(tok));
+                  case "Eat In":
+                    eatInValue.add(val);
+                    eatInCount.add(count);
+                    break;
+                  case "Online Pickup":
+                    onlinePickupValue.add(val);
+                    onlinePickupCount.add(count);
+                    break;
+                  case "Online Delivery":
+                    onlineDeliveryValue.add(val);
+                    onlineDeliveryCount.add(count);
+                    total$.add(Double.parseDouble(tokens[ii + 3].substring(1)));
+                    totalCount.add((int)Double.parseDouble(tokens[ii + 4]));
+                    totalPercent.add(Double
+                        .parseDouble(tokens[ii + 5].substring(0, tokens[ii + 5].length() - 1)));
                     break;
                 }
               }
+              catch (NumberFormatException e)
+              {
+                e.printStackTrace();
+                ErrorHandler.addError(e);
+                break;
+              }
             }
           }
-          catch (NumberFormatException e)
-          {
-            ErrorHandler.addError(e);
-            break;
-          }
         }
-
       }
       scanner.close();
     }
-    catch (FileNotFoundException e)
+    catch (
+
+    FileNotFoundException e)
     {
       e.printStackTrace();
       ErrorHandler.addError(e);
     }
-  }
-
-  public double getData(int orderType, int dataType, int time)
-  {
-    try
+    //If none for the day
+    if(takeoutCount.size() == 0)
     {
-      return map.get(orderType).get(time).get(dataType);
+      for(int ii = 0; ii < 24; ii++)
+      {
+        takeoutCount.add(0);
+        takeoutValue.add(0.0);
+      }
     }
-    catch (Exception e)
+    if(pickupCount.size() == 0)
     {
-      System.out.println("Error getting data in hourly sales map\n");
-      e.printStackTrace();
-      ErrorHandler.addError(e);
-      return 0;
+      for(int ii = 0; ii < 24; ii++)
+      {
+        pickupCount.add(0);
+        pickupValue.add(0.0);
+      }
+    }
+    if(deliveryCount.size() == 0)
+    {
+      for(int ii = 0; ii < 24; ii++)
+      {
+        deliveryCount.add(0);
+        deliveryValue.add(0.0);
+      }
+    }
+    if(eatInCount.size() == 0)
+    {
+      for(int ii = 0; ii < 24; ii++)
+      {
+        eatInCount.add(0);
+        eatInValue.add(0.0);
+      }
+    }
+    if(onlineDeliveryCount.size() == 0)
+    {
+      for(int ii = 0; ii < 24; ii++)
+      {
+        onlineDeliveryCount.add(0);
+        onlineDeliveryValue.add(0.0);
+      }
+    }
+    if(onlinePickupCount.size() == 0)
+    {
+      for(int ii = 0; ii < 24; ii++)
+      {
+        onlinePickupCount.add(0);
+        onlinePickupValue.add(0.0);
+      }
+    }
+    for (int ii = 0; ii < 24; ii++)
+    {
+      items.add(new HourlySalesItem(takeoutValue.get(ii), pickupValue.get(ii),
+          deliveryValue.get(ii), eatInValue.get(ii), onlinePickupValue.get(ii),
+          onlineDeliveryValue.get(ii), total$.get(ii), totalPercent.get(ii), totalCount.get(ii),
+          takeoutCount.get(ii), pickupCount.get(ii), deliveryCount.get(ii), eatInCount.get(ii),
+          onlinePickupCount.get(ii), onlineDeliveryCount.get(ii)));
     }
   }
 
-  public double getTotal$ForHour(int hour)
-  {
-    return map.get(1).get(hour).get(TOTAL$);
-  }
-  public double getTotal$ForCategory(int orderType)
-  {
-    return map.get(orderType).get(-1).get(TOTAL$);
-  }
-
-  public double getTotalCountForCategory(int orderType)
-  {
-    return map.get(orderType).get(-1).get(TOTAL_COUNT);
-  }
-
-  public double getTotal$()
-  {
-    return map.get(TOTAL).get(-1).get(TOTAL$);
-  }
-
-  public double getTotalCount()
-  {
-    return map.get(TOTAL).get(-1).get(TOTAL_COUNT);
-  }
-  
-  public double getDelivery$ForHour(int hour)
-  {
-    return map.get(DELIVERY).get(hour).get(VALUE) + map.get(ONLINE_DELIVERY).get(hour).get(VALUE);
-  }
-  
   public double getTakeoutPickupEatin$ForHour(int hour)
   {
-    return map.get(TAKE_OUT).get(hour).get(VALUE) + map.get(PICKUP).get(hour).get(VALUE) + map.get(EAT_IN).get(hour).get(VALUE) + map.get(ONLINE_PICKUP).get(hour).get(VALUE);
+    HourlySalesItem item = items.get(hour);
+    return item.getTakeoutValue() + item.getPickupValue() + item.getEatInValue()
+        + item.getOnlinePickupValue();
+  }
+
+  public double getDelivery$ForHour(int hour)
+  {
+    HourlySalesItem item = items.get(hour);
+    return item.getDeliveryValue() + item.getOnlineDeliveryValue();
   }
 }

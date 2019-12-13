@@ -31,6 +31,11 @@
                      <center>
                         <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
+                              <Tab text="Dashboard">
+                              	<content>
+                             		<fx:include fx:id="dashboardTab" source="Dashboard.fxml" />
+                            	</content>
+                              </Tab>
                             <Tab closable="false" text="Projections">
                             <content>
                              <fx:include fx:id="projectionTab" source="ProjectionTab.fxml" />
@@ -47,7 +52,7 @@
                             </content>
                             </Tab>
                               <Tab text="Inventory Pars" />
-                              <Tab text="Catering Calculator">
+                              <Tab text="Catering Manager">
                               <content>
                              <fx:include fx:id="cateringCalculatorTab" source="CateringCalculatorTab.fxml" />
                             </content>
@@ -97,7 +102,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <Label text="Upcoming Projections" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+                                                <Label text="Upcoming Averages" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
                                                 <Label fx:id="currentPaneFirstHourLabel" text="0-1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                                 <Label fx:id="currentPaneSecondHourLabel" text="1-2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                                 <Label fx:id="currentPaneThirdHourLabel" text="2-3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
@@ -141,7 +146,7 @@
                                                       </TextField>
                                                    </children>
                                                 </GridPane>
-                                                <VBox fx:id="currentPaneVBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="4" GridPane.rowIndex="9" />
+                                                <VBox fx:id="currentPaneVBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="4" GridPane.rowIndex="9" />
                                              </children>
                                              <styleClass>
                                                 <String fx:value="marble-background" />
@@ -218,7 +223,7 @@
           </AnchorPane>
          </content>
       </ScrollPane>
-      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+      <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
          <children>
             <Label fx:id="shiftManagerLabel" text="Shift Manager" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

@@ -1,3 +1,6 @@
+.app-font .dash-proj .large-label{
+	-fx-font-family: "Comic Sans MS";
+}
 .base-background {
 	-fx-background-color:radial-gradient(focus-distance 80%, center 50% 50%, radius 80%, reflect, black, dimgray);
 }
@@ -6,13 +9,20 @@
 	-fx-background-color:radial-gradient(focus-distance 0%, center 50% 50%, radius 100%, reflect, firebrick, black);
 }
 
-.large-white-label {
-	-fx-font-size: 14px;
+.large-label {
+	-fx-font-size: 30px;
 }
 .label {
 		-fx-text-fill: white;
 }
 
-.rounded {
+.rounded .dash-proj {
 	-fx-background-radius: 10;
 }
+
+.dash-proj {
+	-fx-font-size: 40;
+	-fx-border-radius: 70;
+	-fx-background-radius: 70;
+}
+

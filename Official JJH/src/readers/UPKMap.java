@@ -20,7 +20,7 @@ public class UPKMap
   public static final int BREAD = 1, FOOD = 2, SIDES = 3, PAPER = 4, PRODUCE = 5, BEVERAGE = 6,
       CATERING = 7, UNIT = 8, ACTUAL_USAGE = 9, THEORETICAL_USAGE = 10, USAGE_VARIANCE = 11,
       USAGE_VARIANCE$ = 12, ACTUAL_UPK = 13, AVERAGE_UPK = 14, UPK_VARIANCE = 15, ACTUAL_COGS = 16,
-      THEORETICAL_COGS = 17, COGS_VARIANCE = 18;
+      THEORETICAL_COGS = 17, COGS_VARIANCE = 18, CASE_VALUE = 19;
   private double adjustedSales = -1;
   private int count = 22;
 
@@ -93,6 +93,8 @@ public class UPKMap
           upkMap.get(category).get(item).put(ACTUAL_UPK, removeQuotes(tokens));
           upkMap.get(category).get(item).put(AVERAGE_UPK, removeQuotes(tokens));
           upkMap.get(category).get(item).put(UPK_VARIANCE, removeQuotes(tokens));
+          
+          upkMap.get(category).get(item).put(CASE_VALUE, getCaseValue(item));
         }
       }
       scan.close();
@@ -106,6 +108,54 @@ public class UPKMap
     {
       System.out.println("error parsing in upkmap");
       ErrorHandler.addError(nfe);
+    }
+  }
+
+  public double getCaseValue(String name)
+  {
+    switch(name)
+    {
+      case "BACON - SLI APPLWD SMKD CKD":
+        return 600;
+      case "Sugar":
+      case "Onions":
+        return 50;
+      case "Capicola":
+        return 40.2;
+      case "Ham":
+        return 40;
+      case "Salami":
+        return 39;
+      case "Cheese":
+        return 36;
+      case "Wheat Sub -  9 Grain Roll":
+      case "French Bread 32 ct":
+        return 32;
+      case "Beef":
+        return 30;
+      case "Tomatoes":
+        return 25;
+      case "Cucumbers":
+      case "Lettuce":
+        return 24;
+      case "Turkey":
+        return 18.8;
+      case "Kickin Ranch Dressing Mix":
+        return 18;
+      case "Avocado":
+        return 12;
+      case "Oil":
+      case "Pan Spray":
+      case "Tuna Chunk - pouch":
+      case "MUSTARD WHL GRAIN":
+        return 6;
+      case "Peppers Cherry":
+      case "Mayonnaise":
+      case "Vinegar":
+      case "Butter (salted)":
+        return 4;
+      default:
+        return 1;
     }
   }
 

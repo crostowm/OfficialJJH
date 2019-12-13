@@ -2,11 +2,13 @@ package util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import app.MainApplication;
 import javafx.collections.FXCollections;
+import lineitems.ItemUsageLineItem;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditMap;
@@ -22,15 +24,21 @@ public class DataHub implements Serializable
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
       STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17,
       SPROUT_UPK = 18, INSHOP_MIN_PAY = 19;
+  public static final String REG = "Regular Chips", BBQ = "BBQ Chips", SV = "S&V Chips",
+      JAL = "Jalepeno Chips", THIN = "Thinny Chips", CCC = "Chocolate Chip Cookies",
+      ORC = "Oatmeal Raisin Cookies";
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
   private transient UPKMap currentUPKMap;
   private transient ArrayList<UPKMap> past5UPKMaps;
   private transient ArrayList<HourlySalesMap> past4HourlySales;
+  private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditMap amPhoneAuditMap;
   private transient TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
+  private transient WSRMap lastYearWSR;
+  private transient HashMap<String, ItemUsageLineItem> specialItems = new HashMap<String, ItemUsageLineItem>();
   private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
@@ -42,7 +50,7 @@ public class DataHub implements Serializable
   private ArrayList<Double> percentage = new ArrayList<Double>();
   private ArrayList<Double> wheat = new ArrayList<Double>();
   private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
-  //Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
+  // Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
   private ArrayList<ManagerDBL> managerDBLs;
@@ -201,8 +209,8 @@ public class DataHub implements Serializable
   {
     for (int index = 0; index < 14; index++)
     {
-      int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2)-1;
-      int nextNextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 3)-1;
+      int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2) - 1;
+      int nextNextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 3) - 1;
       slicingPars.get(index).get(name).put("msc",
           ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
               / 1000) / 3.307);
@@ -228,10 +236,8 @@ public class DataHub implements Serializable
     cateringOrders.add(cateringOrder);
     if (JimmyCalendarUtil.isInCurrentWeek(new GregorianCalendar(), cateringOrder.getTime()))
     {
-      catering
-          .add(
-              JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()),
-              cateringOrder.getDollarValue());
+      catering.add(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()) - 1,
+          cateringOrder.getDollarValue());
       updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()));
     }
     for (DataObserver dato : observers)
@@ -343,7 +349,7 @@ public class DataHub implements Serializable
     int startIndex = startShift - 1;
     int totalProj = 0;
     int ii = startIndex;
-    while (ii < endShift)
+    while (ii != endShift)
     {
       totalProj += projections.get(ii);
       ii++;
@@ -396,7 +402,7 @@ public class DataHub implements Serializable
    * @param hour
    * @return
    */
-  public double getAverageHourlySales(String type, int hour)
+  public double getAverageHourlySales(String type, int hour, boolean includeCatering)
   {
     double total = 0;
     for (HourlySalesMap hsm : past4HourlySales)
@@ -408,7 +414,25 @@ public class DataHub implements Serializable
       else
         total += hsm.getDelivery$ForHour(hour);
     }
+    // TODO total -= catering
+    if (!includeCatering)
+      total -= getCateringForHour(hour);
     return total / past4HourlySales.size();
+  }
+
+  private double getCateringForHour(int hour)
+  {
+    double cat = 0;
+    for (ArrayList<CateringTransaction> ac : past4DaysCatering)
+    {
+      for (CateringTransaction tran : ac)
+      {
+        // TODO is tran in hour
+        if (tran.getTime().get(Calendar.HOUR_OF_DAY) == hour)
+          cat += tran.getGrossAmount();
+      }
+    }
+    return cat;
   }
 
   public ArrayList<HourlySalesMap> getPast4HourlySalesMaps()
@@ -475,7 +499,8 @@ public class DataHub implements Serializable
   {
     if (managerDBLs == null)
     {
-      ManagerDBLReader mdr = new ManagerDBLReader(MainApplication.FAKE_DOWNLOAD_LOCATION + "\\mgrdbls.txt");
+      ManagerDBLReader mdr = new ManagerDBLReader(
+          MainApplication.FAKE_DOWNLOAD_LOCATION + "\\mgrdbls.txt");
       managerDBLs = mdr.getDBLs();
     }
   }
@@ -484,18 +509,18 @@ public class DataHub implements Serializable
   {
     return managerDBLs;
   }
-  
+
   public ArrayList<ManagerDBL> getCompleteOrIncompleteManagerDBLs(boolean completed)
   {
     ArrayList<ManagerDBL> dbls = new ArrayList<ManagerDBL>();
-    for(ManagerDBL mdbl: managerDBLs)
+    for (ManagerDBL mdbl : managerDBLs)
     {
-      if(mdbl.isCompleted() == completed)
+      if (mdbl.isCompleted() == completed)
         dbls.add(mdbl);
     }
     return dbls;
   }
-  
+
   public ArrayList<Manager> getManagers()
   {
     return managers;
@@ -531,12 +556,52 @@ public class DataHub implements Serializable
 
   public void uploadAttendanceShifts(ArrayList<AttendanceShift> arrayList)
   {
-    //TODO
     yesterdaysAttendanceShifts = arrayList;
   }
 
   public ArrayList<AttendanceShift> getAttendaceShiftsFromYesterday()
   {
     return yesterdaysAttendanceShifts;
+  }
+
+  public void setPast4DaysCatering(ArrayList<ArrayList<CateringTransaction>> last4DaysCatering)
+  {
+    this.past4DaysCatering = last4DaysCatering;
+  }
+
+  public void setLastYearWSR(WSRMap lastYearWSR)
+  {
+    this.lastYearWSR = lastYearWSR;
+  }
+
+  public WSRMap getLastYearWSR()
+  {
+    return lastYearWSR;
+  }
+
+  public void addSpecialItemUsage(String id, ItemUsageLineItem iu)
+  {
+    if (specialItems == null)
+      specialItems = new HashMap<String, ItemUsageLineItem>();
+    specialItems.put(id, iu);
+  }
+  
+  /**
+   * @param name Constants
+   * @return
+   */
+  public ItemUsageLineItem getSpecialItemUsage(String name)
+  {
+    return specialItems.get(name);
+  }
+
+  public double getWeekProj()
+  {
+    double proj = 0;
+    for (int ii = 0; ii < 14; ii++)
+    {
+      proj += getProjectionDataForIndex(ii);
+    }
+    return proj;
   }
 }

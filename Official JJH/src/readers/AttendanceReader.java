@@ -3,10 +3,7 @@ package readers;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import error_handling.ErrorHandler;
@@ -26,8 +23,11 @@ public class AttendanceReader
         String[] tokens = scanner.nextLine().split(",");
         if (tokens[0].equals("Employee #"))
         {
+          boolean authorized = tokens[10].equals("Authorized Time");
+          boolean empNumSet = !tokens[11].equals("Not Set");
+          int empNum = empNumSet ? Integer.parseInt(tokens[11]) : -1;
           String lastName = tokens[12].substring(1);
-          String firstName = tokens[13].substring(1, tokens[13].length()-2);
+          String firstName = tokens[13].substring(1, tokens[13].length() - 2);
           SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
           GregorianCalendar start = new GregorianCalendar();
           start.setTime(sdf.parse(tokens[14]));
@@ -40,7 +40,7 @@ public class AttendanceReader
           double payRate = parseMoney(tokens[20]);
           double estimatedWages = parseMoney(tokens[21]);
           String adjustmentReason = tokens[22];
-          shifts.add(new AttendanceShift(firstName, lastName, position, adjustmentReason, payHours,
+          shifts.add(new AttendanceShift(authorized, empNum, firstName, lastName, position, adjustmentReason, payHours,
               payRate, cumulativeHours, estimatedWages, start, end, adjusted));
         }
       }

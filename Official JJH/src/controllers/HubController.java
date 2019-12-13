@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
 import app.AMBreadMathStage;
 import app.CateringStage;
 import app.MainApplication;
-import app.PMBreadMathStage;
 import app.WeeklySupplyStage;
 import gui.ManagerDBLCheckBox;
 import javafx.application.Platform;
@@ -18,13 +17,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
 import observers.TimeObserver;
 import util.CateringOrder;
 import util.DataHub;
 import util.JimmyCalendarUtil;
-import util.ManagerDBL;
 
 /**
  * 
@@ -61,12 +60,19 @@ public class HubController implements DataObserver
 
   @FXML
   private PeriodFoldController periodFoldController;
+
+  @FXML
+  private DashboardController dashboardTabController;
+
   // Outer
   @FXML
   private Label shiftManagerLabel, shiftLabel, clockLabel, dateLabel;
 
   @FXML
   private Button createWeeklySupplyButton, addCateringButton;
+
+  @FXML
+  private HBox bottomHBox;
 
   // Current
   @FXML
@@ -90,8 +96,6 @@ public class HubController implements DataObserver
   @FXML
   private VBox managerDBLBox;
 
-  private int numMgrDBLsVisible = 4;
-
   private Button breadMathButton;
 
   public void initialize()
@@ -102,6 +106,8 @@ public class HubController implements DataObserver
     timeObservers.add(projectionTabController);
     shiftManagerLabel.setText(MainApplication.amManager + "");
 
+    currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
+    System.out.println("HC");
     // Fill mgr dbls
     populateMgrDBLs();
     updateAllFields();
@@ -114,12 +120,19 @@ public class HubController implements DataObserver
     cateringCalculatorTabController.updateAllFields();
     settingsTabController.updateAllFields();
     periodFoldController.updateAll();
+    dashboardTabController.updateAllFields();
 
-    todayProjAMField.setText("" + MainApplication.dataHub
-        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1));
-    todayProjPMField.setText("" + MainApplication.dataHub
-        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift));
+    todayProjAMField.setText(String.format("%.2f", MainApplication.dataHub
+        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1)));
+    todayProjPMField.setText(String.format("%.2f", MainApplication.dataHub
+        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
 
+    lastYearProjAMField
+        .setText(String.format("%.2f", MainApplication.dataHub.getLastYearWSR().getDataForShift(
+            "= Royalty Sales", currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
+    lastYearProjPMField
+        .setText(String.format("%.2f", MainApplication.dataHub.getLastYearWSR().getDataForShift(
+            "= Royalty Sales", currentShift % 2 == 0 ? currentShift : currentShift + 1)));
     System.out.println("Updating all");
   }
 
@@ -165,7 +178,7 @@ public class HubController implements DataObserver
         }
         projectionTabController.timeUpdateMinute();
 
-        // Testing
+        // Testing******************
         if (breadMathButton == null)
         {
           breadMathButton = new Button("AM Bread Math");
@@ -179,8 +192,9 @@ public class HubController implements DataObserver
             }
           });
         }
-        if (!currentPaneVBox.getChildren().contains(breadMathButton))
-          currentPaneVBox.getChildren().add(breadMathButton);
+        if (!bottomHBox.getChildren().contains(breadMathButton))
+          bottomHBox.getChildren().add(2, breadMathButton);
+        // **************************
 
         // update current proj vals
         double sc = MainApplication.dataHub.getSetting(DataHub.STORESC_TIME);
@@ -197,7 +211,6 @@ public class HubController implements DataObserver
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 2
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 1)
         {
-          System.out.println("Yup");
           if (breadMathButton == null)
           {
             breadMathButton = new Button("AM Bread Math");
@@ -216,17 +229,13 @@ public class HubController implements DataObserver
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 1)
         {
-          breadMathButton.setText("PM Bread Math");
-          breadMathButton.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent arg0)
-            {
-              PMBreadMathStage ambms = new PMBreadMathStage();
-              ambms.show();
-            }
-          });
-
+          /*
+           * breadMathButton.setText("PM Bread Math"); breadMathButton.setOnAction(new
+           * EventHandler<ActionEvent>() {
+           * 
+           * @Override public void handle(ActionEvent arg0) { PMBreadMathStage ambms = new
+           * PMBreadMathStage(); ambms.show(); } });
+           */
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc + 1)
         {
@@ -247,66 +256,56 @@ public class HubController implements DataObserver
         currentPaneFourthHourLabel.setText(JimmyCalendarUtil.convertTo12Hour(currentHour + 3) + "-"
             + JimmyCalendarUtil.convertTo12Hour(currentHour + 4));
 
-        currentPaneFirstInPercLabel
-            .setText(
-                String.format("%.0f",
-                    (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour)
-                        / MainApplication.dataHub.getAverageHourlySales("Total", currentHour))
-                        * 100));
-        currentPaneSecondInPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 1)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1))
-                    * 100));
-        currentPaneThirdInPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 2)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2))
-                    * 100));
-        currentPaneFourthInPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 3)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3))
-                    * 100));
+        currentPaneFirstInPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
+                * 100));
+        currentPaneSecondInPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 1, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
+                * 100));
+        currentPaneThirdInPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 2, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
+                * 100));
+        currentPaneFourthInPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 3, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
+                * 100));
         // TODO handle beyond midnight
-        currentPaneFirstDelPercLabel
-            .setText(
-                String.format("%.0f",
-                    (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour)
-                        / MainApplication.dataHub.getAverageHourlySales("Total", currentHour))
-                        * 100));
-        currentPaneSecondDelPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 1)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1))
-                    * 100));
-        currentPaneThirdDelPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 2)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2))
-                    * 100));
-        currentPaneFourthDelPercLabel
-            .setText(String.format("%.0f",
-                (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 3)
-                    / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3))
-                    * 100));
+        currentPaneFirstDelPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
+                * 100));
+        currentPaneSecondDelPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 1, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
+                * 100));
+        currentPaneThirdDelPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 2, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
+                * 100));
+        currentPaneFourthDelPercLabel.setText(String.format("%.0f",
+            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 3, false)
+                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
+                * 100));
 
         currentPaneFirstHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour)));
+            MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false)));
         currentPaneSecondHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1)));
+            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false)));
         currentPaneThirdHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2)));
+            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false)));
         currentPaneFourthHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3)));
+            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false)));
 
         currentPaneBaked9Field.setText(String.format("%.1f",
-            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour)
-                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1))
+            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false)
+                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
                 / MainApplication.dataHub.getSetting(DataHub.B9TV)));
         currentPaneInProcess12Field.setText(String.format("%.1f",
-            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2)
-                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3))
+            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false)
+                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
                 / MainApplication.dataHub.getSetting(DataHub.BTV)));
       }
     });
@@ -352,9 +351,11 @@ public class HubController implements DataObserver
   private void populateMgrDBLs()
   {
     int numComplete = MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size();
-    while(numComplete + managerDBLBox.getChildren().size() < new GregorianCalendar().get(Calendar.DAY_OF_MONTH))
+    while (numComplete + managerDBLBox.getChildren().size() < new GregorianCalendar()
+        .get(Calendar.DAY_OF_MONTH))
     {
-      ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs().get(numComplete + managerDBLBox.getChildren().size()));
+      ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs()
+          .get(numComplete + managerDBLBox.getChildren().size()));
       mdc.setOnAction(new EventHandler<ActionEvent>()
       {
         @Override
@@ -364,7 +365,8 @@ public class HubController implements DataObserver
           {
             if (MainApplication.getManagers().size() == 1)
             {
-              mdc.getDBL().complete(MainApplication.getManagers().get(0).getName(), new GregorianCalendar());
+              mdc.getDBL().complete(MainApplication.getManagers().get(0).getName(),
+                  new GregorianCalendar());
               managerDBLBox.getChildren().remove(mdc);
               populateMgrDBLs();
             }

@@ -49,15 +49,15 @@ public class UsageAnalysisHBox extends UPKHBox
         // TODO Auto-generated method stub
         if(data.get(UPKMap.UPK_VARIANCE) > 2 || data.get(UPKMap.UPK_VARIANCE) < -2)
         {
-          setStyle("-fx-background-color: red;");
+          setStyle("-fx-background-color: rgba(255, 0, 0, .4);");
         }
         else if(data.get(UPKMap.UPK_VARIANCE) > 1 || data.get(UPKMap.UPK_VARIANCE) < -1)
         {
-          setStyle("-fx-background-color: yellow;");
+          setStyle("-fx-background-color: rgba(120, 120, 0, .4);");
         }
         else
         {
-          setStyle("-fx-background-color: green;");
+          setStyle("-fx-background-color: rgba(0, 255, 0, .4);");
         }
       }
     });

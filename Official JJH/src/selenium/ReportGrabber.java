@@ -64,25 +64,43 @@ public class ReportGrabber
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
 
-      // downloadLastAMPhoneAuditReport();
+      downloadTrendSheets();
+      downloadLastAMPhoneAuditReport();
       downloadAttendanceReport();
       downloadLast6UPK();
       downloadLast4WSR();
+      downloadLastYearWSR();
       downloadLast4HourlySales();
       goToDownloadCenterAndDownloadAll();
     }
     finally
     {
-      // driver.quit();
+      //driver.quit();
     }
+  }
+
+  private void downloadTrendSheets()
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[19]")).click();
+    selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
+    selectStoreCheckBox();
+    changeToCSVAndDownload();
+    selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR));
+    selectStoreCheckBox();
+    changeToCSVAndDownload();
+  }
+
+  private void selectFiscalYear(int year)
+  {
+    Select yearSelect= new Select(driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListFiscalYear\"]")));
+    yearSelect.selectByValue("" + year);
   }
 
   private void downloadAttendanceReport()
   {
-    // TODO Auto-generated method stub
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[3]")).click();
     selectStoreNumberFromDropdown();
-    // selectDateXDaysBeforeCurrent(1);
+    //selectDateXDaysBeforeCurrent(1);
     selectYesterdayFromDropdown();
     changeToCSVAndDownload();
   }
@@ -226,6 +244,20 @@ public class ReportGrabber
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     selectLastXWeeksFromWeekDropdownAndDownload(4);
+  }
+
+  private void downloadLastYearWSR()
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+    selectStoreNumberFromDropdown();
+    selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
+   
+    int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
+    Select weekSelect = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+    weekSelect.selectByIndex(currentWeekIndex);
+    changeToCSVAndDownload();
+    numReports++;
   }
 
   private void sendToDownloadCenter()

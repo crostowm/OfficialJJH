@@ -15,8 +15,8 @@ import util.DataHub;
 public class SettingsTabController
 {
   @FXML
-  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, bakedAt11Field,
-      bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField;
+  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, wrtvField, fsvField, bakedAt11Field,
+      bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField, spvField, inshopStartPayField;
 
   @FXML
   private Button addManagerButton, removeManagerButton;

@@ -39,7 +39,7 @@ public class MainApplication extends Application
   public static final String dataHubFileName = "Data_Hub.dat";
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
-  public static boolean fullRun = true;
+  public static boolean fullRun = false;
   public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
@@ -76,8 +76,10 @@ public class MainApplication extends Application
     rf.uploadWSRToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
+    rf.uploadCateringTransactionsToDataHub();
     rf.uploadTrendSheetsToDataHub();
     rf.uploadAttendanceReportToDataHub();
+    rf.uploadSpecialItems();
     System.out.println(reportsUsed);
     if (fullRun)
       runLogin();

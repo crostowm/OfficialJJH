@@ -156,7 +156,12 @@ public class JimmyCalendarUtil
     return getShiftNumber(calendar);
   }
 
-  public static int getCurrentPMShift()
+  public static int getTodaysAMShift()
+  {
+    return getCurrentShift() % 2 == 0 ? getCurrentShift() - 1: getCurrentShift();
+  }
+
+  public static int getTodaysPMShift()
   {
     return getCurrentShift() % 2 == 0 ? getCurrentShift() : getCurrentShift() + 1;
   }

@@ -56,6 +56,7 @@ public class BusinessAnalysisTabController
         handleNewReportSelection(reportChoice.getValue());
       }
     });
+    System.out.println("B");
   }
 
   protected void handleNewReportSelection(String value)

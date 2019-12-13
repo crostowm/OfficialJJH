@@ -11,11 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import util.JimmyCalendarUtil;
 
 public class TruckOrderGuideTabController
 {
@@ -29,10 +31,15 @@ public class TruckOrderGuideTabController
   @FXML
   private GridPane grid;
 
-  private TruckOrderHBox currentlySelectedTOH = null;
+  @FXML
+  private TextField projField;
+
+  private double weekProj = MainApplication.dataHub.getWeekProj();
 
   public void initialize()
   {
+    projField.setText(String.format("%.2f", weekProj));
+
     ArrayList<String> daysOfTheWeek = new ArrayList<String>();
     daysOfTheWeek.add("Sunday");
     daysOfTheWeek.add("Monday");
@@ -49,24 +56,23 @@ public class TruckOrderGuideTabController
       {
         if (orderingOnChoice.getValue() != null && forDeliveryOnChoice.getValue() != null)
         {
-          int numDiff;
-          if (orderingOnChoice.getItems()
-              .indexOf(orderingOnChoice.getValue()) == forDeliveryOnChoice.getItems()
-                  .indexOf(forDeliveryOnChoice.getValue()))
-            numDiff = 0;
-          else if (orderingOnChoice.getItems()
-              .indexOf(orderingOnChoice.getValue()) > forDeliveryOnChoice.getItems()
-                  .indexOf(forDeliveryOnChoice.getValue()))
-            numDiff = (7 - orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue()))
-                + forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue());
-          else
-            numDiff = forDeliveryOnChoice.getItems().indexOf(forDeliveryOnChoice.getValue())
-                - orderingOnChoice.getItems().indexOf(orderingOnChoice.getValue());
-          System.out.println(numDiff + " " + currentlySelectedTOH);
+          figureNewProjections();
         }
       }
     });
+
     forDeliveryOnChoice.setItems(FXCollections.observableArrayList(daysOfTheWeek));
+    forDeliveryOnChoice.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent arg0)
+      {
+        if (orderingOnChoice.getValue() != null && forDeliveryOnChoice.getValue() != null)
+        {
+          figureNewProjections();
+        }
+      }
+    });
 
     ArrayList<String> categories = new ArrayList<String>();
     categories.add("Bread");
@@ -124,19 +130,14 @@ public class TruckOrderGuideTabController
           {
             if (!name.equals("COGs"))
             {
+              if(name.equals("Chips"))
+              {
+                //TruckOrderHBox reg = new TruckOrderHBox(UPKMap.SIDES, MainApplication.dataHub.getSpecialItemUsage(MainApplication.dataHub.REG), "Box 60", weekProj);
+              }
               TruckOrderHBox toh = new TruckOrderHBox(category,
                   MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
                   MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name),
-                  MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name));
-              toh.setOnMouseClicked(new EventHandler<MouseEvent>()
-              {
-                @Override
-                public void handle(MouseEvent arg0)
-                {
-                  currentlySelectedTOH = toh;
-                  handleNewTruckOrderCategorySelection();
-                }
-              });
+                  MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name), weekProj);
               truckOrderGuideVBox.getChildren().add(toh);
             }
           }
@@ -145,9 +146,18 @@ public class TruckOrderGuideTabController
     });
   }
 
-  private void handleNewTruckOrderCategorySelection()
+  protected void figureNewProjections()
   {
-
+    double week = MainApplication.dataHub.getWeekProj();
+    double extra = MainApplication.dataHub
+        .getProjectionsForShifts(JimmyCalendarUtil.getAMShiftFor(orderingOnChoice.getValue()),
+            JimmyCalendarUtil.getAMShiftFor(forDeliveryOnChoice.getValue()));
+    weekProj = week + extra;
+    projField.setText(String.format("%.2f", weekProj));
+    for(Node n: truckOrderGuideVBox.getChildren())
+    {
+      ((TruckOrderHBox)n).refreshProjections(weekProj);
+    }
   }
 
 }
