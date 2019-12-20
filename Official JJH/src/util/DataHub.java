@@ -8,10 +8,13 @@ import java.util.HashMap;
 
 import app.MainApplication;
 import javafx.collections.FXCollections;
-import lineitems.ItemUsageLineItem;
+import lineitems.AMPhoneAuditItem;
+import lineitems.AttendanceShift;
+import lineitems.CateringTransaction;
+import lineitems.InventoryItem;
 import observers.DataObserver;
 import personnel.Manager;
-import readers.AMPhoneAuditMap;
+import readers.AMPhoneAuditReader;
 import readers.HourlySalesMap;
 import readers.ManagerDBLReader;
 import readers.TrendSheetMap;
@@ -24,9 +27,6 @@ public class DataHub implements Serializable
       BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
       STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17,
       SPROUT_UPK = 18, INSHOP_MIN_PAY = 19;
-  public static final String REG = "Regular Chips", BBQ = "BBQ Chips", SV = "S&V Chips",
-      JAL = "Jalepeno Chips", THIN = "Thinny Chips", CCC = "Chocolate Chip Cookies",
-      ORC = "Oatmeal Raisin Cookies";
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
@@ -34,11 +34,12 @@ public class DataHub implements Serializable
   private transient ArrayList<UPKMap> past5UPKMaps;
   private transient ArrayList<HourlySalesMap> past4HourlySales;
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
-  private transient AMPhoneAuditMap amPhoneAuditMap;
+  private transient AMPhoneAuditItem amPhoneAuditItem;
   private transient TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
   private transient WSRMap lastYearWSR;
-  private transient HashMap<String, ItemUsageLineItem> specialItems = new HashMap<String, ItemUsageLineItem>();
+  private transient ArrayList<InventoryItem> inventoryItems;
+  private ArrayList<String> inventoryItemNames;
   private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
   private ArrayList<Double> average = new ArrayList<Double>();
@@ -381,14 +382,14 @@ public class DataHub implements Serializable
     return MathUtil.ceilHalf(req);
   }
 
-  public void uploadAreaManagerPhoneAudit(AMPhoneAuditMap amPhoneAuditMap)
+  public void uploadAreaManagerPhoneAudit(AMPhoneAuditReader amPhoneAuditMap)
   {
-    this.amPhoneAuditMap = amPhoneAuditMap;
+    this.amPhoneAuditItem = amPhoneAuditMap.getItem();
   }
 
-  public AMPhoneAuditMap getAMPhoneAudit()
+  public AMPhoneAuditItem getAMPhoneAudit()
   {
-    return amPhoneAuditMap;
+    return amPhoneAuditItem;
   }
 
   public void setPast4HourlySalesMaps(ArrayList<HourlySalesMap> past4HourlySales)
@@ -579,22 +580,6 @@ public class DataHub implements Serializable
     return lastYearWSR;
   }
 
-  public void addSpecialItemUsage(String id, ItemUsageLineItem iu)
-  {
-    if (specialItems == null)
-      specialItems = new HashMap<String, ItemUsageLineItem>();
-    specialItems.put(id, iu);
-  }
-  
-  /**
-   * @param name Constants
-   * @return
-   */
-  public ItemUsageLineItem getSpecialItemUsage(String name)
-  {
-    return specialItems.get(name);
-  }
-
   public double getWeekProj()
   {
     double proj = 0;
@@ -603,5 +588,25 @@ public class DataHub implements Serializable
       proj += getProjectionDataForIndex(ii);
     }
     return proj;
+  }
+
+  public void setInventoryItemNames(ArrayList<String> items)
+  {
+    this.inventoryItemNames = items;
+  }
+  
+  public ArrayList<String> getInventoryItemNames()
+  {
+    return inventoryItemNames;
+  }
+
+  public void setInventoryItems(ArrayList<InventoryItem> items)
+  {
+    this.inventoryItems = items;
+  }
+  
+  public ArrayList<InventoryItem> getInventoryItems()
+  {
+    return inventoryItems;
   }
 }

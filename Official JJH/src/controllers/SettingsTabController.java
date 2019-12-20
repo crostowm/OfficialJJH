@@ -58,6 +58,7 @@ public class SettingsTabController
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
+    System.out.println("STC");
   }
   
   public void updateAllFields()

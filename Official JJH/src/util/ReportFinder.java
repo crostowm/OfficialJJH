@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import app.MainApplication;
-import readers.AMPhoneAuditMap;
+import lineitems.CateringTransaction;
+import lineitems.InventoryItem;
+import readers.AMPhoneAuditReader;
 import readers.AttendanceReader;
 import readers.CateringTransactionReader;
 import readers.HourlySalesMap;
@@ -39,7 +41,7 @@ public class ReportFinder
         getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 1);
     MainApplication.reportsUsed += String.format("Area Manager Phone Audit Report\n\t%s\n",
         fs.get(0).getFile().getName());
-    MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditMap(fs.get(0).getFile()));
+    MainApplication.dataHub.uploadAreaManagerPhoneAudit(new AMPhoneAuditReader(fs.get(0).getFile()));
   }
 
   
@@ -157,35 +159,12 @@ public class ReportFinder
 
   public void uploadSpecialItems()
   {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("MxItemUsageAnalysisReport"), 7);
-    //0 Reg
-    ItemUsageAnalysisReader i0 = new ItemUsageAnalysisReader(fs.get(0).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.REG, i0.getItemLine());
-    
-    //1 BBQ
-    ItemUsageAnalysisReader i1 = new ItemUsageAnalysisReader(fs.get(1).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.BBQ, i1.getItemLine());
-    
-    //2 S&V
-    ItemUsageAnalysisReader i2 = new ItemUsageAnalysisReader(fs.get(2).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.SV, i2.getItemLine());
-    
-    //3 Jal
-    ItemUsageAnalysisReader i3 = new ItemUsageAnalysisReader(fs.get(3).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.JAL, i3.getItemLine());
-    
-    //4 Thin
-    ItemUsageAnalysisReader i4 = new ItemUsageAnalysisReader(fs.get(4).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.THIN, i4.getItemLine());
-    
-    //5 CCC
-    ItemUsageAnalysisReader i5 = new ItemUsageAnalysisReader(fs.get(5).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.CCC, i5.getItemLine());
-    
-    //6 ORC
-    ItemUsageAnalysisReader i6 = new ItemUsageAnalysisReader(fs.get(6).getFile());
-    MainApplication.dataHub.addSpecialItemUsage(DataHub.ORC, i6.getItemLine());
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("MxItemUsageAnalysisReport"), MainApplication.dataHub.getInventoryItemNames().size());
+    ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+    for(DupFile df: fs)
+    {
+      items.add(new ItemUsageAnalysisReader(df.getFile()).getItemLine());
+    }
+    MainApplication.dataHub.setInventoryItems(items);
   }
-
-
 }

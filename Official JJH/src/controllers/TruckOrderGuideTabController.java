@@ -144,6 +144,7 @@ public class TruckOrderGuideTabController
         }
       }
     });
+    System.out.println("TOGTC");
   }
 
   protected void figureNewProjections()

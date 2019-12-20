@@ -200,7 +200,7 @@ public class ProjectionTabController implements TimeObserver
     wheatFields.add(w14);
 
     setStyles();
-    System.out.println("A");
+    System.out.println("PTC");
   }
 
   public void updateAllFields()

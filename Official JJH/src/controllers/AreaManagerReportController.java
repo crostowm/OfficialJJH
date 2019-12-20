@@ -16,8 +16,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import readers.AMPhoneAuditMap;
-import util.AttendanceShift;
+import lineitems.AMPhoneAuditItem;
+import lineitems.AttendanceShift;
 import util.CateringOrder;
 import util.Email;
 import util.JimmyCalendarUtil;
@@ -54,13 +54,13 @@ public class AreaManagerReportController
   public void initialize()
   {
     //Set All Labels with data
-    AMPhoneAuditMap map = MainApplication.dataHub.getAMPhoneAudit();
-    salesLabelAM.setText(map.getData(AMPhoneAuditMap.SALES, AMPhoneAuditMap.AM) + "");
-    salesLabelPM.setText(map.getData(AMPhoneAuditMap.SALES, AMPhoneAuditMap.PM) + "");
-    overUnderLabelAM.setText(map.getData(AMPhoneAuditMap.OVER_UNDER, AMPhoneAuditMap.AM) + "");
-    overUnderLabelPM.setText(map.getData(AMPhoneAuditMap.OVER_UNDER, AMPhoneAuditMap.PM) + "");
-    laborLabelAM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.AM) + "");
-    laborLabelPM.setText(map.getData(AMPhoneAuditMap.LABOR, AMPhoneAuditMap.PM) + "");
+    AMPhoneAuditItem item = MainApplication.dataHub.getAMPhoneAudit();
+    salesLabelAM.setText(String.format("%.2f", item.getSalesAM()));
+    salesLabelPM.setText(String.format("%.2f", item.getSalesPM()));
+    overUnderLabelAM.setText(String.format("%.2f", item.getCashOverUnderAM()));
+    overUnderLabelPM.setText(String.format("%.2f", item.getCashOverUnderPM()));
+    laborLabelAM.setText(String.format("%.2f", item.getLaborAM()));
+    laborLabelPM.setText(String.format("%.2f", item.getLaborPM()));
 
     //Add catering orders
     for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
@@ -88,6 +88,7 @@ public class AreaManagerReportController
     {
       attendanceVBox.getChildren().add(new AttendanceShiftBox(as));
     }
+    System.out.println("AMRC");
   }
 
   public void setMain(MainApplication mainApplication)

@@ -36,6 +36,7 @@ public class LoginController
         loginButtonPressed();
       }
     });
+    System.out.println("LC");
   }
 
   @FXML

@@ -103,7 +103,7 @@ public class CateringCalculatorTabController
 
       }
     });
-    System.out.println("C");
+    System.out.println("CCTC");
   }
 
   public void updateAllFields()

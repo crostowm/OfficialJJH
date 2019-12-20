@@ -22,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import personnel.Manager;
+import readers.InventoryItemNameReader;
 import selenium.ReportGrabber;
 import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
@@ -65,6 +66,8 @@ public class MainApplication extends Application
     this.stage = stage;
     setShutdownHook();
     readInDataHub();
+    InventoryItemNameReader iir = new InventoryItemNameReader(new File("InventoryItems.txt"));
+    dataHub.setInventoryItemNames(iir.getItems());
     if(downloadReports)
     {
     ReportGrabber rg = new ReportGrabber(storeNumber);

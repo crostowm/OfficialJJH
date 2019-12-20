@@ -56,7 +56,7 @@ public class BusinessAnalysisTabController
         handleNewReportSelection(reportChoice.getValue());
       }
     });
-    System.out.println("B");
+    System.out.println("BATC");
   }
 
   protected void handleNewReportSelection(String value)

@@ -107,10 +107,10 @@ public class HubController implements DataObserver
     shiftManagerLabel.setText(MainApplication.amManager + "");
 
     currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
-    System.out.println("HC");
     // Fill mgr dbls
     populateMgrDBLs();
     updateAllFields();
+    System.out.println("HC");
   }
 
   private void updateAllFields()
@@ -133,7 +133,7 @@ public class HubController implements DataObserver
     lastYearProjPMField
         .setText(String.format("%.2f", MainApplication.dataHub.getLastYearWSR().getDataForShift(
             "= Royalty Sales", currentShift % 2 == 0 ? currentShift : currentShift + 1)));
-    System.out.println("Updating all");
+    System.out.println("Updated all");
   }
 
   /**

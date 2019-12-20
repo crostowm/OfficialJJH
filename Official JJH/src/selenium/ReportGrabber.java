@@ -1,5 +1,6 @@
 package selenium;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -11,7 +12,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import app.MainApplication;
 import error_handling.ErrorHandler;
+import readers.InventoryItemNameReader;
 import util.JimmyCalendarUtil;
 
 public class ReportGrabber
@@ -65,6 +68,7 @@ public class ReportGrabber
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
 
       downloadTrendSheets();
+      downloadItemUsageAnalysis();
       downloadLastAMPhoneAuditReport();
       downloadAttendanceReport();
       downloadLast6UPK();
@@ -72,11 +76,70 @@ public class ReportGrabber
       downloadLastYearWSR();
       downloadLast4HourlySales();
       goToDownloadCenterAndDownloadAll();
+
     }
     finally
     {
-      //driver.quit();
+      // driver.quit();
     }
+  }
+
+  private void downloadItemUsageAnalysis()
+  {
+    // TODO Auto-generated method stub
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[13]")).click();
+    selectDatesOfLastCompletedWeek();
+    WebElement typeDropDown = driver
+        .findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListReportFormat\"]"));
+    typeDropDown.click();
+    typeDropDown.sendKeys("c" + Keys.ENTER);
+    for (String s : MainApplication.dataHub.getInventoryItemNames())
+    {
+      try
+      {
+        Select select = new Select(
+            driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListItems\"]")));
+        select.selectByVisibleText(s);
+        WebElement generate = driver
+            .findElement(By.xpath("//*[@id=\"ctl00_ph_ButtonGenerate_input\"]"));
+        generate.click();
+      }
+      catch (Exception e)
+      {
+        System.out.println(s + " Not Found");
+        ErrorHandler.addError(e);
+        continue;
+      }
+    }
+  }
+
+  private void selectDatesOfLastCompletedWeek()
+  {
+    // TODO Auto-generated method stub
+    GregorianCalendar startDate = new GregorianCalendar();
+    GregorianCalendar endDate = new GregorianCalendar();
+    startDate.add(Calendar.DAY_OF_YEAR, -1);
+    endDate.add(Calendar.DAY_OF_YEAR, -1);
+    while (endDate.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY)
+    {
+      startDate.add(Calendar.DAY_OF_YEAR, -1);
+      endDate.add(Calendar.DAY_OF_YEAR, -1);
+    }
+    startDate.add(Calendar.DAY_OF_YEAR, -6);
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+    System.out.println(sdf.format(startDate.getTime()) + " " + sdf.format(endDate.getTime()));
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + sdf.format(startDate.getTime()) + Keys.ENTER);
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + sdf.format(endDate.getTime()) + Keys.ENTER);
   }
 
   private void downloadTrendSheets()
@@ -92,7 +155,8 @@ public class ReportGrabber
 
   private void selectFiscalYear(int year)
   {
-    Select yearSelect= new Select(driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListFiscalYear\"]")));
+    Select yearSelect = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListFiscalYear\"]")));
     yearSelect.selectByValue("" + year);
   }
 
@@ -100,7 +164,7 @@ public class ReportGrabber
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[3]")).click();
     selectStoreNumberFromDropdown();
-    //selectDateXDaysBeforeCurrent(1);
+    // selectDateXDaysBeforeCurrent(1);
     selectYesterdayFromDropdown();
     changeToCSVAndDownload();
   }
@@ -251,20 +315,13 @@ public class ReportGrabber
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
-   
+
     int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
     Select weekSelect = new Select(
         driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
     weekSelect.selectByIndex(currentWeekIndex);
     changeToCSVAndDownload();
     numReports++;
-  }
-
-  private void sendToDownloadCenter()
-  {
-    if (!driver.findElement(By.xpath("//*[@id=\"ctl00_ph_CheckBoxSendToDownloadCentre\"]"))
-        .isSelected())
-      driver.findElement(By.xpath("//*[@id=\"ctl00_ph_CheckBoxSendToDownloadCentre\"]")).click();
   }
 
   private void changeToCSVAndDownload()

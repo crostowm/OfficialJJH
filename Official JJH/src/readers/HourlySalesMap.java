@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import error_handling.ErrorHandler;
 import lineitems.HourlySalesItem;
+import util.ParseUtil;
 
 /**
  * @author crost HashMap<Int-Order Category, HashMap<Int-Hour 24hr<HashMap<Int-Data Type Category,
@@ -41,10 +42,10 @@ public class HourlySalesMap
       System.out.println("Reading " + file.getName());
       while (scanner.hasNext())
       {
-        String[] tokens = scanner.nextLine().split(",");
-        if (tokens.length > 1)
+        ArrayList<String> tokens = ParseUtil.getQuoteConsolidatedList(scanner.nextLine().split(","));
+        if (tokens.size() > 1)
         {
-          if (tokens[1].equals("Time"))
+          if (tokens.get(1).equals("Time"))
           {
             System.out.println("Reading a line");
             // Start at first time interval
@@ -54,9 +55,9 @@ public class HourlySalesMap
               try
               {
                 // Value
-                double val = Double.parseDouble(tokens[ii + 1].substring(1));
-                int count = (int)Double.parseDouble(tokens[ii + 2]);
-                switch (tokens[0])
+                double val = Double.parseDouble(tokens.get(ii + 1).substring(1));
+                int count = (int)Double.parseDouble(tokens.get(ii + 2));
+                switch (tokens.get(0))
                 {
                   case "Take Out":
                     takeoutValue.add(val);
@@ -81,10 +82,10 @@ public class HourlySalesMap
                   case "Online Delivery":
                     onlineDeliveryValue.add(val);
                     onlineDeliveryCount.add(count);
-                    total$.add(Double.parseDouble(tokens[ii + 3].substring(1)));
-                    totalCount.add((int)Double.parseDouble(tokens[ii + 4]));
+                    total$.add(Double.parseDouble(tokens.get(ii + 3).substring(1)));
+                    totalCount.add((int)Double.parseDouble(tokens.get(ii + 4)));
                     totalPercent.add(Double
-                        .parseDouble(tokens[ii + 5].substring(0, tokens[ii + 5].length() - 1)));
+                        .parseDouble(tokens.get(ii + 5).substring(0, tokens.get(ii + 5).length() - 1)));
                     break;
                 }
               }

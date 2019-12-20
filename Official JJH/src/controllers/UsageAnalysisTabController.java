@@ -113,6 +113,7 @@ public class UsageAnalysisTabController
     usageAnalysisCategoryGroup.add(usageAnalysisTheoreticalUsageRadio);
     usageAnalysisCategoryGroup.add(usageAnalysisActualUPKRadio);
     usageAnalysisCategoryGroup.add(usageAnalysisAverageUPKRadio);
+    System.out.println("UATC");
   }
 
   private void handleNewUsageAnalysisCategorySelection()
