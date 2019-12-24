@@ -46,7 +46,7 @@
                               <Insets right="10.0" />
                            </HBox.margin></ChoiceBox>
                         <Label text="Projections" />
-                        <TextField fx:id="projField" alignment="CENTER" prefWidth="90.0" />
+                        <TextField fx:id="projField" alignment="CENTER" editable="false" prefWidth="90.0" />
                      </children>
                      <padding>
                         <Insets left="10.0" />

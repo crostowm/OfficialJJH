@@ -13,7 +13,7 @@ import readers.AttendanceReader;
 import readers.CateringTransactionReader;
 import readers.HourlySalesMap;
 import readers.ItemUsageAnalysisReader;
-import readers.TrendSheetMap;
+import readers.TrendSheetReader;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -118,8 +118,8 @@ public class ReportFinder
     {
       MainApplication.reportsUsed += "\t" + fs.get(0).getFile().getName() + "\n";
       MainApplication.reportsUsed += "\t" + fs.get(1).getFile().getName() + "\n";
-      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetMap(fs.get(0).getFile()));
-      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetMap(fs.get(1).getFile()));
+      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetReader(fs.get(0).getFile()));
+      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetReader(fs.get(1).getFile()));
     }
   }
 

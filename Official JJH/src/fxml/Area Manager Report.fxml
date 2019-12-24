@@ -42,9 +42,9 @@
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -104,6 +104,14 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
+                  <Label fx:id="weekLaborLabel" text="Week Labor" GridPane.columnIndex="3" />
+                  <Label fx:id="weekCompLabel" text="Week Comps:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label text="Manager DBLs Completed Yesterday" GridPane.columnIndex="4" />
+                  <ScrollPane fitToWidth="true" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                     <content>
+                        <VBox fx:id="mgrDBLBox" />
+                     </content>
+                  </ScrollPane>
                </children>
             </GridPane>
             <Button fx:id="sendReportButton" mnemonicParsing="false" onAction="#sendReportButtonPressed" text="Send Report" />

@@ -10,11 +10,12 @@ import java.util.Scanner;
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import util.JimmyCalendarUtil;
+import util.ParseUtil;
 
 /**
  * @author crost Key1: One of the static Strings below Key2: Week Number Object: Value
  */
-public class TrendSheetMap implements Serializable
+public class TrendSheetReader implements Serializable
 {
   private static final long serialVersionUID = -9008251803784269667L;
   public static final String LY_ROYALTY = "Last Year Royalty", CY_ROYALTY = "Current Year Royalty",
@@ -26,23 +27,25 @@ public class TrendSheetMap implements Serializable
   private HashMap<String, HashMap<Integer, Double>> weeklyMap = new HashMap<String, HashMap<Integer, Double>>();
   private HashMap<String, HashMap<Integer, Double>> periodMap = new HashMap<String, HashMap<Integer, Double>>();
   private HashMap<String, Double> yearMap = new HashMap<String, Double>();
-  private String[] tokens;
+  private ArrayList<String> tokens;
   private int index;
   private int week = 0;
   private int period = 1;
 
-  public TrendSheetMap(File file)
+  public TrendSheetReader(File file)
   {
     try
     {
       Scanner scanner = new Scanner(file);
       while (scanner.hasNext())
       {
-        tokens = scanner.nextLine().split(",");
-        if (tokens[0].startsWith("\"Store"))
+        String line = scanner.nextLine();
+        tokens = ParseUtil.getQuoteConsolidatedList(line.split(","));
+        System.out.println(line);
+        if (tokens.get(0).startsWith("Store"))
         {
           week++;
-          index = 21;
+          index = 19;
           insertValueIntoWeeklyMap(CY_ROYALTY);
           insertValueIntoWeeklyMap(LY_ROYALTY);
           insertValueIntoWeeklyMap(COMPS);
@@ -60,7 +63,7 @@ public class TrendSheetMap implements Serializable
           insertValueIntoWeeklyMap(BEVERAGEP);
           insertValueIntoWeeklyMap(CATERINGP);
           index++;
-          period = Integer.parseInt((tokens[3].split(" "))[1]);
+          period = Integer.parseInt((tokens.get(1).split(" "))[1]);
           insertValueIntoPeriodMap(CY_ROYALTY);
           insertValueIntoPeriodMap(LY_ROYALTY);
           insertValueIntoPeriodMap(COMPS);
@@ -101,8 +104,8 @@ public class TrendSheetMap implements Serializable
 
   private void insertValueIntoWeeklyMap(String category)
   {
-    String s = tokens[index];
-    s = removeQuotes(s);
+    String s = tokens.get(index);
+    s = ParseUtil.parsePerc(ParseUtil.parse$((s)));
     if (weeklyMap.get(category) == null)
       weeklyMap.put(category, new HashMap<Integer, Double>());
     weeklyMap.get(category).put(week, Double.parseDouble(s));
@@ -111,8 +114,8 @@ public class TrendSheetMap implements Serializable
 
   private void insertValueIntoPeriodMap(String category)
   {
-    String s = tokens[index];
-    s = removeQuotes(s);
+    String s = tokens.get(index);
+    s = ParseUtil.parsePerc(ParseUtil.parse$((s)));
     if (periodMap.get(category) == null)
       periodMap.put(category, new HashMap<Integer, Double>());
     periodMap.get(category).put(period, Double.parseDouble(s));
@@ -121,32 +124,10 @@ public class TrendSheetMap implements Serializable
   
   private void insertValueIntoYearMap(String category)
   {
-    String s = tokens[index];
-    s = removeQuotes(s);
+    String s = tokens.get(index);
+    s = ParseUtil.parsePerc(ParseUtil.parse$((s)));
     yearMap.put(category, Double.parseDouble(s));
     index++;
-  }
-
-  private String removeQuotes(String s)
-  {
-    if (s.length() > 0)
-    {
-      if (s.charAt(0) == '"')
-      {
-        index++;
-        s += tokens[index];
-        s = s.substring(1, s.indexOf("\"", 1));
-      }
-      if (s.charAt(0) == '$')
-      {
-        s = s.substring(1);
-      }
-      if (s.charAt(s.length() - 1) == '%')
-      {
-        s = s.substring(0, s.length() - 1);
-      }
-    }
-    return s;
   }
 
   public ArrayList<String> getWeeklyItems()
@@ -180,6 +161,7 @@ public class TrendSheetMap implements Serializable
     double total = 0;
     for (Integer i : weeks)
     {
+      System.out.println(cat + " " + i);
       total += getDataForCategoryForWeek(cat, i);
     }
     return total / weeks.size();

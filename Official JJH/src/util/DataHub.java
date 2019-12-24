@@ -17,7 +17,7 @@ import personnel.Manager;
 import readers.AMPhoneAuditReader;
 import readers.HourlySalesMap;
 import readers.ManagerDBLReader;
-import readers.TrendSheetMap;
+import readers.TrendSheetReader;
 import readers.UPKMap;
 import readers.WSRMap;
 
@@ -35,7 +35,7 @@ public class DataHub implements Serializable
   private transient ArrayList<HourlySalesMap> past4HourlySales;
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditItem amPhoneAuditItem;
-  private transient TrendSheetMap lastYearTrendSheet, currentYearTrendSheet;
+  private transient TrendSheetReader lastYearTrendSheet, currentYearTrendSheet;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
   private transient WSRMap lastYearWSR;
   private transient ArrayList<InventoryItem> inventoryItems;
@@ -441,22 +441,22 @@ public class DataHub implements Serializable
     return past4HourlySales;
   }
 
-  public void setLastYearTrendSheet(TrendSheetMap trendSheetMap)
+  public void setLastYearTrendSheet(TrendSheetReader trendSheetMap)
   {
     this.lastYearTrendSheet = trendSheetMap;
   }
 
-  public TrendSheetMap getLastYearTrendSheet()
+  public TrendSheetReader getLastYearTrendSheet()
   {
     return lastYearTrendSheet;
   }
 
-  public void setCurrentYearTrendSheet(TrendSheetMap trendSheetMap)
+  public void setCurrentYearTrendSheet(TrendSheetReader trendSheetMap)
   {
     this.currentYearTrendSheet = trendSheetMap;
   }
 
-  public TrendSheetMap getCurrentYearTrendSheet()
+  public TrendSheetReader getCurrentYearTrendSheet()
   {
     return currentYearTrendSheet;
   }
@@ -517,7 +517,12 @@ public class DataHub implements Serializable
     for (ManagerDBL mdbl : managerDBLs)
     {
       if (mdbl.isCompleted() == completed)
+      {
         dbls.add(mdbl);
+        System.out.println("Complete");
+      }
+      else
+      System.out.println("Incomplete");
     }
     return dbls;
   }

@@ -1,11 +1,12 @@
 package controllers;
 
 import app.MainApplication;
+import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
-import readers.TrendSheetMap;
+import readers.TrendSheetReader;
 
 public class PeriodFoldController
 {
@@ -19,34 +20,42 @@ public class PeriodFoldController
 
   public void updateAll()
   {
-    TrendSheetMap current = MainApplication.dataHub.getCurrentYearTrendSheet();
+    TrendSheetReader current = MainApplication.dataHub.getCurrentYearTrendSheet();
     if (current != null)
     {
-      double other = 100 - (current.getDataForCategoryForCurrentPeriod(TrendSheetMap.BREADP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.FOODP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.SIDESP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.PAPERP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.PRODUCEP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.BEVERAGEP)
-          + current.getDataForCategoryForCurrentPeriod(TrendSheetMap.CY_LABORP));
-      ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-          new PieChart.Data(TrendSheetMap.BREADP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.BREADP)),
-          new PieChart.Data(TrendSheetMap.FOODP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.FOODP)),
-          new PieChart.Data(TrendSheetMap.SIDESP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.SIDESP)),
-          new PieChart.Data(TrendSheetMap.PAPERP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.PAPERP)),
-          new PieChart.Data(TrendSheetMap.PRODUCEP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.PRODUCEP)),
-          new PieChart.Data(TrendSheetMap.BEVERAGEP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.BEVERAGEP)),
-          new PieChart.Data(TrendSheetMap.CY_LABORP,
-              current.getDataForCategoryForCurrentPeriod(TrendSheetMap.CY_LABORP)),
-          new PieChart.Data("Other", other));
+      try
+      {
+        double other = 100 - (current.getDataForCategoryForCurrentPeriod(TrendSheetReader.BREADP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.FOODP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.SIDESP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.PAPERP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.PRODUCEP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.BEVERAGEP)
+            + current.getDataForCategoryForCurrentPeriod(TrendSheetReader.CY_LABORP));
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+            new PieChart.Data(TrendSheetReader.BREADP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.BREADP)),
+            new PieChart.Data(TrendSheetReader.FOODP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.FOODP)),
+            new PieChart.Data(TrendSheetReader.SIDESP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.SIDESP)),
+            new PieChart.Data(TrendSheetReader.PAPERP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.PAPERP)),
+            new PieChart.Data(TrendSheetReader.PRODUCEP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.PRODUCEP)),
+            new PieChart.Data(TrendSheetReader.BEVERAGEP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.BEVERAGEP)),
+            new PieChart.Data(TrendSheetReader.CY_LABORP,
+                current.getDataForCategoryForCurrentPeriod(TrendSheetReader.CY_LABORP)),
+            new PieChart.Data("Other", other));
 
-      periodChart.setData(pieChartData);
+        periodChart.setData(pieChartData);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        ErrorHandler.addError(e);
+      }
     }
   }
 }

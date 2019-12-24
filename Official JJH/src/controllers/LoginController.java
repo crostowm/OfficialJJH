@@ -1,5 +1,6 @@
 package controllers;
 
+import app.LoginStage;
 import app.MainApplication;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +27,8 @@ public class LoginController
 
   private MainApplication mainApplication;
 
+  private LoginStage loginStage;
+
   public void initialize()
   {
     passField.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -42,22 +45,37 @@ public class LoginController
   @FXML
   void loginButtonPressed()
   {
+    Manager mgr = null;
     if (userField.getText().equals("") && passField.getText().equals(""))
     {
-      mainApplication.runAMPhoneAudit(new Manager("Guest", "Guest", "123", ""));
+      mgr = new Manager("Guest", "", "", "");
     }
     else
     {
-      Manager mgr = MainApplication.dataHub.getManager(userField.getText(), passField.getText());
-      if (mgr != null)
-        mainApplication.runAMPhoneAudit(mgr);
-      else
-        messageLabel.setText("Unable to login, invalid username and password");
+      mgr = MainApplication.dataHub.getManager(userField.getText(), passField.getText());
     }
+    if (mgr != null)
+    {
+      MainApplication.activeManagers.add(mgr);
+      if (mainApplication != null)
+        mainApplication.runAMPhoneAudit(mgr);
+      loginStage.close();
+      for(Manager m: MainApplication.activeManagers)
+      {
+        System.out.println(m.getName());
+      }
+    }
+    else
+      messageLabel.setText("Unable to login, invalid username and password");
   }
 
   public void setMainApp(MainApplication mainApplication)
   {
     this.mainApplication = mainApplication;
+  }
+
+  public void setStage(LoginStage loginStage)
+  {
+    this.loginStage = loginStage;
   }
 }

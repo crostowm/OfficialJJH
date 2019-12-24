@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import error_handling.ErrorHandler;
 import util.ManagerDBL;
 
 public class ManagerDBLReader
@@ -24,7 +25,7 @@ public class ManagerDBLReader
     }
     catch (FileNotFoundException e)
     {
-      // TODO Auto-generated catch block
+      ErrorHandler.addError(e);
       e.printStackTrace();
     }
     

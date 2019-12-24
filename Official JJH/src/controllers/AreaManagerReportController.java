@@ -2,6 +2,7 @@ package controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import app.MainApplication;
@@ -21,6 +22,7 @@ import lineitems.AttendanceShift;
 import util.CateringOrder;
 import util.Email;
 import util.JimmyCalendarUtil;
+import util.ManagerDBL;
 
 /**
  * Must set MainApp
@@ -31,7 +33,7 @@ public class AreaManagerReportController
 {
   @FXML
   private Label salesLabelAM, salesLabelPM, overUnderLabelAM, overUnderLabelPM, laborLabelAM,
-      laborLabelPM, cateringTimeLabel, cateringDollarLabel;
+      laborLabelPM, cateringTimeLabel, cateringDollarLabel, weekLaborLabel, weekCompLabel;
 
   @FXML
   private CheckBox staffCheck, equipmentCheck, punchlistCheck;
@@ -40,7 +42,7 @@ public class AreaManagerReportController
   private ChoiceBox<CateringOrder> cateringChoice;
 
   @FXML
-  private VBox attendanceVBox;
+  private VBox attendanceVBox, mgrDBLBox;
   
   @FXML
   private TextArea explanationArea;
@@ -61,7 +63,21 @@ public class AreaManagerReportController
     overUnderLabelPM.setText(String.format("%.2f", item.getCashOverUnderPM()));
     laborLabelAM.setText(String.format("%.2f", item.getLaborAM()));
     laborLabelPM.setText(String.format("%.2f", item.getLaborPM()));
-
+    weekLaborLabel.setText(String.format("Week Labor: %.2f%%", item.getLaborWeek()));
+    weekCompLabel.setText(String.format("Week Comps %% / $: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
+    
+    //MDBL Box
+    for(ManagerDBL mdbl: MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true))
+    {
+      GregorianCalendar yesterday = new GregorianCalendar();
+      yesterday.add(Calendar.DAY_OF_YEAR, -1);
+      if(mdbl.getCompleteTime().get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR))
+      {
+        Label label = new Label(String.format("%s: %s", mdbl.getCompletedName(), mdbl.getDesc()));
+        label.setWrapText(true);
+        mgrDBLBox.getChildren().add(label);
+      }
+    }
     //Add catering orders
     for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
     {
@@ -116,10 +132,10 @@ public class AreaManagerReportController
   {
     String email = String.format(
         "This is an automated JimmyHub email from store %d\n\n"
-            + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n",
+            + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n%s\n%s\n",
         MainApplication.storeNumber, salesLabelAM.getText(), salesLabelPM.getText(),
         overUnderLabelAM.getText(), overUnderLabelPM.getText(), laborLabelAM.getText(),
-        laborLabelPM.getText());
+        laborLabelPM.getText(), weekLaborLabel.getText(), weekCompLabel.getText());
     email += "Staff: " + (staffCheck.isSelected() ? "OK\n" : "Need Help\n");
     email += "Equipment: " + (equipmentCheck.isSelected() ? "OK\n" : "Need Fixin\n");
     email += "Punchlist: " + (punchlistCheck.isSelected() ? "OK\n" : "Incomplete\n");

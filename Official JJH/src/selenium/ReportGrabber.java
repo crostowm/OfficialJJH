@@ -1,6 +1,5 @@
 package selenium;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -14,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import app.MainApplication;
 import error_handling.ErrorHandler;
-import readers.InventoryItemNameReader;
 import util.JimmyCalendarUtil;
 
 public class ReportGrabber
@@ -50,7 +48,7 @@ public class ReportGrabber
     }
   }
 
-  public void runTester()
+  public void startAndLogin()
   {
     driver = new ChromeDriver();
     try
@@ -67,26 +65,16 @@ public class ReportGrabber
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys("Zulu9495" + Keys.ENTER);
 
-      downloadTrendSheets();
-      downloadItemUsageAnalysis();
-      downloadLastAMPhoneAuditReport();
-      downloadAttendanceReport();
-      downloadLast6UPK();
-      downloadLast4WSR();
-      downloadLastYearWSR();
-      downloadLast4HourlySales();
-      goToDownloadCenterAndDownloadAll();
-
     }
-    finally
+    catch(Exception e)
     {
-      // driver.quit();
+      ErrorHandler.addError(e);
+      e.printStackTrace();
     }
   }
 
-  private void downloadItemUsageAnalysis()
+  public void downloadItemUsageAnalysis()
   {
-    // TODO Auto-generated method stub
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[13]")).click();
     selectDatesOfLastCompletedWeek();
     WebElement typeDropDown = driver
@@ -142,7 +130,7 @@ public class ReportGrabber
         .sendKeys(Keys.BACK_SPACE + sdf.format(endDate.getTime()) + Keys.ENTER);
   }
 
-  private void downloadTrendSheets()
+  public void downloadTrendSheets()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[19]")).click();
     selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
@@ -160,7 +148,7 @@ public class ReportGrabber
     yearSelect.selectByValue("" + year);
   }
 
-  private void downloadAttendanceReport()
+  public void downloadAttendanceReport()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[3]")).click();
     selectStoreNumberFromDropdown();
@@ -178,7 +166,7 @@ public class ReportGrabber
         .sendKeys("Yesterday" + Keys.ENTER);
   }
 
-  private void downloadLast4HourlySales()
+  public void downloadLast4HourlySales()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
     selectStoreCheckBox();
@@ -233,7 +221,7 @@ public class ReportGrabber
         .sendKeys(Keys.BACK_SPACE + sdf.format(gc.getTime()) + Keys.ENTER);
   }
 
-  private void goToDownloadCenterAndDownloadAll()
+  public void goToDownloadCenterAndDownloadAll()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_Uctrl_MMS_MenuGroups1_pb\"]/ul/li[5]/a")).click();
     driver
@@ -256,7 +244,7 @@ public class ReportGrabber
     }
   }
 
-  private void downloadLast6UPK()
+  public void downloadLast6UPK()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[20]")).click();
     selectStoreCheckBox();
@@ -295,7 +283,7 @@ public class ReportGrabber
       driver.findElement(By.xpath(storeXPath)).click();
   }
 
-  private void downloadLastAMPhoneAuditReport()
+  public void downloadLastAMPhoneAuditReport()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[2]")).click();
     selectStoreCheckBox();
@@ -303,14 +291,14 @@ public class ReportGrabber
     numReports++;
   }
 
-  private void downloadLast4WSR()
+  public void downloadLast4WSR()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     selectLastXWeeksFromWeekDropdownAndDownload(4);
   }
 
-  private void downloadLastYearWSR()
+  public void downloadLastYearWSR()
   {
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
@@ -334,5 +322,10 @@ public class ReportGrabber
     WebElement generate = driver
         .findElement(By.xpath("//*[@id=\"ctl00_ph_ButtonGenerate_input\"]"));
     generate.click();
+  }
+
+  public void close()
+  {
+    driver.quit();
   }
 }

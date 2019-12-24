@@ -25,13 +25,16 @@ public class AMPhoneAuditReader
         {
           System.out.println(line);
           ArrayList<String> tokens = ParseUtil.getQuoteConsolidatedList(line.split(","));
-          
-          double salesAM = Double.parseDouble(tokens.get(2));
-          double salesPM = Double.parseDouble(tokens.get(3));
+          for(String s: tokens)
+          {
+            System.out.println(s);
+          }
+          double salesAM = Double.parseDouble(ParseUtil.parse$(tokens.get(2)));
+          double salesPM = Double.parseDouble(ParseUtil.parse$(tokens.get(3)));
           double depositAM = Double.parseDouble(ParseUtil.parse$(tokens.get(5)));
           double depositPM = Double.parseDouble(ParseUtil.parse$(tokens.get(6)));
-          double cashOverUnderAM = Double.parseDouble(ParseUtil.parseParen(ParseUtil.parse$(tokens.get(8))));
-          double cashOverUnderPM = Double.parseDouble(ParseUtil.parseParen(ParseUtil.parse$(tokens.get(9))));
+          double cashOverUnderAM = Double.parseDouble(ParseUtil.parse$(ParseUtil.parseParen(tokens.get(8))));
+          double cashOverUnderPM = Double.parseDouble(ParseUtil.parse$(ParseUtil.parseParen(tokens.get(9))));
           double laborAM = Double.parseDouble(ParseUtil.parsePerc(tokens.get(11)));
           double laborPM = Double.parseDouble(ParseUtil.parsePerc(tokens.get(12)));
           double laborWeek = Double.parseDouble(ParseUtil.parsePerc(tokens.get(14)));

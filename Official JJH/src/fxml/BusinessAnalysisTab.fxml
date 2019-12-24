@@ -28,7 +28,7 @@
             <ScrollPane fx:id="contentScrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
             <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="45.0" maxWidth="1.7976931348623157E308" vbarPolicy="ALWAYS" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <content>
-                  <FlowPane fx:id="itemBox" hgap="10.0" maxHeight="1.7976931348623157E308" prefWidth="200.0" vgap="5.0" />
+                  <FlowPane fx:id="categoryBox" hgap="10.0" maxHeight="1.7976931348623157E308" prefWidth="200.0" vgap="5.0" />
                </content>
             </ScrollPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnSpan="2" GridPane.halignment="CENTER">

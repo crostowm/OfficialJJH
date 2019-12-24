@@ -8,10 +8,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <AnchorPane maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddManagerController">
    <children>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -29,8 +28,8 @@
             <Label text="Manager Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <Label text="Username" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <Button fx:id="addManagerButton" mnemonicParsing="false" onAction="#addManagerButtonPressed" text="Add Manager" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <TextField fx:id="usernameField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="usernameField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <TextField fx:id="passwordField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <Label text="Password" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
          </children>

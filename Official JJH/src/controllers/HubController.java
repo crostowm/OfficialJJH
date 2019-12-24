@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 
 import app.AMBreadMathStage;
 import app.CateringStage;
+import app.LoginStage;
 import app.MainApplication;
 import app.WeeklySupplyStage;
 import gui.ManagerDBLCheckBox;
@@ -15,12 +16,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
 import observers.TimeObserver;
+import personnel.Manager;
 import util.CateringOrder;
 import util.DataHub;
 import util.JimmyCalendarUtil;
@@ -96,7 +101,7 @@ public class HubController implements DataObserver
   @FXML
   private VBox managerDBLBox;
 
-  private Button breadMathButton;
+  private Button amBreadMathButton, managerSignInButton;
 
   public void initialize()
   {
@@ -104,13 +109,38 @@ public class HubController implements DataObserver
 
     // Tabs that require time updates
     timeObservers.add(projectionTabController);
-    shiftManagerLabel.setText(MainApplication.amManager + "");
+    shiftManagerLabel.setText(MainApplication.activeManagers.get(0) + "");
 
     currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
     // Fill mgr dbls
     populateMgrDBLs();
     updateAllFields();
+
+    amBreadMathButton = new Button("AM Bread Math");
+    amBreadMathButton.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent arg0)
+      {
+        AMBreadMathStage ambms = new AMBreadMathStage();
+        ambms.show();
+      }
+    });
+    bottomHBox.getChildren().add(3, amBreadMathButton);
     System.out.println("HC");
+
+    managerSignInButton = new Button("Sign In Manager");
+    managerSignInButton.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent arg0)
+      {
+        // TODO Auto-generated method stub
+        LoginStage ls = new LoginStage();
+        ls.show();
+      }
+    });
+    bottomHBox.getChildren().add(1, managerSignInButton);
   }
 
   private void updateAllFields()
@@ -178,24 +208,6 @@ public class HubController implements DataObserver
         }
         projectionTabController.timeUpdateMinute();
 
-        // Testing******************
-        if (breadMathButton == null)
-        {
-          breadMathButton = new Button("AM Bread Math");
-          breadMathButton.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent arg0)
-            {
-              AMBreadMathStage ambms = new AMBreadMathStage();
-              ambms.show();
-            }
-          });
-        }
-        if (!bottomHBox.getChildren().contains(breadMathButton))
-          bottomHBox.getChildren().add(2, breadMathButton);
-        // **************************
-
         // update current proj vals
         double sc = MainApplication.dataHub.getSetting(DataHub.STORESC_TIME);
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
@@ -211,37 +223,16 @@ public class HubController implements DataObserver
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 2
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 1)
         {
-          if (breadMathButton == null)
+          if (amBreadMathButton != null)
           {
-            breadMathButton = new Button("AM Bread Math");
-            breadMathButton.setOnAction(new EventHandler<ActionEvent>()
-            {
-              @Override
-              public void handle(ActionEvent arg0)
-              {
-                AMBreadMathStage ambms = new AMBreadMathStage();
-                ambms.show();
-              }
-            });
+
           }
-          if (!currentPaneVBox.getChildren().contains(breadMathButton))
-            currentPaneVBox.getChildren().add(breadMathButton);
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 1)
         {
-          /*
-           * breadMathButton.setText("PM Bread Math"); breadMathButton.setOnAction(new
-           * EventHandler<ActionEvent>() {
-           * 
-           * @Override public void handle(ActionEvent arg0) { PMBreadMathStage ambms = new
-           * PMBreadMathStage(); ambms.show(); } });
-           */
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc + 1)
         {
-          if (currentPaneVBox.getChildren().contains(breadMathButton))
-            currentPaneVBox.getChildren().remove(breadMathButton);
-          breadMathButton = null;
         }
 
         // Current Titled Pane
@@ -356,19 +347,39 @@ public class HubController implements DataObserver
     {
       ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs()
           .get(numComplete + managerDBLBox.getChildren().size()));
-      mdc.setOnAction(new EventHandler<ActionEvent>()
+      mdc.setOnMouseClicked(new EventHandler<MouseEvent>()
       {
         @Override
-        public void handle(ActionEvent arg0)
+        public void handle(MouseEvent ae)
         {
           if (mdc.isSelected())
           {
-            if (MainApplication.getManagers().size() == 1)
+            if (MainApplication.activeManagers.size() == 1)
             {
-              mdc.getDBL().complete(MainApplication.getManagers().get(0).getName(),
+              mdc.getDBL().complete(MainApplication.activeManagers.get(0).getName(),
                   new GregorianCalendar());
               managerDBLBox.getChildren().remove(mdc);
               populateMgrDBLs();
+            }
+            else
+            {
+              ContextMenu cm = new ContextMenu();
+              for (Manager m : MainApplication.activeManagers)
+              {
+                RadioMenuItem managerItem = new RadioMenuItem(m.getName());
+                managerItem.setOnAction(new EventHandler<ActionEvent>()
+                {
+                  @Override
+                  public void handle(ActionEvent arg0)
+                  {
+                    mdc.getDBL().complete(managerItem.getText(), new GregorianCalendar());
+                    managerDBLBox.getChildren().remove(mdc);
+                    populateMgrDBLs();
+                  }
+                });
+                cm.getItems().add(managerItem);
+              }
+              cm.show(mdc, ae.getScreenX(), ae.getScreenY());
             }
           }
         }

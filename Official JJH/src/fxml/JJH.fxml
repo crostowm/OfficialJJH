@@ -31,11 +31,6 @@
                      <center>
                         <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
-                              <Tab text="Dashboard">
-                              	<content>
-                             		<fx:include fx:id="dashboardTab" source="Dashboard.fxml" />
-                            	</content>
-                              </Tab>
                             <Tab closable="false" text="Projections">
                             <content>
                              <fx:include fx:id="projectionTab" source="ProjectionTab.fxml" />
@@ -70,6 +65,11 @@
                               <Tab text="Settings">
                               	<content>
                              		<fx:include fx:id="settingsTab" source="SettingsTab.fxml" />
+                            	</content>
+                              </Tab>
+                              <Tab text="Dashboard">
+                              	<content>
+                             		<fx:include fx:id="dashboardTab" source="Dashboard.fxml" />
                             	</content>
                               </Tab>
                           </tabs>
@@ -187,7 +187,11 @@
                                                 <TextField fx:id="todayProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                 <TextField fx:id="lastYearProjAMField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField fx:id="lastYearProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <VBox fx:id="managerDBLBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+                                                <ScrollPane fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                                   <content>
+                                                      <VBox fx:id="managerDBLBox" spacing="5.0" />
+                                                   </content>
+                                                </ScrollPane>
                                                 <Label text="Manager DBLs" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>

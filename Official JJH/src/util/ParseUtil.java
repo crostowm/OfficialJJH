@@ -23,8 +23,12 @@ public class ParseUtil
               full += tokens[ii];
               ii++;
             }
+            full += tokens[ii].substring(0, tokens[ii].length() - 1);
           }
-          full += tokens[ii].substring(0, tokens[ii].length());
+          else
+          {
+            full = tokens[ii].substring(0, tokens[ii].length() - 1);
+          }
         }
       }
       consolidated.add(full);
@@ -34,6 +38,8 @@ public class ParseUtil
 
   public static String parse$(String string)
   {
+    if(string.indexOf("$") == -1)
+      return string;
     if (string.charAt(0) == '$')
       return string.substring(1);
     else
@@ -47,11 +53,15 @@ public class ParseUtil
    */
   public static String parseParen(String string)
   {
-    return string.substring(string.indexOf("("), string.indexOf(")"));
+    if(string.indexOf("(") == -1)
+      return string;
+    return string.substring(string.indexOf("(") + 1, string.indexOf(")"));
   }
 
   public static String parsePerc(String string)
   {
+    if(string.indexOf("%") == -1)
+      return string;
     return string.substring(0, string.indexOf("%"));
   }
 }

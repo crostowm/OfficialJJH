@@ -1,9 +1,11 @@
 package util;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public abstract class Completable
+public abstract class Completable implements Serializable
 {
+  private static final long serialVersionUID = 8135491990759783587L;
   private boolean completed;
   private String completedName;
   private GregorianCalendar completeTime;

@@ -26,7 +26,7 @@ public class BusinessAnalysisTabController
   private ScrollPane contentScrollPane;
 
   @FXML
-  private FlowPane itemBox;
+  private FlowPane categoryBox;
 
   @FXML
   private ChoiceBox<String> reportChoice;
@@ -43,7 +43,7 @@ public class BusinessAnalysisTabController
   @FXML
   private RadioButton byWeekRadio;
 
-  private ArrayList<RadioButton> items = new ArrayList<RadioButton>();
+  private ArrayList<RadioButton> categoryRadioButtons = new ArrayList<RadioButton>();
 
   public void initialize()
   {
@@ -61,13 +61,15 @@ public class BusinessAnalysisTabController
 
   protected void handleNewReportSelection(String value)
   {
-    items.clear();
-    itemBox.getChildren().clear();
+    // Reset For New Report
+    categoryRadioButtons.clear();
+    categoryBox.getChildren().clear();
     byShiftRadio.setSelected(false);
     byDayRadio.setSelected(false);
     byWeekRadio.setSelected(false);
     switch (value)
     {
+      // WSR
       case "Weekly Sales Report":
         contentScrollPane.setContent(null);
         ArrayList<String> itemNames = new ArrayList<String>(
@@ -79,8 +81,8 @@ public class BusinessAnalysisTabController
           public void handle(ActionEvent arg0)
           {
             contentScrollPane.setContent(null);
-            items.clear();
-            itemBox.getChildren().clear();
+            categoryRadioButtons.clear();
+            categoryBox.getChildren().clear();
             for (String item : itemNames)
             {
               RadioButton rb = new RadioButton(item);
@@ -94,8 +96,8 @@ public class BusinessAnalysisTabController
                   generateChart();
                 }
               });
-              items.add(rb);
-              itemBox.getChildren().add(rb);
+              categoryRadioButtons.add(rb);
+              categoryBox.getChildren().add(rb);
             }
           }
         };
@@ -109,6 +111,7 @@ public class BusinessAnalysisTabController
         byWeekRadio.setVisible(true);
         byWeekRadio.setOnAction(wsrEvent);
         break;
+      // Trend Sheet
       case "Trend Sheet":
         contentScrollPane.setContent(null);
         byShiftRadio.setText("By Week");
@@ -119,8 +122,9 @@ public class BusinessAnalysisTabController
           public void handle(ActionEvent arg0)
           {
             contentScrollPane.setContent(null);
-            items.clear();
-            itemBox.getChildren().clear();
+            categoryRadioButtons.clear();
+            categoryBox.getChildren().clear();
+            // Main Difference For Period/Week
             ArrayList<String> itemNamesTS = new ArrayList<String>(
                 MainApplication.dataHub.getCurrentYearTrendSheet().getWeeklyItems());
             Collections.sort(itemNamesTS);
@@ -136,8 +140,8 @@ public class BusinessAnalysisTabController
                   generateChart();
                 }
               });
-              items.add(rb);
-              itemBox.getChildren().add(rb);
+              categoryRadioButtons.add(rb);
+              categoryBox.getChildren().add(rb);
             }
           }
         });
@@ -149,8 +153,9 @@ public class BusinessAnalysisTabController
           public void handle(ActionEvent arg0)
           {
             contentScrollPane.setContent(null);
-            items.clear();
-            itemBox.getChildren().clear();
+            categoryRadioButtons.clear();
+            categoryBox.getChildren().clear();
+            // Main Difference For Period/Week
             ArrayList<String> itemNamesTS = new ArrayList<String>(
                 MainApplication.dataHub.getCurrentYearTrendSheet().getPeriodItems());
             Collections.sort(itemNamesTS);
@@ -166,8 +171,8 @@ public class BusinessAnalysisTabController
                   generateChart();
                 }
               });
-              items.add(rb);
-              itemBox.getChildren().add(rb);
+              categoryRadioButtons.add(rb);
+              categoryBox.getChildren().add(rb);
             }
           }
         });
@@ -190,10 +195,28 @@ public class BusinessAnalysisTabController
           xs.add(ii);
         }
         break;
-      case "By Week":
-        for (int ii = 1; ii < JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()); ii++)
+      case "By Day":
+        for (int ii = 1; ii < 15; ii += 2)
         {
           xs.add(ii);
+        }
+        break;
+      case "By Week":
+        // Choose if wsr do last 4 weeks
+        if (reportChoice.getValue().equals("Weekly Sales Report"))
+        {
+          for (int ii = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar())
+              - 4; ii < JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()); ii++)
+          {
+            xs.add(ii);
+          }
+        }
+        else
+        {
+          for (int ii = 1; ii < JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()); ii++)
+          {
+            xs.add(ii);
+          }
         }
         break;
       case "By Period":
@@ -207,7 +230,7 @@ public class BusinessAnalysisTabController
     switch (reportChoice.getValue())
     {
       case "Weekly Sales Report":
-        for (RadioButton r : items)
+        for (RadioButton r : categoryRadioButtons)
         {
           if (r.isSelected())
           {
@@ -215,8 +238,26 @@ public class BusinessAnalysisTabController
             names.add(r.getText());
             for (Number x : xs)
             {
-              ys.add(MainApplication.dataHub.getProjectionWSR(4).getDataForShift(r.getText(),
-                  (int) x));
+              // By Day
+              if (((RadioButton) rangeGroup.getSelectedToggle()).getText().equals("By Day"))
+              {
+                ys.add(MainApplication.dataHub.getProjectionWSR(4).getDataForShift(r.getText(),
+                    (int) x)
+                    + MainApplication.dataHub.getProjectionWSR(4).getDataForShift(r.getText(),
+                        ((int) x) + 1));
+              }
+              //By Shift
+              else if (((RadioButton) rangeGroup.getSelectedToggle()).getText().equals("By Shift"))
+                ys.add(MainApplication.dataHub.getProjectionWSR(4).getDataForShift(r.getText(),
+                    (int) x));
+            }
+            // By Week
+            if (((RadioButton) rangeGroup.getSelectedToggle()).getText().equals("By Week"))
+            {
+              for (int ii = 1; ii < 5; ii++)
+              {
+                ys.add(MainApplication.dataHub.getProjectionWSR(ii).getSummaryForItem(r.getText()));
+              }
             }
             allYs.add(ys);
           }
@@ -227,7 +268,7 @@ public class BusinessAnalysisTabController
             names, xs, allYs);
         break;
       case "Trend Sheet":
-        for (RadioButton r : items)
+        for (RadioButton r : categoryRadioButtons)
         {
           if (r.isSelected())
           {
@@ -253,5 +294,4 @@ public class BusinessAnalysisTabController
     }
     contentScrollPane.setContent(numberChart);
   }
-
 }

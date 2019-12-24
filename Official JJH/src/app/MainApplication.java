@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Timer;
 
 import controllers.AreaManagerReportController;
 import controllers.HubController;
-import controllers.LoginController;
 import error_handling.ErrorHandler;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -31,6 +32,7 @@ import util.ReportFinder;
 
 /**
  * JimmyHub
+ * 
  * @author Max Croston
  *
  */
@@ -40,7 +42,7 @@ public class MainApplication extends Application
   public static final String dataHubFileName = "Data_Hub.dat";
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
-  public static boolean fullRun = false;
+  public static boolean fullRun = true;
   public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
@@ -48,12 +50,12 @@ public class MainApplication extends Application
   public static int storeNumber = 2048;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
-  public static Manager amManager, pmManager;
-  private static ArrayList<Manager> currentManagers = new ArrayList<Manager>();
+  public static ArrayList<Manager> activeManagers = new ArrayList<Manager>();
   public static String reportsUsed = "";
   private Stage stage;
   private Stage amrStage;
-  private Stage loginStage;
+  private LoginStage loginStage;
+  private Timer timerMin, timerSec;
 
   public static void main(String[] args)
   {
@@ -68,15 +70,39 @@ public class MainApplication extends Application
     readInDataHub();
     InventoryItemNameReader iir = new InventoryItemNameReader(new File("InventoryItems.txt"));
     dataHub.setInventoryItemNames(iir.getItems());
-    if(downloadReports)
+    if (downloadReports)
     {
-    ReportGrabber rg = new ReportGrabber(storeNumber);
-    rg.runTester();
+      ReportGrabber rg = null;
+      try
+      {
+        rg = new ReportGrabber(storeNumber);
+        rg.startAndLogin();
+        if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)
+          rg.downloadTrendSheets();
+        // rg.downloadItemUsageAnalysis();
+        rg.downloadLastAMPhoneAuditReport();
+        rg.downloadAttendanceReport();
+        // rg.downloadLast6UPK();
+        // rg.downloadLast4WSR();
+        // rg.downloadLastYearWSR();
+        // rg.downloadLast4HourlySales();
+        rg.goToDownloadCenterAndDownloadAll();
+      }
+      finally
+      {
+        if (rg != null)
+          rg.close();
+      }
     }
-    
+
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadUPKToDataHub();
     rf.uploadWSRToDataHub();
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.add(Calendar.DAY_OF_YEAR, -1);
+    MainApplication.dataHub.getManagerDBLs()
+        .get(MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size())
+        .complete("Max", gc);
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadCateringTransactionsToDataHub();
@@ -85,41 +111,20 @@ public class MainApplication extends Application
     rf.uploadSpecialItems();
     System.out.println(reportsUsed);
     if (fullRun)
-      runLogin();
-    else
-      runApplication();
-  }
-
-  /**
-   * Runs login followed by AMReport followed by Dash
-   */
-  private void runLogin()
-  {
-    loginStage = new Stage();
-    FXMLLoader loader;
-    Pane root;
-    try
     {
-      loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJHLogin.fxml"));
-      root = loader.load();
-      LoginController lc = (LoginController) loader.getController();
-      lc.setMainApp(this);
-      loginStage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
-      loginStage.getIcons().add(new Image("resources/jjhr.png"));
-      Scene scene = new Scene(root);
-      loginStage.setScene(scene);
+      loginStage = new LoginStage();
+      loginStage.setMainAppForAMLogin(this);
       loginStage.show();
     }
-    catch (IOException e)
+    else
     {
-      ErrorHandler.addError(e);
-      e.printStackTrace();
+      activeManagers.add(new Manager("Max", "", "", ""));
+      runApplication();
     }
   }
 
   /**
-   * Runs the Dash
-   * Starts Timers
+   * Runs the Dash Starts Timers
    */
   public void runApplication()
   {
@@ -132,11 +137,11 @@ public class MainApplication extends Application
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJH.fxml"));
       root = loader.load();
 
-      Timer timerSec = new Timer();
+      timerSec = new Timer();
       timerSec.scheduleAtFixedRate(new TimeUpdateSecond((HubController) loader.getController()), 0,
           1000L);
 
-      Timer timerMin = new Timer();
+      timerMin = new Timer();
       timerMin.scheduleAtFixedRate(new TimeUpdateMinute((HubController) loader.getController()), 0,
           60000L);
       stage.setTitle("JimmyHub -We Kick Ass, What Do You Do?");
@@ -144,7 +149,6 @@ public class MainApplication extends Application
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.setMaximized(true);
-      stage.show();
       stage.setOnCloseRequest(new EventHandler<WindowEvent>()
       {
 
@@ -154,24 +158,9 @@ public class MainApplication extends Application
           System.out.println("Close Window");
           timerSec.cancel();
           timerMin.cancel();
-
-          // Save Data Hub
-          try
-          {
-            FileOutputStream out = new FileOutputStream(dataHubFileName);
-            ObjectOutputStream serializer = new ObjectOutputStream(out);
-
-            serializer.writeObject(dataHub);
-
-            serializer.flush();
-            out.close();
-          }
-          catch (Exception e)
-          {
-            ErrorHandler.addError(e);
-          }
         }
       });
+      stage.show();
     }
     catch (IOException e)
     {
@@ -190,6 +179,21 @@ public class MainApplication extends Application
       @Override
       public void run()
       {
+        // Save Data Hub
+        try
+        {
+          FileOutputStream out = new FileOutputStream(dataHubFileName);
+          ObjectOutputStream serializer = new ObjectOutputStream(out);
+
+          serializer.writeObject(dataHub);
+
+          serializer.flush();
+          out.close();
+        }
+        catch (Exception e)
+        {
+          ErrorHandler.addError(e);
+        }
         ErrorHandler.writeErrors();
         System.out.println("System was shutdown");
       }
@@ -197,14 +201,13 @@ public class MainApplication extends Application
   }
 
   /**
-   * Reads in DataHub
-   * If no save file, will create a default datahub
+   * Reads in DataHub If no save file, will create a default datahub
    */
   private void readInDataHub()
   {
     try
     {
-      FileInputStream in = new FileInputStream(new File("Data_Hub.dat"));
+      FileInputStream in = new FileInputStream(new File(dataHubFileName));
       ObjectInputStream deserializer = new ObjectInputStream(in);
 
       dataHub = (DataHub) deserializer.readObject();
@@ -220,14 +223,13 @@ public class MainApplication extends Application
   }
 
   /**
-   * @param user Username field
-   * @param pass Password field
+   * @param user
+   *          Username field
+   * @param pass
+   *          Password field
    */
   public void runAMPhoneAudit(Manager mgr)
   {
-    loginStage.close();
-    amManager = mgr;
-    currentManagers.add(amManager);
     amrStage = new Stage();
     FXMLLoader loader;
     Pane root;
@@ -249,10 +251,5 @@ public class MainApplication extends Application
       ErrorHandler.addError(e);
       e.printStackTrace();
     }
-  }
-
-  public static ArrayList<Manager> getManagers()
-  {
-    return currentManagers;
   }
 }
