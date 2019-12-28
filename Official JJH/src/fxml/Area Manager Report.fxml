@@ -105,7 +105,7 @@
                      </padding>
                   </HBox>
                   <Label fx:id="weekLaborLabel" text="Week Labor" GridPane.columnIndex="3" />
-                  <Label fx:id="weekCompLabel" text="Week Comps:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label fx:id="weekCompLabel" text="Week Comps:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <Label text="Manager DBLs Completed Yesterday" GridPane.columnIndex="4" />
                   <ScrollPane fitToWidth="true" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.rowSpan="3">
                      <content>

@@ -59,6 +59,7 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -79,33 +80,33 @@
                   <Label text="Sprouts (pints)" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                   <Label text="Onions (lbs)" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                   <Label text="UPK" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Label text="On Hand" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                  <Label text="To Order" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                  <Label text="On Hand (ea)" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                  <Label text="To Order" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
                   <TextField fx:id="uLettuce" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <TextField fx:id="toSprouts" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <TextField fx:id="toSprouts" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                   <TextField fx:id="ohSprouts" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                   <TextField fx:id="uSprouts" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <TextField fx:id="toCelery" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <TextField fx:id="toCelery" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                   <TextField fx:id="ohCelery" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <TextField fx:id="toOnions" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <TextField fx:id="toOnions" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                   <TextField fx:id="ohOnions" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                   <TextField fx:id="uCelery" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <TextField fx:id="toTomatoes" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <TextField fx:id="toTomatoes" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <TextField fx:id="ohTomatoes" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <TextField fx:id="toLettuce" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <TextField fx:id="toLettuce" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <TextField fx:id="ohLettuce" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <TextField fx:id="uOnions" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                   <TextField fx:id="uTomatoes" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label text="Pint(s) of Clover Sprouts" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Label text="Stalk(s) of Celery" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label text="50lb Bag(s) of Onions" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label text="25lb Box(es) of Roma Tomatoes" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label text="Case(s) of Iceburg Lettuce" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="Pint(s) of Clover Sprouts" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Label text="Stalk(s) of Celery" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Label text="50lb Bag(s) of Onions" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Label text="25lb Box(es) of Roma Tomatoes" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label text="Case(s) of Iceburg Lettuce" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <Label text="Cucumbers (lbs)" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                  <TextField fx:id="toCucumbers" editable="false" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <TextField fx:id="toCucumbers" editable="false" maxWidth="70.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                   <TextField fx:id="ohCucumbers" maxWidth="70.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                   <TextField fx:id="uCucumbers" editable="false" maxWidth="70.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                  <Label text="Lbs of Cucumbers" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <Label text="Lbs of Cucumbers" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                   <Label text="Usage" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                   <TextField fx:id="usCucumbers" editable="false" maxWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                   <TextField fx:id="usSprouts" editable="false" maxWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
@@ -113,6 +114,13 @@
                   <TextField fx:id="usOnions" editable="false" maxWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                   <TextField fx:id="usTomatoes" editable="false" maxWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <TextField fx:id="usLettuce" editable="false" maxWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="On Hand (cs)" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                  <TextField fx:id="ohLettuceCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <TextField fx:id="ohTomatoesCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <TextField fx:id="ohOnionsCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <TextField fx:id="ohCeleryCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <TextField fx:id="ohSproutsCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <TextField fx:id="ohCucumbersCs" maxWidth="70.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                </children>
             </GridPane>
             <HBox spacing="10.0">

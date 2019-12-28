@@ -35,80 +35,13 @@ public class ProduceOrderGuideTabController implements DataObserver
   @FXML
   private Label produceOrderGuideLettuceMin;
 
+  // 1 is for case
   @FXML
-  private TextField projField;
-
-  @FXML
-  private TextField uLettuce;
-
-  @FXML
-  private TextField toSprouts;
-
-  @FXML
-  private TextField ohSprouts;
-
-  @FXML
-  private TextField uSprouts;
-
-  @FXML
-  private TextField toCelery;
-
-  @FXML
-  private TextField ohCelery;
-
-  @FXML
-  private TextField toOnions;
-
-  @FXML
-  private TextField ohOnions;
-
-  @FXML
-  private TextField uCelery;
-
-  @FXML
-  private TextField toTomatoes;
-
-  @FXML
-  private TextField ohTomatoes;
-
-  @FXML
-  private TextField toLettuce;
-
-  @FXML
-  private TextField ohLettuce;
-
-  @FXML
-  private TextField uOnions;
-
-  @FXML
-  private TextField uTomatoes;
-
-  @FXML
-  private TextField toCucumbers;
-
-  @FXML
-  private TextField ohCucumbers;
-
-  @FXML
-  private TextField uCucumbers;
-
-  @FXML
-  private TextField usCucumbers;
-
-  @FXML
-  private TextField usSprouts;
-
-  @FXML
-  private TextField usCelery;
-
-  @FXML
-  private TextField usOnions;
-
-  @FXML
-  private TextField usTomatoes;
-
-  @FXML
-  private TextField usLettuce;
+  private TextField projField, uLettuce, uTomatoes, toSprouts, uSprouts, toCelery, ohSprouts,
+      ohCelery, ohTomatoes, ohOnions, ohCucumbers, ohLettuce, uCelery, toTomatoes, toLettuce,
+      uOnions, toOnions, toCucumbers, uCucumbers, usCucumbers, usSprouts, usCelery, usOnions,
+      usTomatoes, usLettuce, ohSprouts1, ohCelery1, ohTomatoes1, ohOnions1, ohCucumbers1,
+      ohLettuce1;
 
   @FXML
   private ChoiceBox<String> orderingOnChoice;
@@ -278,6 +211,7 @@ public class ProduceOrderGuideTabController implements DataObserver
     double uscu = (projections / 1000) * cuupk;
     usCucumbers.setText(String.format("%.2f", uscu));
 
+    //First need to handle if case field has val
     if (!ohLettuce.getText().equals(""))
     {
       toLettuce.setTooltip(
@@ -285,7 +219,7 @@ public class ProduceOrderGuideTabController implements DataObserver
       toLettuce.setText(String.format("%.0f",
           Math.max(Math.ceil((usl - Double.parseDouble(ohLettuce.getText())) / 24), 0.0)));
     }
-
+    
     if (!ohTomatoes.getText().equals(""))
     {
       toTomatoes.setTooltip(new Tooltip(

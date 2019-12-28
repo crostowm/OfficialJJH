@@ -15,6 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import readers.UPKMap;
 import util.JimmyCalendarUtil;
@@ -34,6 +35,9 @@ public class UsageAnalysisTabController
   @FXML
   private ScrollPane usageAnalysisGraphPane;
 
+  @FXML
+  private GridPane gp;
+  
   private UsageAnalysisHBox currentlySelectedUAH = null;
   private ArrayList<RadioButton> usageAnalysisCategoryGroup;
 
@@ -53,13 +57,14 @@ public class UsageAnalysisTabController
     usageAnalysisCategoryChoice.setOnAction(new EventHandler<ActionEvent>()
     {
 
+
       @Override
       public void handle(ActionEvent arg0)
       {
         if (usageAnalysisCategoryChoice.getValue() != null)
         {
           usageAnalysisVBox.getChildren().clear();
-          usageAnalysisVBox.getChildren().add(GuiUtilFactory.createUsageAnalysisHBoxTitle());
+          gp.add(GuiUtilFactory.createUsageAnalysisHBoxTitle(), 0, 1, 2, 1);
           int category = -1;
           switch (usageAnalysisCategoryChoice.getValue())
           {

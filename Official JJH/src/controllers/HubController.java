@@ -213,12 +213,12 @@ public class HubController implements DataObserver
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
         {
-
+          
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 2)
         {
-
+          
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 2
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 1)
@@ -248,36 +248,36 @@ public class HubController implements DataObserver
             + JimmyCalendarUtil.convertTo12Hour(currentHour + 4));
 
         currentPaneFirstInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
                 * 100));
         currentPaneSecondInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 1, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 1, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
                 * 100));
         currentPaneThirdInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 2, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 2, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
                 * 100));
         currentPaneFourthInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Inshop", currentHour + 3, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 3, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
                 * 100));
         // TODO handle beyond midnight
         currentPaneFirstDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
                 * 100));
         currentPaneSecondDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 1, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 1, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
                 * 100));
         currentPaneThirdDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 2, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 2, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
                 * 100));
         currentPaneFourthDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("Delivery", currentHour + 3, false)
+            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 3, false)
                 / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
                 * 100));
 

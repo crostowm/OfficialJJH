@@ -56,6 +56,7 @@ public class BusinessAnalysisTabController
         handleNewReportSelection(reportChoice.getValue());
       }
     });
+    reportChoice.setValue("Weekly Sales Report");
     System.out.println("BATC");
   }
 

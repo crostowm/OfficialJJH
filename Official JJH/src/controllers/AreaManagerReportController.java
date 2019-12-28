@@ -64,7 +64,7 @@ public class AreaManagerReportController
     laborLabelAM.setText(String.format("%.2f", item.getLaborAM()));
     laborLabelPM.setText(String.format("%.2f", item.getLaborPM()));
     weekLaborLabel.setText(String.format("Week Labor: %.2f%%", item.getLaborWeek()));
-    weekCompLabel.setText(String.format("Week Comps %% / $: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
+    weekCompLabel.setText(String.format("Week Comps: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
     
     //MDBL Box
     for(ManagerDBL mdbl: MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true))

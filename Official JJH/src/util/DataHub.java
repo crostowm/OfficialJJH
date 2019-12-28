@@ -408,14 +408,44 @@ public class DataHub implements Serializable
     double total = 0;
     for (HourlySalesMap hsm : past4HourlySales)
     {
+      switch(type)
+      {
+        case "Total":
+          total += hsm.getTotalInshopForHour(hour) + hsm.getTotalDeliveryForHour(hour);
+          break;
+        case "TotalInshop":
+          total += hsm.getTotalInshopForHour(hour);
+          break;
+        case "TotalDelivery":
+          total += hsm.getTotalDeliveryForHour(hour);
+          break;
+        case "EatIn":
+          total += hsm.getEatInForHour(hour);
+          break;
+        case "Takeout":
+          total += hsm.getTakeoutForHour(hour);
+          break;
+        case "PhonePickup":
+          total += hsm.getPhonePickupForHour(hour);
+          break;
+        case "OnlinePickup":
+          total += hsm.getOnlinePickupForHour(hour);
+          break;
+        case "PhoneDelivery":
+          total += hsm.getPhoneDeliveryForHour(hour);
+          break;
+        case "OnlineDelivery":
+          total += hsm.getOnlineDeliveryForHour(hour);
+          break;
+      }
       if (type.equals("Total"))
-        total += hsm.getTakeoutPickupEatin$ForHour(hour) + hsm.getDelivery$ForHour(hour);
+        total += hsm.getTotalInshopForHour(hour) + hsm.getTotalDeliveryForHour(hour);
       else if (type.equals("Inshop"))
-        total += hsm.getTakeoutPickupEatin$ForHour(hour);
+        total += hsm.getTotalInshopForHour(hour);
       else
-        total += hsm.getDelivery$ForHour(hour);
+        total += hsm.getTotalDeliveryForHour(hour);
     }
-    // TODO total -= catering
+    // TODO total -= only the catering in that category
     if (!includeCatering)
       total -= getCateringForHour(hour);
     return total / past4HourlySales.size();

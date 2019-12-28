@@ -1,10 +1,15 @@
 package lineitems;
 
+import java.util.GregorianCalendar;
+
 public class HourlySalesItem
 {
-  private double takeoutValue, pickupValue, deliveryValue, eatInValue, onlinePickupValue, onlineDeliveryValue, total$, totalPercent, totalCount;
+  private double takeoutValue, pickupValue, deliveryValue, eatInValue, onlinePickupValue, onlineDeliveryValue, total$, totalPercent;
+  int totalCount;
   private int takeoutCount, pickupCount, deliveryCount, eatInCount, onlinePickupCount, onlineDeliveryCount;
+  private GregorianCalendar hour;
   /**
+   * @param hour 0 = 12:00am
    * @param takeoutValue
    * @param pickupValue
    * @param deliveryValue
@@ -21,11 +26,12 @@ public class HourlySalesItem
    * @param onlinePickupCount
    * @param onlineDeliveryCount
    */
-  public HourlySalesItem(double takeoutValue, double pickupValue, double deliveryValue,
+  public HourlySalesItem(GregorianCalendar hour, double takeoutValue, double pickupValue, double deliveryValue,
       double eatInValue, double onlinePickupValue, double onlineDeliveryValue, double total$,
-      double totalPercent, double totalCount, int takeoutCount, int pickupCount, int deliveryCount,
+      double totalPercent, int totalCount, int takeoutCount, int pickupCount, int deliveryCount,
       int eatInCount, int onlinePickupCount, int onlineDeliveryCount)
   {
+    this.hour = hour;
     this.takeoutValue = takeoutValue;
     this.pickupValue = pickupValue;
     this.deliveryValue = deliveryValue;
@@ -74,7 +80,7 @@ public class HourlySalesItem
   {
     return totalPercent;
   }
-  public double getTotalCount()
+  public int getTotalCount()
   {
     return totalCount;
   }
@@ -102,6 +108,38 @@ public class HourlySalesItem
   {
     return onlineDeliveryCount;
   }
-  
-  
+  public GregorianCalendar getHour()
+  {
+    return hour;
+  }
+  public int getTotalInshopCount()
+  {
+    return eatInCount + takeoutCount + pickupCount + onlinePickupCount;
+  }
+  public double getTotalInshopValue()
+  {
+    return eatInValue + takeoutValue + pickupValue + onlinePickupValue;
+  }
+  public int getTotalDeliveryCount()
+  {
+    return deliveryCount + onlineDeliveryCount;
+  }
+  public double getTotalDeliveryValue()
+  {
+    return deliveryValue + onlineDeliveryValue;
+  }
+  public double getTotalInshopValuePercentage()
+  {
+    double total = getTotal$();
+    double inshop = getTotalInshopValue();
+    System.out.println("Total$: " + total + " Inshop$: " + inshop + " | " + (inshop/total) + "%");
+    return (inshop/total) * 100;
+  }
+  public double getTotalDeliveryValuePercentage()
+  {
+    double total = getTotal$();
+    double delivery = getTotalDeliveryValue();
+    System.out.println("Total$: " + total + " Delivery$: " + delivery + " | " + (delivery/total) + "%");
+    return (delivery/total) * 100;
+  }
 }
