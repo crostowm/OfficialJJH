@@ -41,7 +41,6 @@ public class TrendSheetReader implements Serializable
       {
         String line = scanner.nextLine();
         tokens = ParseUtil.getQuoteConsolidatedList(line.split(","));
-        System.out.println(line);
         if (tokens.get(0).startsWith("Store"))
         {
           week++;
@@ -132,7 +131,6 @@ public class TrendSheetReader implements Serializable
 
   public ArrayList<String> getWeeklyItems()
   {
-    // TODO split into for week and for period
     return new ArrayList<String>(FXCollections.observableArrayList(LY_ROYALTY, CY_ROYALTY, COMPS,
         CY_LABORP, CY_LABOR$, LY_LABORP, CASH_OVER_UNDER, COGS$, COGSP, BREADP, FOODP, SIDESP,
         PAPERP, PRODUCEP, BEVERAGEP, CATERINGP));
@@ -140,7 +138,6 @@ public class TrendSheetReader implements Serializable
 
   public ArrayList<String> getPeriodItems()
   {
-    // TODO split into for week and for period
     return new ArrayList<String>(FXCollections.observableArrayList(LY_ROYALTY, CY_ROYALTY, COMPS,
         CY_LABOR$, COGS$, COGSP, BREADP, FOODP, SIDESP, PAPERP, PRODUCEP, BEVERAGEP, CATERINGP));
   }
@@ -161,7 +158,6 @@ public class TrendSheetReader implements Serializable
     double total = 0;
     for (Integer i : weeks)
     {
-      System.out.println(cat + " " + i);
       total += getDataForCategoryForWeek(cat, i);
     }
     return total / weeks.size();

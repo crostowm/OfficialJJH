@@ -60,6 +60,7 @@ public class TruckOrderGuideTabController
         }
       }
     });
+    orderingOnChoice.setValue("Monday");
 
     forDeliveryOnChoice.setItems(FXCollections.observableArrayList(daysOfTheWeek));
     forDeliveryOnChoice.setOnAction(new EventHandler<ActionEvent>()
@@ -73,6 +74,7 @@ public class TruckOrderGuideTabController
         }
       }
     });
+    forDeliveryOnChoice.setValue("Wednesday");
 
     ArrayList<String> categories = new ArrayList<String>();
     categories.add("Bread");
@@ -93,71 +95,78 @@ public class TruckOrderGuideTabController
       {
         if (orderGuideCategoryChoice.getValue() != null)
         {
-          truckOrderGuideVBox.getChildren().clear();
-          HBox thb = GuiUtilFactory.createTruckOrderHBoxTitle();
-          thb.setPadding(new Insets(15, 0, 0, 0));
-          grid.add(thb, 0, 1, 2, 1);
-          int category = -1;
-          switch (orderGuideCategoryChoice.getValue())
-          {
-            case "Bread":
-              category = 1;
-              break;
-            case "Food":
-              category = 2;
-              break;
-            case "Sides":
-              category = 3;
-              break;
-            case "Paper":
-              category = 4;
-              break;
-            case "Produce":
-              category = 5;
-              break;
-            case "Beverage":
-              category = 6;
-              break;
-            case "Catering":
-              category = 7;
-              break;
-          }
-          // Iterate through upk items
-          ArrayList<String> names = new ArrayList<String>(
-              MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet());
-          Collections.sort(names);
-          for (String name : names)
-          {
-            if (!name.equals("COGs"))
-            {
-              if(name.equals("Chips"))
-              {
-                //TruckOrderHBox reg = new TruckOrderHBox(UPKMap.SIDES, MainApplication.dataHub.getSpecialItemUsage(MainApplication.dataHub.REG), "Box 60", weekProj);
-              }
-              TruckOrderHBox toh = new TruckOrderHBox(category,
-                  MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
-                  MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name),
-                  MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name), weekProj);
-              truckOrderGuideVBox.getChildren().add(toh);
-            }
-          }
+          refreshItems();
         }
       }
     });
+    HBox thb = GuiUtilFactory.createTruckOrderHBoxTitle();
+    thb.setPadding(new Insets(15, 0, 0, 0));
+    grid.add(thb, 0, 1, 2, 1);
     System.out.println("TOGTC");
+  }
+
+  protected void refreshItems()
+  {
+    truckOrderGuideVBox.getChildren().clear();
+    int category = -1;
+    switch (orderGuideCategoryChoice.getValue())
+    {
+      case "Bread":
+        category = 1;
+        break;
+      case "Food":
+        category = 2;
+        break;
+      case "Sides":
+        category = 3;
+        break;
+      case "Paper":
+        category = 4;
+        break;
+      case "Produce":
+        category = 5;
+        break;
+      case "Beverage":
+        category = 6;
+        break;
+      case "Catering":
+        category = 7;
+        break;
+    }
+    // Iterate through upk items
+    ArrayList<String> names = new ArrayList<String>(
+        MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet());
+    Collections.sort(names);
+    for (String name : names)
+    {
+      if (!name.equals("COGs"))
+      {
+        if (name.equals("Chips"))
+        {
+          // TruckOrderHBox reg = new TruckOrderHBox(UPKMap.SIDES,
+          // MainApplication.dataHub.getSpecialItemUsage(MainApplication.dataHub.REG), "Box 60",
+          // weekProj);
+        }
+        TruckOrderHBox toh = new TruckOrderHBox(category,
+            MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
+            MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name),
+            MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name), weekProj);
+        truckOrderGuideVBox.getChildren().add(toh);
+      }
+    }
   }
 
   protected void figureNewProjections()
   {
     double week = MainApplication.dataHub.getWeekProj();
-    double extra = MainApplication.dataHub
-        .getProjectionsForShifts(JimmyCalendarUtil.getAMShiftFor(orderingOnChoice.getValue()),
-            JimmyCalendarUtil.getAMShiftFor(forDeliveryOnChoice.getValue()));
+    double extra = MainApplication.dataHub.getProjectionsForShifts(
+        JimmyCalendarUtil.getAMShiftFor(orderingOnChoice.getValue()),
+        JimmyCalendarUtil.getAMShiftFor(forDeliveryOnChoice.getValue()));
     weekProj = week + extra;
     projField.setText(String.format("%.2f", weekProj));
-    for(Node n: truckOrderGuideVBox.getChildren())
+    for (Node n : truckOrderGuideVBox.getChildren())
     {
-      ((TruckOrderHBox)n).refreshProjections(weekProj);
+      ((TruckOrderHBox) n).refreshProjections(weekProj);
     }
   }
 

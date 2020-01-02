@@ -2,15 +2,16 @@ package lineitems;
 
 import java.util.ArrayList;
 
+import app.MainApplication;
+import readers.UPKMap;
+
 public class InventoryItem implements Comparable<InventoryItem>
 {
   private String name;
-  private double begInv, totPurch, totTrans, endInv, actUsage;
+  private double begInv, totPurch, totTrans, endInv, theoreticalUsage, actUsage;
   private ArrayList<TheoryUsageLineItem> theoryUsages;
-  private double theoreticalUsage;
   private ArrayList<VendorDeliveryDetailLineItem> vendorItems;
-  private ArrayList<TransferLineItem> transIn;
-  private ArrayList<TransferLineItem> transOut;
+  private ArrayList<TransferLineItem> transIn, transOut;
 
   /**
    * @param begInv
@@ -46,6 +47,19 @@ public class InventoryItem implements Comparable<InventoryItem>
     return name;
   }
 
+  public String getParsedName()
+  {
+    String noSpaces = "";
+    for(char c: name.toCharArray())
+    {
+      if(c != ' ')
+      {
+        noSpaces += c;
+      }
+    }
+    return noSpaces.split("\\[")[0];
+  }
+  
   public double getBegInv()
   {
     return begInv;
@@ -100,5 +114,10 @@ public class InventoryItem implements Comparable<InventoryItem>
   public int compareTo(InventoryItem ii)
   {
     return getName().compareTo(ii.getName());
+  }
+
+  public double getUPKData(int upkMapDataType)
+  {
+    return MainApplication.dataHub.getCurrentUPKMap().getData(getParsedName(), upkMapDataType);
   }
 }

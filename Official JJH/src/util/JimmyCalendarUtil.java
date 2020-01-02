@@ -158,11 +158,21 @@ public class JimmyCalendarUtil
 
   public static int getTodaysAMShift()
   {
-    return getCurrentShift() % 2 == 0 ? getCurrentShift() - 1: getCurrentShift();
+    return getCurrentShift() % 2 == 0 ? getCurrentShift() - 1 : getCurrentShift();
   }
 
   public static int getTodaysPMShift()
   {
     return getCurrentShift() % 2 == 0 ? getCurrentShift() : getCurrentShift() + 1;
+  }
+
+  public static int normalizeWeekIndex(int i)
+  {
+    if (i <= 0)
+    {
+      return 52 + i;
+    }
+    else
+      return i;
   }
 }

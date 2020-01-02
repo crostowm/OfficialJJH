@@ -46,7 +46,6 @@ public class UsageAnalysisHBox extends UPKHBox
       @Override
       public void handle(MouseEvent arg0)
       {
-        // TODO Auto-generated method stub
         if(data.get(UPKMap.UPK_VARIANCE) > 2 || data.get(UPKMap.UPK_VARIANCE) < -2)
         {
           setStyle("-fx-background-color: rgba(255, 0, 0, .4);");

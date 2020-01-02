@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
 import observers.TimeObserver;
 import util.CateringOrder;
 import util.DataHub;
@@ -53,6 +54,8 @@ public class ProjectionTabController implements TimeObserver
   @FXML
   private Button addCateringButton;
 
+  @FXML
+  private GridPane gp;
   // Slicing Pars
   @FXML
   private TextField cheeseMSCField, hamMSCField, turkeyMSCField, beefMSCField, vitoMSCField,
@@ -61,7 +64,7 @@ public class ProjectionTabController implements TimeObserver
       turkeyGENField, beefGENField, vitoGENField;
 
   // Styles
-  String basicTextFieldStyle = "-fx-background-color: white;-fx-border-color: black;"
+  String basicTextFieldStyle = "-fx-background-color: rgba(0, 0, 0, .7);-fx-border-color: black;"
       + "-fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;";
 
   private ArrayList<TextField> averageFields, average20Fields, cateringFields, samplingFields,
@@ -199,6 +202,8 @@ public class ProjectionTabController implements TimeObserver
     wheatFields.add(w13);
     wheatFields.add(w14);
 
+    //gp.setStyle("-fx-background-color: rgba(0, 0, 0, .4);");
+
     setStyles();
     System.out.println("PTC");
   }
@@ -284,7 +289,6 @@ public class ProjectionTabController implements TimeObserver
             double currentCat = 0;
             if (cateringFields.get(ii).getText().length() > 0)
               currentCat = Double.parseDouble(cateringFields.get(ii).getText());
-            System.out.println(currentCat + " " + co.getDollarValue());
             cateringFields.get(ii).setText(currentCat + co.getDollarValue() + "");
           }
         }
@@ -411,7 +415,6 @@ public class ProjectionTabController implements TimeObserver
 
   private void setStyles()
   {
-    // TODO Auto-generated method stub
     for (int ii = 0; ii < 14; ii++)
     {
     }
@@ -450,7 +453,7 @@ public class ProjectionTabController implements TimeObserver
       String style = basicTextFieldStyle;
       if (ii == currentShift - 1)
       {
-        style = "-fx-border-color: black;-fx-background-color: lime;-fx-border-radius: 10 10 0 0;-fx-background-radius: 10 10 0 0;";
+        style = "-fx-text-fill: black;-fx-border-color: black;-fx-background-color: lime;-fx-border-radius: 10 10 0 0;-fx-background-radius: 10 10 0 0;";
       }
       averageFields.get(ii).setStyle(style);
       average20Fields.get(ii).setStyle(style);

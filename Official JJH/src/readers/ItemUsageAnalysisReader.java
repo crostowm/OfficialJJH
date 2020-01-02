@@ -41,10 +41,10 @@ public class ItemUsageAnalysisReader
             {
               name = tokens.get(0);
               begInv = Double.parseDouble(tokens.get(2).split(" ")[0]);
-              totPurch = Double.parseDouble(tokens.get(2).split(" ")[0]);
-              totTrans = Double.parseDouble(tokens.get(2).split(" ")[0]);
-              endInv = Double.parseDouble(tokens.get(2).split(" ")[0]);
-              actUsage = Double.parseDouble(tokens.get(2).split(" ")[0]);
+              totPurch = Double.parseDouble(tokens.get(4).split(" ")[0]);
+              totTrans = Double.parseDouble(tokens.get(6).split(" ")[0]);
+              endInv = Double.parseDouble(tokens.get(8).split(" ")[0]);
+              actUsage = Double.parseDouble(tokens.get(10).split(" ")[0]);
 
             }
             else if (tokens.get(0).equals("Theory Usage"))

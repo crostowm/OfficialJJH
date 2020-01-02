@@ -31,7 +31,7 @@ public class CateringCalculatorTabController
       mj12BoxField, mj12MenuField;
 
   @FXML
-  private TextArea cateringOrderDetailsArea;
+  private TextArea cateringOrderDetailsArea, breadManagementArea;
 
   public void initialize()
   {
@@ -87,6 +87,7 @@ public class CateringCalculatorTabController
         if (cateringChoiceBox.getValue() != null)
         {
           cateringOrderDetailsArea.setText(cateringChoiceBox.getValue().getDetails());
+          breadManagementArea.setText(cateringChoiceBox.getValue().getBreadManagement());
           blBagField.setText("");
           blValueFactory.setValue(cateringChoiceBox.getValue().getNumBL());
 
@@ -116,7 +117,10 @@ public class CateringCalculatorTabController
   void deleteCateringButtonPressed()
   {
     if (cateringChoiceBox.getValue() != null)
+    {
       MainApplication.dataHub.removeCateringOrder(cateringChoiceBox.getValue());
+      breadManagementArea.setText("");
+    }
   }
 
 }

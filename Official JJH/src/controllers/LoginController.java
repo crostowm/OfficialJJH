@@ -60,10 +60,6 @@ public class LoginController
       if (mainApplication != null)
         mainApplication.runAMPhoneAudit(mgr);
       loginStage.close();
-      for(Manager m: MainApplication.activeManagers)
-      {
-        System.out.println(m.getName());
-      }
     }
     else
       messageLabel.setText("Unable to login, invalid username and password");

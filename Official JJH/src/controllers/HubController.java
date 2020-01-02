@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
@@ -46,6 +47,9 @@ public class HubController implements DataObserver
   private ArrayList<TimeObserver> timeObservers = new ArrayList<TimeObserver>();
 
   @FXML
+  private BorderPane baseBorderPane;
+  
+  @FXML
   private ProjectionTabController projectionTabController;
 
   @FXML
@@ -65,9 +69,6 @@ public class HubController implements DataObserver
 
   @FXML
   private PeriodFoldController periodFoldController;
-
-  @FXML
-  private DashboardController dashboardTabController;
 
   // Outer
   @FXML
@@ -112,6 +113,7 @@ public class HubController implements DataObserver
     shiftManagerLabel.setText(MainApplication.activeManagers.get(0) + "");
 
     currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
+    System.out.println("HC");
     // Fill mgr dbls
     populateMgrDBLs();
     updateAllFields();
@@ -127,7 +129,6 @@ public class HubController implements DataObserver
       }
     });
     bottomHBox.getChildren().add(3, amBreadMathButton);
-    System.out.println("HC");
 
     managerSignInButton = new Button("Sign In Manager");
     managerSignInButton.setOnAction(new EventHandler<ActionEvent>()
@@ -135,22 +136,20 @@ public class HubController implements DataObserver
       @Override
       public void handle(ActionEvent arg0)
       {
-        // TODO Auto-generated method stub
         LoginStage ls = new LoginStage();
         ls.show();
       }
     });
     bottomHBox.getChildren().add(1, managerSignInButton);
+    managerDBLBox.setStyle("-fx-background-color: rgba(0, 0, 0, .7);");
   }
 
   private void updateAllFields()
   {
     projectionTabController.updateAllFields();
-    produceOrderGuideTabController.updateAllFields();
+    produceOrderGuideTabController.updateProjections();
     cateringCalculatorTabController.updateAllFields();
     settingsTabController.updateAllFields();
-    periodFoldController.updateAll();
-    dashboardTabController.updateAllFields();
 
     todayProjAMField.setText(String.format("%.2f", MainApplication.dataHub
         .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1)));
@@ -213,12 +212,12 @@ public class HubController implements DataObserver
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
         {
-          
+
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 10
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 2)
         {
-          
+
         }
         else if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= sc - 2
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < sc - 1)
@@ -345,46 +344,55 @@ public class HubController implements DataObserver
     while (numComplete + managerDBLBox.getChildren().size() < new GregorianCalendar()
         .get(Calendar.DAY_OF_MONTH))
     {
-      ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs()
-          .get(numComplete + managerDBLBox.getChildren().size()));
-      mdc.setOnMouseClicked(new EventHandler<MouseEvent>()
+      if (numComplete + managerDBLBox.getChildren().size() < MainApplication.dataHub
+          .getManagerDBLs().size())
       {
-        @Override
-        public void handle(MouseEvent ae)
+        ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs()
+            .get(numComplete + managerDBLBox.getChildren().size()));
+        mdc.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
-          if (mdc.isSelected())
+          @Override
+          public void handle(MouseEvent ae)
           {
-            if (MainApplication.activeManagers.size() == 1)
+            if (mdc.isSelected())
             {
-              mdc.getDBL().complete(MainApplication.activeManagers.get(0).getName(),
-                  new GregorianCalendar());
-              managerDBLBox.getChildren().remove(mdc);
-              populateMgrDBLs();
-            }
-            else
-            {
-              ContextMenu cm = new ContextMenu();
-              for (Manager m : MainApplication.activeManagers)
+              if (MainApplication.activeManagers.size() == 1)
               {
-                RadioMenuItem managerItem = new RadioMenuItem(m.getName());
-                managerItem.setOnAction(new EventHandler<ActionEvent>()
-                {
-                  @Override
-                  public void handle(ActionEvent arg0)
-                  {
-                    mdc.getDBL().complete(managerItem.getText(), new GregorianCalendar());
-                    managerDBLBox.getChildren().remove(mdc);
-                    populateMgrDBLs();
-                  }
-                });
-                cm.getItems().add(managerItem);
+                mdc.getDBL().complete(MainApplication.activeManagers.get(0).getName(),
+                    new GregorianCalendar());
+                managerDBLBox.getChildren().remove(mdc);
+                populateMgrDBLs();
               }
-              cm.show(mdc, ae.getScreenX(), ae.getScreenY());
+              else
+              {
+                ContextMenu cm = new ContextMenu();
+                for (Manager m : MainApplication.activeManagers)
+                {
+                  RadioMenuItem managerItem = new RadioMenuItem(m.getName());
+                  managerItem.setOnAction(new EventHandler<ActionEvent>()
+                  {
+                    @Override
+                    public void handle(ActionEvent arg0)
+                    {
+                      mdc.getDBL().complete(managerItem.getText(), new GregorianCalendar());
+                      managerDBLBox.getChildren().remove(mdc);
+                      populateMgrDBLs();
+                    }
+                  });
+                  cm.getItems().add(managerItem);
+                }
+                cm.show(mdc, ae.getScreenX(), ae.getScreenY());
+              }
             }
+
           }
-        }
-      });
-      managerDBLBox.getChildren().add(mdc);
+        });
+        managerDBLBox.getChildren().add(mdc);
+      }
+      else
+      {
+        break;
+      }
     }
   }
 }

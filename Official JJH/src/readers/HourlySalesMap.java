@@ -53,11 +53,10 @@ public class HourlySalesMap
         {
           if (tokens.get(1).equals("Time"))
           {
-            System.out.println("Reading a line");
             // Start at first time interval
             for (int ii = 7; ii < 151; ii += 6)
             {
-              // Read Time TODO if time pm + 12
+              // Read Time
               try
               {
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
@@ -119,62 +118,73 @@ public class HourlySalesMap
       e.printStackTrace();
       ErrorHandler.addError(e);
     }
+    //TODO if any.size < 24 then for(ii = size; ii < 24; ii++) add(0)
     // If none for the day
-    if (takeoutCount.size() == 0)
+    if (takeoutCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = takeoutCount.size(); ii < 24; ii++)
       {
         takeoutCount.add(0);
         takeoutValue.add(0.0);
       }
     }
-    if (pickupCount.size() == 0)
+    if (pickupCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = pickupCount.size(); ii < 24; ii++)
       {
         pickupCount.add(0);
         pickupValue.add(0.0);
       }
     }
-    if (deliveryCount.size() == 0)
+    if (deliveryCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = deliveryCount.size(); ii < 24; ii++)
       {
         deliveryCount.add(0);
         deliveryValue.add(0.0);
       }
     }
-    if (eatInCount.size() == 0)
+    if (eatInCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = eatInCount.size(); ii < 24; ii++)
       {
         eatInCount.add(0);
         eatInValue.add(0.0);
       }
     }
-    if (onlineDeliveryCount.size() == 0)
+    if (onlineDeliveryCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = onlineDeliveryCount.size(); ii < 24; ii++)
       {
         onlineDeliveryCount.add(0);
         onlineDeliveryValue.add(0.0);
       }
     }
-    if (onlinePickupCount.size() == 0)
+    if (onlinePickupCount.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = onlinePickupCount.size(); ii < 24; ii++)
       {
         onlinePickupCount.add(0);
         onlinePickupValue.add(0.0);
       }
     }
-    if (times.size() == 0)
+    if (times.size() < 24)
     {
-      for (int ii = 0; ii < 24; ii++)
+      for (int ii = times.size(); ii < 24; ii++)
       {
         GregorianCalendar current = new GregorianCalendar();
         times.add(new GregorianCalendar(current.get(Calendar.YEAR), current.get(Calendar.MONTH),
             current.get(Calendar.DAY_OF_MONTH), ii, 0));
+      }
+    }
+    
+    if(totalCount.size() < 24)
+    {
+      for(int ii = totalCount.size(); ii < 24; ii++)
+      {
+        totalCount.add(0);
+        total$.add(0.0);
+        totalPercent.add(0.0);
       }
     }
 

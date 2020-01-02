@@ -26,7 +26,6 @@ public class TruckOrderHBox extends UPKHBox
     super(category, adjustedSales, n, data);
     this.data = data;
     this.projections = projSales;
-    System.out.println(n);
     setSpacing(10);
     name = new Label(n);
     name.setMinWidth(200);
@@ -166,10 +165,20 @@ public class TruckOrderHBox extends UPKHBox
   public void refreshProjections(double proj)
   {
     projections = proj;
+    projUseCs.setText(String.format("%.2f",
+        (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)) / data.get(UPKMap.CASE_VALUE)));
+    projUseEa.setText(String.format("%.2f", data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)));
     if (!onHandCs.getText().equals(""))
+    {
+      toOrder.setTooltip(new Tooltip(String.format("%.2f",
+          (Math.max(0,
+              ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
+                  / data.get(UPKMap.CASE_VALUE))
+                  - Double.parseDouble(onHandCs.getText()))))));
       toOrder.setText(String.format("%.2f",
           (Math.max(0,
               ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)) / data.get(UPKMap.CASE_VALUE))
                   - Double.parseDouble(onHandCs.getText())))));
+    }
   }
 }

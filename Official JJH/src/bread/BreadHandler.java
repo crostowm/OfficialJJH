@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 
 import app.MainApplication;
-import observers.DataObserver;
-import util.CateringOrder;
 import util.DataHub;
 
 /**
@@ -16,7 +14,7 @@ import util.DataHub;
  * @author crost
  *
  */
-public class BreadHandler implements DataObserver
+public class BreadHandler
 {
   private ArrayList<BreadRequest> breadRequests = new ArrayList<BreadRequest>();
   private ArrayList<BreadTray6> trayLog = new ArrayList<BreadTray6>();
@@ -26,27 +24,6 @@ public class BreadHandler implements DataObserver
   {
     this.data = MainApplication.dataHub;
   }
-
-  @Override
-  public void cateringOrderAdded(CateringOrder co)
-  {
-    breadRequests.add(new BreadRequest(co.getNumBreadSticks(), co.getTime()));
-    analyzeBread();
-  }
-
-  @Override
-  public void cateringOrderRemoved(CateringOrder co)
-  {
-    breadRequests.remove(new BreadRequest(co.getNumBreadSticks(), co.getTime()));
-    analyzeBread();
-  }
-
-  @Override
-  public void toolBoxDataUpdated()
-  {
-    analyzeBread();
-  }
-
   /**
    * Clears Tray Log and recreates by going backwards through bread requests
    */
@@ -86,7 +63,7 @@ public class BreadHandler implements DataObserver
             trayLog.add(new BreadTray6((GregorianCalendar) timerTick.clone()));
             numTraysRequired--;
           }
-          timerTick.add(Calendar.MINUTE, -processTime);
+          timerTick.add(Calendar.MINUTE, (int)-MainApplication.dataHub.getSetting(DataHub.BAKE_TIME));
         }
       }
     }
@@ -112,32 +89,32 @@ public class BreadHandler implements DataObserver
     int count = 0;
     GregorianCalendar gc = null;
     String ret = "";
-    for (BreadTray6 bt : trayLog)
+    for (int ii = trayLog.size()-1; ii >=0; ii--)
     {
       if (gc == null)
       {
-        gc = bt.getStartTime();
+        gc = trayLog.get(ii).getStartTime();
         count = 1;
       }
       else
       {
-        if (bt.getStartTime().equals(gc))
+        if (trayLog.get(ii).getStartTime().equals(gc))
         {
           count++;
         }
         else
         {
-          SimpleDateFormat tf = new SimpleDateFormat("YYYY:MMM:dd hh:mm:ss");
-          ret += count + " tray(s): " + tf.format(gc.getTime()) + "\n";
-          gc = bt.getStartTime();
+          SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss aa - MMM dd, YYYY");
+          ret += count + " tray(s) of 6 in proofer at: " + tf.format(gc.getTime()) + "\n";
+          gc = trayLog.get(ii).getStartTime();
           count = 1;
         }
       }
     }
     if (gc != null)
     {
-      SimpleDateFormat tf = new SimpleDateFormat("YYYY:MMM:dd hh:mm:ss");
-      ret += count + " tray(s): " + tf.format(gc.getTime()) + "\n";
+      SimpleDateFormat tf = new SimpleDateFormat("hh:mm:ss aa - MMM dd, YYYY");
+      ret += count + " tray(s) of 6 in proofer at: " + tf.format(gc.getTime()) + "\n";
     }
 
     return ret;

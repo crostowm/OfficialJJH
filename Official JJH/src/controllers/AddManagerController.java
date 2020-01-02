@@ -35,7 +35,6 @@ public class AddManagerController
 
   public void setStage(AddManagerStage addManagerStage)
   {
-    // TODO Auto-generated method stub
     this.addManagerStage = addManagerStage;
   }
 

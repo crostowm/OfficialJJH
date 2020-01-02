@@ -113,7 +113,6 @@ public class DataHub implements Serializable
         && last4WeeksWSR[3] != null)
     {
       // All proj ready
-      // TODO create a new map for hour averages
       for (int ii = 1; ii < 15; ii++)
       {
         System.out.println(
@@ -250,7 +249,6 @@ public class DataHub implements Serializable
   public void removeCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.remove(cateringOrder);
-    // TODO Check for a better way to do this
     Double eq = Double.valueOf(0);
     for (Double d : catering)
     {
@@ -438,12 +436,6 @@ public class DataHub implements Serializable
           total += hsm.getOnlineDeliveryForHour(hour);
           break;
       }
-      if (type.equals("Total"))
-        total += hsm.getTotalInshopForHour(hour) + hsm.getTotalDeliveryForHour(hour);
-      else if (type.equals("Inshop"))
-        total += hsm.getTotalInshopForHour(hour);
-      else
-        total += hsm.getTotalDeliveryForHour(hour);
     }
     // TODO total -= only the catering in that category
     if (!includeCatering)
@@ -458,7 +450,6 @@ public class DataHub implements Serializable
     {
       for (CateringTransaction tran : ac)
       {
-        // TODO is tran in hour
         if (tran.getTime().get(Calendar.HOUR_OF_DAY) == hour)
           cat += tran.getGrossAmount();
       }
@@ -493,7 +484,6 @@ public class DataHub implements Serializable
 
   public void initializeTransientValues()
   {
-    // TODO Auto-generated method stub
     last4WeeksWSR = new WSRMap[4];
     observers = new ArrayList<DataObserver>();
   }
@@ -549,10 +539,7 @@ public class DataHub implements Serializable
       if (mdbl.isCompleted() == completed)
       {
         dbls.add(mdbl);
-        System.out.println("Complete");
       }
-      else
-      System.out.println("Incomplete");
     }
     return dbls;
   }

@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Timer;
 
 import controllers.AreaManagerReportController;
@@ -38,20 +36,23 @@ import util.ReportFinder;
  */
 public class MainApplication extends Application
 {
-  public static final String cateringOrderFileName = "Catering_Orders.dat";
-  public static final String dataHubFileName = "Data_Hub.dat";
-  public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
-  public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
+  //noahyambao
+  //noahyambao1234
   public static boolean fullRun = false;
   public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;
-  public static String AMEmail = "jakec.esg@gmail.com";
+  public static final String cateringOrderFileName = "Catering_Orders.dat";
+  public static final String dataHubFileName = "Data_Hub.dat";
+  public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
+  public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
+  public static String AMEmail = "essentialsandwich@gmail.com";
   public static int storeNumber = 2048;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
   public static ArrayList<Manager> activeManagers = new ArrayList<Manager>();
   public static String reportsUsed = "";
+  public static String jjrgb = "206, 31, 47";
   private Stage stage;
   private Stage amrStage;
   private LoginStage loginStage;
@@ -77,15 +78,14 @@ public class MainApplication extends Application
       {
         rg = new ReportGrabber(storeNumber);
         rg.startAndLogin();
-        if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)
-          rg.downloadTrendSheets();
-        // rg.downloadItemUsageAnalysis();
-        rg.downloadLastAMPhoneAuditReport();
-        rg.downloadAttendanceReport();
-        // rg.downloadLast6UPK();
-        // rg.downloadLast4WSR();
-        // rg.downloadLastYearWSR();
-        // rg.downloadLast4HourlySales();
+        //if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)rg.downloadTrendSheets();
+        rg.downloadItemUsageAnalysis();
+        //rg.downloadLastAMPhoneAuditReport();
+        //rg.downloadAttendanceReport();
+        //rg.downloadLast6UPK();
+        //rg.downloadLast4WSR();
+        //rg.downloadLastYearWSR();
+        //rg.downloadLast4HourlySales();
         rg.goToDownloadCenterAndDownloadAll();
       }
       finally
@@ -98,11 +98,6 @@ public class MainApplication extends Application
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
     rf.uploadUPKToDataHub();
     rf.uploadWSRToDataHub();
-    GregorianCalendar gc = new GregorianCalendar();
-    gc.add(Calendar.DAY_OF_YEAR, -1);
-    MainApplication.dataHub.getManagerDBLs()
-        .get(MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size())
-        .complete("Max", gc);
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadCateringTransactionsToDataHub();

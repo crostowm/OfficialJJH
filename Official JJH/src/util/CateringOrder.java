@@ -4,29 +4,35 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+import bread.BreadHandler;
+import bread.BreadRequest;
+
 public class CateringOrder implements Serializable
 {
   private static final long serialVersionUID = 6549563340518963033L;
 
   private double dollarValue;
-  
+
   private GregorianCalendar time;
-  
+
   private int numBreadSticks = -1, numBL = 0, num12P = 0, num24P = 0;
-  
-  private String details;
-  
+
+  private String details, breadManagement;
+
   /**
    * @param dollarValue
    * @param time
-   * @param numBreadSticks -1 if not using
+   * @param numBreadSticks
+   *          -1 if not using
    */
-  public CateringOrder(double dollarValue, GregorianCalendar time, int numBreadSticks, String details)
+  public CateringOrder(double dollarValue, GregorianCalendar time, int numBreadSticks,
+      String details)
   {
     this.dollarValue = dollarValue;
     this.time = time;
     this.numBreadSticks = numBreadSticks;
     this.details = details;
+    figureBreadManagement();
   }
 
   /**
@@ -38,7 +44,8 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param dollarValue the dollarValue to set
+   * @param dollarValue
+   *          the dollarValue to set
    */
   public void setDollarValue(double dollarValue)
   {
@@ -54,23 +61,27 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param time the time to set
+   * @param time
+   *          the time to set
    */
   public void setTime(GregorianCalendar time)
   {
     this.time = time;
+    figureBreadManagement();
   }
-  
+
   public String toString()
   {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mma");
-    return new String(sdf.format(time.getTime()) + "  $" + dollarValue + " " + numBreadSticks + " Sticks");
+    return new String(
+        sdf.format(time.getTime()) + "  $" + dollarValue + " " + numBreadSticks + " Sticks");
   }
 
   public String fullString()
   {
     return toString() + "\n" + details;
   }
+
   /**
    * @return the numBreadSticks
    */
@@ -80,13 +91,22 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param numBreadSticks the numBreadSticks to set
+   * @param numBreadSticks
+   *          the numBreadSticks to set
    */
   public void setNumBreadSticks(int numBreadSticks)
   {
     this.numBreadSticks = numBreadSticks;
+    figureBreadManagement();
   }
-  
+
+  private void figureBreadManagement()
+  {
+    BreadHandler bh = new BreadHandler();
+    bh.sendRequest(new BreadRequest(numBreadSticks, time));
+    breadManagement = bh.toString();
+  }
+
   public String getDetails()
   {
     return details;
@@ -101,7 +121,8 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param numBL the numBL to set
+   * @param numBL
+   *          the numBL to set
    */
   public void setNumBL(int numBL)
   {
@@ -117,7 +138,8 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param num12p the num12P to set
+   * @param num12p
+   *          the num12P to set
    */
   public void setNum12P(int num12p)
   {
@@ -133,10 +155,16 @@ public class CateringOrder implements Serializable
   }
 
   /**
-   * @param num24p the num24P to set
+   * @param num24p
+   *          the num24P to set
    */
   public void setNum24P(int num24p)
   {
     num24P = num24p;
+  }
+
+  public String getBreadManagement()
+  {
+    return breadManagement;
   }
 }

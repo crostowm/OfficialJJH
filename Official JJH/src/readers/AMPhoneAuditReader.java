@@ -23,12 +23,7 @@ public class AMPhoneAuditReader
         String line = scan.nextLine();
         if(line.startsWith("\""))
         {
-          System.out.println(line);
           ArrayList<String> tokens = ParseUtil.getQuoteConsolidatedList(line.split(","));
-          for(String s: tokens)
-          {
-            System.out.println(s);
-          }
           double salesAM = Double.parseDouble(ParseUtil.parse$(tokens.get(2)));
           double salesPM = Double.parseDouble(ParseUtil.parse$(tokens.get(3)));
           double depositAM = Double.parseDouble(ParseUtil.parse$(tokens.get(5)));
@@ -39,8 +34,8 @@ public class AMPhoneAuditReader
           double laborPM = Double.parseDouble(ParseUtil.parsePerc(tokens.get(12)));
           double laborWeek = Double.parseDouble(ParseUtil.parsePerc(tokens.get(14)));
           String[] last = tokens.get(15).split(" / ");
-          double compPerc = Double.parseDouble(ParseUtil.parsePerc(last[0]));
-          double compDollars = Double.parseDouble(ParseUtil.parse$(last[1]));
+          double compPerc = Double.parseDouble(ParseUtil.parsePerc(ParseUtil.parseParen(last[0])));
+          double compDollars = Double.parseDouble(ParseUtil.parse$(ParseUtil.parseParen(last[1])));
           
           item = new AMPhoneAuditItem(salesAM, salesPM, depositAM, depositPM, cashOverUnderAM, cashOverUnderPM, laborAM, laborPM, laborWeek, compPerc, compDollars);
         }

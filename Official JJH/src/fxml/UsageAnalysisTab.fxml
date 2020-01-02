@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="435.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UsageAnalysisTabController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="435.0" prefWidth="730.0" styleClass="marble-background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UsageAnalysisTabController">
    <children>
       <GridPane fx:id="gp" layoutX="424.0" layoutY="215.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <columnConstraints>
@@ -26,12 +26,12 @@
          </rowConstraints>
          <children>
             <ChoiceBox fx:id="usageAnalysisCategoryChoice" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="200.0" prefWidth="200.0" styleClass="dark-pane" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <content>
-                  <VBox fx:id="usageAnalysisVBox" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="usageAnalysisVBox" prefHeight="200.0" prefWidth="100.0" styleClass="dark-pane" />
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="usageAnalysisGraphPane" fitToHeight="true" fitToWidth="true" pannable="true" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <ScrollPane fx:id="usageAnalysisGraphPane" fitToHeight="true" fitToWidth="true" pannable="true" prefWidth="200.0" styleClass="dark-pane" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <children>
                   <RadioButton fx:id="usageAnalysisActualUsageRadio" mnemonicParsing="false" onAction="#usageAnalysisActualUsageRadioClicked" text="Actual Usage" />

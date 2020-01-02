@@ -207,4 +207,17 @@ public class UPKMap
   {
     return upkMap;
   }
+
+  public double getData(String parsedName, int dataType)
+  {
+    for(int cat: upkMap.keySet())
+    {
+      for(String name: upkMap.get(cat).keySet())
+      {
+        if(name.equals(parsedName))
+          return upkMap.get(cat).get(name).get(dataType);
+      }
+    }
+    return 0.0;
+  }
 }

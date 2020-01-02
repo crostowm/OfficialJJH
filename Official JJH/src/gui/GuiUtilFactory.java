@@ -8,15 +8,18 @@ import app.MainApplication;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.TextAlignment;
 import lineitems.HourlySalesItem;
+import lineitems.InventoryItem;
 import readers.UPKMap;
+import util.DataHub;
 
 public class GuiUtilFactory
 {
@@ -196,7 +199,6 @@ public class GuiUtilFactory
       String xAxisTitle, String yAxisTitle, String chartTitle, ArrayList<String> seriesNames,
       ArrayList<Number> xs, ArrayList<ArrayList<Number>> ys)
   {
-    // TODO finish this
     if (xs.size() > 1)
     {
       int diff = (Integer) xs.get(1) - (Integer) xs.get(0);
@@ -316,6 +318,9 @@ public class GuiUtilFactory
     totalInshopValue.setPrefWidth(50);
     totalInshopValue.setMaxWidth(50);
     totalInshopValue.setAlignment(Pos.CENTER_RIGHT);
+    if (hsi.getTotalInshopValuePercentage() > 0)
+      totalInshopValue.setStyle("-fx-background-color: rgba(255, 165, 0, "
+          + (hsi.getTotalInshopValuePercentage() / 100) + ");");
     Label totalInshopValuePercentage = new Label(
         String.format("%.2f%%", hsi.getTotalInshopValuePercentage()));
     totalInshopValuePercentage.setMinWidth(50);
@@ -332,6 +337,9 @@ public class GuiUtilFactory
     totalDeliveryValue.setPrefWidth(50);
     totalDeliveryValue.setMaxWidth(50);
     totalDeliveryValue.setAlignment(Pos.CENTER_RIGHT);
+    if (hsi.getTotalDeliveryValuePercentage() > 0)
+      totalDeliveryValue.setStyle("-fx-background-color: rgba(255, 165, 0, "
+          + (hsi.getTotalDeliveryValuePercentage() / 100) + ");");
     Label totalDeliveryValuePercentage = new Label(
         String.format("%.2f%%", hsi.getTotalDeliveryValuePercentage()));
     totalDeliveryValuePercentage.setMinWidth(50);
@@ -348,8 +356,10 @@ public class GuiUtilFactory
     totalValue.setPrefWidth(50);
     totalValue.setMaxWidth(50);
     totalValue.setAlignment(Pos.CENTER_RIGHT);
-    Label totalValuePercentage = new Label(
-        String.format("%.2f%%", hsi.getTotalPercent()));
+    if (hsi.getTotalPercent() > 0)
+      totalValue.setStyle("-fx-background-color: rgba(" + MainApplication.jjrgb + ", "
+          + ((hsi.getTotalPercent() / 100) * 3) + ");");
+    Label totalValuePercentage = new Label(String.format("%.2f%%", hsi.getTotalPercent()));
     totalValuePercentage.setMinWidth(50);
     totalValuePercentage.setPrefWidth(50);
     totalValuePercentage.setMaxWidth(50);
@@ -431,6 +441,120 @@ public class GuiUtilFactory
     box.getChildren().addAll(time, s1, eatInCount, s2, takeoutCount, s3, pickupValue, s4,
         onlinePickupValue, s5, deliveryValue, s6, onlineDeliveryValue, s7, totalInshopValue, s8,
         totalDeliveryValue, s9, total, s10);
+    return box;
+  }
+
+  public static HBox createInventoryBox(InventoryItem ii)
+  {
+    HBox box = new HBox(10);
+    Label name = new Label(ii.getParsedName());
+    name.setMinWidth(195);
+    name.setPrefWidth(195);
+    name.setMaxWidth(195);
+    Separator s1 = new Separator(Orientation.VERTICAL);
+    Label begInventory = new Label(String.format("%.2f", ii.getBegInv()));
+    begInventory.setMinWidth(65);
+    begInventory.setPrefWidth(65);
+    begInventory.setMaxWidth(65);
+    begInventory.setAlignment(Pos.CENTER);
+    Separator s2 = new Separator(Orientation.VERTICAL);
+    Label totPurch = new Label(String.format("%.2f", ii.getTotPurch()));
+    totPurch.setMinWidth(65);
+    totPurch.setPrefWidth(65);
+    totPurch.setMaxWidth(65);
+    totPurch.setAlignment(Pos.CENTER);
+    Separator s3 = new Separator(Orientation.VERTICAL);
+    Label totTrans = new Label(String.format("%.2f", ii.getTotTrans()));
+    totTrans.setMinWidth(65);
+    totTrans.setPrefWidth(65);
+    totTrans.setMaxWidth(65);
+    totTrans.setAlignment(Pos.CENTER);
+    Separator s4 = new Separator(Orientation.VERTICAL);
+    Label endInv = new Label(String.format("%.2f", ii.getEndInv()));
+    endInv.setMinWidth(65);
+    endInv.setPrefWidth(65);
+    endInv.setMaxWidth(65);
+    endInv.setAlignment(Pos.CENTER);
+    Separator s5 = new Separator(Orientation.VERTICAL);
+    Label avgUPK = new Label(String.format("%.2f", ii.getUPKData(UPKMap.AVERAGE_UPK)));
+    avgUPK.setMinWidth(65);
+    avgUPK.setPrefWidth(65);
+    avgUPK.setMaxWidth(65);
+    avgUPK.setAlignment(Pos.CENTER);
+    Separator s6 = new Separator(Orientation.VERTICAL);
+    Label actUPK = new Label(String.format("%.2f", ii.getUPKData(UPKMap.ACTUAL_UPK)));
+    actUPK.setMinWidth(65);
+    actUPK.setPrefWidth(65);
+    actUPK.setMaxWidth(65);
+    actUPK.setAlignment(Pos.CENTER);
+    Separator s7 = new Separator(Orientation.VERTICAL);
+    Label theorUsage = new Label(String.format("%.2f", ii.getTheoreticalUsage()));
+    theorUsage.setMinWidth(65);
+    theorUsage.setPrefWidth(65);
+    theorUsage.setMaxWidth(65);
+    theorUsage.setAlignment(Pos.CENTER);
+    Separator s8 = new Separator(Orientation.VERTICAL);
+    Label actUsage = new Label(String.format("%.2f", ii.getActUsage()));
+    actUsage.setMinWidth(65);
+    actUsage.setPrefWidth(65);
+    actUsage.setMaxWidth(65);
+    actUsage.setAlignment(Pos.CENTER);
+    Separator s9 = new Separator(Orientation.VERTICAL);
+    box.getChildren().addAll(name, s1, begInventory, s2, totPurch, s3, totTrans, s4, endInv, s5, avgUPK, s6, 
+        actUPK, s7, theorUsage, s8, actUsage, s9);
+    return box;
+  }
+
+  public static HBox createInventoryTitleBox()
+  {
+    Label name = new Label("Item Name");
+    name.setMinWidth(200);
+    name.setPrefWidth(200);
+    name.setMaxWidth(200);
+    name.setAlignment(Pos.CENTER);
+    Label begInventory = new Label("Start Inventory");
+    begInventory.setMinWidth(90);
+    begInventory.setPrefWidth(90);
+    begInventory.setMaxWidth(90);
+    begInventory.setAlignment(Pos.CENTER);
+    Label totPurch = new Label("Total Purch");
+    totPurch.setMinWidth(75);
+    totPurch.setPrefWidth(75);
+    totPurch.setMaxWidth(75);
+    totPurch.setAlignment(Pos.CENTER);
+    Label totTrans = new Label("Total Trans");
+    totTrans.setMinWidth(75);
+    totTrans.setPrefWidth(75);
+    totTrans.setMaxWidth(75);
+    totTrans.setAlignment(Pos.CENTER);
+    Label endInv = new Label("End Inventory");
+    endInv.setMinWidth(90);
+    endInv.setPrefWidth(90);
+    endInv.setMaxWidth(90);
+    endInv.setAlignment(Pos.CENTER);
+    Label avgUPK = new Label("Average UPK");
+    avgUPK.setMinWidth(80);
+    avgUPK.setPrefWidth(80);
+    avgUPK.setMaxWidth(80);
+    avgUPK.setAlignment(Pos.CENTER);
+    Label actUPK = new Label("Actual UPK");
+    actUPK.setMinWidth(75);
+    actUPK.setPrefWidth(75);
+    actUPK.setMaxWidth(75);
+    actUPK.setAlignment(Pos.CENTER);
+    Label theorUsage = new Label("Theory Usage");
+    theorUsage.setMinWidth(90);
+    theorUsage.setPrefWidth(90);
+    theorUsage.setMaxWidth(90);
+    theorUsage.setAlignment(Pos.CENTER);
+    Label actUsage = new Label("Actual Usage");
+    actUsage.setMinWidth(75);
+    actUsage.setPrefWidth(75);
+    actUsage.setMaxWidth(75);
+    actUsage.setAlignment(Pos.CENTER);
+    HBox box = new HBox(10);
+    box.getChildren().addAll(name, begInventory, totPurch, totTrans, endInv, avgUPK, 
+        actUPK, theorUsage, actUsage);
     return box;
   }
 }

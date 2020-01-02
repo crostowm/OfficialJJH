@@ -103,7 +103,6 @@ public class ReportGrabber
 
   private void selectDatesOfLastCompletedWeek()
   {
-    // TODO Auto-generated method stub
     GregorianCalendar startDate = new GregorianCalendar();
     GregorianCalendar endDate = new GregorianCalendar();
     startDate.add(Calendar.DAY_OF_YEAR, -1);
@@ -115,7 +114,6 @@ public class ReportGrabber
     }
     startDate.add(Calendar.DAY_OF_YEAR, -6);
     SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-    System.out.println(sdf.format(startDate.getTime()) + " " + sdf.format(endDate.getTime()));
     driver
         .findElement(
             By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput_wrapper\"]"))
@@ -159,7 +157,6 @@ public class ReportGrabber
 
   private void selectYesterdayFromDropdown()
   {
-    // TODO Auto-generated method stub
     driver
         .findElement(
             By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DropDownListAutoDateSet_Input\"]"))
@@ -254,12 +251,15 @@ public class ReportGrabber
   private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks)
   {
     int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-
+    if(currentWeekIndex - numWeeks < 0)
+    {
+      selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
+    }
     for (int ii = numWeeks; ii > 0; ii--)
     {
       Select select = new Select(
           driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-      select.selectByIndex(currentWeekIndex - ii);
+      select.selectByIndex(JimmyCalendarUtil.normalizeWeekIndex(currentWeekIndex - ii));
       changeToCSVAndDownload();
       numReports++;
     }

@@ -2,14 +2,13 @@ package util;
 
 import java.io.File;
 
-public class DupFile implements Comparable<DupFile>
+public class DupFile extends ComparableFile<DupFile>
 {
   private int dupVal = 0;
-  private File file;
 
   public DupFile(File file)
   {
-    this.file = file;
+    super(file);
     if (getName().endsWith(").csv"))
     {
       dupVal = Integer.parseInt(getName().substring(getName().lastIndexOf('(') + 1, getName().lastIndexOf(')')));
@@ -29,14 +28,5 @@ public class DupFile implements Comparable<DupFile>
       return -1;
     return 1;
   }
-  
-  public String getName()
-  {
-    return file.getName();
-  }
 
-  public File getFile()
-  {
-    return file;
-  }
 }

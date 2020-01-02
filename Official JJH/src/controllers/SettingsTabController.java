@@ -80,7 +80,6 @@ public class SettingsTabController
     MainApplication.dataHub.removeManager(managerChoice.getValue());
   }
   // Settings
-  // TODO needs to update setting in datahub
   @FXML
   void amBufferFieldChanged()
   {

@@ -26,6 +26,7 @@ import util.ManagerDBL;
 
 /**
  * Must set MainApp
+ * 
  * @author crost
  *
  */
@@ -43,7 +44,7 @@ public class AreaManagerReportController
 
   @FXML
   private VBox attendanceVBox, mgrDBLBox;
-  
+
   @FXML
   private TextArea explanationArea;
 
@@ -55,7 +56,7 @@ public class AreaManagerReportController
 
   public void initialize()
   {
-    //Set All Labels with data
+    // Set All Labels with data
     AMPhoneAuditItem item = MainApplication.dataHub.getAMPhoneAudit();
     salesLabelAM.setText(String.format("%.2f", item.getSalesAM()));
     salesLabelPM.setText(String.format("%.2f", item.getSalesPM()));
@@ -64,21 +65,17 @@ public class AreaManagerReportController
     laborLabelAM.setText(String.format("%.2f", item.getLaborAM()));
     laborLabelPM.setText(String.format("%.2f", item.getLaborPM()));
     weekLaborLabel.setText(String.format("Week Labor: %.2f%%", item.getLaborWeek()));
-    weekCompLabel.setText(String.format("Week Comps: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
-    
-    //MDBL Box
-    for(ManagerDBL mdbl: MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true))
+    weekCompLabel.setText(
+        String.format("Week Comps: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
+
+    // MDBL Box
+    for (ManagerDBL mdbl : getMgrDblsCompletedYesterday())
     {
-      GregorianCalendar yesterday = new GregorianCalendar();
-      yesterday.add(Calendar.DAY_OF_YEAR, -1);
-      if(mdbl.getCompleteTime().get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR))
-      {
-        Label label = new Label(String.format("%s: %s", mdbl.getCompletedName(), mdbl.getDesc()));
-        label.setWrapText(true);
-        mgrDBLBox.getChildren().add(label);
-      }
+      Label label = new Label(String.format("%s: %s", mdbl.getCompletedName(), mdbl.getDesc()));
+      label.setWrapText(true);
+      mgrDBLBox.getChildren().add(label);
     }
-    //Add catering orders
+    // Add catering orders
     for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
     {
       if (JimmyCalendarUtil.isToday(co.getTime()))
@@ -99,12 +96,27 @@ public class AreaManagerReportController
         cateringDollarLabel.setText("Dollar Value: " + cateringChoice.getValue().getDollarValue());
       }
     });
-    
-    for(AttendanceShift as: MainApplication.dataHub.getAttendaceShiftsFromYesterday())
+
+    for (AttendanceShift as : MainApplication.dataHub.getAttendaceShiftsFromYesterday())
     {
       attendanceVBox.getChildren().add(new AttendanceShiftBox(as));
     }
     System.out.println("AMRC");
+  }
+
+  private ArrayList<ManagerDBL> getMgrDblsCompletedYesterday()
+  {
+    ArrayList<ManagerDBL> mdbls = new ArrayList<ManagerDBL>();
+    for (ManagerDBL mdbl : MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true))
+    {
+      GregorianCalendar yesterday = new GregorianCalendar();
+      yesterday.add(Calendar.DAY_OF_YEAR, -1);
+      if (mdbl.getCompleteTime().get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR))
+      {
+        mdbls.add(mdbl);
+      }
+    }
+    return mdbls;
   }
 
   public void setMain(MainApplication mainApplication)
@@ -120,7 +132,8 @@ public class AreaManagerReportController
       sendReportButton.setDisable(true);
       SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
       Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store "
-          + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime()), toEmail());
+          + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime()),
+          toEmail());
       email.send();
     }
     else
@@ -130,9 +143,8 @@ public class AreaManagerReportController
 
   public String toEmail()
   {
-    String email = String.format(
-        "This is an automated JimmyHub email from store %d\n\n"
-            + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n%s\n%s\n",
+    String email = String.format("This is an automated JimmyHub email from store %d\n\n"
+        + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n%s\n%s\n",
         MainApplication.storeNumber, salesLabelAM.getText(), salesLabelPM.getText(),
         overUnderLabelAM.getText(), overUnderLabelPM.getText(), laborLabelAM.getText(),
         laborLabelPM.getText(), weekLaborLabel.getText(), weekCompLabel.getText());
@@ -150,6 +162,19 @@ public class AreaManagerReportController
         email += co.toString() + "\n";
       }
     }
+    // Mgr DBLs
+    if (getMgrDblsCompletedYesterday().size() == 0)
+    {
+      email += "No Manager DBLs Completed Yesterday.\n";
+    }
+    else
+    {
+      for (ManagerDBL mdbl : getMgrDblsCompletedYesterday())
+      {
+        email += mdbl.getCompletedName() + " -> " + mdbl.getDesc() + "\n";
+      }
+    }
+    email += "Number Completed In Month: " + MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size() + "\n";
     email += explanationArea.getText() + "\n";
     return email;
   }

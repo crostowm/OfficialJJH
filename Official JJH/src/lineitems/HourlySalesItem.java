@@ -132,14 +132,12 @@ public class HourlySalesItem
   {
     double total = getTotal$();
     double inshop = getTotalInshopValue();
-    System.out.println("Total$: " + total + " Inshop$: " + inshop + " | " + (inshop/total) + "%");
     return (inshop/total) * 100;
   }
   public double getTotalDeliveryValuePercentage()
   {
     double total = getTotal$();
     double delivery = getTotalDeliveryValue();
-    System.out.println("Total$: " + total + " Delivery$: " + delivery + " | " + (delivery/total) + "%");
     return (delivery/total) * 100;
   }
 }
