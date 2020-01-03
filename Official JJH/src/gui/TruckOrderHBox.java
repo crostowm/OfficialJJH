@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.HashMap;
-
 import error_handling.ErrorHandler;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,50 +9,47 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import readers.UPKMap;
+import lineitems.UPKItem;
 
 public class TruckOrderHBox extends UPKHBox
 {
   private Label name, unit, acUsage, avgUPK, projUseCs, projUseEa;
   private TextField onHandCs, onHandEa, toOrder;
-  private HashMap<Integer, Double> data;
   private double projections;
 
-  public TruckOrderHBox(int category, double adjustedSales, String n, HashMap<Integer, Double> data,
-      String uni, double projSales)
+  public TruckOrderHBox(UPKItem item, double adjustedSales, double projSales)
   {
-    super(category, adjustedSales, n, data);
-    this.data = data;
+    super(adjustedSales, item);
     this.projections = projSales;
     setSpacing(10);
-    name = new Label(n);
+    name = new Label(item.getName());
     name.setMinWidth(200);
     name.setMaxWidth(200);
-    unit = new Label(uni);
+    unit = new Label(item.getUnit());
 
     unit.setMinWidth(100);
     unit.setMaxWidth(100);
     unit.setAlignment(Pos.CENTER);
 
-    acUsage = new Label(data.get(UPKMap.ACTUAL_USAGE) + "");
+    acUsage = new Label(String.format("%.2f", item.getActualUsage()));
     acUsage.setMinWidth(90);
     acUsage.setMaxWidth(90);
     acUsage.setAlignment(Pos.CENTER);
 
-    avgUPK = new Label(data.get(UPKMap.AVERAGE_UPK) + "");
+    avgUPK = new Label(String.format("%.2f", item.getAverageUPK()));
     avgUPK.setMinWidth(90);
     avgUPK.setMaxWidth(90);
     avgUPK.setAlignment(Pos.CENTER);
 
     // Needs to be divided by case
     projUseCs = new Label(String.format("%.2f",
-        (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)) / data.get(UPKMap.CASE_VALUE)));
+        (item.getAverageUPK() * (projections / 1000)) / item.getCaseValue()));
     projUseCs.setMinWidth(90);
     projUseCs.setMaxWidth(90);
     projUseCs.setAlignment(Pos.CENTER);
 
     projUseEa = new Label(
-        String.format("%.2f", data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)));
+        String.format("%.2f", item.getAverageUPK() * (projections / 1000)));
     projUseEa.setMinWidth(90);
     projUseEa.setMaxWidth(90);
     projUseEa.setAlignment(Pos.CENTER);
@@ -74,27 +69,27 @@ public class TruckOrderHBox extends UPKHBox
           if (!onHandCs.getText().equals(""))
           {
             onHandEa.setText(String.format("%.2f",
-                Double.parseDouble(onHandCs.getText()) * data.get(UPKMap.CASE_VALUE)));
+                Double.parseDouble(onHandCs.getText()) * item.getCaseValue()));
             toOrder.setTooltip(new Tooltip(String.format("%.2f",
                 (Math.max(0,
-                    ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                        / data.get(UPKMap.CASE_VALUE))
+                    ((item.getAverageUPK() * (projections / 1000))
+                        / item.getCaseValue())
                         - Double.parseDouble(onHandCs.getText()))))));
             toOrder.setText(String.format("%.2f",
                 (Math.ceil(Math.max(0,
-                    ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                        / data.get(UPKMap.CASE_VALUE))
+                    ((item.getAverageUPK() * (projections / 1000))
+                        / item.getCaseValue())
                         - Double.parseDouble(onHandCs.getText()))))));
           }
           else
           {
             onHandEa.setText("0");
             toOrder.setTooltip(new Tooltip(String.format("%.2f",
-                (Math.max(0, (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                    / data.get(UPKMap.CASE_VALUE))))));
+                (Math.max(0, (item.getAverageUPK() * (projections / 1000))
+                    / item.getCaseValue())))));
             toOrder.setText(String.format("%.2f",
-                (Math.ceil(Math.max(0, (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                    / data.get(UPKMap.CASE_VALUE))))));
+                (Math.ceil(Math.max(0, (item.getAverageUPK() * (projections / 1000))
+                    / item.getCaseValue())))));
           }
         }
         catch (NumberFormatException nfe)
@@ -120,27 +115,27 @@ public class TruckOrderHBox extends UPKHBox
           if (!onHandEa.getText().equals(""))
           {
             onHandCs.setText(String.format("%.2f",
-                Double.parseDouble(onHandEa.getText()) / data.get(UPKMap.CASE_VALUE)));
+                Double.parseDouble(onHandEa.getText()) / item.getCaseValue()));
             toOrder.setTooltip(new Tooltip(String.format("%.2f",
                 (Math.max(0,
-                    ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                        / data.get(UPKMap.CASE_VALUE))
+                    ((item.getAverageUPK() * (projections / 1000))
+                        / item.getCaseValue())
                         - Double.parseDouble(onHandCs.getText()))))));
             toOrder.setText(String.format("%.2f",
                 (Math.ceil(Math.max(0,
-                    ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                        / data.get(UPKMap.CASE_VALUE))
+                    ((item.getAverageUPK() * (projections / 1000))
+                        / item.getCaseValue())
                         - Double.parseDouble(onHandCs.getText()))))));
           }
           else
           {
             onHandCs.setText("0");
             toOrder.setTooltip(new Tooltip(String.format("%.2f",
-                (Math.max(0, (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                    / data.get(UPKMap.CASE_VALUE))))));
+                (Math.max(0, (item.getAverageUPK() * (projections / 1000))
+                    / item.getCaseValue())))));
             toOrder.setText(String.format("%.2f",
-                (Math.ceil(Math.max(0, (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                    / data.get(UPKMap.CASE_VALUE))))));
+                (Math.ceil(Math.max(0, (item.getAverageUPK() * (projections / 1000))
+                    / item.getCaseValue())))));
           }
         }
         catch (NumberFormatException nfe)
@@ -166,19 +161,23 @@ public class TruckOrderHBox extends UPKHBox
   {
     projections = proj;
     projUseCs.setText(String.format("%.2f",
-        (data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)) / data.get(UPKMap.CASE_VALUE)));
-    projUseEa.setText(String.format("%.2f", data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)));
+        (item.getAverageUPK() * (projections / 1000)) / item.getCaseValue()));
+    projUseEa
+        .setText(String.format("%.2f", item.getAverageUPK() * (projections / 1000)));
     if (!onHandCs.getText().equals(""))
     {
-      toOrder.setTooltip(new Tooltip(String.format("%.2f",
-          (Math.max(0,
-              ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000))
-                  / data.get(UPKMap.CASE_VALUE))
-                  - Double.parseDouble(onHandCs.getText()))))));
-      toOrder.setText(String.format("%.2f",
-          (Math.max(0,
-              ((data.get(UPKMap.AVERAGE_UPK) * (projections / 1000)) / data.get(UPKMap.CASE_VALUE))
-                  - Double.parseDouble(onHandCs.getText())))));
+      toOrder
+          .setTooltip(new Tooltip(String.format("%.2f",
+              (Math.max(0,
+                  ((item.getAverageUPK() * (projections / 1000))
+                      / item.getCaseValue())
+                      - Double.parseDouble(onHandCs.getText()))))));
+      toOrder
+          .setText(String.format("%.2f",
+              (Math.max(0,
+                  ((item.getAverageUPK() * (projections / 1000))
+                      / item.getCaseValue())
+                      - Double.parseDouble(onHandCs.getText())))));
     }
   }
 }

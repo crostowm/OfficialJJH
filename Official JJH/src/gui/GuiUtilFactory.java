@@ -2,52 +2,49 @@ package gui;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import app.MainApplication;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import lineitems.HourlySalesItem;
 import lineitems.InventoryItem;
-import readers.UPKMap;
-import util.DataHub;
+import lineitems.UPKItem;
+import lineitems.UPKWeek;
 
 public class GuiUtilFactory
 {
 
-  public static HBox createUsageAnalysisHBoxItem(String n, HashMap<Integer, Double> item)
+  public static HBox createUsageAnalysisHBoxItem(String n, UPKItem item)
   {
     HBox box = new HBox(10);
     Label name = new Label(n);
     name.setPrefWidth(200);
-    Label acUsage = new Label(item.get(UPKMap.ACTUAL_USAGE) + "");
+    Label acUsage = new Label(String.format("%.2f", item.getActualUsage()));
     acUsage.setPrefWidth(100);
     acUsage.setAlignment(Pos.CENTER);
-    Label thUsage = new Label(item.get(UPKMap.THEORETICAL_USAGE) + "");
+    Label thUsage = new Label(String.format("%.2f", item.getTheoreticalUsage()));
     thUsage.setPrefWidth(100);
     thUsage.setAlignment(Pos.CENTER);
-    Label usageVar = new Label(item.get(UPKMap.USAGE_VARIANCE) + "");
+    Label usageVar = new Label(String.format("%.2f", item.getUsageVariance()));
     usageVar.setPrefWidth(100);
     usageVar.setAlignment(Pos.CENTER);
-    Label usageVar$ = new Label(item.get(UPKMap.USAGE_VARIANCE$) + "");
+    Label usageVar$ = new Label(String.format("%.2f", item.getUsageVariance$()));
     usageVar$.setPrefWidth(100);
     usageVar$.setAlignment(Pos.CENTER);
-    Label acUPK = new Label(item.get(UPKMap.ACTUAL_UPK) + "");
+    Label acUPK = new Label(String.format("%.2f", item.getActualUPK()));
     acUPK.setPrefWidth(100);
     acUPK.setAlignment(Pos.CENTER);
-    Label avgUPK = new Label(item.get(UPKMap.AVERAGE_UPK) + "");
+    Label avgUPK = new Label(String.format("%.2f", item.getAverageUPK()));
     avgUPK.setPrefWidth(100);
     avgUPK.setAlignment(Pos.CENTER);
-    Label upkVar = new Label(item.get(UPKMap.UPK_VARIANCE) + "");
+    Label upkVar = new Label(String.format("%.2f", item.getUPKVariance()));
     upkVar.setPrefWidth(100);
     upkVar.setAlignment(Pos.CENTER);
     box.getChildren().addAll(name, acUsage, thUsage, usageVar, usageVar$, acUPK, avgUPK, upkVar);
@@ -137,53 +134,44 @@ public class GuiUtilFactory
     // creating the chart
     final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 
-    lineChart.setTitle("Usage Evaluation of " + uah.getName() + " Over The Past 6 Weeks");
+    lineChart.setTitle("Usage Evaluation of " + uah.getItem().getName() + " Over The Past 6 Weeks");
 
     return lineChart;
   }
 
-  public static XYChart.Series<Number, Number> getUPKSeriesFor(UsageAnalysisHBox uah,
-      ArrayList<UPKMap> arrayList, int weekNumber, String seriesName, int upkMapCategory)
+  public static XYChart.Series<Number, Number> getUPKSeriesFor(String itemName, int weekNumber,
+      String upkMapCategory)
   {
     XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-    series.setName(seriesName);
+    series.setName(upkMapCategory);
 
-    double usage1 = arrayList.get(0).getData(uah.getCategory(), uah.getName(), upkMapCategory);
-    double sales1 = arrayList.get(0).getAdjustedSales();
-    XYChart.Data<Number, Number> w1 = new XYChart.Data<Number, Number>(weekNumber - 6, usage1);
-    w1.setNode(new DataPointNode(usage1, sales1));
-    series.getData().add(w1);
-
-    double usage2 = arrayList.get(1).getData(uah.getCategory(), uah.getName(), upkMapCategory);
-    double sales2 = arrayList.get(1).getAdjustedSales();
-    XYChart.Data<Number, Number> w2 = new XYChart.Data<Number, Number>(weekNumber - 5, usage2);
-    w2.setNode(new DataPointNode(usage2, sales2));
-    series.getData().add(w2);
-
-    double usage3 = arrayList.get(2).getData(uah.getCategory(), uah.getName(), upkMapCategory);
-    double sales3 = arrayList.get(2).getAdjustedSales();
-    XYChart.Data<Number, Number> w3 = new XYChart.Data<Number, Number>(weekNumber - 4, usage3);
-    w3.setNode(new DataPointNode(usage3, sales3));
-    series.getData().add(w3);
-
-    double usage4 = arrayList.get(3).getData(uah.getCategory(), uah.getName(), upkMapCategory);
-    double sales4 = arrayList.get(3).getAdjustedSales();
-    XYChart.Data<Number, Number> w4 = new XYChart.Data<Number, Number>(weekNumber - 3, usage4);
-    w4.setNode(new DataPointNode(usage4, sales4));
-    series.getData().add(w4);
-
-    double usage5 = arrayList.get(4).getData(uah.getCategory(), uah.getName(), upkMapCategory);
-    double sales5 = arrayList.get(4).getAdjustedSales();
-    XYChart.Data<Number, Number> w5 = new XYChart.Data<Number, Number>(weekNumber - 2, usage5);
-    w5.setNode(new DataPointNode(usage5, sales5));
-    series.getData().add(w5);
-
-    double usage6 = uah.getData().get(upkMapCategory);
-    double sales6 = uah.getAdjustedSales();
-    XYChart.Data<Number, Number> w6 = new XYChart.Data<Number, Number>(weekNumber - 1, usage6);
-    w6.setNode(new DataPointNode(sales6));
-    series.getData().add(w6);
-
+    int index = 0;
+    for (int ii = 6; ii > 0; ii--)
+    {
+      UPKWeek week = MainApplication.dataHub.getPast6UPKMaps().get(index);
+      UPKItem item = week.getUPKItem(itemName);
+      double usage = -1;
+      switch (upkMapCategory)
+      {
+        case "Actual Usage":
+          usage = item.getActualUsage();
+          break;
+        case "Theoretical Usage":
+          usage = item.getTheoreticalUsage();
+          break;
+        case "Actual UPK":
+          usage = item.getActualUPK();
+          break;
+        case "Average UPK":
+          usage = item.getAverageUPK();
+          break;
+      }
+      index++;
+      double sales = week.getAdjustedSales();
+      XYChart.Data<Number, Number> w = new XYChart.Data<Number, Number>(weekNumber - ii, usage);
+      w.setNode(new DataPointNode(usage, sales));
+      series.getData().add(w);
+    }
     return series;
   }
 
@@ -476,13 +464,15 @@ public class GuiUtilFactory
     endInv.setMaxWidth(65);
     endInv.setAlignment(Pos.CENTER);
     Separator s5 = new Separator(Orientation.VERTICAL);
-    Label avgUPK = new Label(String.format("%.2f", ii.getUPKData(UPKMap.AVERAGE_UPK)));
+    UPKItem item = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+    Label avgUPK = new Label(item == null ? "null" : String.format("%.2f", item.getAverageUPK()));
     avgUPK.setMinWidth(65);
     avgUPK.setPrefWidth(65);
     avgUPK.setMaxWidth(65);
     avgUPK.setAlignment(Pos.CENTER);
     Separator s6 = new Separator(Orientation.VERTICAL);
-    Label actUPK = new Label(String.format("%.2f", ii.getUPKData(UPKMap.ACTUAL_UPK)));
+    UPKItem item2 = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+    Label actUPK = new Label(item2 == null ? "null" : String.format("%.2f", item2.getActualUPK()));
     actUPK.setMinWidth(65);
     actUPK.setPrefWidth(65);
     actUPK.setMaxWidth(65);
@@ -500,8 +490,8 @@ public class GuiUtilFactory
     actUsage.setMaxWidth(65);
     actUsage.setAlignment(Pos.CENTER);
     Separator s9 = new Separator(Orientation.VERTICAL);
-    box.getChildren().addAll(name, s1, begInventory, s2, totPurch, s3, totTrans, s4, endInv, s5, avgUPK, s6, 
-        actUPK, s7, theorUsage, s8, actUsage, s9);
+    box.getChildren().addAll(name, s1, begInventory, s2, totPurch, s3, totTrans, s4, endInv, s5,
+        avgUPK, s6, actUPK, s7, theorUsage, s8, actUsage, s9);
     return box;
   }
 
@@ -553,8 +543,8 @@ public class GuiUtilFactory
     actUsage.setMaxWidth(75);
     actUsage.setAlignment(Pos.CENTER);
     HBox box = new HBox(10);
-    box.getChildren().addAll(name, begInventory, totPurch, totTrans, endInv, avgUPK, 
-        actUPK, theorUsage, actUsage);
+    box.getChildren().addAll(name, begInventory, totPurch, totTrans, endInv, avgUPK, actUPK,
+        theorUsage, actUsage);
     return box;
   }
 }

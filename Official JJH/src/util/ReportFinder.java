@@ -8,13 +8,14 @@ import java.util.Collections;
 import app.MainApplication;
 import lineitems.CateringTransaction;
 import lineitems.InventoryItem;
+import lineitems.UPKWeek;
 import readers.AMPhoneAuditReader;
 import readers.AttendanceReader;
 import readers.CateringTransactionReader;
 import readers.HourlySalesMap;
 import readers.ItemUsageAnalysisReader;
 import readers.TrendSheetReader;
-import readers.UPKMap;
+import readers.UPKReader;
 import readers.WSRMap;
 
 public class ReportFinder
@@ -67,15 +68,16 @@ public class ReportFinder
   {
     ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
-    MainApplication.dataHub.setCurrentUPKMap(new UPKMap(fs.get(fs.size() - 1).getFile()));
-    ArrayList<UPKMap> past5UPKMaps = new ArrayList<UPKMap>();
+    ArrayList<UPKWeek> past6UPKWeeks = new ArrayList<UPKWeek>();
     MainApplication.reportsUsed += "UPK Expected Usage Report\n";
-    for (int ii = 0; ii < fs.size() - 1; ii++)
+    for (int ii = 0; ii < fs.size(); ii++)
     {
       MainApplication.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
-      past5UPKMaps.add(new UPKMap(fs.get(ii).getFile()));
+      UPKReader ur = new UPKReader(fs.get(ii).getFile());
+      UPKWeek wk = ur.getWeek();
+      past6UPKWeeks.add(wk);
     }
-    MainApplication.dataHub.setPast5UPKMaps(past5UPKMaps);
+    MainApplication.dataHub.setPast6UPKWeeks(past6UPKWeeks);
   }
 
   public void uploadHourlySalesToDataHub()

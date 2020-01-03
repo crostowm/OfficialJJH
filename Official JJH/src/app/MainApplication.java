@@ -38,7 +38,7 @@ public class MainApplication extends Application
 {
   //noahyambao
   //noahyambao1234
-  public static boolean fullRun = false;
+  public static boolean fullRun = true;
   public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
   public static boolean sendWeeklySupplyEmail = false;

@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import readers.UPKMap;
 import util.DataHub;
 
 public class ProduceOrderBox extends HBox
@@ -108,8 +107,7 @@ public class ProduceOrderBox extends HBox
   private void figureUPKAndUsage()
   {
     upk = name.equals("Sprouts") ? MainApplication.dataHub.getSetting(DataHub.SPROUT_UPK)
-        : MainApplication.dataHub.getCurrentUPKMap().getData(UPKMap.PRODUCE, name,
-            UPKMap.AVERAGE_UPK);
+        : MainApplication.dataHub.getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK();
     expectedUsage = (projections / 1000) * upk;
     
     upkField.setText(String.format("%.2f", upk));

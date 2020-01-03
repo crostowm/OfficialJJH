@@ -12,13 +12,13 @@ import lineitems.AMPhoneAuditItem;
 import lineitems.AttendanceShift;
 import lineitems.CateringTransaction;
 import lineitems.InventoryItem;
+import lineitems.UPKWeek;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditReader;
 import readers.HourlySalesMap;
 import readers.ManagerDBLReader;
 import readers.TrendSheetReader;
-import readers.UPKMap;
 import readers.WSRMap;
 
 public class DataHub implements Serializable
@@ -30,8 +30,11 @@ public class DataHub implements Serializable
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
-  private transient UPKMap currentUPKMap;
-  private transient ArrayList<UPKMap> past5UPKMaps;
+  /**
+   * index 5 is last completed week
+   * index 0 is earliest week
+   */
+  private transient ArrayList<UPKWeek> past6UPKWeeks;
   private transient ArrayList<HourlySalesMap> past4HourlySales;
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditItem amPhoneAuditItem;
@@ -212,10 +215,10 @@ public class DataHub implements Serializable
       int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2) - 1;
       int nextNextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 3) - 1;
       slicingPars.get(index).get(name).put("msc",
-          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK) * projections.get(index))
+          ((getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK() * projections.get(index))
               / 1000) / 3.307);
       slicingPars.get(index).get(name).put("gec",
-          ((currentUPKMap.getData(UPKMap.FOOD, name, UPKMap.AVERAGE_UPK)
+          ((getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK()
               * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
               / 3.307);
     }
@@ -317,14 +320,9 @@ public class DataHub implements Serializable
     updateProjForShift(shift);
   }
 
-  public void setCurrentUPKMap(UPKMap upkMap)
+  public UPKWeek getLastCompletedWeekUPKWeek()
   {
-    this.currentUPKMap = upkMap;
-  }
-
-  public UPKMap getCurrentUPKMap()
-  {
-    return currentUPKMap;
+    return past6UPKWeeks.get(past6UPKWeeks.size() - 1);
   }
 
   public double getSlicingPars(String food, String dataType, int shift)
@@ -333,14 +331,14 @@ public class DataHub implements Serializable
     return slicingPars.get(index).get(food).get(dataType);
   }
 
-  public void setPast5UPKMaps(ArrayList<UPKMap> past5UPKMaps)
+  public void setPast6UPKWeeks(ArrayList<UPKWeek> past6UPKWeeks)
   {
-    this.past5UPKMaps = past5UPKMaps;
+    this.past6UPKWeeks = past6UPKWeeks;
   }
 
-  public ArrayList<UPKMap> getPast5UPKMaps()
+  public ArrayList<UPKWeek> getPast6UPKMaps()
   {
-    return past5UPKMaps;
+    return past6UPKWeeks;
   }
 
   public double getProjectionsForShifts(int startShift, int endShift)
@@ -375,7 +373,7 @@ public class DataHub implements Serializable
     if (produceName.equals("Sprouts"))
       upk = getSetting(DataHub.SPROUT_UPK);
     else
-      upk = getCurrentUPKMap().getData(UPKMap.PRODUCE, produceName, UPKMap.AVERAGE_UPK);
+      upk = getLastCompletedWeekUPKWeek().getUPKItem(produceName).getAverageUPK();
     double req = ((proj / 1000) * upk) / unit;
     return MathUtil.ceilHalf(req);
   }
@@ -406,7 +404,7 @@ public class DataHub implements Serializable
     double total = 0;
     for (HourlySalesMap hsm : past4HourlySales)
     {
-      switch(type)
+      switch (type)
       {
         case "Total":
           total += hsm.getTotalInshopForHour(hour) + hsm.getTotalDeliveryForHour(hour);
@@ -616,7 +614,7 @@ public class DataHub implements Serializable
   {
     this.inventoryItemNames = items;
   }
-  
+
   public ArrayList<String> getInventoryItemNames()
   {
     return inventoryItemNames;
@@ -626,7 +624,7 @@ public class DataHub implements Serializable
   {
     this.inventoryItems = items;
   }
-  
+
   public ArrayList<InventoryItem> getInventoryItems()
   {
     return inventoryItems;

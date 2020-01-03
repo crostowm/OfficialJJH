@@ -17,6 +17,7 @@ public class InventoryController
   
   public void initialize()
   {
+    //Can also sort by category by going through upk map
     gp.add(GuiUtilFactory.createInventoryTitleBox(), 0, 1, 2, 1);
     for(InventoryItem ii: MainApplication.dataHub.getInventoryItems())
     {

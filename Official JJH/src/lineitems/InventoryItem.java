@@ -2,9 +2,6 @@ package lineitems;
 
 import java.util.ArrayList;
 
-import app.MainApplication;
-import readers.UPKMap;
-
 public class InventoryItem implements Comparable<InventoryItem>
 {
   private String name;
@@ -114,10 +111,5 @@ public class InventoryItem implements Comparable<InventoryItem>
   public int compareTo(InventoryItem ii)
   {
     return getName().compareTo(ii.getName());
-  }
-
-  public double getUPKData(int upkMapDataType)
-  {
-    return MainApplication.dataHub.getCurrentUPKMap().getData(getParsedName(), upkMapDataType);
   }
 }

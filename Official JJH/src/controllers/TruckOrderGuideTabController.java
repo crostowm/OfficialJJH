@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import app.MainApplication;
 import gui.GuiUtilFactory;
@@ -17,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lineitems.UPKItem;
 import util.JimmyCalendarUtil;
 
 public class TruckOrderGuideTabController
@@ -108,51 +108,10 @@ public class TruckOrderGuideTabController
   protected void refreshItems()
   {
     truckOrderGuideVBox.getChildren().clear();
-    int category = -1;
-    switch (orderGuideCategoryChoice.getValue())
+    for (UPKItem item: MainApplication.dataHub.getLastCompletedWeekUPKWeek().getItems())
     {
-      case "Bread":
-        category = 1;
-        break;
-      case "Food":
-        category = 2;
-        break;
-      case "Sides":
-        category = 3;
-        break;
-      case "Paper":
-        category = 4;
-        break;
-      case "Produce":
-        category = 5;
-        break;
-      case "Beverage":
-        category = 6;
-        break;
-      case "Catering":
-        category = 7;
-        break;
-    }
-    // Iterate through upk items
-    ArrayList<String> names = new ArrayList<String>(
-        MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet());
-    Collections.sort(names);
-    for (String name : names)
-    {
-      if (!name.equals("COGs"))
-      {
-        if (name.equals("Chips"))
-        {
-          // TruckOrderHBox reg = new TruckOrderHBox(UPKMap.SIDES,
-          // MainApplication.dataHub.getSpecialItemUsage(MainApplication.dataHub.REG), "Box 60",
-          // weekProj);
-        }
-        TruckOrderHBox toh = new TruckOrderHBox(category,
-            MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
-            MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name),
-            MainApplication.dataHub.getCurrentUPKMap().getUnitsForItem(name), weekProj);
+        TruckOrderHBox toh = new TruckOrderHBox(item, MainApplication.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales(), weekProj);
         truckOrderGuideVBox.getChildren().add(toh);
-      }
     }
   }
 

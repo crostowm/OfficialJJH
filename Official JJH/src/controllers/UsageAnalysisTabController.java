@@ -17,7 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import readers.UPKMap;
+import lineitems.UPKItem;
 import util.JimmyCalendarUtil;
 
 public class UsageAnalysisTabController
@@ -37,7 +37,7 @@ public class UsageAnalysisTabController
 
   @FXML
   private GridPane gp;
-  
+
   private UsageAnalysisHBox currentlySelectedUAH = null;
   private ArrayList<RadioButton> usageAnalysisCategoryGroup;
 
@@ -57,7 +57,6 @@ public class UsageAnalysisTabController
     usageAnalysisCategoryChoice.setOnAction(new EventHandler<ActionEvent>()
     {
 
-
       @Override
       public void handle(ActionEvent arg0)
       {
@@ -65,50 +64,22 @@ public class UsageAnalysisTabController
         {
           usageAnalysisVBox.getChildren().clear();
           gp.add(GuiUtilFactory.createUsageAnalysisHBoxTitle(), 0, 1, 2, 1);
-          int category = -1;
-          switch (usageAnalysisCategoryChoice.getValue())
-          {
-            case "Bread":
-              category = 1;
-              break;
-            case "Food":
-              category = 2;
-              break;
-            case "Sides":
-              category = 3;
-              break;
-            case "Paper":
-              category = 4;
-              break;
-            case "Produce":
-              category = 5;
-              break;
-            case "Beverage":
-              category = 6;
-              break;
-            case "Catering":
-              category = 7;
-              break;
-          }
           // Iterate through upk items
-          for (String name : MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).keySet())
+          for (UPKItem item : MainApplication.dataHub.getLastCompletedWeekUPKWeek()
+              .getItemsOfCategory(usageAnalysisCategoryChoice.getValue()))
           {
-            if (!name.equals("COGs"))
+            UsageAnalysisHBox uah = new UsageAnalysisHBox(item,
+                MainApplication.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales());
+            uah.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
-              UsageAnalysisHBox uah = new UsageAnalysisHBox(category,
-                  MainApplication.dataHub.getCurrentUPKMap().getAdjustedSales(), name,
-                  MainApplication.dataHub.getCurrentUPKMap().getUPKMap().get(category).get(name));
-              uah.setOnMouseClicked(new EventHandler<MouseEvent>()
+              @Override
+              public void handle(MouseEvent arg0)
               {
-                @Override
-                public void handle(MouseEvent arg0)
-                {
-                  currentlySelectedUAH = uah;
-                  handleNewUsageAnalysisCategorySelection();
-                }
-              });
-              usageAnalysisVBox.getChildren().add(uah);
-            }
+                currentlySelectedUAH = uah;
+                handleNewUsageAnalysisCategorySelection();
+              }
+            });
+            usageAnalysisVBox.getChildren().add(uah);
           }
         }
       }
@@ -132,33 +103,8 @@ public class UsageAnalysisTabController
       {
         if (rb.isSelected())
         {
-          switch (rb.getText())
-          {
-            case "Actual Usage":
-              chart.getData()
-                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
-                      MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
-                      UPKMap.ACTUAL_USAGE));
-              break;
-            case "Theoretical Usage":
-              chart.getData()
-                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
-                      MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
-                      UPKMap.THEORETICAL_USAGE));
-              break;
-            case "Actual UPK":
-              chart.getData()
-                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
-                      MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
-                      UPKMap.ACTUAL_UPK));
-              break;
-            case "Average UPK":
-              chart.getData()
-                  .add(GuiUtilFactory.getUPKSeriesFor(currentlySelectedUAH,
-                      MainApplication.dataHub.getPast5UPKMaps(), weekNumber, rb.getText(),
-                      UPKMap.AVERAGE_UPK));
-              break;
-          }
+          chart.getData().add(GuiUtilFactory
+              .getUPKSeriesFor(currentlySelectedUAH.getItem().getName(), weekNumber, rb.getText()));
         }
       }
       usageAnalysisGraphPane.setContent(chart);

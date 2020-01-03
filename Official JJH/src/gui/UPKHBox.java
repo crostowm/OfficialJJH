@@ -1,23 +1,18 @@
 package gui;
 
-import java.util.HashMap;
-
 import javafx.scene.layout.HBox;
+import lineitems.UPKItem;
 
 public abstract class UPKHBox extends HBox
 {
 
-  private int category;
   private double adjustedSales;
-  private String n;
-  private HashMap<Integer, Double> data;
+  protected UPKItem item;
 
-  public UPKHBox(int category, double adjustedSales, String n, HashMap<Integer, Double> data)
+  public UPKHBox(double adjustedSales, UPKItem item)
   {
-    this.category = category;
     this.adjustedSales = adjustedSales;
-    this.n = n;
-    this.data = data;
+    this.item = item;
   }
   
   public double getAdjustedSales()
@@ -25,18 +20,8 @@ public abstract class UPKHBox extends HBox
     return adjustedSales;
   }
   
-  public int getCategory()
+  public UPKItem getItem()
   {
-    return category;
-  }
-  
-  public String getName()
-  {
-    return n;
-  }
-  
-  public HashMap<Integer, Double> getData()
-  {
-    return data;
+    return item;
   }
 }
