@@ -22,10 +22,10 @@ public class ReportGrabber
   private WebDriver driver;
   private int numReports = 0;
 
-  public ReportGrabber(int storeNumber)
+  public ReportGrabber()
   {
-    this.storeNumber = storeNumber + "";
-    switch (storeNumber)
+    this.storeNumber = MainApplication.storeNumber + "";
+    switch (MainApplication.storeNumber)
     {
       case 1131:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
@@ -59,11 +59,11 @@ public class ReportGrabber
 
       // Login$UserName
       WebElement loginBox = driver.findElement(By.id("Login_UserName"));
-      loginBox.sendKeys("crostowm");
+      loginBox.sendKeys(MainApplication.mgrLoginUser);
 
       // Login$Password
       WebElement passBox = driver.findElement(By.id("Login_Password"));
-      passBox.sendKeys("Zulu9495" + Keys.ENTER);
+      passBox.sendKeys(MainApplication.mgrLoginPass + Keys.ENTER);
 
     }
     catch(Exception e)

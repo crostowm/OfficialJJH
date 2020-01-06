@@ -61,7 +61,7 @@ public class ProjectionTabController implements TimeObserver
   private TextField cheeseMSCField, hamMSCField, turkeyMSCField, beefMSCField, vitoMSCField,
       cheeseGECField, hamGECField, turkeyGECField, beefGECField, vitoGECField, cheeseMSNField,
       hamMSNField, turkeyMSNField, beefMSNField, vitoMSNField, cheeseGENField, hamGENField,
-      turkeyGENField, beefGENField, vitoGENField;
+      turkeyGENField, beefGENField, vitoGENField, mgrLabor, inshopLabor, driverLabor;
 
   // Styles
   String basicTextFieldStyle = "-fx-background-color: rgba(0, 0, 0, .7);-fx-border-color: black;"
@@ -202,6 +202,10 @@ public class ProjectionTabController implements TimeObserver
     wheatFields.add(w13);
     wheatFields.add(w14);
 
+    System.out.println(MainApplication.dataHub.getCurrentWeeklySummary());
+    mgrLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getMgrLaborPerc()));
+    inshopLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getInshopLaborPerc()));
+    driverLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getDriverLaborPerc()));
     //gp.setStyle("-fx-background-color: rgba(0, 0, 0, .4);");
 
     setStyles();

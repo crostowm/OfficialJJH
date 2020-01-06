@@ -24,7 +24,7 @@ public class VendorDeliveryDetailLineItem
     this.vendorNum = vendorNum;
     this.qtyCase = qtyCase;
     this.qtyEa = qtyEa;
-    this.desc = desc;
+    this.desc = desc.trim();
     this.unit = unit;
   }
   public GregorianCalendar getDeliveryDate()

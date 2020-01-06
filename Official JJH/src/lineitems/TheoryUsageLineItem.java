@@ -17,7 +17,7 @@ public class TheoryUsageLineItem
       double totalQty, double portion)
   {
     this.menuItemNum = menuItemNum;
-    this.desc = desc;
+    this.desc = desc.trim();
     this.unit = unit;
     this.qtySold = qtySold;
     this.totalQty = totalQty;

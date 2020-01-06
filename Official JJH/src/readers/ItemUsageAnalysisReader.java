@@ -39,7 +39,7 @@ public class ItemUsageAnalysisReader
           {
             if (tokens.get(1).equals("Beginning Inventory"))
             {
-              name = tokens.get(0);
+              name = tokens.get(0).trim();
               begInv = Double.parseDouble(tokens.get(2).split(" ")[0]);
               totPurch = Double.parseDouble(tokens.get(4).split(" ")[0]);
               totTrans = Double.parseDouble(tokens.get(6).split(" ")[0]);

@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import app.MainApplication;
 import error_handling.ErrorHandler;
+import lineitems.InventoryItem;
 import lineitems.UPKItem;
 import lineitems.UPKWeek;
 import util.ParseUtil;
@@ -42,7 +44,7 @@ public class UPKReader
               Double.parseDouble(tokens.get(17).split(" ")[0]));
 
           // 18 Item name
-          String name = tokens.get(18);
+          String name = tokens.get(18).trim();
           String unit = tokens.get(19);
           units.put(name, unit);
           double actualUsage = Double.parseDouble(tokens.get(20));
@@ -54,7 +56,6 @@ public class UPKReader
           double upkVariance = Double.parseDouble(tokens.get(26));
           UPKItem item = new UPKItem(name, category, unit, actualUsage, theoreticalUsage,
               usageVariance, usageVariance$, actualUPK, averageUPK, upkVariance);
-          System.out.println("Adding item: " + item.getName());
           week.addItem(item);
         }
       }

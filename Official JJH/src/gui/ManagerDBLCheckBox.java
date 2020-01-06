@@ -12,6 +12,7 @@ public class ManagerDBLCheckBox extends CheckBox
     this.dbl = dbl;
     setText(dbl.getDesc());
     setWrapText(true);
+    setStyle("-fx-text-fill: white;");
   }
   
   public ManagerDBL getDBL()

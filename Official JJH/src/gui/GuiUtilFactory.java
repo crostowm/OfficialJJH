@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import lineitems.HourlySalesItem;
-import lineitems.InventoryItem;
 import lineitems.UPKItem;
 import lineitems.UPKWeek;
 
@@ -432,69 +431,6 @@ public class GuiUtilFactory
     return box;
   }
 
-  public static HBox createInventoryBox(InventoryItem ii)
-  {
-    HBox box = new HBox(10);
-    Label name = new Label(ii.getParsedName());
-    name.setMinWidth(195);
-    name.setPrefWidth(195);
-    name.setMaxWidth(195);
-    Separator s1 = new Separator(Orientation.VERTICAL);
-    Label begInventory = new Label(String.format("%.2f", ii.getBegInv()));
-    begInventory.setMinWidth(65);
-    begInventory.setPrefWidth(65);
-    begInventory.setMaxWidth(65);
-    begInventory.setAlignment(Pos.CENTER);
-    Separator s2 = new Separator(Orientation.VERTICAL);
-    Label totPurch = new Label(String.format("%.2f", ii.getTotPurch()));
-    totPurch.setMinWidth(65);
-    totPurch.setPrefWidth(65);
-    totPurch.setMaxWidth(65);
-    totPurch.setAlignment(Pos.CENTER);
-    Separator s3 = new Separator(Orientation.VERTICAL);
-    Label totTrans = new Label(String.format("%.2f", ii.getTotTrans()));
-    totTrans.setMinWidth(65);
-    totTrans.setPrefWidth(65);
-    totTrans.setMaxWidth(65);
-    totTrans.setAlignment(Pos.CENTER);
-    Separator s4 = new Separator(Orientation.VERTICAL);
-    Label endInv = new Label(String.format("%.2f", ii.getEndInv()));
-    endInv.setMinWidth(65);
-    endInv.setPrefWidth(65);
-    endInv.setMaxWidth(65);
-    endInv.setAlignment(Pos.CENTER);
-    Separator s5 = new Separator(Orientation.VERTICAL);
-    UPKItem item = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
-    Label avgUPK = new Label(item == null ? "null" : String.format("%.2f", item.getAverageUPK()));
-    avgUPK.setMinWidth(65);
-    avgUPK.setPrefWidth(65);
-    avgUPK.setMaxWidth(65);
-    avgUPK.setAlignment(Pos.CENTER);
-    Separator s6 = new Separator(Orientation.VERTICAL);
-    UPKItem item2 = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
-    Label actUPK = new Label(item2 == null ? "null" : String.format("%.2f", item2.getActualUPK()));
-    actUPK.setMinWidth(65);
-    actUPK.setPrefWidth(65);
-    actUPK.setMaxWidth(65);
-    actUPK.setAlignment(Pos.CENTER);
-    Separator s7 = new Separator(Orientation.VERTICAL);
-    Label theorUsage = new Label(String.format("%.2f", ii.getTheoreticalUsage()));
-    theorUsage.setMinWidth(65);
-    theorUsage.setPrefWidth(65);
-    theorUsage.setMaxWidth(65);
-    theorUsage.setAlignment(Pos.CENTER);
-    Separator s8 = new Separator(Orientation.VERTICAL);
-    Label actUsage = new Label(String.format("%.2f", ii.getActUsage()));
-    actUsage.setMinWidth(65);
-    actUsage.setPrefWidth(65);
-    actUsage.setMaxWidth(65);
-    actUsage.setAlignment(Pos.CENTER);
-    Separator s9 = new Separator(Orientation.VERTICAL);
-    box.getChildren().addAll(name, s1, begInventory, s2, totPurch, s3, totTrans, s4, endInv, s5,
-        avgUPK, s6, actUPK, s7, theorUsage, s8, actUsage, s9);
-    return box;
-  }
-
   public static HBox createInventoryTitleBox()
   {
     Label name = new Label("Item Name");
@@ -522,29 +458,138 @@ public class GuiUtilFactory
     endInv.setPrefWidth(90);
     endInv.setMaxWidth(90);
     endInv.setAlignment(Pos.CENTER);
-    Label avgUPK = new Label("Average UPK");
-    avgUPK.setMinWidth(80);
-    avgUPK.setPrefWidth(80);
-    avgUPK.setMaxWidth(80);
-    avgUPK.setAlignment(Pos.CENTER);
-    Label actUPK = new Label("Actual UPK");
-    actUPK.setMinWidth(75);
-    actUPK.setPrefWidth(75);
-    actUPK.setMaxWidth(75);
-    actUPK.setAlignment(Pos.CENTER);
     Label theorUsage = new Label("Theory Usage");
-    theorUsage.setMinWidth(90);
-    theorUsage.setPrefWidth(90);
-    theorUsage.setMaxWidth(90);
+    theorUsage.setMinWidth(80);
+    theorUsage.setPrefWidth(80);
+    theorUsage.setMaxWidth(80);
     theorUsage.setAlignment(Pos.CENTER);
     Label actUsage = new Label("Actual Usage");
     actUsage.setMinWidth(75);
     actUsage.setPrefWidth(75);
     actUsage.setMaxWidth(75);
     actUsage.setAlignment(Pos.CENTER);
+    Label avgUPK = new Label("Average UPK");
+    avgUPK.setMinWidth(90);
+    avgUPK.setPrefWidth(90);
+    avgUPK.setMaxWidth(90);
+    avgUPK.setAlignment(Pos.CENTER);
+    Label actUPK = new Label("Actual UPK");
+    actUPK.setMinWidth(75);
+    actUPK.setPrefWidth(75);
+    actUPK.setMaxWidth(75);
+    actUPK.setAlignment(Pos.CENTER);
+    Label upkVar = new Label("UPK Variance (%)");
+    upkVar.setMinWidth(95);
+    upkVar.setPrefWidth(95);
+    upkVar.setMaxWidth(95);
+    upkVar.setAlignment(Pos.CENTER);
     HBox box = new HBox(10);
-    box.getChildren().addAll(name, begInventory, totPurch, totTrans, endInv, avgUPK, actUPK,
-        theorUsage, actUsage);
+    box.getChildren().addAll(name, begInventory, totPurch, totTrans, endInv, theorUsage, actUsage, avgUPK, actUPK, upkVar);
     return box;
+  }
+
+  public static void populateTheoryUsageTitleBox(HBox box)
+  {
+    Label menuNum = new Label("Menu Item Num");
+    menuNum.setMinWidth(100);
+    menuNum.setPrefWidth(100);
+    menuNum.setMaxWidth(100);
+    menuNum.setAlignment(Pos.CENTER);
+    Label desc = new Label("Description");
+    desc.setMinWidth(200);
+    desc.setPrefWidth(200);
+    desc.setMaxWidth(200);
+    desc.setAlignment(Pos.CENTER);
+    Label unit = new Label("Unit");
+    unit.setMinWidth(50);
+    unit.setPrefWidth(50);
+    unit.setMaxWidth(50);
+    unit.setAlignment(Pos.CENTER);
+    Label qtySold = new Label("Qty Sold"); 
+    qtySold.setMinWidth(55);
+    qtySold.setPrefWidth(55);
+    qtySold.setMaxWidth(55);
+    qtySold.setAlignment(Pos.CENTER);
+    Label totalQty = new Label("Total Qty"); 
+    totalQty.setMinWidth(55);
+    totalQty.setPrefWidth(55);
+    totalQty.setMaxWidth(55);
+    totalQty.setAlignment(Pos.CENTER);
+    Label portion = new Label("Portion");
+    portion.setMinWidth(55);
+    portion.setPrefWidth(55);
+    portion.setMaxWidth(55);
+    portion.setAlignment(Pos.CENTER);
+    box.getChildren().addAll(menuNum, desc, unit, qtySold, totalQty, portion);
+  }
+
+  public static void populateVendorDeliveryDetailTitleBox(HBox box)
+  {
+    Label deliveryDate = new Label("Delivery Date");
+    deliveryDate.setMinWidth(100);
+    deliveryDate.setPrefWidth(100);
+    deliveryDate.setMaxWidth(100);
+    Label desc = new Label("Description");
+    desc.setMinWidth(70);
+    desc.setPrefWidth(70);
+    desc.setMaxWidth(70);
+    Label unit = new Label("Unit");
+    unit.setMinWidth(50);
+    unit.setPrefWidth(50);
+    unit.setMaxWidth(50);
+    unit.setAlignment(Pos.CENTER);
+    Label qtyCase = new Label("Qty (cs)");
+    qtyCase.setMinWidth(70);
+    qtyCase.setPrefWidth(70);
+    qtyCase.setMaxWidth(70);
+    Label qtyEa = new Label("Qty (ea)");
+    qtyEa.setMinWidth(70);
+    qtyEa.setPrefWidth(70);
+    qtyEa.setMaxWidth(70);
+    Label invoiceNum = new Label("Invoice Num");
+    invoiceNum.setMinWidth(70);
+    invoiceNum.setPrefWidth(70);
+    invoiceNum.setMaxWidth(70);
+    Label vendorNum = new Label("Vendor Num");
+    vendorNum.setMinWidth(70);
+    vendorNum.setPrefWidth(70);
+    vendorNum.setMaxWidth(70);
+    box.getChildren().addAll(deliveryDate, desc, unit, qtyCase, qtyEa, invoiceNum, vendorNum);
+
+  }
+
+  public static void populateTransferTitleBox(HBox box)
+  {
+    Label inOut = new Label("In/Out");
+    inOut.setMinWidth(40);
+    inOut.setPrefWidth(40);
+    inOut.setMaxWidth(40);
+    inOut.setAlignment(Pos.CENTER);
+    Label store = new Label("Store");
+    store.setMinWidth(150);
+    store.setPrefWidth(150);
+    store.setMaxWidth(150);
+    store.setAlignment(Pos.CENTER);
+    Label unit = new Label("Unit");
+    unit.setMinWidth(40);
+    unit.setPrefWidth(40);
+    unit.setMaxWidth(40);
+    unit.setAlignment(Pos.CENTER);
+    Label date = new Label("Date");
+    date.setMinWidth(70);
+    date.setPrefWidth(70);
+    date.setMaxWidth(70);
+    date.setAlignment(Pos.CENTER);
+    Label itemId = new Label("Item ID");
+    itemId.setMinWidth(100);
+    itemId.setPrefWidth(100);
+    itemId.setMaxWidth(100);
+    itemId.setAlignment(Pos.CENTER);
+    Label qty = new Label("Quantity");
+    qty.setMinWidth(65);
+    qty.setPrefWidth(65);
+    qty.setMaxWidth(65);
+    qty.setAlignment(Pos.CENTER);
+    box.getChildren().addAll(inOut, store, unit, date, itemId, qty);
   }
 }

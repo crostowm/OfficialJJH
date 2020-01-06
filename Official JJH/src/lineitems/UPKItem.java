@@ -129,6 +129,4 @@ public class UPKItem implements Comparable<UPKItem>
   {
     return name.compareTo(item.getName());
   }
-
-  
 }

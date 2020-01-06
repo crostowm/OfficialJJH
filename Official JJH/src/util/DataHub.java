@@ -13,6 +13,7 @@ import lineitems.AttendanceShift;
 import lineitems.CateringTransaction;
 import lineitems.InventoryItem;
 import lineitems.UPKWeek;
+import lineitems.WeeklySummaryItem;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditReader;
@@ -58,6 +59,7 @@ public class DataHub implements Serializable
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
   private ArrayList<ManagerDBL> managerDBLs;
+  private WeeklySummaryItem weeklySummaryItem;
 
   public DataHub()
   {
@@ -628,5 +630,25 @@ public class DataHub implements Serializable
   public ArrayList<InventoryItem> getInventoryItems()
   {
     return inventoryItems;
+  }
+
+  public InventoryItem getInventoryItem(String name)
+  {
+    for(InventoryItem ii: inventoryItems)
+    {
+      if(name.equals(ii.getName()))
+        return ii;
+    }
+    return null;
+  }
+
+  public void setCurrentWeekSummary(WeeklySummaryItem item)
+  {
+    this.weeklySummaryItem = item;
+  }
+
+  public WeeklySummaryItem getCurrentWeeklySummary()
+  {
+    return weeklySummaryItem;
   }
 }

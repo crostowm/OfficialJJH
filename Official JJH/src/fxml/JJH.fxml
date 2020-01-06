@@ -31,13 +31,18 @@
             <children>
                   <BorderPane fx:id="baseBorderPane" layoutX="172.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
-                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dark-pane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
                             <Tab closable="false" text="Projections">
                             <content>
                              <fx:include fx:id="projectionTab" source="ProjectionTab.fxml" />
                             </content>
                             </Tab>
+                              <Tab text="Hourly Tab"> 
+                              <content>
+                             		<fx:include fx:id="hourlyTab" source="HourlyTab.fxml" />
+                            	</content>
+                              </Tab>
                               <Tab text="Produce Order Guide">
                               <content>
                              <fx:include fx:id="produceOrderGuideTab" source="ProduceOrderGuideTab.fxml" />
@@ -73,18 +78,13 @@
                              		<fx:include fx:id="settingsTab" source="SettingsTab.fxml" />
                             	</content>
                               </Tab>
-                              <Tab text="Hourly Tab"> 
-                              <content>
-                             		<fx:include fx:id="hourlyTab" source="HourlyTab.fxml" />
-                            	</content>
-                              </Tab>
                           </tabs>
                         </TabPane>
                      </center>
                      <right>
                         <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="150.0" styleClass="marble-background" BorderPane.alignment="CENTER_RIGHT">
                           <panes>
-                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Current">
+                            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Current">
                                  <content>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                                        <content>
@@ -169,7 +169,7 @@
                                     </ScrollPane>
                                  </content>
                             </TitledPane>
-                            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Today">
+                            <TitledPane animated="false" expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Today">
                                  <content>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                                        <content>
@@ -196,12 +196,12 @@
                                                 <TextField fx:id="lastYearProjAMField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField fx:id="lastYearProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                 <Label text="Manager DBLs" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                <ScrollPane fitToWidth="true" styleClass="marble-background" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                                <ScrollPane fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
                                                    <content>
-                                                      <VBox fx:id="managerDBLBox" spacing="5.0" styleClass="marble-background" stylesheets="@../css/stylesheet.css">
-                                                         <effect>
-                                                            <DropShadow />
-                                                         </effect></VBox>
+                                                      <VBox fx:id="managerDBLBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" spacing="5.0" styleClass="dark-pane" stylesheets="@../css/stylesheet.css">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding></VBox>
                                                    </content>
                                                    <effect>
                                                       <DropShadow />

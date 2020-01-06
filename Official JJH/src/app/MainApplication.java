@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Timer;
 
 import controllers.AreaManagerReportController;
@@ -20,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import lineitems.InventoryItem;
 import personnel.Manager;
 import readers.InventoryItemNameReader;
 import selenium.ReportGrabber;
@@ -36,8 +39,8 @@ import util.ReportFinder;
  */
 public class MainApplication extends Application
 {
-  //noahyambao
-  //noahyambao1234
+  // noahyambao
+  // noahyambao1234
   public static boolean fullRun = true;
   public static boolean downloadReports = false;
   public static boolean sendAMEmail = false;
@@ -53,6 +56,8 @@ public class MainApplication extends Application
   public static ArrayList<Manager> activeManagers = new ArrayList<Manager>();
   public static String reportsUsed = "";
   public static String jjrgb = "206, 31, 47";
+  public static String mgrLoginUser = "crostowm";
+  public static String mgrLoginPass = "Zulu9495";
   private Stage stage;
   private Stage amrStage;
   private LoginStage loginStage;
@@ -76,16 +81,20 @@ public class MainApplication extends Application
       ReportGrabber rg = null;
       try
       {
-        rg = new ReportGrabber(storeNumber);
+        rg = new ReportGrabber();
         rg.startAndLogin();
-        //if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)rg.downloadTrendSheets();
-        rg.downloadItemUsageAnalysis();
-        //rg.downloadLastAMPhoneAuditReport();
-        //rg.downloadAttendanceReport();
-        //rg.downloadLast6UPK();
-        //rg.downloadLast4WSR();
-        //rg.downloadLastYearWSR();
-        //rg.downloadLast4HourlySales();
+        if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)
+        {
+          rg.downloadTrendSheets();
+          rg.downloadItemUsageAnalysis();
+          rg.downloadLast6UPK();
+          //rg.downloadFullWeekAttendance();
+        }
+        rg.downloadLastAMPhoneAuditReport();
+        rg.downloadAttendanceReport();
+        rg.downloadLast4WSR();
+        rg.downloadLastYearWSR();
+        rg.downloadLast4HourlySales();
         rg.goToDownloadCenterAndDownloadAll();
       }
       finally
@@ -96,14 +105,19 @@ public class MainApplication extends Application
     }
 
     ReportFinder rf = new ReportFinder(BASE_DOWNLOAD_LOCATION);
+    rf.uploadSpecialItems();
     rf.uploadUPKToDataHub();
+    for(InventoryItem ii: dataHub.getInventoryItems())
+    {
+      dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+    }
     rf.uploadWSRToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadHourlySalesToDataHub();
     rf.uploadCateringTransactionsToDataHub();
     rf.uploadTrendSheetsToDataHub();
     rf.uploadAttendanceReportToDataHub();
-    rf.uploadSpecialItems();
+    rf.uploadWeeklySummaryToDataHub();
     System.out.println(reportsUsed);
     if (fullRun)
     {

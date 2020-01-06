@@ -108,6 +108,7 @@ public class HubController implements DataObserver
   {
     MainApplication.dataHub.addObserver(this);
 
+    //Setup Labor
     // Tabs that require time updates
     timeObservers.add(projectionTabController);
     shiftManagerLabel.setText(MainApplication.activeManagers.get(0) + "");
@@ -141,7 +142,7 @@ public class HubController implements DataObserver
       }
     });
     bottomHBox.getChildren().add(1, managerSignInButton);
-    managerDBLBox.setStyle("-fx-background-color: rgba(0, 0, 0, .7);");
+    //managerDBLBox.setStyle("-fx-background-color: rgba(0, 0, 0, .7);");
   }
 
   private void updateAllFields()

@@ -332,27 +332,13 @@
                   <TextField fx:id="turkeyGENField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="16" />
                   <TextField fx:id="beefGENField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="16" />
                   <TextField fx:id="vitoGENField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="16" />
-                  <GridPane hgap="5.0" vgap="3.0" GridPane.columnIndex="10" GridPane.columnSpan="5" GridPane.rowIndex="13" GridPane.rowSpan="4">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                      <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                      <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Current Week Labor" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-                        <Label text="Mangement" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label text="Driver" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <Label text="Inshop" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
+                  <Label text="Current Week Labor" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Mangement" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <TextField fx:id="mgrLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="13" />
+                  <Label text="Inshop" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <TextField fx:id="inshopLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="14" />
+                  <Label text="Driver" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <TextField fx:id="driverLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="15" />
                </children>
             </GridPane>
          </content>

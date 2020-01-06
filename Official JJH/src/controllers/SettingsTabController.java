@@ -10,26 +10,37 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import personnel.Manager;
+import selenium.ReportGrabber;
 import util.DataHub;
 
 public class SettingsTabController
 {
   @FXML
-  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, wrtvField, fsvField, bakedAt11Field,
-      bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField, cucumberBVField, pickleBVField, spvField, inshopStartPayField;
+  private TextField amBufferField, pmBufferField, btvField, b9tvField, wlvField, wrtvField,
+      fsvField, bakedAt11Field, bakedAtSCField, lettuceBVField, tomatoBVField, onionBVField,
+      cucumberBVField, pickleBVField, spvField, inshopStartPayField;
 
   @FXML
-  private Button addManagerButton, removeManagerButton;
-  
+  private Button addManagerButton, removeManagerButton, redownloadButton;
+
   @FXML
   private ChoiceBox<Manager> managerChoice;
-  
+
+  @FXML
+  private ChoiceBox<String> downloadChoice;
+
   @FXML
   private TextArea reportsUsedArea;
-  
+
   public void initialize()
   {
-    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
+    downloadChoice.setItems(FXCollections.observableArrayList("Attendance (Yesterday)",
+        "Attendance (Last Week)", "Area Manager Phone Audit", "Hourly Sales (Last 4 Weeks)",
+        "Item Usage Analysis", "Trend Sheet", "UPK (Last 6 Weeks)", "Weekly Sales (Last 4 Weeks)",
+        "Weekly Sales (Last Year)"));
+    // TODO should be set based on saved datahub data
+    managerChoice
+        .setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
     try
     {
       MainApplication.dataHub.changeSetting(DataHub.AMBUFFER,
@@ -60,10 +71,11 @@ public class SettingsTabController
     }
     System.out.println("STC");
   }
-  
+
   public void updateAllFields()
   {
-    managerChoice.setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
+    managerChoice
+        .setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
     reportsUsedArea.setText(MainApplication.reportsUsed);
   }
 
@@ -73,12 +85,50 @@ public class SettingsTabController
     AddManagerStage ams = new AddManagerStage();
     ams.show();
   }
-  
+
   @FXML
   void removeManagerButtonPressed()
   {
     MainApplication.dataHub.removeManager(managerChoice.getValue());
   }
+
+  @FXML
+  void redownloadButtonClicked()
+  {
+    ReportGrabber rg = new ReportGrabber();
+    rg.startAndLogin();
+    switch (downloadChoice.getValue())
+    {
+      case "Attendance (Yesterday)":
+        rg.downloadAttendanceReport();
+        break;
+      case "Attendance (Last Week)":
+        break;
+      case "Area Manager Phone Audit":
+        rg.downloadLastAMPhoneAuditReport();
+        break;
+      case "Hourly Sales (Last 4 Weeks)":
+        rg.downloadLast4HourlySales();
+        break;
+      case "Item Usage Analysis":
+        rg.downloadItemUsageAnalysis();
+        break;
+      case "Trend Sheet":
+        rg.downloadTrendSheets();
+        break;
+      case "UPK (Last 6 Weeks)":
+        rg.downloadLast6UPK();
+        break;
+      case "Weekly Sales (Last 4 Weeks)":
+        rg.downloadLast4WSR();
+        break;
+      case "Weekly Sales (Last Year)":
+        rg.downloadLastYearWSR();
+        break;
+    }
+    rg.close();
+  }
+
   // Settings
   @FXML
   void amBufferFieldChanged()

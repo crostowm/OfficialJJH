@@ -17,6 +17,7 @@ import readers.ItemUsageAnalysisReader;
 import readers.TrendSheetReader;
 import readers.UPKReader;
 import readers.WSRMap;
+import readers.WeeklySummaryReader;
 
 public class ReportFinder
 {
@@ -188,6 +189,12 @@ public class ReportFinder
     }
     Collections.sort(items);
     MainApplication.dataHub.setInventoryItems(items);
+  }
+
+  public void uploadWeeklySummaryToDataHub()
+  {
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySummaryReport"), 1);
+    MainApplication.dataHub.setCurrentWeekSummary(new WeeklySummaryReader(fs.get(0).getFile()).getItem());
   }
 
 }

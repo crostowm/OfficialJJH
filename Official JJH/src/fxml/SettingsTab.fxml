@@ -110,6 +110,8 @@
                   <TextField fx:id="spvField" maxWidth="75.0" onKeyTyped="#pickleBVChanged" prefWidth="60.0" text="1200" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                   <Label text="Inshop Starting Pay" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
                   <TextField fx:id="inshopStartPayField" maxWidth="75.0" onKeyTyped="#bakedAtSCFieldChanged" prefWidth="60.0" text="8.00" GridPane.columnIndex="5" />
+                  <ChoiceBox fx:id="downloadChoice" maxWidth="1.7976931348623157E308" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                  <Button fx:id="redownloadButton" alignment="CENTER" mnemonicParsing="false" onAction="#redownloadButtonClicked" text="Re-download Report" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

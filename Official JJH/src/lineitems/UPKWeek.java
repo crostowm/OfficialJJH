@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import app.MainApplication;
+
 public class UPKWeek
 {
   private ArrayList<UPKItem> upkItems = new ArrayList<UPKItem>();
@@ -36,12 +38,54 @@ public class UPKWeek
   
   public UPKItem getUPKItem(String name)
   {
-    for(UPKItem item: upkItems)
+    String cat = "";
+    UPKItem cons = null;
+    String unit = "";
+    switch(name)
     {
-      if(item.getName().equals(name))
-        return item;
+      case "Chip JJ Reg":
+      case "Chip JJ BBQ":
+      case "Chip JJ Jalapeno":
+      case "Chip JJ S&V":
+      case "Chip JJ Skinny":
+        cat = "Sides";
+        cons = getUPKItem("Chips");
+        unit = "ea";
+        break;
+      case "Cookie JJ Triple Choc Chip":
+      case "Cookie Oatmeal Raisin":
+        cat = "Sides";
+        cons = getUPKItem("Cookies");
+        unit = "ea";
+        break;
+      case "Onions (Yellow Jumbo)":
+        return getUPKItem("Onions");
+      case "Syrup Cherry Coke":
+      case "Syrup Coke":
+      case "Syrup Diet Coke":
+      case "Syrup Dr. Pepper":
+      case "Syrup Lemonade":
+      case "Syrup Powerade":
+      case "Syrup Root Beer":
+      case "Syrup Sprite":
+        cat = "Beverage";
+        cons = getUPKItem("Syrup Drinks");
+        unit = "gal";
+        break;
+      default:
+        for(UPKItem item: upkItems)
+        {
+          if(item.getName().equals(name))
+            return item;
+        }
+        break;
     }
-    return null;
+    InventoryItem ii = MainApplication.dataHub.getInventoryItem(name);
+    double perc = ii.getActUsage()/cons.getActualUsage();
+    double actUPK = perc * cons.getActualUPK();
+    double avgUPK = perc * cons.getAverageUPK();
+    //TODO variance$
+    return new UPKItem(name, cat, unit, ii.getActUsage(), ii.getTheoreticalUsage(), ii.getActUsage() - ii.getTheoreticalUsage(), -1, actUPK, avgUPK, actUPK - avgUPK);
   }
 
   public ArrayList<UPKItem> getItems()
