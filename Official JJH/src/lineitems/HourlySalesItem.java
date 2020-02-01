@@ -1,9 +1,11 @@
 package lineitems;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class HourlySalesItem
+public class HourlySalesItem implements Serializable
 {
+  private static final long serialVersionUID = 3806570224458146001L;
   private double takeoutValue, pickupValue, deliveryValue, eatInValue, onlinePickupValue, onlineDeliveryValue, total$, totalPercent;
   int totalCount;
   private int takeoutCount, pickupCount, deliveryCount, eatInCount, onlinePickupCount, onlineDeliveryCount;

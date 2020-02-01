@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 
 public class JimmyCalendarUtil
 {
@@ -15,7 +15,7 @@ public class JimmyCalendarUtil
       dow = dow - 3;
     else
       dow = dow + 4;
-    if (calendar.get(Calendar.HOUR_OF_DAY) >= MainApplication.dataHub
+    if (calendar.get(Calendar.HOUR_OF_DAY) >= AppDirector.dataHub
         .getSetting(DataHub.STORESC_TIME))
       return dow * 2;
     else
@@ -81,6 +81,8 @@ public class JimmyCalendarUtil
       return "12am";
     else if (currentHour == 12)
       return "12pm";
+    else if (currentHour > 23)
+      return convertTo12Hour(currentHour - 24);
     else if (currentHour > 12)
       return (currentHour - 12) + "pm";
     return currentHour + "am";
@@ -122,7 +124,7 @@ public class JimmyCalendarUtil
     return weeks;
   }
 
-  private static int getCurrentWeekNumber()
+  public static int getCurrentWeekNumber()
   {
     return getWeekNumber(new GregorianCalendar());
   }
@@ -166,13 +168,23 @@ public class JimmyCalendarUtil
     return getCurrentShift() % 2 == 0 ? getCurrentShift() : getCurrentShift() + 1;
   }
 
-  public static int normalizeWeekIndex(int i)
+  public static int normalizeWeekIndex(int week)
   {
-    if (i <= 0)
+    if (week <= 0)
     {
-      return 52 + i;
+      return 51 + week;
     }
     else
-      return i;
+      return week;
+  }
+
+  public static int getCurrentWeek()
+  {
+    return getWeekNumber(new GregorianCalendar());
+  }
+
+  public static int normalizeHour(int currentHour)
+  {
+    return currentHour > 24 ? currentHour - 24 : currentHour;
   }
 }

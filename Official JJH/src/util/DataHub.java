@@ -6,18 +6,17 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-import app.MainApplication;
 import javafx.collections.FXCollections;
 import lineitems.AMPhoneAuditItem;
 import lineitems.AttendanceShift;
 import lineitems.CateringTransaction;
+import lineitems.HourlySalesDay;
 import lineitems.InventoryItem;
 import lineitems.UPKWeek;
 import lineitems.WeeklySummaryItem;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditReader;
-import readers.HourlySalesMap;
 import readers.ManagerDBLReader;
 import readers.TrendSheetReader;
 import readers.WSRMap;
@@ -32,17 +31,15 @@ public class DataHub implements Serializable
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
   /**
-   * index 5 is last completed week
-   * index 0 is earliest week
+   * index 5 is last completed week index 0 is earliest week
    */
   private transient ArrayList<UPKWeek> past6UPKWeeks;
-  private transient ArrayList<HourlySalesMap> past4HourlySales;
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditItem amPhoneAuditItem;
-  private transient TrendSheetReader lastYearTrendSheet, currentYearTrendSheet;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
   private transient WSRMap lastYearWSR;
   private transient ArrayList<InventoryItem> inventoryItems;
+  private transient WeeklySummaryItem weeklySummaryItem;
   private ArrayList<String> inventoryItemNames;
   private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
@@ -58,8 +55,10 @@ public class DataHub implements Serializable
   // Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
   private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
   private ArrayList<String> weeklySupplyItems;
-  private ArrayList<ManagerDBL> managerDBLs;
-  private WeeklySummaryItem weeklySummaryItem;
+  private ArrayList<CompletableTask> managerDBLs;
+  // Year-Month-Day
+  private HashMap<Integer, HashMap<Integer, HashMap<Integer, HourlySalesDay>>> hourlySalesCalendar;
+  private HashMap<Integer, TrendSheetReader> trendSheetCalendar;
 
   public DataHub()
   {
@@ -102,6 +101,8 @@ public class DataHub implements Serializable
     settings.put(COOL_TIME, 25.0);
     settings.put(SPROUT_UPK, 1.0);
     settings.put(INSHOP_MIN_PAY, 8.0);
+    hourlySalesCalendar = new HashMap<Integer, HashMap<Integer, HashMap<Integer, HourlySalesDay>>>();
+    trendSheetCalendar = new HashMap<Integer, TrendSheetReader>();
   }
 
   /**
@@ -121,14 +122,14 @@ public class DataHub implements Serializable
       for (int ii = 1; ii < 15; ii++)
       {
         System.out.println(
-            "Shift " + ii + ":  " + getProjectionWSR(1).getDataForShift("= Royalty Sales", ii) + " "
-                + getProjectionWSR(2).getDataForShift("= Royalty Sales", ii) + " "
-                + getProjectionWSR(3).getDataForShift("= Royalty Sales", ii) + " "
-                + getProjectionWSR(4).getDataForShift("= Royalty Sales", ii));
-        double avg = (getProjectionWSR(1).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSR(2).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSR(3).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSR(4).getDataForShift("= Royalty Sales", ii)) / 4;
+            "Shift " + ii + ":  " + getProjectionWSRWeek(1).getDataForShift("= Royalty Sales", ii)
+                + " " + getProjectionWSRWeek(2).getDataForShift("= Royalty Sales", ii) + " "
+                + getProjectionWSRWeek(3).getDataForShift("= Royalty Sales", ii) + " "
+                + getProjectionWSRWeek(4).getDataForShift("= Royalty Sales", ii));
+        double avg = (getProjectionWSRWeek(1).getDataForShift("= Royalty Sales", ii)
+            + getProjectionWSRWeek(2).getDataForShift("= Royalty Sales", ii)
+            + getProjectionWSRWeek(3).getDataForShift("= Royalty Sales", ii)
+            + getProjectionWSRWeek(4).getDataForShift("= Royalty Sales", ii)) / 4;
         setAverageForShift(ii, avg);
       }
     }
@@ -139,9 +140,19 @@ public class DataHub implements Serializable
    *          1-4
    * @return
    */
-  public WSRMap getProjectionWSR(int week)
+  public WSRMap getProjectionWSRWeek(int week)
   {
     return last4WeeksWSR[week - 1];
+  }
+
+  /**
+   * @param index
+   *          0-3
+   * @return
+   */
+  public WSRMap getProjectionWSRIndex(int index)
+  {
+    return last4WeeksWSR[index];
   }
 
   /**
@@ -350,10 +361,11 @@ public class DataHub implements Serializable
     int ii = startIndex;
     while (ii != endShift)
     {
-      totalProj += projections.get(ii);
-      ii++;
       if (ii > 13)
         ii = ii - 14;
+      System.out.println(ii + " " + endShift);
+      totalProj += projections.get(ii);
+      ii++;
     }
     return totalProj;
   }
@@ -370,6 +382,7 @@ public class DataHub implements Serializable
   public double getProduceRequiredForShifts(int startShift, int endShift, String produceName,
       int unit)
   {
+    System.out.println("OOP");
     double proj = getProjectionsForShifts(startShift, endShift);
     double upk;
     if (produceName.equals("Sprouts"))
@@ -390,11 +403,6 @@ public class DataHub implements Serializable
     return amPhoneAuditItem;
   }
 
-  public void setPast4HourlySalesMaps(ArrayList<HourlySalesMap> past4HourlySales)
-  {
-    this.past4HourlySales = past4HourlySales;
-  }
-
   /**
    * @param type
    *          Inshop, Delivery, or Total
@@ -404,43 +412,56 @@ public class DataHub implements Serializable
   public double getAverageHourlySales(String type, int hour, boolean includeCatering)
   {
     double total = 0;
-    for (HourlySalesMap hsm : past4HourlySales)
+    for (HourlySalesDay hsd : getPast4HourlySales())
     {
       switch (type)
       {
         case "Total":
-          total += hsm.getTotalInshopForHour(hour) + hsm.getTotalDeliveryForHour(hour);
+          total += hsd.getTotalInshopForHour(hour) + hsd.getTotalDeliveryForHour(hour);
           break;
         case "TotalInshop":
-          total += hsm.getTotalInshopForHour(hour);
+          total += hsd.getTotalInshopForHour(hour);
           break;
         case "TotalDelivery":
-          total += hsm.getTotalDeliveryForHour(hour);
+          total += hsd.getTotalDeliveryForHour(hour);
           break;
         case "EatIn":
-          total += hsm.getEatInForHour(hour);
+          total += hsd.getEatInForHour(hour);
           break;
         case "Takeout":
-          total += hsm.getTakeoutForHour(hour);
+          total += hsd.getTakeoutForHour(hour);
           break;
         case "PhonePickup":
-          total += hsm.getPhonePickupForHour(hour);
+          total += hsd.getPhonePickupForHour(hour);
           break;
         case "OnlinePickup":
-          total += hsm.getOnlinePickupForHour(hour);
+          total += hsd.getOnlinePickupForHour(hour);
           break;
         case "PhoneDelivery":
-          total += hsm.getPhoneDeliveryForHour(hour);
+          total += hsd.getPhoneDeliveryForHour(hour);
           break;
         case "OnlineDelivery":
-          total += hsm.getOnlineDeliveryForHour(hour);
+          total += hsd.getOnlineDeliveryForHour(hour);
           break;
       }
     }
     // TODO total -= only the catering in that category
     if (!includeCatering)
       total -= getCateringForHour(hour);
-    return total / past4HourlySales.size();
+    return total / getPast4HourlySales().size();
+  }
+
+  public ArrayList<HourlySalesDay> getPast4HourlySales()
+  {
+    ArrayList<HourlySalesDay> days = new ArrayList<HourlySalesDay>();
+    GregorianCalendar gc = new GregorianCalendar();
+    for (int ii = 0; ii < 4; ii++)
+    {
+      gc.add(Calendar.DAY_OF_YEAR, -7);
+      days.add(getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH),
+          gc.get(Calendar.DAY_OF_MONTH)));
+    }
+    return days;
   }
 
   private double getCateringForHour(int hour)
@@ -455,31 +476,6 @@ public class DataHub implements Serializable
       }
     }
     return cat;
-  }
-
-  public ArrayList<HourlySalesMap> getPast4HourlySalesMaps()
-  {
-    return past4HourlySales;
-  }
-
-  public void setLastYearTrendSheet(TrendSheetReader trendSheetMap)
-  {
-    this.lastYearTrendSheet = trendSheetMap;
-  }
-
-  public TrendSheetReader getLastYearTrendSheet()
-  {
-    return lastYearTrendSheet;
-  }
-
-  public void setCurrentYearTrendSheet(TrendSheetReader trendSheetMap)
-  {
-    this.currentYearTrendSheet = trendSheetMap;
-  }
-
-  public TrendSheetReader getCurrentYearTrendSheet()
-  {
-    return currentYearTrendSheet;
   }
 
   public void initializeTransientValues()
@@ -520,21 +516,20 @@ public class DataHub implements Serializable
   {
     if (managerDBLs == null)
     {
-      ManagerDBLReader mdr = new ManagerDBLReader(
-          MainApplication.FAKE_DOWNLOAD_LOCATION + "\\mgrdbls.txt");
+      ManagerDBLReader mdr = new ManagerDBLReader(getClass().getResource("mgrdbls.txt").getPath());
       managerDBLs = mdr.getDBLs();
     }
   }
 
-  public ArrayList<ManagerDBL> getManagerDBLs()
+  public ArrayList<CompletableTask> getManagerDBLs()
   {
     return managerDBLs;
   }
 
-  public ArrayList<ManagerDBL> getCompleteOrIncompleteManagerDBLs(boolean completed)
+  public ArrayList<CompletableTask> getCompleteOrIncompleteManagerDBLs(boolean completed)
   {
-    ArrayList<ManagerDBL> dbls = new ArrayList<ManagerDBL>();
-    for (ManagerDBL mdbl : managerDBLs)
+    ArrayList<CompletableTask> dbls = new ArrayList<CompletableTask>();
+    for (CompletableTask mdbl : managerDBLs)
     {
       if (mdbl.isCompleted() == completed)
       {
@@ -634,9 +629,9 @@ public class DataHub implements Serializable
 
   public InventoryItem getInventoryItem(String name)
   {
-    for(InventoryItem ii: inventoryItems)
+    for (InventoryItem ii : inventoryItems)
     {
-      if(name.equals(ii.getName()))
+      if (name.equals(ii.getName()))
         return ii;
     }
     return null;
@@ -650,5 +645,69 @@ public class DataHub implements Serializable
   public WeeklySummaryItem getCurrentWeeklySummary()
   {
     return weeklySummaryItem;
+  }
+
+  public HourlySalesDay getHourlySalesDay(int year, int month, int day)
+  {
+    try
+    {
+      return hourlySalesCalendar.get(year).get(month).get(day);
+    }
+    catch (NullPointerException npe)
+    {
+      return null;
+    }
+  }
+
+  public void addHourlySalesDay(HourlySalesDay hsd, int year, int month, int day)
+  {
+    if (hourlySalesCalendar.get(year) == null)
+    {
+      hourlySalesCalendar.put(year, new HashMap<Integer, HashMap<Integer, HourlySalesDay>>());
+    }
+    if (hourlySalesCalendar.get(year).get(month) == null)
+    {
+      hourlySalesCalendar.get(year).put(month, new HashMap<Integer, HourlySalesDay>());
+    }
+    hourlySalesCalendar.get(year).get(month).put(day, hsd);
+  }
+
+  public TrendSheetReader getTrendSheetForYear(Integer value)
+  {
+    return trendSheetCalendar.get(value);
+  }
+
+  public TrendSheetReader getCurrentYearTrendSheet()
+  {
+    GregorianCalendar gc = new GregorianCalendar();
+    return getTrendSheetForYear(gc.get(Calendar.YEAR));
+  }
+
+  public void setCurrentYearTrendSheet(TrendSheetReader trendSheetReader)
+  {
+    GregorianCalendar gc = new GregorianCalendar();
+    trendSheetCalendar.put(gc.get(Calendar.YEAR), trendSheetReader);
+  }
+
+  public void setTrendSheet(Integer value, TrendSheetReader trendSheetReader)
+  {
+    trendSheetCalendar.put(value, trendSheetReader);
+  }
+
+  public ArrayList<String> getMissingLast4HourlySales()
+  {
+    ArrayList<String> missingDates = new ArrayList<String>();
+    GregorianCalendar gc = new GregorianCalendar();
+    for(int ii = 0 ; ii < 4; ii++)
+    {
+      gc.add(Calendar.DAY_OF_YEAR, -7);
+      HourlySalesDay hsd = getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
+      if(hsd == null)
+      {
+        String date = String.format("%02d-%02d-%04d", gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH), gc.get(Calendar.YEAR));
+        missingDates.add(date);
+      }
+    }
+    return missingDates;
   }
 }

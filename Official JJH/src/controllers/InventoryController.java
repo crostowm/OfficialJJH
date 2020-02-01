@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
-import app.MainApplication;
+import app.AppDirector;
 import gui.GuiUtilFactory;
 import gui.InventoryBox;
 import gui.TheoryUsageBox;
@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,6 +22,7 @@ import lineitems.InventoryItem;
 import lineitems.TheoryUsageLineItem;
 import lineitems.TransferLineItem;
 import lineitems.UPKItem;
+import lineitems.UPKWeek;
 import lineitems.VendorDeliveryDetailLineItem;
 import observers.InventoryBoxObserver;
 
@@ -40,9 +42,13 @@ public class InventoryController implements InventoryBoxObserver
 
   @FXML
   private ChoiceBox<String> categoryChoice;
+  
+  @FXML
+  private TextField actualCOGS, theoreticalCOGS, cogsVariance;
 
   public void initialize()
   {
+    System.out.println("IC");
     // Can also sort by category by going through upk map
     gp.add(GuiUtilFactory.createInventoryTitleBox(), 0, 1, 2, 1);
     ArrayList<String> categories = new ArrayList<String>();
@@ -61,9 +67,13 @@ public class InventoryController implements InventoryBoxObserver
       public void handle(ActionEvent arg0)
       {
         itemVBox.getChildren().clear();
-        for (InventoryItem ii : MainApplication.dataHub.getInventoryItems())
+        UPKWeek week = AppDirector.dataHub.getPast6UPKMaps().get(5);
+        actualCOGS.setText(String.format("%.2f", week.getCOGS(categoryChoice.getValue(), UPKWeek.ACTUAL_COGS)));
+        theoreticalCOGS.setText(String.format("%.2f", week.getCOGS(categoryChoice.getValue(), UPKWeek.THEORETICAL_COGS)));
+        cogsVariance.setText(String.format("%.2f", week.getCOGS(categoryChoice.getValue(), UPKWeek.COGS_VARIANCE)));
+        for (InventoryItem ii : AppDirector.dataHub.getInventoryItems())
         {
-          UPKItem item = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+          UPKItem item = week.getUPKItem(ii.getName());
           if (item != null)
           {
             if (item.getCategory().equals(categoryChoice.getValue()))
@@ -76,6 +86,7 @@ public class InventoryController implements InventoryBoxObserver
         }
       }
     });
+    System.out.println("IC-");
   }
 
   @Override

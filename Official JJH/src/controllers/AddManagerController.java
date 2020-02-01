@@ -1,7 +1,7 @@
 package controllers;
 
 import app.AddManagerStage;
-import app.MainApplication;
+import app.AppDirector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,7 +28,7 @@ public class AddManagerController
   @FXML
   void addManagerButtonPressed(ActionEvent event)
   {
-    MainApplication.dataHub.addManager(
+    AppDirector.dataHub.addManager(
         new Manager(nameField.getText(), usernameField.getText(), passwordField.getText(), ""));
     addManagerStage.close();
   }

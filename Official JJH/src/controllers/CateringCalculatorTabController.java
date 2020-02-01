@@ -1,6 +1,6 @@
 package controllers;
 
-import app.MainApplication;
+import app.AppDirector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,6 +35,7 @@ public class CateringCalculatorTabController
 
   public void initialize()
   {
+    System.out.println("CCTC");
     SpinnerValueFactory<Integer> blValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
         0, 500, 0);
     blSpinner.setValueFactory(blValueFactory);
@@ -104,13 +105,13 @@ public class CateringCalculatorTabController
 
       }
     });
-    System.out.println("CCTC");
+    System.out.println("CCTC-");
   }
 
   public void updateAllFields()
   {
     cateringChoiceBox
-        .setItems(FXCollections.observableArrayList(MainApplication.dataHub.getCateringOrders()));
+        .setItems(FXCollections.observableArrayList(AppDirector.dataHub.getCateringOrders()));
   }
   
   @FXML
@@ -118,7 +119,7 @@ public class CateringCalculatorTabController
   {
     if (cateringChoiceBox.getValue() != null)
     {
-      MainApplication.dataHub.removeCateringOrder(cateringChoiceBox.getValue());
+      AppDirector.dataHub.removeCateringOrder(cateringChoiceBox.getValue());
       breadManagementArea.setText("");
     }
   }

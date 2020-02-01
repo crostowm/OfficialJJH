@@ -1,4 +1,4 @@
-package app;
+/*package app;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +14,7 @@ import java.util.Timer;
 import controllers.AreaManagerReportController;
 import controllers.HubController;
 import error_handling.ErrorHandler;
+import gui.LoadingStage;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import lineitems.HourlySalesDay;
 import lineitems.InventoryItem;
 import personnel.Manager;
 import readers.InventoryItemNameReader;
@@ -31,37 +33,38 @@ import time_updates.TimeUpdateSecond;
 import util.DataHub;
 import util.ReportFinder;
 
-/**
+*//**
  * JimmyHub
  * 
  * @author Max Croston
  *
- */
+ *//*
 public class MainApplication extends Application
 {
   // noahyambao
   // noahyambao1234
-  public static boolean fullRun = true;
+  public static boolean fullRun = false;
   public static boolean downloadReports = false;
-  public static boolean sendAMEmail = false;
+  public static boolean sendAMEmail = true;
   public static boolean sendWeeklySupplyEmail = false;
   public static final String cateringOrderFileName = "Catering_Orders.dat";
   public static final String dataHubFileName = "Data_Hub.dat";
   public static final String FAKE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\JJHLocalRepo\\Official JJH\\src\\resources";
   public static final String BASE_DOWNLOAD_LOCATION = "C:\\Users\\crost\\Downloads";
-  public static String AMEmail = "essentialsandwich@gmail.com";
-  public static int storeNumber = 2048;
+  public static String AMEmail = "zachc.esg@gmail.com";
+  public static int storeNumber = 1740;
   public static DataHub dataHub;
   public static ErrorHandler errorHandler = new ErrorHandler();
   public static ArrayList<Manager> activeManagers = new ArrayList<Manager>();
   public static String reportsUsed = "";
   public static String jjrgb = "206, 31, 47";
-  public static String mgrLoginUser = "crostowm";
+  public static String mgrLoginUser = "crostowmr";
   public static String mgrLoginPass = "Zulu9495";
+  public LoadingStage ls;
   private Stage stage;
   private Stage amrStage;
   private LoginStage loginStage;
-  private Timer timerMin, timerSec;
+  //private Timer timerMin, timerSec;
 
   public static void main(String[] args)
   {
@@ -85,16 +88,19 @@ public class MainApplication extends Application
         rg.startAndLogin();
         if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)
         {
-          rg.downloadTrendSheets();
           rg.downloadItemUsageAnalysis();
           rg.downloadLast6UPK();
           //rg.downloadFullWeekAttendance();
         }
-        rg.downloadLastAMPhoneAuditReport();
-        rg.downloadAttendanceReport();
+        else
+        {
+          //rg.downloadAttendanceReport();
+        }
+        //rg.downloadLast4Catering();
+        //rg.downloadLastAMPhoneAuditReport();
         rg.downloadLast4WSR();
         rg.downloadLastYearWSR();
-        rg.downloadLast4HourlySales();
+        rg.downloadHourlySalesReports(getMissingLast4HourlySales());
         rg.goToDownloadCenterAndDownloadAll();
       }
       finally
@@ -113,9 +119,8 @@ public class MainApplication extends Application
     }
     rf.uploadWSRToDataHub();
     rf.uploadAreaManagerPhoneAuditToDataHub();
-    rf.uploadHourlySalesToDataHub();
+    rf.uploadLastXHourlyDays(getMissingLast4HourlySales());
     rf.uploadCateringTransactionsToDataHub();
-    rf.uploadTrendSheetsToDataHub();
     rf.uploadAttendanceReportToDataHub();
     rf.uploadWeeklySummaryToDataHub();
     System.out.println(reportsUsed);
@@ -132,9 +137,26 @@ public class MainApplication extends Application
     }
   }
 
-  /**
+  public static ArrayList<String> getMissingLast4HourlySales()
+  {
+    ArrayList<String> missingDates = new ArrayList<String>();
+    GregorianCalendar gc = new GregorianCalendar();
+    for(int ii = 0 ; ii < 4; ii++)
+    {
+      gc.add(Calendar.DAY_OF_YEAR, -7);
+      HourlySalesDay hsd = dataHub.getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
+      if(hsd == null)
+      {
+        String date = String.format("%02d-%02d-%04d", gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH), gc.get(Calendar.YEAR));
+        missingDates.add(date);
+      }
+    }
+    return missingDates;
+  }
+
+  *//**
    * Runs the Dash Starts Timers
-   */
+   *//*
   public void runApplication()
   {
     if (amrStage != null)
@@ -145,7 +167,6 @@ public class MainApplication extends Application
     {
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJH.fxml"));
       root = loader.load();
-
       timerSec = new Timer();
       timerSec.scheduleAtFixedRate(new TimeUpdateSecond((HubController) loader.getController()), 0,
           1000L);
@@ -178,9 +199,9 @@ public class MainApplication extends Application
     }
   }
 
-  /**
+  *//**
    * Runs when program halts
-   */
+   *//*
   private void setShutdownHook()
   {
     Runtime.getRuntime().addShutdownHook(new Thread()
@@ -209,9 +230,9 @@ public class MainApplication extends Application
     });
   }
 
-  /**
+  *//**
    * Reads in DataHub If no save file, will create a default datahub
-   */
+   *//*
   private void readInDataHub()
   {
     try
@@ -231,12 +252,12 @@ public class MainApplication extends Application
     }
   }
 
-  /**
+  *//**
    * @param user
    *          Username field
    * @param pass
    *          Password field
-   */
+   *//*
   public void runAMPhoneAudit(Manager mgr)
   {
     amrStage = new Stage();
@@ -262,3 +283,4 @@ public class MainApplication extends Application
     }
   }
 }
+*/

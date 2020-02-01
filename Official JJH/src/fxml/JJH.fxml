@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -23,66 +24,69 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1200.0" styleClass="marble-background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HubController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1200.0" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HubController">
   <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" VBox.vgrow="ALWAYS">
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0" styleClass="base-background">
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0">
             <children>
-                  <BorderPane fx:id="baseBorderPane" layoutX="172.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="base-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane layoutX="172.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
-                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dark-pane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
-                            <Tab closable="false" text="Projections">
+                            <Tab closable="false" onSelectionChanged="#projectionTabSelected" text="Projections">
                             <content>
                              <fx:include fx:id="projectionTab" source="ProjectionTab.fxml" />
                             </content>
                             </Tab>
-                              <Tab text="Hourly Tab"> 
+                              <Tab onSelectionChanged="#hourlyTabSelected" text="Hourly Tab"> 
                               <content>
                              		<fx:include fx:id="hourlyTab" source="HourlyTab.fxml" />
                             	</content>
                               </Tab>
-                              <Tab text="Produce Order Guide">
+                              <Tab onSelectionChanged="#produceOrderGuideTabSelected" text="Produce Order Guide">
                               <content>
                              <fx:include fx:id="produceOrderGuideTab" source="ProduceOrderGuideTab.fxml" />
                             </content>
                               </Tab>
-                            <Tab text="Truck Order Guide">
+                            <Tab onSelectionChanged="#truckOrderGuideTabSelected" text="Truck Order Guide">
                             <content>
                              <fx:include fx:id="truckOrderGuideTab" source="TruckOrderGuideTab.fxml" />
                             </content>
                             </Tab>
-                              <Tab text="Inventory Pars"> 
+                              <Tab onSelectionChanged="#inventoryParsTabSelected" text="Inventory Pars"> 
                               	<content>
                              		<fx:include fx:id="inventoryTab" source="InventoryTab.fxml" />
                             	</content>
                               </Tab>
-                              <Tab text="Catering Manager">
+                              <Tab onSelectionChanged="#cateringManagerTabSelected" text="Catering Manager">
                               <content>
                              <fx:include fx:id="cateringCalculatorTab" source="CateringCalculatorTab.fxml" />
                             </content>
                               </Tab>
-                              <Tab text="Usage Analysis">
+                              <Tab onSelectionChanged="#usageAnalysisTabSelected" text="Usage Analysis">
                               	<content>
                              		<fx:include fx:id="usageAnalysisTab" source="UsageAnalysisTab.fxml" />
                             	</content>
                               </Tab>
-                              <Tab text="Business Analysis">
+                              <Tab onSelectionChanged="#businessAnalysisTabSelected" text="Business Analysis">
                               	<content>
                               		<fx:include fx:id="businessAnalysisTab" source="BusinessAnalysisTab.fxml" />
                               	</content>
                               </Tab>
-                              <Tab text="Settings">
+                              <Tab onSelectionChanged="#settingsTabSelected" text="Settings">
                               	<content>
                              		<fx:include fx:id="settingsTab" source="SettingsTab.fxml" />
                             	</content>
                               </Tab>
                           </tabs>
+                           <effect>
+                              <InnerShadow choke="0.07" color="WHITE" height="13.84" radius="8.21" />
+                           </effect>
                         </TabPane>
                      </center>
                      <right>
-                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="150.0" styleClass="marble-background" BorderPane.alignment="CENTER_RIGHT">
+                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="200.0" minWidth="150.0" BorderPane.alignment="CENTER_RIGHT">
                           <panes>
                             <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="marble-background" text="Current">
                                  <content>
@@ -90,8 +94,8 @@
                                        <content>
                                           <GridPane hgap="5.0" vgap="8.0">
                                              <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="65.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="55.0" />
+                                                <ColumnConstraints hgrow="NEVER" minWidth="75.0" prefWidth="75.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                 <ColumnConstraints hgrow="NEVER" />
                                                 <ColumnConstraints hgrow="NEVER" />
                                              </columnConstraints>
@@ -109,14 +113,14 @@
                                              </rowConstraints>
                                              <children>
                                                 <Label text="Upcoming Averages" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-                                                <Label fx:id="currentPaneFirstHourLabel" text="0-1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                <Label fx:id="currentPaneFirstHourLabel" text="11pm-12pm" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                                 <Label fx:id="currentPaneSecondHourLabel" text="1-2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                                 <Label fx:id="currentPaneThirdHourLabel" text="2-3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                                 <Label fx:id="currentPaneFourthHourLabel" text="3-4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                                <TextField fx:id="currentPaneFirstHourField" maxWidth="75.0" minWidth="55.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField fx:id="currentPaneSecondHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <TextField fx:id="currentPaneThirdHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <TextField fx:id="currentPaneFourthHourField" maxWidth="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <TextField fx:id="currentPaneFirstHourField" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="currentPaneSecondHourField" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="currentPaneThirdHourField" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="currentPaneFourthHourField" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <Label text="\%In" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                                                 <Label text="\%Del" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                                                 <Label fx:id="currentPaneFirstInPercLabel" text="19" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -184,6 +188,8 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                                             </rowConstraints>
                                              <children>
@@ -195,8 +201,8 @@
                                                 <TextField fx:id="todayProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                 <TextField fx:id="lastYearProjAMField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField fx:id="lastYearProjPMField" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <Label text="Manager DBLs" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                <ScrollPane fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                                <Label text="Manager DBLs" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                                <ScrollPane fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="6">
                                                    <content>
                                                       <VBox fx:id="managerDBLBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" spacing="5.0" styleClass="dark-pane" stylesheets="@../css/stylesheet.css">
                                                          <padding>
@@ -207,13 +213,38 @@
                                                       <DropShadow />
                                                    </effect>
                                                 </ScrollPane>
+                                                <Label text="Weekly Tasks" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                                <ScrollPane fitToWidth="true" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                                   <content>
+                                                      <VBox fx:id="weeklyTaskBox" prefHeight="200.0" prefWidth="100.0" styleClass="dark-pane">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                   </content>
+                                                </ScrollPane>
                                              </children>
                                           </GridPane>
                                        </content>
                                     </ScrollPane>
                                  </content>
                             </TitledPane>
+                              <TitledPane animated="false" text="Help">
+                                 <content>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dark-pane">
+                                       <content>
+                                          <TextArea fx:id="helpArea" editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="dark-pane" wrapText="true" />
+                                       </content>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </ScrollPane>
+                                 </content>
+                              </TitledPane>
                           </panes>
+                           <effect>
+                              <InnerShadow color="#fefefe" radius="11.9775" width="28.91" />
+                           </effect>
                         </Accordion>
                      </right>
                      <effect>
@@ -224,7 +255,7 @@
           </AnchorPane>
          </content>
       </ScrollPane>
-      <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+      <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0" styleClass="marble-background">
          <children>
             <Label fx:id="shiftManagerLabel" text="Shift Manager" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

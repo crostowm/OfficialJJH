@@ -1,23 +1,31 @@
-.app-font .dash-proj .large-label{
+.app-font .dash-proj .large-label {
 	-fx-font-family: "Comic Sans MS";
 }
+
 /*.base-background {
-	-fx-background-color:radial-gradient(focus-distance 80%, center 50% 50%, radius 80%, reflect, black, dimgray);
-}
-*/
+ * 	-fx-background-color:radial-gradient(focus-distance 80%, center 50% 50%, radius 80%, reflect, black, dimgray);
+ * }
+ */
+/*.marble-background {
+ * 	-fx-background-color:radial-gradient(focus-distance 0%, center 50% 50%, radius 100%, reflect, firebrick, black);
+ }*/
 .marble-background {
-	-fx-background-color:radial-gradient(focus-distance 0%, center 50% 50%, radius 100%, reflect, firebrick, black);
+	-fx-background-color: rgba(20, 20, 20);
+	-fx-text-fill: white;
 }
 
 .dark-pane {
-	-fx-background-color: rgba(0, 0, 0, .7);
+	-fx-background-color: rgba(45, 45, 45);
 	-fx-text-fill: white;
 }
+
 .large-label {
 	-fx-font-size: 30px;
 }
+
 .label {
-		-fx-text-fill: white;
+	-fx-text-fill: white;
+	-fx-font-weight: bolder;
 }
 
 .rounded .dash-proj {
@@ -36,7 +44,7 @@
 	-fx-background-color: rgba(0, 0, 0, .7);
 }
 
-.context-menu, .choice-box{
+.context-menu, .choice-box {
 	-fx-font-weight: bolder;
 	-fx-text-fill: white;
 	-fx-background-color: rgba(0, 0, 0, .7);
@@ -45,39 +53,45 @@
 .radio-button {
 	-fx-text-fill: white;
 }
+
 .tab-pane .tab-header-area .tab-header-background {
-    -fx-opacity: 0;
+	-fx-opacity: 0;
 }
 
-.tab-pane
-{
-    -fx-tab-min-width:80px;
+.tab-pane {
+	-fx-tab-min-width:80px;
 }
 
-.tab{
-    -fx-background-insets: 0 1 0 1,0,0;
-}
-.tab-pane .tab
-{
-    -fx-background-color: #3c3c3c;
-
-}
-.tab .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #828282;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
+.tab {
+	-fx-background-insets: 0 1 0 1,0,0;
 }
 
-.tab:selected .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #CF0A2B;
+.tab-pane .tab {
+	-fx-background-color: #3c3c3c;
 }
 
-.accordion {
-   -fx-background-color:radial-gradient(focus-distance 0%, center 50% 50%, radius 100%, reflect, firebrick, black);
+.tab .tab-label {
+	-fx-alignment: CENTER;
+	-fx-text-fill: #828282;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+}
+
+.tab:selected .tab-label {
+	-fx-alignment: CENTER;
+	-fx-text-fill: #CF0A2B;
+}
+
+.accordion > .titled-pane {
+	-fx-text-fill: black;
+	-fx-background-color: rgba(0, 0, 0, .7);
+	-fx-background-insets: 0 1 0 1,0,0;
 }
 
 .text-area {
 	-fx-text-fill: black;
+}
+
+.chart, .chart-title, .chart-content, .axis-label, .chart-legend, .chart-legend-item{
+	-fx-background-color: rgba(45, 45, 45);
 }

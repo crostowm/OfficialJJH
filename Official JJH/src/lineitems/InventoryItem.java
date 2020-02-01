@@ -79,6 +79,7 @@ public class InventoryItem implements Comparable<InventoryItem>
 
   public double getActUsage()
   {
+    System.out.println(actUsage);
     return actUsage;
   }
 

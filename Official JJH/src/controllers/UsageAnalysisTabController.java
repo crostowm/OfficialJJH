@@ -3,7 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import gui.GuiUtilFactory;
 import gui.UsageAnalysisHBox;
 import javafx.collections.FXCollections;
@@ -65,11 +65,11 @@ public class UsageAnalysisTabController
           usageAnalysisVBox.getChildren().clear();
           gp.add(GuiUtilFactory.createUsageAnalysisHBoxTitle(), 0, 1, 2, 1);
           // Iterate through upk items
-          for (UPKItem item : MainApplication.dataHub.getLastCompletedWeekUPKWeek()
+          for (UPKItem item : AppDirector.dataHub.getLastCompletedWeekUPKWeek()
               .getItemsOfCategory(usageAnalysisCategoryChoice.getValue()))
           {
             UsageAnalysisHBox uah = new UsageAnalysisHBox(item,
-                MainApplication.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales());
+                AppDirector.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales());
             uah.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
               @Override

@@ -3,7 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -74,6 +74,7 @@ public class ProjectionTabController implements TimeObserver
 
   public void initialize()
   {
+    System.out.println("PTC");
     averageFields = new ArrayList<TextField>();
     averageFields.add(a1);
     averageFields.add(a2);
@@ -202,14 +203,13 @@ public class ProjectionTabController implements TimeObserver
     wheatFields.add(w13);
     wheatFields.add(w14);
 
-    System.out.println(MainApplication.dataHub.getCurrentWeeklySummary());
-    mgrLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getMgrLaborPerc()));
-    inshopLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getInshopLaborPerc()));
-    driverLabor.setText(String.format("%.2f", MainApplication.dataHub.getCurrentWeeklySummary().getDriverLaborPerc()));
-    //gp.setStyle("-fx-background-color: rgba(0, 0, 0, .4);");
+    System.out.println(AppDirector.dataHub.getCurrentWeeklySummary());
+    mgrLabor.setText(String.format("%.2f", AppDirector.dataHub.getCurrentWeeklySummary().getMgrLaborPerc()));
+    inshopLabor.setText(String.format("%.2f", AppDirector.dataHub.getCurrentWeeklySummary().getInshopLaborPerc()));
+    driverLabor.setText(String.format("%.2f", AppDirector.dataHub.getCurrentWeeklySummary().getDriverLaborPerc()));
 
     setStyles();
-    System.out.println("PTC");
+    System.out.println("PTC-");
   }
 
   public void updateAllFields()
@@ -220,73 +220,73 @@ public class ProjectionTabController implements TimeObserver
       try
       {
         averageFields.get(ii)
-            .setText(String.format("%.0f", MainApplication.dataHub.getAverageDataForIndex(ii)));
+            .setText(String.format("%.0f", AppDirector.dataHub.getAverageDataForIndex(ii)));
         averageFields.get(ii).setTooltip(
-            new Tooltip(String.format("%.2f", MainApplication.dataHub.getAverageDataForIndex(ii))));
+            new Tooltip(String.format("%.2f", AppDirector.dataHub.getAverageDataForIndex(ii))));
         average20Fields.get(ii)
-            .setText(String.format("%.0f", MainApplication.dataHub.getAveragePlusBufferData(ii)));
+            .setText(String.format("%.0f", AppDirector.dataHub.getAveragePlusBufferData(ii)));
         average20Fields.get(ii).setTooltip(new Tooltip(
-            String.format("%.2f", MainApplication.dataHub.getAveragePlusBufferData(ii))));
+            String.format("%.2f", AppDirector.dataHub.getAveragePlusBufferData(ii))));
         projFields.get(ii)
-            .setText(String.format("%.2f", MainApplication.dataHub.getProjectionDataForIndex(ii)));
+            .setText(String.format("%.2f", AppDirector.dataHub.getProjectionDataForIndex(ii)));
 
-        double btv = MainApplication.dataHub.getSetting(DataHub.BTV);
-        double b9tv = MainApplication.dataHub.getSetting(DataHub.B9TV);
-        double wlv = MainApplication.dataHub.getSetting(DataHub.WLV);
+        double btv = AppDirector.dataHub.getSetting(DataHub.BTV);
+        double b9tv = AppDirector.dataHub.getSetting(DataHub.B9TV);
+        double wlv = AppDirector.dataHub.getSetting(DataHub.WLV);
         // AM Shifts (Index 0)
         if (ii % 2 == 0)
         {
           // Thawed at Open
           thawedTrayFields.get(ii).setText(String.format("%.1f",
-              MathUtil.ceilHalf(MainApplication.dataHub.getThawedDataForIndex(ii) / btv)));
+              MathUtil.ceilHalf(AppDirector.dataHub.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
               .setTooltip(new Tooltip(
-                  String.format("%.2f/%.2f", MainApplication.dataHub.getThawedDataForIndex(ii),
-                      MainApplication.dataHub.getThawedDataForIndex(ii) / btv)));
+                  String.format("%.2f/%.2f", AppDirector.dataHub.getThawedDataForIndex(ii),
+                      AppDirector.dataHub.getThawedDataForIndex(ii) / btv)));
           // Baked 75% @ 11
           percentageFields.get(ii).setText(String.format("%.1f",
-              MathUtil.ceilHalf(MainApplication.dataHub.getPercentageDataForIndex(ii) / btv)));
+              MathUtil.ceilHalf(AppDirector.dataHub.getPercentageDataForIndex(ii) / btv)));
           percentageFields.get(ii)
               .setTooltip(new Tooltip(
-                  String.format("%.2f/%.2f", MainApplication.dataHub.getPercentageDataForIndex(ii),
-                      MainApplication.dataHub.getPercentageDataForIndex(ii) / btv)));
+                  String.format("%.2f/%.2f", AppDirector.dataHub.getPercentageDataForIndex(ii),
+                      AppDirector.dataHub.getPercentageDataForIndex(ii) / btv)));
 
           // AM Wheat Field, All for day
           wheatFields.get(ii).setText(String.format("%.0f",
-              Math.ceil(MainApplication.dataHub.getWheatDataForIndex(ii) / wlv)));
+              Math.ceil(AppDirector.dataHub.getWheatDataForIndex(ii) / wlv)));
           wheatFields.get(ii).setTooltip(new Tooltip(
-              String.format("%.2f", MainApplication.dataHub.getWheatDataForIndex(ii) / wlv)));
+              String.format("%.2f", AppDirector.dataHub.getWheatDataForIndex(ii) / wlv)));
         }
         // PM Shifts
         else
         {
           // Laid out at 8am
           thawedTrayFields.get(ii).setText(String.format("%.1f",
-              MathUtil.ceilHalf(MainApplication.dataHub.getThawedDataForIndex(ii) / btv)));
+              MathUtil.ceilHalf(AppDirector.dataHub.getThawedDataForIndex(ii) / btv)));
           thawedTrayFields.get(ii)
               .setTooltip(new Tooltip(
-                  String.format("%.2f/%.2f", MainApplication.dataHub.getThawedDataForIndex(ii),
-                      MainApplication.dataHub.getThawedDataForIndex(ii) / btv)));
+                  String.format("%.2f/%.2f", AppDirector.dataHub.getThawedDataForIndex(ii),
+                      AppDirector.dataHub.getThawedDataForIndex(ii) / btv)));
 
           // PM percentage fields, Baked at SC
           percentageFields.get(ii).setText(String.format("%.1f",
-              MathUtil.ceilHalf(MainApplication.dataHub.getPercentageDataForIndex(ii) / b9tv)));
+              MathUtil.ceilHalf(AppDirector.dataHub.getPercentageDataForIndex(ii) / b9tv)));
           percentageFields.get(ii)
               .setTooltip(new Tooltip(
-                  String.format("%.2f/%.2f", MainApplication.dataHub.getPercentageDataForIndex(ii),
-                      MainApplication.dataHub.getPercentageDataForIndex(ii) / b9tv)));
+                  String.format("%.2f/%.2f", AppDirector.dataHub.getPercentageDataForIndex(ii),
+                      AppDirector.dataHub.getPercentageDataForIndex(ii) / b9tv)));
 
           // PM Wheat Field, Needed for PM
           wheatFields.get(ii).setText(String.format("%.0f",
-              Math.ceil(MainApplication.dataHub.getWheatDataForIndex(ii) / wlv)));
+              Math.ceil(AppDirector.dataHub.getWheatDataForIndex(ii) / wlv)));
           wheatFields.get(ii).setTooltip(new Tooltip(
-              String.format("%.2f", MainApplication.dataHub.getWheatDataForIndex(ii) / wlv)));
+              String.format("%.2f", AppDirector.dataHub.getWheatDataForIndex(ii) / wlv)));
 
         }
 
         // Catering Fields
         cateringFields.get(ii).setText("");
-        for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
+        for (CateringOrder co : AppDirector.dataHub.getCateringOrders())
         {
           if (JimmyCalendarUtil.getShiftNumber(co.getTime()) == ii + 1)
           {
@@ -301,93 +301,93 @@ public class ProjectionTabController implements TimeObserver
         // Fill produce fields
         double produceProj;
         if (currentShift % 2 == 1)
-          produceProj = MainApplication.dataHub.getProjectionDataForIndex(currentShift - 1)
-              + MainApplication.dataHub.getProjectionDataForIndex(currentShift);
+          produceProj = AppDirector.dataHub.getProjectionDataForIndex(currentShift - 1)
+              + AppDirector.dataHub.getProjectionDataForIndex(currentShift);
         else
-          produceProj = MainApplication.dataHub.getProjectionDataForIndex(currentShift - 1);
+          produceProj = AppDirector.dataHub.getProjectionDataForIndex(currentShift - 1);
         lettuceField.setText(String.format("%.1f", MathUtil
-            .ceilHalf(produceProj / MainApplication.dataHub.getSetting(DataHub.LETTUCEBV))));
+            .ceilHalf(produceProj / AppDirector.dataHub.getSetting(DataHub.LETTUCEBV))));
         lettuceField.setTooltip(new Tooltip(String.format("%.2f",
-            produceProj / MainApplication.dataHub.getSetting(DataHub.LETTUCEBV))));
+            produceProj / AppDirector.dataHub.getSetting(DataHub.LETTUCEBV))));
         tomatoField.setText(String.format("%.1f",
-            MathUtil.ceilHalf(produceProj / MainApplication.dataHub.getSetting(DataHub.TOMATOBV))));
+            MathUtil.ceilHalf(produceProj / AppDirector.dataHub.getSetting(DataHub.TOMATOBV))));
         tomatoField.setTooltip(new Tooltip(String.format("%.2f",
-            produceProj / MainApplication.dataHub.getSetting(DataHub.TOMATOBV))));
+            produceProj / AppDirector.dataHub.getSetting(DataHub.TOMATOBV))));
         onionField.setText(String.format("%.1f",
-            MathUtil.ceilHalf(produceProj / MainApplication.dataHub.getSetting(DataHub.ONIONBV))));
+            MathUtil.ceilHalf(produceProj / AppDirector.dataHub.getSetting(DataHub.ONIONBV))));
         onionField.setTooltip(new Tooltip(String.format("%.2f",
-            produceProj / MainApplication.dataHub.getSetting(DataHub.ONIONBV))));
+            produceProj / AppDirector.dataHub.getSetting(DataHub.ONIONBV))));
         cucumberField.setText(String.format("%.1f", MathUtil
-            .ceilHalf(produceProj / MainApplication.dataHub.getSetting(DataHub.CUCUMBERBV))));
+            .ceilHalf(produceProj / AppDirector.dataHub.getSetting(DataHub.CUCUMBERBV))));
         cucumberField.setTooltip(new Tooltip(String.format("%.2f",
-            produceProj / MainApplication.dataHub.getSetting(DataHub.CUCUMBERBV))));
+            produceProj / AppDirector.dataHub.getSetting(DataHub.CUCUMBERBV))));
         pickleField.setText(String.format("%.1f",
-            MathUtil.ceilHalf(produceProj / MainApplication.dataHub.getSetting(DataHub.PICKLEBV))));
+            MathUtil.ceilHalf(produceProj / AppDirector.dataHub.getSetting(DataHub.PICKLEBV))));
         pickleField.setTooltip(new Tooltip(String.format("%.2f",
-            produceProj / MainApplication.dataHub.getSetting(DataHub.PICKLEBV))));
+            produceProj / AppDirector.dataHub.getSetting(DataHub.PICKLEBV))));
 
         // Slicing Pars
         int nextShift = JimmyCalendarUtil.convertToShiftNumber(currentShift + 1);
         cheeseMSCField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "msc", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Cheese", "msc", currentShift))
                 + "");
         cheeseGECField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "gec", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Cheese", "gec", currentShift))
                 + "");
         cheeseMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "msc", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Cheese", "msc", nextShift))
                 + "");
         cheeseGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Cheese", "gec", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Cheese", "gec", nextShift))
                 + "");
         hamMSCField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "msc", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Ham", "msc", currentShift))
                 + "");
         hamGECField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "gec", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Ham", "gec", currentShift))
                 + "");
         hamMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "msc", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Ham", "msc", nextShift))
                 + "");
         hamGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Ham", "gec", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Ham", "gec", nextShift))
                 + "");
         turkeyMSCField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "msc", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Turkey", "msc", currentShift))
                 + "");
         turkeyGECField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "gec", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Turkey", "gec", currentShift))
                 + "");
         turkeyMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "msc", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Turkey", "msc", nextShift))
                 + "");
         turkeyGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Turkey", "gec", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Turkey", "gec", nextShift))
                 + "");
         beefMSCField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "msc", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Beef", "msc", currentShift))
                 + "");
         beefGECField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "gec", currentShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Beef", "gec", currentShift))
                 + "");
         beefMSNField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "msc", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Beef", "msc", nextShift))
                 + "");
         beefGENField.setText(
-            MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Beef", "gec", nextShift))
+            MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Beef", "gec", nextShift))
                 + "");
         vitoMSCField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "msc", currentShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "msc", currentShift))) + "");
+            (MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Salami", "msc", currentShift)
+                + AppDirector.dataHub.getSlicingPars("Capicola", "msc", currentShift))) + "");
         vitoGECField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "gec", currentShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "gec", currentShift))) + "");
+            (MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Salami", "gec", currentShift)
+                + AppDirector.dataHub.getSlicingPars("Capicola", "gec", currentShift))) + "");
         vitoMSNField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "msc", nextShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "msc", nextShift))) + "");
+            (MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Salami", "msc", nextShift)
+                + AppDirector.dataHub.getSlicingPars("Capicola", "msc", nextShift))) + "");
         vitoGENField.setText(
-            (MathUtil.ceilHalf(MainApplication.dataHub.getSlicingPars("Salami", "gec", nextShift)
-                + MainApplication.dataHub.getSlicingPars("Capicola", "gec", nextShift))) + "");
+            (MathUtil.ceilHalf(AppDirector.dataHub.getSlicingPars("Salami", "gec", nextShift)
+                + AppDirector.dataHub.getSlicingPars("Capicola", "gec", nextShift))) + "");
       }
       catch (NumberFormatException nfe)
       {
@@ -477,9 +477,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s1.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(1, Integer.parseInt(s1.getText()));
+        AppDirector.dataHub.setSamplingForShift(1, Integer.parseInt(s1.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(1, 0);
+        AppDirector.dataHub.setSamplingForShift(1, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -493,9 +493,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s2.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(2, Integer.parseInt(s2.getText()));
+        AppDirector.dataHub.setSamplingForShift(2, Integer.parseInt(s2.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(2, 0);
+        AppDirector.dataHub.setSamplingForShift(2, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -509,9 +509,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s3.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(3, Integer.parseInt(s3.getText()));
+        AppDirector.dataHub.setSamplingForShift(3, Integer.parseInt(s3.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(3, 0);
+        AppDirector.dataHub.setSamplingForShift(3, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -525,9 +525,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s4.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(4, Integer.parseInt(s4.getText()));
+        AppDirector.dataHub.setSamplingForShift(4, Integer.parseInt(s4.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(4, 0);
+        AppDirector.dataHub.setSamplingForShift(4, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -541,9 +541,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s5.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(5, Integer.parseInt(s5.getText()));
+        AppDirector.dataHub.setSamplingForShift(5, Integer.parseInt(s5.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(5, 0);
+        AppDirector.dataHub.setSamplingForShift(5, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -557,9 +557,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s6.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(6, Integer.parseInt(s6.getText()));
+        AppDirector.dataHub.setSamplingForShift(6, Integer.parseInt(s6.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(1, 0);
+        AppDirector.dataHub.setSamplingForShift(1, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -573,9 +573,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s7.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(7, Integer.parseInt(s7.getText()));
+        AppDirector.dataHub.setSamplingForShift(7, Integer.parseInt(s7.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(1, 0);
+        AppDirector.dataHub.setSamplingForShift(1, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -589,9 +589,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s8.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(8, Integer.parseInt(s8.getText()));
+        AppDirector.dataHub.setSamplingForShift(8, Integer.parseInt(s8.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(1, 0);
+        AppDirector.dataHub.setSamplingForShift(1, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -605,9 +605,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s9.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(9, Integer.parseInt(s9.getText()));
+        AppDirector.dataHub.setSamplingForShift(9, Integer.parseInt(s9.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(9, 0);
+        AppDirector.dataHub.setSamplingForShift(9, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -621,9 +621,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s10.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(10, Integer.parseInt(s10.getText()));
+        AppDirector.dataHub.setSamplingForShift(10, Integer.parseInt(s10.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(10, 0);
+        AppDirector.dataHub.setSamplingForShift(10, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -637,9 +637,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s11.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(11, Integer.parseInt(s11.getText()));
+        AppDirector.dataHub.setSamplingForShift(11, Integer.parseInt(s11.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(11, 0);
+        AppDirector.dataHub.setSamplingForShift(11, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -653,9 +653,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s12.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(12, Integer.parseInt(s12.getText()));
+        AppDirector.dataHub.setSamplingForShift(12, Integer.parseInt(s12.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(12, 0);
+        AppDirector.dataHub.setSamplingForShift(12, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -669,9 +669,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s13.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(13, Integer.parseInt(s13.getText()));
+        AppDirector.dataHub.setSamplingForShift(13, Integer.parseInt(s13.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(13, 0);
+        AppDirector.dataHub.setSamplingForShift(13, 0);
     }
     catch (NumberFormatException nfe)
     {
@@ -685,9 +685,9 @@ public class ProjectionTabController implements TimeObserver
     try
     {
       if (!s14.getText().equals(""))
-        MainApplication.dataHub.setSamplingForShift(14, Integer.parseInt(s14.getText()));
+        AppDirector.dataHub.setSamplingForShift(14, Integer.parseInt(s14.getText()));
       else
-        MainApplication.dataHub.setSamplingForShift(14, 0);
+        AppDirector.dataHub.setSamplingForShift(14, 0);
     }
     catch (NumberFormatException nfe)
     {

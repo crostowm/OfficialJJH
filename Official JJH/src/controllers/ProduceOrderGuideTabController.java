@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
-import app.MainApplication;
+import app.AppDirector;
 import gui.ProduceOrderBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -41,6 +41,7 @@ public class ProduceOrderGuideTabController implements DataObserver
 
   public void initialize()
   {
+    System.out.println("POGTC");
     ArrayList<String> daysOfTheWeek = new ArrayList<String>();
     daysOfTheWeek.add("Sunday");
     daysOfTheWeek.add("Monday");
@@ -75,27 +76,27 @@ public class ProduceOrderGuideTabController implements DataObserver
           updateProjections();
       }
     });
-    
     // Minimums
     int nextAMShift = JimmyCalendarUtil.getNextAMShift();
+    System.out.println("OOO");
     letMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24) + "");
     tomMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Tomatoes", 25) + "");
     onMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Onions", 50) + "");
     celMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1) + "");
     sprMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Sprouts", 1) + "");
 
     // Proj
-    projections = MainApplication.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
+    projections = AppDirector.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
         lastShiftProduceWillBeNeededFor);
     projField.setText(String.format("%.2f", projections));
     
@@ -108,7 +109,7 @@ public class ProduceOrderGuideTabController implements DataObserver
     cucBox = new ProduceOrderBox("Cucumbers", 1, projections, "lbs", "Lbs of Cucumbers");
     
     itemBox.getChildren().addAll(letBox, tomBox, onBox, celBox, sprBox, cucBox);
-    System.out.println("POGTC");
+    System.out.println("POGTC-");
   }
 
   protected void updateProjections()
@@ -116,23 +117,23 @@ public class ProduceOrderGuideTabController implements DataObserver
     // Minimums
     int nextAMShift = JimmyCalendarUtil.getNextAMShift();
     letMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24) + "");
     tomMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Tomatoes", 25) + "");
     onMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Onions", 50) + "");
     celMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1) + "");
     sprMinField
-        .setText(MainApplication.dataHub.getProduceRequiredForShifts(nextAMShift,
+        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Sprouts", 1) + "");
 
     // Proj
-    projections = MainApplication.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
+    projections = AppDirector.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
         lastShiftProduceWillBeNeededFor);
     projField.setText(String.format("%.2f", projections));
 

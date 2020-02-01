@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import app.WeeklySupplyStage;
 import gui.WeeklySupplyItemBox;
 import javafx.event.ActionEvent;
@@ -38,7 +38,7 @@ public class WeeklySupplyController
 
   public void initialize()
   {
-    for (String item : MainApplication.dataHub.getWeeklySupplyItems())
+    for (String item : AppDirector.dataHub.getWeeklySupplyItems())
     {
       addItemToList(item);
     }
@@ -57,7 +57,7 @@ public class WeeklySupplyController
   protected void handleAddItem()
   {
     addItemToList(itemField.getText());
-    MainApplication.dataHub.addWeeklySupplyItem(itemField.getText());
+    AppDirector.dataHub.addWeeklySupplyItem(itemField.getText());
     itemField.setText("");
   }
 
@@ -73,7 +73,7 @@ public class WeeklySupplyController
   {
     SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
     String email = "--This is an automated JimmyHub email: \nWeekly Supply Order from Store #"
-        + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime())
+        + AppDirector.config.getStoreNumber() + " " + sdf.format(new GregorianCalendar().getTime())
         + "--\n";
     for (WeeklySupplyItemBox wsib : itemBoxList)
     {
@@ -83,10 +83,10 @@ public class WeeklySupplyController
       }
     }
     email += commentArea.getText();
-    if (MainApplication.sendWeeklySupplyEmail)
+    if (AppDirector.config.shouldSendAMEmail())
     {
-      if (new Email("essentialsandwich@gmail.com",
-          "Weekly Supply Order from Store #" + MainApplication.storeNumber, email).send())
+      if (new Email(AppDirector.config.getAreaManagerEmail(),
+          "Weekly Supply Order from Store #" + AppDirector.config.getStoreNumber(), email).send())
         weeklySupplyStage.close();
     }
     else
@@ -113,7 +113,7 @@ public class WeeklySupplyController
     }
     for(WeeklySupplyItemBox wsib: itemsToRemove)
     {
-      MainApplication.dataHub.removeWeeklySupplyItem(wsib.getName());
+      AppDirector.dataHub.removeWeeklySupplyItem(wsib.getName());
       itemBoxList.remove(wsib);
       supplyGrid.getChildren().remove(wsib);
     }

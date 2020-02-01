@@ -11,24 +11,16 @@ public class TimeFile extends ComparableFile<TimeFile>
 {
   private GregorianCalendar downloadTime;
 
-  public TimeFile(File file)
+  public TimeFile(File file) throws ParseException
   {
     super(file);
     downloadTime = new GregorianCalendar();
     if (getName().endsWith(".csv"))
     {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss");
-      try
-      {
-        System.out.println(getName());
-        downloadTime.setTime(
-            sdf.parse(getName().substring(getName().length() - 25, getName().length() - 8)));
-      }
-      catch (ParseException e)
-      {
-        e.printStackTrace();
-        ErrorHandler.addError(e);
-      }
+      System.out.println(getName());
+      downloadTime
+          .setTime(sdf.parse(getName().substring(getName().length() - 25, getName().length() - 8)));
     }
   }
 

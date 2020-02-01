@@ -1,9 +1,11 @@
 package gui;
 
-import app.MainApplication;
+import app.AppDirector;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -41,13 +43,15 @@ public class ProduceOrderBox extends HBox
     upkField.setPrefWidth(45);
     upkField.setMaxWidth(45);
     upkField.setEditable(false);
+    upkField.setAlignment(Pos.CENTER);
     setMargin(upkField, new Insets(0, 0, 0, 3));
     
     usageField = new TextField();
-    usageField.setMinWidth(45);
-    usageField.setPrefWidth(45);
-    usageField.setMaxWidth(45);
+    usageField.setMinWidth(55);
+    usageField.setPrefWidth(55);
+    usageField.setMaxWidth(55);
     usageField.setEditable(false);
+    usageField.setAlignment(Pos.CENTER);
     setMargin(usageField, new Insets(0, 0, 0, 40));
     
     figureUPKAndUsage();
@@ -70,6 +74,7 @@ public class ProduceOrderBox extends HBox
     onHandEaField.setMinWidth(45);
     onHandEaField.setPrefWidth(45);
     onHandEaField.setMaxWidth(45);
+    onHandEaField.setAlignment(Pos.CENTER);
     setMargin(onHandEaField, new Insets(0, 0, 0, 50));
 
     onHandCsField = new TextField();
@@ -90,6 +95,7 @@ public class ProduceOrderBox extends HBox
     onHandCsField.setMinWidth(45);
     onHandCsField.setPrefWidth(45);
     onHandCsField.setMaxWidth(45);
+    onHandCsField.setAlignment(Pos.CENTER);
     setMargin(onHandCsField, new Insets(0, 0, 0, 33));
 
     toField = new TextField();
@@ -106,8 +112,8 @@ public class ProduceOrderBox extends HBox
 
   private void figureUPKAndUsage()
   {
-    upk = name.equals("Sprouts") ? MainApplication.dataHub.getSetting(DataHub.SPROUT_UPK)
-        : MainApplication.dataHub.getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK();
+    upk = name.equals("Sprouts") ? AppDirector.dataHub.getSetting(DataHub.SPROUT_UPK)
+        : AppDirector.dataHub.getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK();
     expectedUsage = (projections / 1000) * upk;
     
     upkField.setText(String.format("%.2f", upk));

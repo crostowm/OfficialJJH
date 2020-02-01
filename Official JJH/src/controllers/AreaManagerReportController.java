@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import gui.AttendanceShiftBox;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ import lineitems.AttendanceShift;
 import util.CateringOrder;
 import util.Email;
 import util.JimmyCalendarUtil;
-import util.ManagerDBL;
+import util.CompletableTask;
 
 /**
  * Must set MainApp
@@ -51,13 +51,13 @@ public class AreaManagerReportController
   @FXML
   private Button sendReportButton;
 
-  private MainApplication mainApplication;
+  private AppDirector mainApplication;
   private ArrayList<CateringOrder> todaysOrders = new ArrayList<CateringOrder>();
 
   public void initialize()
   {
     // Set All Labels with data
-    AMPhoneAuditItem item = MainApplication.dataHub.getAMPhoneAudit();
+    AMPhoneAuditItem item = AppDirector.dataHub.getAMPhoneAudit();
     salesLabelAM.setText(String.format("%.2f", item.getSalesAM()));
     salesLabelPM.setText(String.format("%.2f", item.getSalesPM()));
     overUnderLabelAM.setText(String.format("%.2f", item.getCashOverUnderAM()));
@@ -69,14 +69,14 @@ public class AreaManagerReportController
         String.format("Week Comps: %.2f%% / $%.2f", item.getCompPerc(), item.getCompDollars()));
 
     // MDBL Box
-    for (ManagerDBL mdbl : getMgrDblsCompletedYesterday())
+    for (CompletableTask mdbl : getMgrDblsCompletedYesterday())
     {
       Label label = new Label(String.format("%s: %s", mdbl.getCompletedName(), mdbl.getDesc()));
       label.setWrapText(true);
       mgrDBLBox.getChildren().add(label);
     }
     // Add catering orders
-    for (CateringOrder co : MainApplication.dataHub.getCateringOrders())
+    for (CateringOrder co : AppDirector.dataHub.getCateringOrders())
     {
       if (JimmyCalendarUtil.isToday(co.getTime()))
       {
@@ -97,17 +97,17 @@ public class AreaManagerReportController
       }
     });
 
-    for (AttendanceShift as : MainApplication.dataHub.getAttendaceShiftsFromYesterday())
+    for (AttendanceShift as : AppDirector.dataHub.getAttendaceShiftsFromYesterday())
     {
       attendanceVBox.getChildren().add(new AttendanceShiftBox(as));
     }
     System.out.println("AMRC");
   }
 
-  private ArrayList<ManagerDBL> getMgrDblsCompletedYesterday()
+  private ArrayList<CompletableTask> getMgrDblsCompletedYesterday()
   {
-    ArrayList<ManagerDBL> mdbls = new ArrayList<ManagerDBL>();
-    for (ManagerDBL mdbl : MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true))
+    ArrayList<CompletableTask> mdbls = new ArrayList<CompletableTask>();
+    for (CompletableTask mdbl : AppDirector.dataHub.getCompleteOrIncompleteManagerDBLs(true))
     {
       GregorianCalendar yesterday = new GregorianCalendar();
       yesterday.add(Calendar.DAY_OF_YEAR, -1);
@@ -119,7 +119,7 @@ public class AreaManagerReportController
     return mdbls;
   }
 
-  public void setMain(MainApplication mainApplication)
+  public void setMain(AppDirector mainApplication)
   {
     this.mainApplication = mainApplication;
   }
@@ -127,25 +127,25 @@ public class AreaManagerReportController
   @FXML
   private void sendReportButtonPressed()
   {
-    if (MainApplication.sendAMEmail)
+    if (AppDirector.config.shouldSendAMEmail())
     {
       sendReportButton.setDisable(true);
       SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
-      Email email = new Email(MainApplication.AMEmail, "Area Manager Report Store "
-          + MainApplication.storeNumber + " " + sdf.format(new GregorianCalendar().getTime()),
+      Email email = new Email(AppDirector.config.getAreaManagerEmail(), "Area Manager Report Store "
+          + AppDirector.config.getStoreNumber() + " " + sdf.format(new GregorianCalendar().getTime()),
           toEmail());
       email.send();
     }
     else
       System.out.println(toEmail());
-    mainApplication.runApplication();
+    mainApplication.runDash();
   }
 
   public String toEmail()
   {
     String email = String.format("This is an automated JimmyHub email from store %d\n\n"
         + "Sales AM/PM\n%s | %s\n\nOver/Under AM/PM\n%s | %s\n\nLabor AM/PM\n%s | %s\n\n%s\n%s\n",
-        MainApplication.storeNumber, salesLabelAM.getText(), salesLabelPM.getText(),
+        AppDirector.config.getStoreNumber(), salesLabelAM.getText(), salesLabelPM.getText(),
         overUnderLabelAM.getText(), overUnderLabelPM.getText(), laborLabelAM.getText(),
         laborLabelPM.getText(), weekLaborLabel.getText(), weekCompLabel.getText());
     email += "Staff: " + (staffCheck.isSelected() ? "OK\n" : "Need Help\n");
@@ -169,12 +169,12 @@ public class AreaManagerReportController
     }
     else
     {
-      for (ManagerDBL mdbl : getMgrDblsCompletedYesterday())
+      for (CompletableTask mdbl : getMgrDblsCompletedYesterday())
       {
         email += mdbl.getCompletedName() + " -> " + mdbl.getDesc() + "\n";
       }
     }
-    email += "Number Completed In Month: " + MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size() + "\n";
+    email += "Number Completed In Month: " + AppDirector.dataHub.getCompleteOrIncompleteManagerDBLs(true).size() + "\n";
     email += explanationArea.getText() + "\n";
     return email;
   }

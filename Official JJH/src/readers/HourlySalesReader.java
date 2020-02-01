@@ -11,17 +11,17 @@ import java.util.Scanner;
 
 import error_handling.ErrorHandler;
 import lineitems.HourlySalesItem;
+import lineitems.HourlySalesDay;
 import util.ParseUtil;
 
 /**
  * @author crost HashMap<Int-Order Category, HashMap<Int-Hour 24hr<HashMap<Int-Data Type Category,
  *         Double>>> 0 for total category -1 for total hour
  */
-public class HourlySalesMap
+public class HourlySalesReader
 {
-  private ArrayList<HourlySalesItem> items = new ArrayList<HourlySalesItem>();
-
-  public HourlySalesMap(File file)
+  private HourlySalesDay hsd = new HourlySalesDay();
+  public HourlySalesReader(File file)
   {
     Scanner scanner;
     ArrayList<GregorianCalendar> times = new ArrayList<GregorianCalendar>();
@@ -65,7 +65,7 @@ public class HourlySalesMap
                 times.add(startTime);
 
                 // Value
-                double val = Double.parseDouble(tokens.get(ii + 1).substring(1));
+                double val = Double.parseDouble(ParseUtil.parse$(ParseUtil.parseParen(tokens.get(ii + 1))));
                 int count = (int) Double.parseDouble(tokens.get(ii + 2));
                 switch (tokens.get(0))
                 {
@@ -92,7 +92,7 @@ public class HourlySalesMap
                   case "Online Delivery":
                     onlineDeliveryValue.add(val);
                     onlineDeliveryCount.add(count);
-                    total$.add(Double.parseDouble(tokens.get(ii + 3).substring(1)));
+                    total$.add(Double.parseDouble(ParseUtil.parse$(ParseUtil.parseParen(tokens.get(ii + 3)))));
                     totalCount.add((int) Double.parseDouble(tokens.get(ii + 4)));
                     totalPercent.add(Double.parseDouble(
                         tokens.get(ii + 5).substring(0, tokens.get(ii + 5).length() - 1)));
@@ -190,65 +190,17 @@ public class HourlySalesMap
 
     for (int ii = 0; ii < 24; ii++)
     {
-      items.add(new HourlySalesItem(times.get(ii), takeoutValue.get(ii), pickupValue.get(ii),
+      hsd.add(new HourlySalesItem(times.get(ii), takeoutValue.get(ii), pickupValue.get(ii),
           deliveryValue.get(ii), eatInValue.get(ii), onlinePickupValue.get(ii),
           onlineDeliveryValue.get(ii), total$.get(ii), totalPercent.get(ii), totalCount.get(ii),
           takeoutCount.get(ii), pickupCount.get(ii), deliveryCount.get(ii), eatInCount.get(ii),
           onlinePickupCount.get(ii), onlineDeliveryCount.get(ii)));
     }
-  }
-
-  public double getTotalInshopForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getTakeoutValue() + item.getPickupValue() + item.getEatInValue()
-        + item.getOnlinePickupValue();
-  }
-
-  public double getTotalDeliveryForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getDeliveryValue() + item.getOnlineDeliveryValue();
-  }
-
-  public double getOnlineDeliveryForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getOnlineDeliveryValue();
-  }
-
-  public double getPhoneDeliveryForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getDeliveryValue();
-  }
-
-  public double getTakeoutForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getTakeoutValue();
-  }
-
-  public double getPhonePickupForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getPickupValue();
-  }
-
-  public double getOnlinePickupForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getOnlinePickupValue();
-  }
-
-  public double getEatInForHour(int hour)
-  {
-    HourlySalesItem item = items.get(hour);
-    return item.getEatInValue();
+    
   }
   
-  public ArrayList<HourlySalesItem> getHourlySalesItems()
+  public HourlySalesDay getHourlySalesDay()
   {
-    return items;
+    return hsd;
   }
 }

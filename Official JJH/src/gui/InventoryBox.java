@@ -2,7 +2,7 @@ package gui;
 
 import java.util.ArrayList;
 
-import app.MainApplication;
+import app.AppDirector;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -143,7 +143,7 @@ public class InventoryBox extends HBox
     actUsage.setMaxWidth(65);
     actUsage.setAlignment(Pos.CENTER);
     Separator s7 = new Separator(Orientation.VERTICAL);
-    UPKItem upkItem = MainApplication.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+    UPKItem upkItem = AppDirector.dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
     Label avgUPK = new Label(
         upkItem == null ? "null" : String.format("%.2f", upkItem.getAverageUPK()));
     avgUPK.setMinWidth(65);
@@ -171,30 +171,30 @@ public class InventoryBox extends HBox
     {
       if (upkItem.getUPKVariance() > 2 || upkItem.getUPKVariance() < -2)
       {
-        setStyle("-fx-background-color: rgba(255, 0, 0, .4);");
+        setStyle("-fx-background-color: rgba(255, 0, 0, .2);");
       }
       else if (upkItem.getUPKVariance() > 1 || upkItem.getUPKVariance() < -1)
       {
-        setStyle("-fx-background-color: rgba(255, 128, 0, .4);");
+        setStyle("-fx-background-color: rgba(255, 128, 0, .2);");
       }
       else
       {
-        setStyle("-fx-background-color: rgba(0, 255, 0, .4);");
+        setStyle("-fx-background-color: rgba(0, 255, 0, .2);");
       }
     }
     double usageVariance = (ii.getActUsage() - ii.getTheoreticalUsage()) / ii.getTheoreticalUsage();
     if (usageVariance > .1 || usageVariance < -.1)
     {
-      actUsage.setStyle("-fx-background-color: rgba(255, 0, 0, .8);");
+      actUsage.setStyle("-fx-background-color: rgba(255, 0, 0, .8);-fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;");
 
     }
     else if (usageVariance > .05 || usageVariance < -.05)
     {
-      actUsage.setStyle("-fx-background-color: rgba(255, 128, 0, .8);");
+      actUsage.setStyle("-fx-background-color: rgba(255, 128, 0, .8);-fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;");
     }
     else
     {
-      actUsage.setStyle("-fx-background-color: rgba(0, 255, 0, .4);");
+      actUsage.setStyle("-fx-background-color: rgba(0, 255, 0, .4);-fx-border-radius: 10 10 10 10;-fx-background-radius: 10 10 10 10;");
     }
 
     getChildren().addAll(name, s1, begInventory, s2, totPurch, s3, totTrans, s4, endInv, s5,

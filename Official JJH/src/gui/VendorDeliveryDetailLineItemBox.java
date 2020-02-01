@@ -35,13 +35,13 @@ public class VendorDeliveryDetailLineItemBox extends HBox
     qtyEa.setPrefWidth(70);
     qtyEa.setMaxWidth(70);
     Label invoiceNum = new Label(item.getInvoiceNum());
-    invoiceNum.setMinWidth(70);
-    invoiceNum.setPrefWidth(70);
-    invoiceNum.setMaxWidth(70);
+    invoiceNum.setMinWidth(100);
+    invoiceNum.setPrefWidth(100);
+    invoiceNum.setMaxWidth(100);
     Label vendorNum = new Label(item.getVendorItemNum());
-    vendorNum.setMinWidth(70);
-    vendorNum.setPrefWidth(70);
-    vendorNum.setMaxWidth(70);
+    vendorNum.setMinWidth(100);
+    vendorNum.setPrefWidth(100);
+    vendorNum.setMaxWidth(100);
     getChildren().addAll(deliveryDate, desc, unit, qtyCase, qtyEa, invoiceNum, vendorNum);
   }
 }

@@ -5,14 +5,14 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import app.MainApplication;
+import app.AppDirector;
 import lineitems.CateringTransaction;
 import lineitems.InventoryItem;
 import lineitems.UPKWeek;
 import readers.AMPhoneAuditReader;
 import readers.AttendanceReader;
 import readers.CateringTransactionReader;
-import readers.HourlySalesMap;
+import readers.HourlySalesReader;
 import readers.ItemUsageAnalysisReader;
 import readers.TrendSheetReader;
 import readers.UPKReader;
@@ -32,9 +32,9 @@ public class ReportFinder
   {
     ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("AttendanceWagesNoBreaks_JJ"), 1);
-    MainApplication.reportsUsed += String.format("Attendance Report\n\t%s\n",
+    AppDirector.reportsUsed += String.format("Attendance Report\n\t%s\n",
         fs.get(0).getFile().getName());
-    MainApplication.dataHub
+    AppDirector.dataHub
         .uploadAttendanceShifts(new AttendanceReader(fs.get(0).getFile()).getShifts());
   }
 
@@ -42,9 +42,9 @@ public class ReportFinder
   {
     ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("Area Manager Phone Audit Report"), 1);
-    MainApplication.reportsUsed += String.format("Area Manager Phone Audit Report\n\t%s\n",
+    AppDirector.reportsUsed += String.format("Area Manager Phone Audit Report\n\t%s\n",
         fs.get(0).getFile().getName());
-    MainApplication.dataHub
+    AppDirector.dataHub
         .uploadAreaManagerPhoneAudit(new AMPhoneAuditReader(fs.get(0).getFile()));
   }
 
@@ -53,16 +53,16 @@ public class ReportFinder
    */
   public void uploadWSRToDataHub()
   {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySalesRS08"), 5);
-    MainApplication.reportsUsed += "Weekly Sales Report\n";
-    MainApplication.reportsUsed += "\tThis Year\n";
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySales"), 5);
+    AppDirector.reportsUsed += "Weekly Sales Report\n";
+    AppDirector.reportsUsed += "\tThis Year\n";
     for (int ii = 0; ii < 4; ii++)
     {
-      MainApplication.reportsUsed += "\t\t" + fs.get(ii).getFile().getName() + "\n";
-      MainApplication.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii).getFile()), ii + 1);
+      AppDirector.reportsUsed += "\t\t" + fs.get(ii).getFile().getName() + "\n";
+      AppDirector.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii).getFile()), ii + 1);
     }
-    MainApplication.reportsUsed += "\tLast Year\n\t\t" + fs.get(4).getFile().getName() + "\n";
-    MainApplication.dataHub.setLastYearWSR(new WSRMap(fs.get(4).getFile()));
+    AppDirector.reportsUsed += "\tLast Year\n\t\t" + fs.get(4).getFile().getName() + "\n";
+    AppDirector.dataHub.setLastYearWSR(new WSRMap(fs.get(4).getFile()));
   }
 
   public void uploadUPKToDataHub()
@@ -70,29 +70,15 @@ public class ReportFinder
     ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
     ArrayList<UPKWeek> past6UPKWeeks = new ArrayList<UPKWeek>();
-    MainApplication.reportsUsed += "UPK Expected Usage Report\n";
+    AppDirector.reportsUsed += "UPK Expected Usage Report\n";
     for (int ii = 0; ii < fs.size(); ii++)
     {
-      MainApplication.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
+      AppDirector.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
       UPKReader ur = new UPKReader(fs.get(ii).getFile());
       UPKWeek wk = ur.getWeek();
       past6UPKWeeks.add(wk);
     }
-    MainApplication.dataHub.setPast6UPKWeeks(past6UPKWeeks);
-  }
-
-  public void uploadHourlySalesToDataHub()
-  {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
-        4);
-    ArrayList<HourlySalesMap> past4HourlySales = new ArrayList<HourlySalesMap>();
-    MainApplication.reportsUsed += "Hourly Sales Report\n";
-    for (int ii = 0; ii < fs.size(); ii++)
-    {
-      MainApplication.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
-      past4HourlySales.add(new HourlySalesMap(fs.get(ii).getFile()));
-    }
-    MainApplication.dataHub.setPast4HourlySalesMaps(past4HourlySales);
+    AppDirector.dataHub.setPast6UPKWeeks(past6UPKWeeks);
   }
 
   public void uploadCateringTransactionsToDataHub()
@@ -100,29 +86,13 @@ public class ReportFinder
     ArrayList<DupFile> fs = findLatestDuplicates(
         getAllCSVFilesThatStartWith("Catering Transaction Summary"), 4);
     ArrayList<ArrayList<CateringTransaction>> last4DaysCatering = new ArrayList<ArrayList<CateringTransaction>>();
-    MainApplication.reportsUsed += "Catering Transaction Summary\n";
+    AppDirector.reportsUsed += "Catering Transaction Summary\n";
     for (int ii = 0; ii < fs.size(); ii++)
     {
-      MainApplication.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
+      AppDirector.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
       last4DaysCatering.add(new CateringTransactionReader(fs.get(ii).getFile()).getTrans());
     }
-    MainApplication.dataHub.setPast4DaysCatering(last4DaysCatering);
-  }
-
-  /**
-   * First download is previous year, second is current
-   */
-  public void uploadTrendSheetsToDataHub()
-  {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 2);
-    MainApplication.reportsUsed += "Trend Sheet\n";
-    if (fs.size() == 2)
-    {
-      MainApplication.reportsUsed += "\t" + fs.get(0).getFile().getName() + "\n";
-      MainApplication.reportsUsed += "\t" + fs.get(1).getFile().getName() + "\n";
-      MainApplication.dataHub.setLastYearTrendSheet(new TrendSheetReader(fs.get(0).getFile()));
-      MainApplication.dataHub.setCurrentYearTrendSheet(new TrendSheetReader(fs.get(1).getFile()));
-    }
+    AppDirector.dataHub.setPast4DaysCatering(last4DaysCatering);
   }
 
   /**
@@ -152,7 +122,15 @@ public class ReportFinder
 
     for (File f : allFiles)
     {
-      latestFiles.add(new TimeFile(f));
+      try
+      {
+        latestFiles.add(new TimeFile(f));
+      }
+      catch (Exception pe)
+      {
+        System.out.println("Thrown");
+        break;
+      }
     }
     Collections.sort(latestFiles);
     if (latestFiles.size() >= numFiles)
@@ -177,24 +155,73 @@ public class ReportFinder
 
   public void uploadSpecialItems()
   {
-    ArrayList<TimeFile> fs = findLatestItemUsageDuplicates(
+    boolean needDups = false;
+    ArrayList<TimeFile> tfs = findLatestItemUsageDuplicates(
         getAllCSVFilesThatStartWith("MxItemUsageAnalysisReport"),
-        MainApplication.dataHub.getInventoryItemNames().size());
-    ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
-    MainApplication.reportsUsed += "Item Usage Reports\n";
-    for (TimeFile df : fs)
+        AppDirector.dataHub.getInventoryItemNames().size());
+    System.out.println(tfs.size() + "-----------------");
+    ArrayList<DupFile> fs = null;
+    if (tfs.size() < AppDirector.dataHub.getInventoryItemNames().size())
     {
-      MainApplication.reportsUsed += "\t" + df.getFile().getName() + "\n";
-      items.add(new ItemUsageAnalysisReader(df.getFile()).getItemLine());
+      needDups = true;
+      fs = findLatestDuplicates(getAllCSVFilesThatStartWith("MxItemUsageAnalysisReport"),
+          AppDirector.dataHub.getInventoryItemNames().size() - tfs.size());
+    }
+    ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+    AppDirector.reportsUsed += "Item Usage Reports\n";
+    for (TimeFile tf : tfs)
+    {
+      AppDirector.reportsUsed += "\t" + tf.getFile().getName() + "\n";
+      items.add(new ItemUsageAnalysisReader(tf.getFile()).getItemLine());
+    }
+    if (needDups && fs != null)
+    {
+      for (DupFile df : fs)
+      {
+        AppDirector.reportsUsed += "\t" + df.getFile().getName() + "\n";
+        items.add(new ItemUsageAnalysisReader(df.getFile()).getItemLine());
+      }
     }
     Collections.sort(items);
-    MainApplication.dataHub.setInventoryItems(items);
+    AppDirector.dataHub.setInventoryItems(items);
   }
 
   public void uploadWeeklySummaryToDataHub()
   {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySummaryReport"), 1);
-    MainApplication.dataHub.setCurrentWeekSummary(new WeeklySummaryReader(fs.get(0).getFile()).getItem());
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySummaryReport"),
+        1);
+    AppDirector.dataHub
+        .setCurrentWeekSummary(new WeeklySummaryReader(fs.get(0).getFile()).getItem());
+  }
+
+  public void uploadLastHourlyDay(int year, int month, int day)
+  {
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
+        1);
+    AppDirector.dataHub.addHourlySalesDay(
+        new HourlySalesReader(fs.get(0).getFile()).getHourlySalesDay(), year, month, day);
+  }
+
+  public void uploadLastXHourlyDays(ArrayList<String> downloadQueue)
+  {
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Hourly Sales Report"),
+        downloadQueue.size());
+    for (int ii = 0; ii < fs.size(); ii++)
+    {
+      System.out.println(downloadQueue.get(ii));
+      int year = Integer.parseInt(downloadQueue.get(ii)
+          .substring(downloadQueue.get(ii).length() - 4, downloadQueue.get(ii).length()));
+      int month = Integer.parseInt(downloadQueue.get(ii).substring(0, 2));
+      int day = Integer.parseInt(downloadQueue.get(ii).substring(3, 5));
+      AppDirector.dataHub.addHourlySalesDay(
+          new HourlySalesReader(fs.get(ii).getFile()).getHourlySalesDay(), year, month, day);
+    }
+  }
+
+  public void uploadLastTrendSheet(Integer year)
+  {
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("Trend Sheet"), 1);
+    AppDirector.dataHub.setTrendSheet(year, new TrendSheetReader(fs.get(0).getFile()));
   }
 
 }

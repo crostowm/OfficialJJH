@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="gp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="600.0" styleClass="marble-background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HourlyTabController">
+<GridPane fx:id="gp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="497.0" minWidth="600.0" prefHeight="497.0" prefWidth="881.0" styleClass="marble-background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HourlyTabController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" vgrow="NEVER" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="marble-background" GridPane.rowIndex="1">
+      <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="marble-background" GridPane.rowIndex="2">
          <content>
             <VBox fx:id="itemBox" styleClass="marble-background" />
          </content>
       </ScrollPane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+         <children>
+            <DatePicker fx:id="dp" />
+            <CheckBox fx:id="averageCheck" mnemonicParsing="false" onAction="#averageCheckClicked" text="Average" />
+            <Region HBox.hgrow="ALWAYS" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" minViewportWidth="100.0" prefViewportWidth="150.0">
+               <content>
+                  <VBox fx:id="avgDateBox" minWidth="150.0" styleClass="dark-pane" />
+               </content>
+            </ScrollPane>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="addToDownloadQueueButton" mnemonicParsing="false" onAction="#addToDownloadQueueButtonPressed" text="Add To Download Queue">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+            <ScrollPane fitToHeight="true" fitToWidth="true" minViewportWidth="100.0" prefViewportWidth="150.0">
+               <content>
+                  <VBox fx:id="downloadQueueBox" minWidth="150.0" styleClass="dark-pane" />
+               </content>
+            </ScrollPane>
+            <Button fx:id="downloadButton" mnemonicParsing="false" onAction="#downloadButtonPressed" text="Download All" />
+         </children>
+      </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </GridPane>

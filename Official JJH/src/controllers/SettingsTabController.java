@@ -1,7 +1,7 @@
 package controllers;
 
 import app.AddManagerStage;
-import app.MainApplication;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -34,49 +34,50 @@ public class SettingsTabController
 
   public void initialize()
   {
+    System.out.println("STC");
     downloadChoice.setItems(FXCollections.observableArrayList("Attendance (Yesterday)",
         "Attendance (Last Week)", "Area Manager Phone Audit", "Hourly Sales (Last 4 Weeks)",
         "Item Usage Analysis", "Trend Sheet", "UPK (Last 6 Weeks)", "Weekly Sales (Last 4 Weeks)",
         "Weekly Sales (Last Year)"));
     // TODO should be set based on saved datahub data
     managerChoice
-        .setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
+        .setItems(FXCollections.observableArrayList(AppDirector.dataHub.getManagers()));
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.AMBUFFER,
+      AppDirector.dataHub.changeSetting(DataHub.AMBUFFER,
           Double.parseDouble(amBufferField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.PMBUFFER,
+      AppDirector.dataHub.changeSetting(DataHub.PMBUFFER,
           Double.parseDouble(pmBufferField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.BAKEDAT11,
+      AppDirector.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.BAKEDAT11,
           Double.parseDouble(bakedAt11Field.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.BAKEDATSC,
+      AppDirector.dataHub.changeSetting(DataHub.BAKEDATSC,
           Double.parseDouble(bakedAtSCField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.LETTUCEBV,
+      AppDirector.dataHub.changeSetting(DataHub.LETTUCEBV,
           Double.parseDouble(lettuceBVField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.TOMATOBV,
+      AppDirector.dataHub.changeSetting(DataHub.TOMATOBV,
           Double.parseDouble(tomatoBVField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.ONIONBV,
+      AppDirector.dataHub.changeSetting(DataHub.ONIONBV,
           Double.parseDouble(onionBVField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.CUCUMBERBV,
+      AppDirector.dataHub.changeSetting(DataHub.CUCUMBERBV,
           Double.parseDouble(cucumberBVField.getText()));
-      MainApplication.dataHub.changeSetting(DataHub.PICKLEBV,
+      AppDirector.dataHub.changeSetting(DataHub.PICKLEBV,
           Double.parseDouble(pickleBVField.getText()));
     }
     catch (NumberFormatException nfe)
     {
       System.out.println("NFE, Could not parse Settings:\n" + nfe.getMessage());
     }
-    System.out.println("STC");
+    System.out.println("STC-");
   }
 
   public void updateAllFields()
   {
     managerChoice
-        .setItems(FXCollections.observableArrayList(MainApplication.dataHub.getManagers()));
-    reportsUsedArea.setText(MainApplication.reportsUsed);
+        .setItems(FXCollections.observableArrayList(AppDirector.dataHub.getManagers()));
+    reportsUsedArea.setText(AppDirector.reportsUsed);
   }
 
   @FXML
@@ -89,7 +90,7 @@ public class SettingsTabController
   @FXML
   void removeManagerButtonPressed()
   {
-    MainApplication.dataHub.removeManager(managerChoice.getValue());
+    AppDirector.dataHub.removeManager(managerChoice.getValue());
   }
 
   @FXML
@@ -108,7 +109,7 @@ public class SettingsTabController
         rg.downloadLastAMPhoneAuditReport();
         break;
       case "Hourly Sales (Last 4 Weeks)":
-        rg.downloadLast4HourlySales();
+        rg.downloadHourlySalesReports(AppDirector.dataHub.getMissingLast4HourlySales());;
         break;
       case "Item Usage Analysis":
         rg.downloadItemUsageAnalysis();
@@ -135,7 +136,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.AMBUFFER,
+      AppDirector.dataHub.changeSetting(DataHub.AMBUFFER,
           Double.parseDouble(amBufferField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -150,7 +151,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.PMBUFFER,
+      AppDirector.dataHub.changeSetting(DataHub.PMBUFFER,
           Double.parseDouble(pmBufferField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -165,7 +166,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -179,7 +180,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -193,7 +194,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
+      AppDirector.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -207,7 +208,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.BAKEDAT11,
+      AppDirector.dataHub.changeSetting(DataHub.BAKEDAT11,
           Double.parseDouble(bakedAt11Field.getText()));
     }
     catch (NumberFormatException nfe)
@@ -222,7 +223,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.BAKEDATSC,
+      AppDirector.dataHub.changeSetting(DataHub.BAKEDATSC,
           Double.parseDouble(bakedAtSCField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -237,7 +238,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.LETTUCEBV,
+      AppDirector.dataHub.changeSetting(DataHub.LETTUCEBV,
           Double.parseDouble(lettuceBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -252,7 +253,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.TOMATOBV,
+      AppDirector.dataHub.changeSetting(DataHub.TOMATOBV,
           Double.parseDouble(tomatoBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -267,7 +268,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.ONIONBV,
+      AppDirector.dataHub.changeSetting(DataHub.ONIONBV,
           Double.parseDouble(onionBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -282,7 +283,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.CUCUMBERBV,
+      AppDirector.dataHub.changeSetting(DataHub.CUCUMBERBV,
           Double.parseDouble(cucumberBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -297,7 +298,7 @@ public class SettingsTabController
   {
     try
     {
-      MainApplication.dataHub.changeSetting(DataHub.PICKLEBV,
+      AppDirector.dataHub.changeSetting(DataHub.PICKLEBV,
           Double.parseDouble(pickleBVField.getText()));
     }
     catch (NumberFormatException nfe)

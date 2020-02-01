@@ -1,7 +1,6 @@
 package controllers;
 
-import app.LoginStage;
-import app.MainApplication;
+import app.AppDirector;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,9 +24,7 @@ public class LoginController
   @FXML
   private Label messageLabel;
 
-  private MainApplication mainApplication;
-
-  private LoginStage loginStage;
+  private AppDirector mainApplication;
 
   public void initialize()
   {
@@ -52,26 +49,20 @@ public class LoginController
     }
     else
     {
-      mgr = MainApplication.dataHub.getManager(userField.getText(), passField.getText());
+      mgr = AppDirector.dataHub.getManager(userField.getText(), passField.getText());
     }
     if (mgr != null)
     {
-      MainApplication.activeManagers.add(mgr);
+      AppDirector.activeManagers.add(mgr);
       if (mainApplication != null)
         mainApplication.runAMPhoneAudit(mgr);
-      loginStage.close();
     }
     else
       messageLabel.setText("Unable to login, invalid username and password");
   }
 
-  public void setMainApp(MainApplication mainApplication)
+  public void setMainApp(AppDirector mainApplication)
   {
     this.mainApplication = mainApplication;
-  }
-
-  public void setStage(LoginStage loginStage)
-  {
-    this.loginStage = loginStage;
   }
 }

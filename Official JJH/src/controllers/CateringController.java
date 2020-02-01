@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -103,7 +103,7 @@ public class CateringController
       if(numSticksField.getText().length() > 0)
         numSticks = Integer.parseInt(numSticksField.getText());
       
-      MainApplication.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks, infoArea.getText()));
+      AppDirector.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks, infoArea.getText()));
     }
     catch (NumberFormatException e)
     {

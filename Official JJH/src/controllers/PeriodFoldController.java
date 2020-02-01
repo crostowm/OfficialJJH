@@ -1,6 +1,6 @@
 package controllers;
 
-import app.MainApplication;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,11 +16,12 @@ public class PeriodFoldController
   public void initialize()
   {
     System.out.println("PFC");
+    System.out.println("PFC-");
   }
 
   public void updateAll()
   {
-    TrendSheetReader current = MainApplication.dataHub.getCurrentYearTrendSheet();
+    TrendSheetReader current = AppDirector.dataHub.getCurrentYearTrendSheet();
     if (current != null)
     {
       try

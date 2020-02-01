@@ -1,14 +1,11 @@
 package readers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import app.MainApplication;
 import error_handling.ErrorHandler;
-import lineitems.InventoryItem;
 import lineitems.UPKItem;
 import lineitems.UPKWeek;
 import util.ParseUtil;

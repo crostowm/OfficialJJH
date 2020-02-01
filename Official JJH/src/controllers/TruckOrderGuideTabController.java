@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
-import app.MainApplication;
+import app.AppDirector;
 import gui.GuiUtilFactory;
 import gui.TruckOrderHBox;
 import javafx.collections.FXCollections;
@@ -34,7 +34,7 @@ public class TruckOrderGuideTabController
   @FXML
   private TextField projField;
 
-  private double weekProj = MainApplication.dataHub.getWeekProj();
+  private double weekProj = AppDirector.dataHub.getWeekProj();
 
   public void initialize()
   {
@@ -108,17 +108,21 @@ public class TruckOrderGuideTabController
   protected void refreshItems()
   {
     truckOrderGuideVBox.getChildren().clear();
-    for (UPKItem item: MainApplication.dataHub.getLastCompletedWeekUPKWeek().getItems())
+    for (UPKItem item : AppDirector.dataHub.getLastCompletedWeekUPKWeek().getItems())
     {
-        TruckOrderHBox toh = new TruckOrderHBox(item, MainApplication.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales(), weekProj);
+      if (item.getCategory().equals(orderGuideCategoryChoice.getValue()))
+      {
+        TruckOrderHBox toh = new TruckOrderHBox(item,
+            AppDirector.dataHub.getLastCompletedWeekUPKWeek().getAdjustedSales(), weekProj);
         truckOrderGuideVBox.getChildren().add(toh);
+      }
     }
   }
 
   protected void figureNewProjections()
   {
-    double week = MainApplication.dataHub.getWeekProj();
-    double extra = MainApplication.dataHub.getProjectionsForShifts(
+    double week = AppDirector.dataHub.getWeekProj();
+    double extra = AppDirector.dataHub.getProjectionsForShifts(
         JimmyCalendarUtil.getAMShiftFor(orderingOnChoice.getValue()),
         JimmyCalendarUtil.getAMShiftFor(forDeliveryOnChoice.getValue()));
     weekProj = week + extra;

@@ -18,9 +18,9 @@ public class TransferBox extends HBox
     inOut.setMaxWidth(40);
     inOut.setAlignment(Pos.CENTER);
     Label store = new Label(ti.getFromStore());
-    store.setMinWidth(150);
-    store.setPrefWidth(150);
-    store.setMaxWidth(150);
+    store.setMinWidth(250);
+    store.setPrefWidth(250);
+    store.setMaxWidth(250);
     store.setAlignment(Pos.CENTER);
     Label unit = new Label(ti.getUnit());
     unit.setMinWidth(40);
@@ -28,7 +28,7 @@ public class TransferBox extends HBox
     unit.setMaxWidth(40);
     unit.setAlignment(Pos.CENTER);
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-    Label date = new Label(sdf.format(ti.getTranDate()));
+    Label date = new Label(sdf.format(ti.getTranDate().getTime()));
     date.setMinWidth(70);
     date.setPrefWidth(70);
     date.setMaxWidth(70);
@@ -38,7 +38,7 @@ public class TransferBox extends HBox
     itemId.setPrefWidth(100);
     itemId.setMaxWidth(100);
     itemId.setAlignment(Pos.CENTER);
-    Label qty = new Label(String.format("%.2d", ti.getQtyEa()));
+    Label qty = new Label(String.format("%.2f", ti.getQtyEa()));
     qty.setMinWidth(65);
     qty.setPrefWidth(65);
     qty.setMaxWidth(65);

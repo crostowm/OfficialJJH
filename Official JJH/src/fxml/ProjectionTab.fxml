@@ -246,7 +246,7 @@
                         <Insets />
                      </GridPane.margin>
                   </TextField>
-                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Total Trays Thawed Open/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                  <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Open Thawed/8am" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
                   <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Baked 75%@11(12) / @SC(9)" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
                   <Label maxHeight="15.0" prefHeight="15.0" styleClass="basic-white-label" text="Wheat Total / SC" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
                   <TextField fx:id="tt1" alignment="CENTER" editable="false" maxHeight="15.0" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="15.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
@@ -302,43 +302,43 @@
                   <TextField fx:id="onionField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                   <TextField fx:id="cucumberField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <TextField fx:id="pickleField" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                  <Label styleClass="large-white-label" text="Slicing Pars" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                  <Label styleClass="basic-white-label" text="Min Start Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-                  <Label styleClass="basic-white-label" text="Goal End Current Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
-                  <Label styleClass="basic-white-label" text="Min Start Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-                  <Label styleClass="basic-white-label" text="Goal End Next Shift" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
-                  <Label styleClass="basic-white-label" text="Cheese" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label styleClass="basic-white-label" text="Ham" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label styleClass="basic-white-label" text="Turkey" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label styleClass="basic-white-label" text="Beef" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label styleClass="basic-white-label" text="Vito" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <TextField fx:id="cheeseMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="4" GridPane.rowIndex="13" />
-                  <TextField fx:id="hamMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="5" GridPane.rowIndex="13" />
-                  <TextField fx:id="cheeseGECField" alignment="CENTER" editable="false" GridPane.columnIndex="4" GridPane.rowIndex="14" />
-                  <TextField fx:id="turkeyMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="13" />
-                  <TextField fx:id="beefMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="13" />
-                  <TextField fx:id="vitoMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="13" />
-                  <TextField fx:id="hamGECField" alignment="CENTER" editable="false" GridPane.columnIndex="5" GridPane.rowIndex="14" />
-                  <TextField fx:id="turkeyGECField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="14" />
-                  <TextField fx:id="beefGECField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="14" />
-                  <TextField fx:id="vitoGECField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="14" />
-                  <TextField fx:id="cheeseMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="4" GridPane.rowIndex="15" />
-                  <TextField fx:id="hamMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="5" GridPane.rowIndex="15" />
-                  <TextField fx:id="turkeyMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="15" />
-                  <TextField fx:id="beefMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="15" />
-                  <TextField fx:id="vitoMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="15" />
-                  <TextField fx:id="cheeseGENField" alignment="CENTER" editable="false" GridPane.columnIndex="4" GridPane.rowIndex="16" />
-                  <TextField fx:id="hamGENField" alignment="CENTER" editable="false" GridPane.columnIndex="5" GridPane.rowIndex="16" />
-                  <TextField fx:id="turkeyGENField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="16" />
-                  <TextField fx:id="beefGENField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="16" />
-                  <TextField fx:id="vitoGENField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="16" />
-                  <Label text="Current Week Labor" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-                  <Label text="Mangement" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-                  <TextField fx:id="mgrLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="13" />
-                  <Label text="Inshop" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
-                  <TextField fx:id="inshopLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="14" />
-                  <Label text="Driver" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-                  <TextField fx:id="driverLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="11" GridPane.rowIndex="15" />
+                  <Label styleClass="large-white-label" text="Slicing Pars" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Min Start Current Shift" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <Label styleClass="basic-white-label" text="Goal End Current Shift" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <Label styleClass="basic-white-label" text="Min Start Next Shift" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <Label styleClass="basic-white-label" text="Goal End Next Shift" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                  <Label styleClass="basic-white-label" text="Cheese" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Ham" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Turkey" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Beef" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label styleClass="basic-white-label" text="Vito" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <TextField fx:id="cheeseMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="13" />
+                  <TextField fx:id="hamMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="13" />
+                  <TextField fx:id="cheeseGECField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="14" />
+                  <TextField fx:id="turkeyMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+                  <TextField fx:id="beefMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="9" GridPane.rowIndex="13" />
+                  <TextField fx:id="vitoMSCField" alignment="CENTER" editable="false" GridPane.columnIndex="10" GridPane.rowIndex="13" />
+                  <TextField fx:id="hamGECField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="14" />
+                  <TextField fx:id="turkeyGECField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="14" />
+                  <TextField fx:id="beefGECField" alignment="CENTER" editable="false" GridPane.columnIndex="9" GridPane.rowIndex="14" />
+                  <TextField fx:id="vitoGECField" alignment="CENTER" editable="false" GridPane.columnIndex="10" GridPane.rowIndex="14" />
+                  <TextField fx:id="cheeseMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="15" />
+                  <TextField fx:id="hamMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="15" />
+                  <TextField fx:id="turkeyMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="15" />
+                  <TextField fx:id="beefMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="9" GridPane.rowIndex="15" />
+                  <TextField fx:id="vitoMSNField" alignment="CENTER" editable="false" GridPane.columnIndex="10" GridPane.rowIndex="15" />
+                  <TextField fx:id="cheeseGENField" alignment="CENTER" editable="false" GridPane.columnIndex="6" GridPane.rowIndex="16" />
+                  <TextField fx:id="hamGENField" alignment="CENTER" editable="false" GridPane.columnIndex="7" GridPane.rowIndex="16" />
+                  <TextField fx:id="turkeyGENField" alignment="CENTER" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="16" />
+                  <TextField fx:id="beefGENField" alignment="CENTER" editable="false" GridPane.columnIndex="9" GridPane.rowIndex="16" />
+                  <TextField fx:id="vitoGENField" alignment="CENTER" editable="false" GridPane.columnIndex="10" GridPane.rowIndex="16" />
+                  <Label text="Current Week Labor" GridPane.columnIndex="12" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                  <Label text="Mangement" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                  <TextField fx:id="mgrLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="14" GridPane.rowIndex="13" />
+                  <Label text="Inshop" GridPane.columnIndex="13" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                  <TextField fx:id="inshopLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="14" GridPane.rowIndex="14" />
+                  <Label text="Driver" GridPane.columnIndex="13" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                  <TextField fx:id="driverLabor" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" GridPane.columnIndex="14" GridPane.rowIndex="15" />
                </children>
             </GridPane>
          </content>

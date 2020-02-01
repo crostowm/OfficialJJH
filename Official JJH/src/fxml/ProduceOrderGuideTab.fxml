@@ -87,7 +87,7 @@
                <children>
                   <Label alignment="CENTER" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Name (unit)" textAlignment="CENTER" />
                   <Label alignment="CENTER" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" text="UPK (ea)" textAlignment="CENTER" />
-                  <Label alignment="CENTER" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Expected Usage (ea)" textAlignment="CENTER" />
+                  <Label alignment="CENTER" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Expected Usage (ea)" textAlignment="CENTER" />
                   <Label alignment="CENTER" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="On Hand (ea)" textAlignment="CENTER" />
                   <Label alignment="CENTER" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="On Hand (cs)" textAlignment="CENTER" />
                   <Label alignment="CENTER" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="To Order (cs)" textAlignment="CENTER" />

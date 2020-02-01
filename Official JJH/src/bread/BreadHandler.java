@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 
-import app.MainApplication;
+import app.AppDirector;
 import util.DataHub;
 
 /**
@@ -22,7 +22,7 @@ public class BreadHandler
 
   public BreadHandler()
   {
-    this.data = MainApplication.dataHub;
+    this.data = AppDirector.dataHub;
   }
   /**
    * Clears Tray Log and recreates by going backwards through bread requests
@@ -63,7 +63,7 @@ public class BreadHandler
             trayLog.add(new BreadTray6((GregorianCalendar) timerTick.clone()));
             numTraysRequired--;
           }
-          timerTick.add(Calendar.MINUTE, (int)-MainApplication.dataHub.getSetting(DataHub.BAKE_TIME));
+          timerTick.add(Calendar.MINUTE, (int)-AppDirector.dataHub.getSetting(DataHub.BAKE_TIME));
         }
       }
     }

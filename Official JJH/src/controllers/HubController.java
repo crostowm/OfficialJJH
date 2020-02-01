@@ -7,10 +7,9 @@ import java.util.GregorianCalendar;
 
 import app.AMBreadMathStage;
 import app.CateringStage;
-import app.LoginStage;
-import app.MainApplication;
+import app.AppDirector;
 import app.WeeklySupplyStage;
-import gui.ManagerDBLCheckBox;
+import gui.CompletableTaskBox;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,15 +18,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import observers.DataObserver;
 import observers.TimeObserver;
 import personnel.Manager;
 import util.CateringOrder;
+import util.CompletableTask;
 import util.DataHub;
 import util.JimmyCalendarUtil;
 
@@ -46,9 +46,6 @@ public class HubController implements DataObserver
 
   private ArrayList<TimeObserver> timeObservers = new ArrayList<TimeObserver>();
 
-  @FXML
-  private BorderPane baseBorderPane;
-  
   @FXML
   private ProjectionTabController projectionTabController;
 
@@ -100,21 +97,66 @@ public class HubController implements DataObserver
   private TextField todayProjAMField, todayProjPMField, lastYearProjAMField, lastYearProjPMField;
 
   @FXML
-  private VBox managerDBLBox;
+  private VBox managerDBLBox, weeklyTaskBox;
+
+  @FXML
+  private TextArea helpArea;
 
   private Button amBreadMathButton, managerSignInButton;
 
   public void initialize()
   {
-    MainApplication.dataHub.addObserver(this);
-
-    //Setup Labor
+    System.out.println("HC");
+    AppDirector.dataHub.addObserver(this);
+    // Setup Labor
     // Tabs that require time updates
     timeObservers.add(projectionTabController);
-    shiftManagerLabel.setText(MainApplication.activeManagers.get(0) + "");
+    if(AppDirector.activeManagers.size() == 0)
+      AppDirector.activeManagers.add(new Manager("Guest", "", "", ""));
+    shiftManagerLabel.setText(AppDirector.activeManagers.get(0) + "");
 
     currentShift = JimmyCalendarUtil.getShiftNumber(currentTimeAndDate);
     System.out.println("HC");
+    // Fill Weekly Tasks
+    switch (new GregorianCalendar().get(Calendar.DAY_OF_WEEK))
+    {
+      case Calendar.SUNDAY:
+        break;
+      case Calendar.MONDAY:
+        weeklyTaskBox.getChildren()
+            .add(new CompletableTaskBox<CompletableTask>(new CompletableTask("Place Truck Order")));
+        weeklyTaskBox.getChildren().add(
+            new CompletableTaskBox<CompletableTask>(new CompletableTask("Print Weekly Paperwork")));
+        break;
+      case Calendar.TUESDAY:
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(
+            new CompletableTask("Make sure all orders are entered in Macromatix.")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(
+            new CompletableTask("Organize weekly envelopes in chronological order.")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(new CompletableTask(
+            "Label manilla envelope with weekending date and place all order receipts inside.")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(new CompletableTask(
+            "Check Time and Attendence from last Wednesday through yesterday.")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(
+            new CompletableTask("Pre-weigh and count inventory.")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(
+            new CompletableTask("Organize and prepare for truck.")));
+        break;
+      case Calendar.WEDNESDAY:
+        weeklyTaskBox.getChildren()
+            .add(new CompletableTaskBox<CompletableTask>(new CompletableTask("Check Inventory")));
+        weeklyTaskBox.getChildren()
+            .add(new CompletableTaskBox<CompletableTask>(new CompletableTask("Upload WSR")));
+        weeklyTaskBox.getChildren().add(new CompletableTaskBox<CompletableTask>(
+            new CompletableTask("Call or text your area manager that weekending is complete.")));
+        break;
+      case Calendar.THURSDAY:
+        break;
+      case Calendar.FRIDAY:
+        break;
+      case Calendar.SATURDAY:
+        break;
+    }
     // Fill mgr dbls
     populateMgrDBLs();
     updateAllFields();
@@ -137,12 +179,12 @@ public class HubController implements DataObserver
       @Override
       public void handle(ActionEvent arg0)
       {
-        LoginStage ls = new LoginStage();
-        ls.show();
+        //TODO
       }
     });
     bottomHBox.getChildren().add(1, managerSignInButton);
-    //managerDBLBox.setStyle("-fx-background-color: rgba(0, 0, 0, .7);");
+    projectionTabSelected();
+    System.out.println("HC-");
   }
 
   private void updateAllFields()
@@ -152,16 +194,16 @@ public class HubController implements DataObserver
     cateringCalculatorTabController.updateAllFields();
     settingsTabController.updateAllFields();
 
-    todayProjAMField.setText(String.format("%.2f", MainApplication.dataHub
+    todayProjAMField.setText(String.format("%.2f", AppDirector.dataHub
         .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1)));
-    todayProjPMField.setText(String.format("%.2f", MainApplication.dataHub
+    todayProjPMField.setText(String.format("%.2f", AppDirector.dataHub
         .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
 
     lastYearProjAMField
-        .setText(String.format("%.2f", MainApplication.dataHub.getLastYearWSR().getDataForShift(
+        .setText(String.format("%.2f", AppDirector.dataHub.getLastYearWSR().getDataForShift(
             "= Royalty Sales", currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
     lastYearProjPMField
-        .setText(String.format("%.2f", MainApplication.dataHub.getLastYearWSR().getDataForShift(
+        .setText(String.format("%.2f", AppDirector.dataHub.getLastYearWSR().getDataForShift(
             "= Royalty Sales", currentShift % 2 == 0 ? currentShift : currentShift + 1)));
     System.out.println("Updated all");
   }
@@ -209,7 +251,7 @@ public class HubController implements DataObserver
         projectionTabController.timeUpdateMinute();
 
         // update current proj vals
-        double sc = MainApplication.dataHub.getSetting(DataHub.STORESC_TIME);
+        double sc = AppDirector.dataHub.getSetting(DataHub.STORESC_TIME);
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
         {
@@ -248,56 +290,79 @@ public class HubController implements DataObserver
             + JimmyCalendarUtil.convertTo12Hour(currentHour + 4));
 
         currentPaneFirstInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalInshop",
+                JimmyCalendarUtil.normalizeHour(currentHour), false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour), false))
                 * 100));
         currentPaneSecondInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 1, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalInshop",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 1, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 1, false))
                 * 100));
         currentPaneThirdInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 2, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalInshop",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 2, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 2, false))
                 * 100));
         currentPaneFourthInPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalInshop", currentHour + 3, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalInshop",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 3, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 3, false))
                 * 100));
         // TODO handle beyond midnight
         currentPaneFirstDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalDelivery",
+                JimmyCalendarUtil.normalizeHour(currentHour), false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour), false))
                 * 100));
         currentPaneSecondDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 1, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalDelivery",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 1, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 1, false))
                 * 100));
         currentPaneThirdDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 2, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalDelivery",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 2, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 2, false))
                 * 100));
         currentPaneFourthDelPercLabel.setText(String.format("%.0f",
-            (MainApplication.dataHub.getAverageHourlySales("TotalDelivery", currentHour + 3, false)
-                / MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
+            (AppDirector.dataHub.getAverageHourlySales("TotalDelivery",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 3, false)
+                / AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 3, false))
                 * 100));
 
-        currentPaneFirstHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false)));
-        currentPaneSecondHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false)));
-        currentPaneThirdHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false)));
-        currentPaneFourthHourField.setText(String.format("%.2f",
-            MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false)));
+        currentPaneFirstHourField.setText(String.format("%.2f", AppDirector.dataHub
+            .getAverageHourlySales("Total", JimmyCalendarUtil.normalizeHour(currentHour), false)));
+        currentPaneSecondHourField
+            .setText(String.format("%.2f", AppDirector.dataHub.getAverageHourlySales("Total",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 1, false)));
+        currentPaneThirdHourField
+            .setText(String.format("%.2f", AppDirector.dataHub.getAverageHourlySales("Total",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 2, false)));
+        currentPaneFourthHourField
+            .setText(String.format("%.2f", AppDirector.dataHub.getAverageHourlySales("Total",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 3, false)));
 
         currentPaneBaked9Field.setText(String.format("%.1f",
-            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour, false)
-                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 1, false))
-                / MainApplication.dataHub.getSetting(DataHub.B9TV)));
+            (AppDirector.dataHub.getAverageHourlySales("Total",
+                JimmyCalendarUtil.normalizeHour(currentHour), false)
+                + AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 1, false))
+                / AppDirector.dataHub.getSetting(DataHub.B9TV)));
         currentPaneInProcess12Field.setText(String.format("%.1f",
-            (MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 2, false)
-                + MainApplication.dataHub.getAverageHourlySales("Total", currentHour + 3, false))
-                / MainApplication.dataHub.getSetting(DataHub.BTV)));
+            (AppDirector.dataHub.getAverageHourlySales("Total",
+                JimmyCalendarUtil.normalizeHour(currentHour) + 2, false)
+                + AppDirector.dataHub.getAverageHourlySales("Total",
+                    JimmyCalendarUtil.normalizeHour(currentHour) + 3, false))
+                / AppDirector.dataHub.getSetting(DataHub.BTV)));
       }
     });
   }
@@ -341,15 +406,17 @@ public class HubController implements DataObserver
 
   private void populateMgrDBLs()
   {
-    int numComplete = MainApplication.dataHub.getCompleteOrIncompleteManagerDBLs(true).size();
+    int numComplete = AppDirector.dataHub.getCompleteOrIncompleteManagerDBLs(true).size();
     while (numComplete + managerDBLBox.getChildren().size() < new GregorianCalendar()
         .get(Calendar.DAY_OF_MONTH))
     {
-      if (numComplete + managerDBLBox.getChildren().size() < MainApplication.dataHub
+      if (numComplete + managerDBLBox.getChildren().size() < AppDirector.dataHub
           .getManagerDBLs().size())
       {
-        ManagerDBLCheckBox mdc = new ManagerDBLCheckBox(MainApplication.dataHub.getManagerDBLs()
-            .get(numComplete + managerDBLBox.getChildren().size()));
+        CompletableTaskBox<CompletableTask> mdc = new CompletableTaskBox<CompletableTask>(
+            AppDirector.dataHub.getManagerDBLs()
+                .get(numComplete + managerDBLBox.getChildren().size()));
+        // TODO make this work inside of completable check box
         mdc.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
           @Override
@@ -357,9 +424,9 @@ public class HubController implements DataObserver
           {
             if (mdc.isSelected())
             {
-              if (MainApplication.activeManagers.size() == 1)
+              if (AppDirector.activeManagers.size() == 1)
               {
-                mdc.getDBL().complete(MainApplication.activeManagers.get(0).getName(),
+                mdc.getTask().complete(AppDirector.activeManagers.get(0).getName(),
                     new GregorianCalendar());
                 managerDBLBox.getChildren().remove(mdc);
                 populateMgrDBLs();
@@ -367,7 +434,7 @@ public class HubController implements DataObserver
               else
               {
                 ContextMenu cm = new ContextMenu();
-                for (Manager m : MainApplication.activeManagers)
+                for (Manager m : AppDirector.activeManagers)
                 {
                   RadioMenuItem managerItem = new RadioMenuItem(m.getName());
                   managerItem.setOnAction(new EventHandler<ActionEvent>()
@@ -375,7 +442,7 @@ public class HubController implements DataObserver
                     @Override
                     public void handle(ActionEvent arg0)
                     {
-                      mdc.getDBL().complete(managerItem.getText(), new GregorianCalendar());
+                      mdc.getTask().complete(managerItem.getText(), new GregorianCalendar());
                       managerDBLBox.getChildren().remove(mdc);
                       populateMgrDBLs();
                     }
@@ -395,5 +462,69 @@ public class HubController implements DataObserver
         break;
       }
     }
+  }
+
+  @FXML
+  public void projectionTabSelected()
+  {
+    if (helpArea != null)
+      helpArea.setText(
+          "Projections\n\tAll data is based off of the previous 4 weeks of WSR data."
+          + "\n\nAverage:\n\tAverage of Royalty Sales"
+          + "\n\nCatering:\n\tTo add catering, click the \"Add a Catering Order\" button at the bottom."
+          + "\n\nSampling:\n\tEnter Sampling directly into the fields."
+          + "\n\nProjections:\n\t=Average + Buffer + Catering + Sampling."
+          + "\n\nOpen Thawed:\n\tAM Proj/BTV12"
+          + "\n\n8am:\n\t(PM Proj) - (.25*AM Proj) - (Baked at Shift Change)"
+          + "\n\nBaked 75%@11(12):\n\t(.75*AM Proj)/BTV12"
+          + "\n\n@SC(9):\n\t(Baked at SC * PM Proj)/BTV9");
+  }
+
+  @FXML
+  public void hourlyTabSelected()
+  {
+    helpArea.setText("Hourly");
+  }
+
+  @FXML
+  public void produceOrderGuideTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void truckOrderGuideTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void inventoryParsTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void cateringManagerTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void usageAnalysisTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void businessAnalysisTabSelected()
+  {
+    helpArea.setText("Produce");
+  }
+
+  @FXML
+  public void settingsTabSelected()
+  {
+    helpArea.setText("Produce");
   }
 }

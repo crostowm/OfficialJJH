@@ -1,6 +1,7 @@
 package selenium;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -11,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import app.MainApplication;
+import app.AppDirector;
 import error_handling.ErrorHandler;
 import util.JimmyCalendarUtil;
 
@@ -24,8 +25,8 @@ public class ReportGrabber
 
   public ReportGrabber()
   {
-    this.storeNumber = MainApplication.storeNumber + "";
-    switch (MainApplication.storeNumber)
+    this.storeNumber = AppDirector.config.getStoreNumber() + "";
+    switch (AppDirector.config.getStoreNumber())
     {
       case 1131:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
@@ -38,6 +39,12 @@ public class ReportGrabber
         break;
       case 1528:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[4]/div/label/input";
+        break;
+      case 1740:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
+        break;
+      case 1741:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[2]/div/label/input";
         break;
       case 2048:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[5]/div/label/input";
@@ -59,14 +66,13 @@ public class ReportGrabber
 
       // Login$UserName
       WebElement loginBox = driver.findElement(By.id("Login_UserName"));
-      loginBox.sendKeys(MainApplication.mgrLoginUser);
+      loginBox.sendKeys(AppDirector.config.getMacroUser());
 
       // Login$Password
       WebElement passBox = driver.findElement(By.id("Login_Password"));
-      passBox.sendKeys(MainApplication.mgrLoginPass + Keys.ENTER);
-
+      passBox.sendKeys(AppDirector.config.getMacroPass() + Keys.ENTER);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       ErrorHandler.addError(e);
       e.printStackTrace();
@@ -81,7 +87,7 @@ public class ReportGrabber
         .findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListReportFormat\"]"));
     typeDropDown.click();
     typeDropDown.sendKeys("c" + Keys.ENTER);
-    for (String s : MainApplication.dataHub.getInventoryItemNames())
+    for (String s : AppDirector.dataHub.getInventoryItemNames())
     {
       try
       {
@@ -163,19 +169,6 @@ public class ReportGrabber
         .sendKeys("Yesterday" + Keys.ENTER);
   }
 
-  public void downloadLast4HourlySales()
-  {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
-    selectStoreCheckBox();
-    selectDayOfTheWeek();
-    for (int ii = 28; ii >= 7; ii -= 7)
-    {
-      selectDateXDaysBeforeCurrent(ii);
-      changeToCSVAndDownload();
-      numReports++;
-    }
-  }
-
   private void selectDayOfTheWeek()
   {
     GregorianCalendar gc = new GregorianCalendar();
@@ -251,7 +244,7 @@ public class ReportGrabber
   private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks)
   {
     int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-    if(currentWeekIndex - numWeeks < 0)
+    if (currentWeekIndex - numWeeks < 0)
     {
       selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
     }
@@ -259,7 +252,7 @@ public class ReportGrabber
     {
       Select select = new Select(
           driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-      select.selectByIndex(JimmyCalendarUtil.normalizeWeekIndex(currentWeekIndex - ii));
+      select.selectByIndex(JimmyCalendarUtil.normalizeWeekIndex(currentWeekIndex - ii - 1));
       changeToCSVAndDownload();
       numReports++;
     }
@@ -327,5 +320,51 @@ public class ReportGrabber
   public void close()
   {
     driver.quit();
+  }
+
+  public void downloadHourlySalesReport(String date)
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
+    selectStoreCheckBox();
+    selectDate(date);
+    changeToCSVAndDownload();
+    numReports++;
+  }
+
+  private void selectDate(String date)
+  {
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerStart_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + date + Keys.ENTER);
+    driver
+        .findElement(
+            By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput_wrapper\"]"))
+        .click();
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DateRangePicker_DatePickerEnd_dateInput\"]"))
+        .sendKeys(Keys.BACK_SPACE + date + Keys.ENTER);
+  }
+
+  public void downloadHourlySalesReports(ArrayList<String> downloadQueue)
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
+    selectStoreCheckBox();
+    for (String date : downloadQueue)
+    {
+      selectDate(date);
+    changeToCSVAndDownload();
+    numReports++;
+    }
+    goToDownloadCenterAndDownloadAll();
+  }
+
+  public void downloadTrendSheet(Integer year)
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[19]")).click();
+    selectFiscalYear(year);
+    selectStoreCheckBox();
+    changeToCSVAndDownload();
   }
 }

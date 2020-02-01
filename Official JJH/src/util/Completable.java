@@ -9,17 +9,24 @@ public abstract class Completable implements Serializable
   private boolean completed;
   private String completedName;
   private GregorianCalendar completeTime;
+  private String desc;
   
   public Completable()
   {
     completed = false;
   }
   
-  public Completable(boolean completed, String completeName, GregorianCalendar completeTime)
+  public Completable(boolean completed, String completeName, GregorianCalendar completeTime, String description)
   {
     this.completed = completed;
     this.completedName = completeName;
     this.completeTime = completeTime;
+    this.desc = description;
+  }
+  
+  public String getDesc()
+  {
+    return desc;
   }
   
   public void complete(String completedName, GregorianCalendar completeTime)

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import error_handling.ErrorHandler;
-import util.ManagerDBL;
+import util.CompletableTask;
 
 public class ManagerDBLReader
 {
@@ -30,12 +30,12 @@ public class ManagerDBLReader
     }
     
   }
-  public ArrayList<ManagerDBL> getDBLs()
+  public ArrayList<CompletableTask> getDBLs()
   {
-    ArrayList<ManagerDBL> dbls = new ArrayList<ManagerDBL>();
+    ArrayList<CompletableTask> dbls = new ArrayList<CompletableTask>();
     for(String s: mgrDBLs)
     {
-      dbls.add(new ManagerDBL(s));
+      dbls.add(new CompletableTask(s));
     }
     return dbls;
   }
