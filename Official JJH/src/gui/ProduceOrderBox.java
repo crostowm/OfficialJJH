@@ -1,7 +1,6 @@
 package gui;
 
 import app.AppDirector;
-import app.AppDirector;
 import error_handling.ErrorHandler;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

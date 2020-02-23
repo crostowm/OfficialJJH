@@ -98,7 +98,6 @@ public class UPKItem implements Comparable<UPKItem>
       default:
         caseValue = 1;
     }
-    System.out.println(name + " " + caseValue);
   }
 
   public String getName()
@@ -118,7 +117,6 @@ public class UPKItem implements Comparable<UPKItem>
 
   public double getActualUsage()
   {
-    System.out.println(actualUsage);
     return actualUsage;
   }
 

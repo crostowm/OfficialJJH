@@ -16,7 +16,7 @@ import readers.HourlySalesReader;
 import readers.ItemUsageAnalysisReader;
 import readers.TrendSheetReader;
 import readers.UPKReader;
-import readers.WSRMap;
+import readers.WSRReader;
 import readers.WeeklySummaryReader;
 
 public class ReportFinder
@@ -50,19 +50,21 @@ public class ReportFinder
 
   /**
    * 0-3 last four weeks 4 last year week containing today's date
+   * @param missingWeeks 
    */
-  public void uploadWSRToDataHub()
+  public void uploadWSRToDataHub(int numMissingWeeks)
   {
-    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySales"), 5);
+    //[0] is last year week
+    ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySales"), numMissingWeeks);
     AppDirector.reportsUsed += "Weekly Sales Report\n";
     AppDirector.reportsUsed += "\tThis Year\n";
-    for (int ii = 0; ii < 4; ii++)
+    System.out.println("Uploadaddad" + numMissingWeeks);
+
+    for (int ii = 0; ii < numMissingWeeks; ii++)
     {
       AppDirector.reportsUsed += "\t\t" + fs.get(ii).getFile().getName() + "\n";
-      AppDirector.dataHub.addWSRMapForProjections(new WSRMap(fs.get(ii).getFile()), ii + 1);
+      new WSRReader(fs.get(ii).getFile());
     }
-    AppDirector.reportsUsed += "\tLast Year\n\t\t" + fs.get(4).getFile().getName() + "\n";
-    AppDirector.dataHub.setLastYearWSR(new WSRMap(fs.get(4).getFile()));
   }
 
   public void uploadUPKToDataHub()

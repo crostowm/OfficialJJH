@@ -187,4 +187,45 @@ public class JimmyCalendarUtil
   {
     return currentHour > 24 ? currentHour - 24 : currentHour;
   }
+
+  public static int getCurrentYear()
+  {
+    GregorianCalendar gc = new GregorianCalendar();
+    return gc.get(Calendar.YEAR);
+  }
+
+  public static int getNumWeeksInYear(int year)
+  {
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.set(Calendar.YEAR, year);
+    gc.set(Calendar.DAY_OF_YEAR, 365);
+    return getWeekNumber(gc);
+  }
+  
+  public static int[][] getLast4WeeksInYearPairs()
+  {
+    int[][] pairs = new int[4][2];
+    int currentWeek = JimmyCalendarUtil.getCurrentWeek();
+    int currentYear = JimmyCalendarUtil.getCurrentYear();
+    for(int ii = 0; ii < 4; ii++)
+    {
+      int ww = currentWeek - 4 + ii;
+      int year;
+      int week;
+      if (ww < 1)
+      {
+        year = currentYear - 1;
+        week = JimmyCalendarUtil.getNumWeeksInYear(year) - ww;
+      }
+      else
+      {
+        year = currentYear;
+        week = ww;
+      }
+      pairs[ii][0] = year;
+      pairs[ii][1] = week;
+    }
+    System.out.println("Last 4 Weeks: \n");
+    return pairs;
+  }
 }

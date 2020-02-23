@@ -32,6 +32,7 @@ import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.Config;
 import util.DataHub;
+import util.JimmyCalendarUtil;
 import util.ReportFinder;
 
 public class AppDirector extends Application
@@ -48,6 +49,11 @@ public class AppDirector extends Application
   private Timer timerMin, timerSec;
   private Stage stage;
 
+  public static void main(String[] args)
+  {
+    launch(args);
+  }
+  
   @Override
   public void start(Stage stage) throws Exception
   {
@@ -207,7 +213,7 @@ public class AppDirector extends Application
   {
     try
     {
-      FileInputStream in = new FileInputStream(new File(dataHubFileName));
+      FileInputStream in = new FileInputStream(new File(config.getStoreNumber() + dataHubFileName));
       ObjectInputStream deserializer = new ObjectInputStream(in);
 
       dataHub = (DataHub) deserializer.readObject();
@@ -262,7 +268,7 @@ public class AppDirector extends Application
 
   protected void saveDataHub() throws Exception
   {
-    FileOutputStream out = new FileOutputStream(dataHubFileName);
+    FileOutputStream out = new FileOutputStream(config.getStoreNumber() + dataHubFileName);
     ObjectOutputStream serializer = new ObjectOutputStream(out);
 
     serializer.writeObject(dataHub);
@@ -273,11 +279,28 @@ public class AppDirector extends Application
 
   public void configComplete()
   {
-    // First search for config file to see if hub has been setup. if not run config.
     setShutdownHook();
     readInDataHub();
     InventoryItemNameReader iir = new InventoryItemNameReader(new File("InventoryItems.txt"));
     dataHub.setInventoryItemNames(iir.getItems());
+    
+    //Find missing weeks
+    ArrayList<int[]> missingWeeks = new ArrayList<int[]>();
+    if (dataHub.getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1) == null
+        || dataHub.getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1)
+            .get(JimmyCalendarUtil.getCurrentWeek()) == null)
+      missingWeeks.add(
+          new int[] {JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()});
+    for (int ii = 0; ii < 4; ii++)
+    {
+      if (dataHub.getWeeklySalesCalendar()
+          .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][0]) == null
+          || dataHub.getWeeklySalesCalendar()
+              .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][0])
+              .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][1]) == null)
+        missingWeeks.add(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii]);
+    }
+    System.out.println("Num missing weeks: " + missingWeeks.size());
     if (config.shouldDownloadReports())
     {
       ReportGrabber rg = null;
@@ -298,10 +321,8 @@ public class AppDirector extends Application
         }
         // rg.downloadLast4Catering();
         rg.downloadLastAMPhoneAuditReport();
-        rg.downloadLast4WSR();
-        rg.downloadLastYearWSR();
+        rg.downloadMissingWSR(missingWeeks);
         rg.downloadHourlySalesReports(dataHub.getMissingLast4HourlySales());
-        rg.goToDownloadCenterAndDownloadAll();
       }
       finally
       {
@@ -316,7 +337,7 @@ public class AppDirector extends Application
     {
       dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
     }
-    rf.uploadWSRToDataHub();
+    rf.uploadWSRToDataHub(missingWeeks.size());
     rf.uploadAreaManagerPhoneAuditToDataHub();
     rf.uploadLastXHourlyDays(dataHub.getMissingLast4HourlySales());
     rf.uploadCateringTransactionsToDataHub();

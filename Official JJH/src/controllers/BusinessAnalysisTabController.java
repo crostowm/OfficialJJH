@@ -20,6 +20,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import lineitems.WeeklySalesLineItem;
 import selenium.ReportGrabber;
 import util.JimmyCalendarUtil;
 import util.ReportFinder;
@@ -135,8 +136,11 @@ public class BusinessAnalysisTabController
     switch (reportChoice.getValue())
     {
       case "Weekly Sales Report":
-        itemNamesTS = new ArrayList<String>(
-            AppDirector.dataHub.getProjectionWSRIndex(0).getMap().keySet());
+        itemNamesTS = new ArrayList<String>();
+        for(WeeklySalesLineItem wsli: AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[0][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[0][1]).getItems())
+        {
+          itemNamesTS.add(wsli.getName());
+        }
         break;
       case "Trend Sheet":
         switch (rangeBox.getValue())
@@ -240,7 +244,7 @@ public class BusinessAnalysisTabController
       switch (reportChoice.getValue())
       {
         case "Weekly Sales Report":
-          int week = periodBox.getItems().indexOf(periodBox.getValue()) + 1;
+          int index = periodBox.getItems().indexOf(periodBox.getValue());
           for (Node n : categoryBox.getChildren())
           {
             RadioButton r = (RadioButton) n;
@@ -253,22 +257,20 @@ public class BusinessAnalysisTabController
                 switch (rangeBox.getValue())
                 {
                   case "By Day":
-                    ys.add(AppDirector.dataHub.getProjectionWSRWeek(week)
-                        .getDataForShift(r.getText(), (int) x)
-                        + AppDirector.dataHub.getProjectionWSRWeek(week)
-                            .getDataForShift(r.getText(), ((int) x) + 1));
+                    ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
+                        .getLineItem(r.getText()).getDataForShift((int)x)
+                        + AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
+                        .getLineItem(r.getText()).getDataForShift(((int)x) + 1));
                     break;
                   case "By Shift":
-                    ys.add(AppDirector.dataHub.getProjectionWSRWeek(week)
-                        .getDataForShift(r.getText(), (int) x));
+                    ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
+                        .getLineItem(r.getText()).getDataForShift((int)x));
                     break;
                   case "By Week":
                     for (int ii = 1; ii < 5; ii++)
                     {
-                      ys.add(AppDirector.dataHub.getProjectionWSRWeek(ii)
-                          .getSummaryForItem(r.getText()));
-                      System.out.println("Summary: " + AppDirector.dataHub
-                          .getProjectionWSRWeek(ii).getSummaryForItem(r.getText()));
+                      ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
+                          .getLineItem(r.getText()).getSummary());
                     }
                     break;
                 }

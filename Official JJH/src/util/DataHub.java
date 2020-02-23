@@ -13,13 +13,14 @@ import lineitems.CateringTransaction;
 import lineitems.HourlySalesDay;
 import lineitems.InventoryItem;
 import lineitems.UPKWeek;
+import lineitems.WeeklySalesWeek;
 import lineitems.WeeklySummaryItem;
 import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditReader;
 import readers.ManagerDBLReader;
 import readers.TrendSheetReader;
-import readers.WSRMap;
+import readers.WSRReader;
 
 public class DataHub implements Serializable
 {
@@ -29,7 +30,6 @@ public class DataHub implements Serializable
       SPROUT_UPK = 18, INSHOP_MIN_PAY = 19;
   private static final long serialVersionUID = 2092175547020407363L;
   private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
-  private transient WSRMap[] last4WeeksWSR = new WSRMap[4];
   /**
    * index 5 is last completed week index 0 is earliest week
    */
@@ -37,7 +37,7 @@ public class DataHub implements Serializable
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditItem amPhoneAuditItem;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
-  private transient WSRMap lastYearWSR;
+  private transient WSRReader lastYearWSR;
   private transient ArrayList<InventoryItem> inventoryItems;
   private transient WeeklySummaryItem weeklySummaryItem;
   private ArrayList<String> inventoryItemNames;
@@ -58,7 +58,10 @@ public class DataHub implements Serializable
   private ArrayList<CompletableTask> managerDBLs;
   // Year-Month-Day
   private HashMap<Integer, HashMap<Integer, HashMap<Integer, HourlySalesDay>>> hourlySalesCalendar;
+  // Year
   private HashMap<Integer, TrendSheetReader> trendSheetCalendar;
+  // Year-Week
+  private HashMap<Integer, HashMap<Integer, WeeklySalesWeek>> weeklySalesCalendar;
 
   public DataHub()
   {
@@ -103,56 +106,7 @@ public class DataHub implements Serializable
     settings.put(INSHOP_MIN_PAY, 8.0);
     hourlySalesCalendar = new HashMap<Integer, HashMap<Integer, HashMap<Integer, HourlySalesDay>>>();
     trendSheetCalendar = new HashMap<Integer, TrendSheetReader>();
-  }
-
-  /**
-   * @param wsr
-   * @param week
-   *          1-4
-   */
-  public void addWSRMapForProjections(WSRMap wsr, int week)
-  {
-    if (last4WeeksWSR == null)
-      last4WeeksWSR = new WSRMap[4];
-    last4WeeksWSR[week - 1] = wsr;
-    if (last4WeeksWSR[0] != null && last4WeeksWSR[1] != null && last4WeeksWSR[2] != null
-        && last4WeeksWSR[3] != null)
-    {
-      // All proj ready
-      for (int ii = 1; ii < 15; ii++)
-      {
-        System.out.println(
-            "Shift " + ii + ":  " + getProjectionWSRWeek(1).getDataForShift("= Royalty Sales", ii)
-                + " " + getProjectionWSRWeek(2).getDataForShift("= Royalty Sales", ii) + " "
-                + getProjectionWSRWeek(3).getDataForShift("= Royalty Sales", ii) + " "
-                + getProjectionWSRWeek(4).getDataForShift("= Royalty Sales", ii));
-        double avg = (getProjectionWSRWeek(1).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSRWeek(2).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSRWeek(3).getDataForShift("= Royalty Sales", ii)
-            + getProjectionWSRWeek(4).getDataForShift("= Royalty Sales", ii)) / 4;
-        setAverageForShift(ii, avg);
-      }
-    }
-  }
-
-  /**
-   * @param week
-   *          1-4
-   * @return
-   */
-  public WSRMap getProjectionWSRWeek(int week)
-  {
-    return last4WeeksWSR[week - 1];
-  }
-
-  /**
-   * @param index
-   *          0-3
-   * @return
-   */
-  public WSRMap getProjectionWSRIndex(int index)
-  {
-    return last4WeeksWSR[index];
+    weeklySalesCalendar = new HashMap<Integer, HashMap<Integer, WeeklySalesWeek>>();
   }
 
   /**
@@ -223,6 +177,7 @@ public class DataHub implements Serializable
 
   private void updateAllSlicingPars(String name)
   {
+    System.out.println("UpdatingSlicingPars");
     for (int index = 0; index < 14; index++)
     {
       int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2) - 1;
@@ -363,7 +318,6 @@ public class DataHub implements Serializable
     {
       if (ii > 13)
         ii = ii - 14;
-      System.out.println(ii + " " + endShift);
       totalProj += projections.get(ii);
       ii++;
     }
@@ -458,7 +412,7 @@ public class DataHub implements Serializable
     for (int ii = 0; ii < 4; ii++)
     {
       gc.add(Calendar.DAY_OF_YEAR, -7);
-      days.add(getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH),
+      days.add(getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1,
           gc.get(Calendar.DAY_OF_MONTH)));
     }
     return days;
@@ -480,7 +434,6 @@ public class DataHub implements Serializable
 
   public void initializeTransientValues()
   {
-    last4WeeksWSR = new WSRMap[4];
     observers = new ArrayList<DataObserver>();
   }
 
@@ -516,7 +469,7 @@ public class DataHub implements Serializable
   {
     if (managerDBLs == null)
     {
-      ManagerDBLReader mdr = new ManagerDBLReader(getClass().getResource("mgrdbls.txt").getPath());
+      ManagerDBLReader mdr = new ManagerDBLReader("mgrdbls.txt");
       managerDBLs = mdr.getDBLs();
     }
   }
@@ -587,12 +540,12 @@ public class DataHub implements Serializable
     this.past4DaysCatering = last4DaysCatering;
   }
 
-  public void setLastYearWSR(WSRMap lastYearWSR)
+  public void setLastYearWSR(WSRReader lastYearWSR)
   {
     this.lastYearWSR = lastYearWSR;
   }
 
-  public WSRMap getLastYearWSR()
+  public WSRReader getLastYearWSR()
   {
     return lastYearWSR;
   }
@@ -698,16 +651,74 @@ public class DataHub implements Serializable
   {
     ArrayList<String> missingDates = new ArrayList<String>();
     GregorianCalendar gc = new GregorianCalendar();
-    for(int ii = 0 ; ii < 4; ii++)
+    for (int ii = 0; ii < 4; ii++)
     {
       gc.add(Calendar.DAY_OF_YEAR, -7);
-      HourlySalesDay hsd = getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
-      if(hsd == null)
+      HourlySalesDay hsd = getHourlySalesDay(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH) + 1,
+          gc.get(Calendar.DAY_OF_MONTH));
+      if (hsd == null)
       {
-        String date = String.format("%02d-%02d-%04d", gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH), gc.get(Calendar.YEAR));
+        String date = String.format("%02d-%02d-%04d", gc.get(Calendar.MONTH) + 1,
+            gc.get(Calendar.DAY_OF_MONTH), gc.get(Calendar.YEAR));
         missingDates.add(date);
       }
     }
+    for(String s: missingDates)
+    {
+      System.out.println("Missing hourly " + s);
+    }
     return missingDates;
+  }
+
+  public void addWSRWeek(WeeklySalesWeek weeklySalesWeek)
+  {
+    if (weeklySalesCalendar.get(weeklySalesWeek.getYear()) == null)
+      weeklySalesCalendar.put(weeklySalesWeek.getYear(), new HashMap<Integer, WeeklySalesWeek>());
+    weeklySalesCalendar.get(weeklySalesWeek.getYear()).put(weeklySalesWeek.getWeekNumber(),
+        weeklySalesWeek);
+    System.out.println("UAA");
+    updateAllAverages();
+  }
+
+  private void updateAllAverages()
+  {
+    int[][] pairs = JimmyCalendarUtil.getLast4WeeksInYearPairs();
+    boolean all4WSRUploaded = true;
+    for (int yw = 0; yw < 4; yw++)
+    {
+      if (weeklySalesCalendar.get(pairs[yw][0]) == null || weeklySalesCalendar.get(pairs[yw][0]).get(pairs[yw][1]) == null)
+        all4WSRUploaded = false;
+    }
+
+    if (all4WSRUploaded)
+    {
+      ArrayList<Double> averages = new ArrayList<Double>();
+      for (int ii = 0; ii < 14; ii++)
+      {
+        averages.add(0.0);
+      }
+      for (int yw = 0; yw < 4; yw++)
+      {
+        for (int ii = 0; ii < 14; ii++)
+        {
+          averages.add(ii, averages.get(ii) + weeklySalesCalendar.get(pairs[yw][0])
+              .get(pairs[yw][1]).getLineItem("= Royalty Sales").getDataForIndex(ii));
+        }
+      }
+      for (int ii = 0; ii < 14; ii++)
+      {
+        setAverageForShift(ii + 1, averages.get(ii) / 4);
+      }
+    }
+  }
+
+  public HashMap<Integer, HashMap<Integer, WeeklySalesWeek>> getWeeklySalesCalendar()
+  {
+    return weeklySalesCalendar;
+  }
+
+  public WeeklySalesWeek getWSRWeek(int year, int week)
+  {
+    return weeklySalesCalendar.get(year).get(week);
   }
 }

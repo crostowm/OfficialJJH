@@ -199,13 +199,13 @@ public class HubController implements DataObserver
     todayProjPMField.setText(String.format("%.2f", AppDirector.dataHub
         .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
 
-    lastYearProjAMField
-        .setText(String.format("%.2f", AppDirector.dataHub.getLastYearWSR().getDataForShift(
-            "= Royalty Sales", currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
+    /*lastYearProjAMField
+        .setText(String.format("%.2f", AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()).getLineItem(
+            "= Royalty Sales").getDataForShift(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
     lastYearProjPMField
-        .setText(String.format("%.2f", AppDirector.dataHub.getLastYearWSR().getDataForShift(
-            "= Royalty Sales", currentShift % 2 == 0 ? currentShift : currentShift + 1)));
-    System.out.println("Updated all");
+    .setText(String.format("%.2f", AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()).getLineItem(
+        "= Royalty Sales").getDataForShift(currentShift % 2 == 0 ? currentShift: currentShift + 1)));
+    System.out.println("Updated all");*/
   }
 
   /**

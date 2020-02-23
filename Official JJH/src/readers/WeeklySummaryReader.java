@@ -22,8 +22,6 @@ public class WeeklySummaryReader
         ArrayList<String> tokens = ParseUtil.getQuoteConsolidatedList(line.split(","));
         if (tokens.get(0).startsWith("Entity"))
         {
-          System.out.println(tokens.get(16));
-          
           double mgrLaborPerc = Double.parseDouble(ParseUtil.parsePerc(tokens.get(16)));
           double mgrLabor$ = Double.parseDouble(ParseUtil.parse$(tokens.get(17)));
           double inshopLaborPer = Double.parseDouble(ParseUtil.parsePerc(tokens.get(19)));
@@ -38,7 +36,6 @@ public class WeeklySummaryReader
           wsi = new WeeklySummaryItem(mgrLaborPerc, mgrLabor$, inshopLaborPer,
               inshopLabor$, driverLaborPerc, driverLabor$, taxLaborPerc, taxLabor$, dmrLaborPerc,
               dmrLabor$);
-          System.out.println(wsi + " created");
         }
       }
       scan.close();

@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import controllers.ProgressStageController;
 import error_handling.ErrorHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;

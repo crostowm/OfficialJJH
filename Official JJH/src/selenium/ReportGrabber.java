@@ -41,16 +41,16 @@ public class ReportGrabber
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[4]/div/label/input";
         break;
       case 1740:
-        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[1]/div/label/input";
-        break;
-      case 1741:
-        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[2]/div/label/input";
-        break;
-      case 2048:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[5]/div/label/input";
         break;
-      case 2581:
+      case 1741:
         storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[6]/div/label/input";
+        break;
+      case 2048:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[7]/div/label/input";
+        break;
+      case 2581:
+        storeXPath = "//*[@id=\"ctl00_ph_MultiStoreSelector_multiSelector_TreeView\"]/ul/li/ul/li/ul/li/ul/li/ul/li[8]/div/label/input";
         break;
     }
   }
@@ -169,6 +169,7 @@ public class ReportGrabber
         .sendKeys("Yesterday" + Keys.ENTER);
   }
 
+  @SuppressWarnings("unused")
   private void selectDayOfTheWeek()
   {
     GregorianCalendar gc = new GregorianCalendar();
@@ -192,6 +193,7 @@ public class ReportGrabber
     select.selectByIndex(index);
   }
 
+  @SuppressWarnings("unused")
   private void selectDateXDaysBeforeCurrent(int numDays)
   {
     GregorianCalendar gc = new GregorianCalendar();
@@ -244,15 +246,22 @@ public class ReportGrabber
   private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks)
   {
     int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-    if (currentWeekIndex - numWeeks < 0)
-    {
-      selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
-    }
     for (int ii = numWeeks; ii > 0; ii--)
     {
-      Select select = new Select(
-          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-      select.selectByIndex(JimmyCalendarUtil.normalizeWeekIndex(currentWeekIndex - ii - 1));
+      if (currentWeekIndex - ii < 0)
+      {
+        selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
+        Select select = new Select(
+            driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+        select.selectByIndex(select.getOptions().size() + currentWeekIndex - ii);
+      }
+      else
+      {
+        selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR));
+        Select select = new Select(
+            driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+        select.selectByIndex(currentWeekIndex - ii);
+      }
       changeToCSVAndDownload();
       numReports++;
     }
@@ -289,6 +298,32 @@ public class ReportGrabber
     driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
     selectStoreNumberFromDropdown();
     selectLastXWeeksFromWeekDropdownAndDownload(4);
+  }
+
+  /**
+   * @param missingWeeks[0]
+   *          = Year, [1] = Week
+   */
+  public void downloadMissingWSR(ArrayList<int[]> missingWeeks)
+  {
+    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+    selectStoreNumberFromDropdown();
+    for (int[] ii : missingWeeks)
+    {
+      System.out.println("Year: " + ii[0] + " Week: " + ii[1]);
+      selectWeekYearPairAndDownload(ii);
+    }
+  }
+
+  private void selectWeekYearPairAndDownload(int[] ii)
+  {
+    selectFiscalYear(ii[0]);
+    int currentWeekIndex = ii[1] - 1;
+    Select select = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+    select.selectByIndex(currentWeekIndex);
+    changeToCSVAndDownload();
+    numReports++;
   }
 
   public void downloadLastYearWSR()
@@ -354,8 +389,8 @@ public class ReportGrabber
     for (String date : downloadQueue)
     {
       selectDate(date);
-    changeToCSVAndDownload();
-    numReports++;
+      changeToCSVAndDownload();
+      numReports++;
     }
     goToDownloadCenterAndDownloadAll();
   }

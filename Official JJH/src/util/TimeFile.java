@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
-import error_handling.ErrorHandler;
-
 public class TimeFile extends ComparableFile<TimeFile>
 {
   private GregorianCalendar downloadTime;
