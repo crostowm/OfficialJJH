@@ -32,7 +32,6 @@ import time_updates.TimeUpdateMinute;
 import time_updates.TimeUpdateSecond;
 import util.Config;
 import util.DataHub;
-import util.JimmyCalendarUtil;
 import util.ReportFinder;
 
 public class AppDirector extends Application
@@ -95,6 +94,71 @@ public class AppDirector extends Application
     }
   }
 
+  public void configComplete()
+  {
+    setShutdownHook();
+    readInDataHub();
+    dataHub.setupObservers();
+    InventoryItemNameReader iir = new InventoryItemNameReader(new File("InventoryItems.txt"));
+    dataHub.setInventoryItemNames(iir.getItems());
+    for(String s: dataHub.getSavedUPKs())
+    {
+      System.out.println(s);
+    }
+    if (config.shouldDownloadReports())
+    {
+      ReportGrabber rg = null;
+      try
+      {
+        rg = new ReportGrabber();
+        rg.startAndLogin();
+        rg.downloadMissingUPKs(dataHub.getMissingOfLast6UPKYearWeekPairs());
+        if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
+            || AppDirector.config.shouldDownloadWeekendingReports())
+        {
+          rg.downloadItemUsageAnalysis();
+          // rg.downloadFullWeekAttendance();
+        }
+        else
+        {
+          rg.downloadAttendanceReport();
+        }
+        // rg.downloadLast4Catering();
+        rg.downloadLastAMPhoneAuditReport();
+        rg.downloadMissingWSR(dataHub.getMissingOfLast41WSRYearWeekPairs());
+        rg.downloadHourlySalesReports(dataHub.getMissingLast4HourlySales());
+      }
+      finally
+      {
+        if (rg != null)
+          rg.close();
+      }
+    }
+    ReportFinder rf = new ReportFinder(AppDirector.config.getDownloadFolderPath());
+    rf.uploadSpecialItems();
+    rf.uploadMissingUPKsToDataHub(dataHub.getMissingOfLast6UPKYearWeekPairs());
+    for (InventoryItem ii : dataHub.getInventoryItems())
+    {
+      dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
+    }
+    rf.uploadWSRToDataHub(dataHub.getMissingOfLast41WSRYearWeekPairs().size());
+    rf.uploadAreaManagerPhoneAuditToDataHub();
+    rf.uploadLastXHourlyDays(dataHub.getMissingLast4HourlySales());
+    rf.uploadCateringTransactionsToDataHub();
+    rf.uploadAttendanceReportToDataHub();
+    rf.uploadWeeklySummaryToDataHub();
+    System.out.println(reportsUsed);
+  
+    for(String s: dataHub.getSavedUPKs())
+    {
+      System.out.println(s);
+    }
+    if (config.shouldAmFullStart())
+      runAMPhoneAudit(new Manager("Guest", "", "", ""));
+    else
+      runDash();
+  }
+
   public void runLoginStage()
   {
     FXMLLoader loader;
@@ -155,6 +219,8 @@ public class AppDirector extends Application
     {
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJH.fxml"));
       root = loader.load();
+      HubController hc = (HubController)loader.getController();
+      hc.updateAllFields();
       timerSec = new Timer();
       timerSec.scheduleAtFixedRate(new TimeUpdateSecond((HubController) loader.getController()), 0,
           1000L);
@@ -217,7 +283,6 @@ public class AppDirector extends Application
       ObjectInputStream deserializer = new ObjectInputStream(in);
 
       dataHub = (DataHub) deserializer.readObject();
-      dataHub.initializeTransientValues();
       deserializer.close();
     }
     catch (Exception e)
@@ -275,80 +340,6 @@ public class AppDirector extends Application
 
     serializer.flush();
     out.close();
-  }
-
-  public void configComplete()
-  {
-    setShutdownHook();
-    readInDataHub();
-    InventoryItemNameReader iir = new InventoryItemNameReader(new File("InventoryItems.txt"));
-    dataHub.setInventoryItemNames(iir.getItems());
-    
-    //Find missing weeks
-    ArrayList<int[]> missingWeeks = new ArrayList<int[]>();
-    if (dataHub.getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1) == null
-        || dataHub.getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1)
-            .get(JimmyCalendarUtil.getCurrentWeek()) == null)
-      missingWeeks.add(
-          new int[] {JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()});
-    for (int ii = 0; ii < 4; ii++)
-    {
-      if (dataHub.getWeeklySalesCalendar()
-          .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][0]) == null
-          || dataHub.getWeeklySalesCalendar()
-              .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][0])
-              .get(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii][1]) == null)
-        missingWeeks.add(JimmyCalendarUtil.getLast4WeeksInYearPairs()[ii]);
-    }
-    System.out.println("Num missing weeks: " + missingWeeks.size());
-    if (config.shouldDownloadReports())
-    {
-      ReportGrabber rg = null;
-      try
-      {
-        rg = new ReportGrabber();
-        rg.startAndLogin();
-        if (new GregorianCalendar().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
-            || AppDirector.config.shouldDownloadWeekendingReports())
-        {
-          rg.downloadItemUsageAnalysis();
-          rg.downloadLast6UPK();
-          // rg.downloadFullWeekAttendance();
-        }
-        else
-        {
-          rg.downloadAttendanceReport();
-        }
-        // rg.downloadLast4Catering();
-        rg.downloadLastAMPhoneAuditReport();
-        rg.downloadMissingWSR(missingWeeks);
-        rg.downloadHourlySalesReports(dataHub.getMissingLast4HourlySales());
-      }
-      finally
-      {
-        if (rg != null)
-          rg.close();
-      }
-    }
-    ReportFinder rf = new ReportFinder(AppDirector.config.getDownloadFolderPath());
-    rf.uploadSpecialItems();
-    rf.uploadUPKToDataHub();
-    for (InventoryItem ii : dataHub.getInventoryItems())
-    {
-      dataHub.getPast6UPKMaps().get(5).getUPKItem(ii.getName());
-    }
-    rf.uploadWSRToDataHub(missingWeeks.size());
-    rf.uploadAreaManagerPhoneAuditToDataHub();
-    rf.uploadLastXHourlyDays(dataHub.getMissingLast4HourlySales());
-    rf.uploadCateringTransactionsToDataHub();
-    rf.uploadAttendanceReportToDataHub();
-    rf.uploadWeeklySummaryToDataHub();
-    System.out.println(reportsUsed);
-
-    if (config.shouldAmFullStart())
-      runAMPhoneAudit(new Manager("Guest", "", "", ""));
-    else
-      runDash();
   }
 
 }

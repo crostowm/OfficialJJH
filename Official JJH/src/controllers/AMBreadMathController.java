@@ -5,8 +5,8 @@ import error_handling.ErrorHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import util.DataHub;
 import util.JimmyCalendarUtil;
+import util.Setting;
 
 public class AMBreadMathController
 {
@@ -27,8 +27,8 @@ public class AMBreadMathController
   @FXML
   void updateAll()
   {
-    val9.setText("Tray Of 9: $" + AppDirector.dataHub.getSetting(DataHub.B9TV));
-    val12.setText("Tray Of 12: $" + AppDirector.dataHub.getSetting(DataHub.BTV));
+    val9.setText("Tray Of 9: $" + AppDirector.dataHub.getSettings().getSetting(Setting.B9TV));
+    val12.setText("Tray Of 12: $" + AppDirector.dataHub.getSettings().getSetting(Setting.BTV));
     try
     {
       double haveB = haveBaked.getText().equals("") ? 0 : Double.parseDouble(haveBaked.getText());
@@ -38,23 +38,23 @@ public class AMBreadMathController
       haveSales.setText((haveB + haveP + haveT) + "");
 
       double projTilSC = AppDirector.dataHub.getAverageHourlySales("Total",
-          (int) AppDirector.dataHub.getSetting(DataHub.STORESC_TIME) - 2, false)
+          (int) AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME) - 2, false)
           + AppDirector.dataHub.getAverageHourlySales("Total",
-              (int) AppDirector.dataHub.getSetting(DataHub.STORESC_TIME) - 1, false);
+              (int) AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME) - 1, false);
       tilSC.setText(JimmyCalendarUtil
-          .convertTo12Hour((int) AppDirector.dataHub.getSetting(DataHub.STORESC_TIME) - 2)
+          .convertTo12Hour((int) AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME) - 2)
           + "-"
           + JimmyCalendarUtil
-              .convertTo12Hour((int) AppDirector.dataHub.getSetting(DataHub.STORESC_TIME))
+              .convertTo12Hour((int) AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME))
           + ": " + Math.ceil(projTilSC));
 
       double projB = (haveB + haveP) - projTilSC;
       projBaked.setText(String.format("%.0f", projB));
 
       double reqB = AppDirector.dataHub
-          .getPercentageDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
+          .getPercentageWeek().getDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
       double proj = AppDirector.dataHub
-          .getProjectionDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
+          .getProjectionWeek().getDataForIndex(JimmyCalendarUtil.getTodaysPMShift() - 1);
       pm.setText("PM: " + Math.ceil(proj));
       double reqT = proj - reqB;
       reqBaked.setText(String.format("%.0f", reqB));

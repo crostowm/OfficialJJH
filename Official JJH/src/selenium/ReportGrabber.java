@@ -22,6 +22,7 @@ public class ReportGrabber
   private String storeXPath;
   private WebDriver driver;
   private int numReports = 0;
+  private Select reportSelector;
 
   public ReportGrabber()
   {
@@ -71,6 +72,9 @@ public class ReportGrabber
       // Login$Password
       WebElement passBox = driver.findElement(By.id("Login_Password"));
       passBox.sendKeys(AppDirector.config.getMacroPass() + Keys.ENTER);
+
+      reportSelector = new Select(
+          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
     }
     catch (Exception e)
     {
@@ -81,7 +85,9 @@ public class ReportGrabber
 
   public void downloadItemUsageAnalysis()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[13]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Item Usage Analysis Report");
     selectDatesOfLastCompletedWeek();
     WebElement typeDropDown = driver
         .findElement(By.xpath("//*[@id=\"Skinnedctl00_ph_DropDownListReportFormat\"]"));
@@ -136,7 +142,9 @@ public class ReportGrabber
 
   public void downloadTrendSheets()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[19]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Trend Sheet");
     selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
     selectStoreCheckBox();
     changeToCSVAndDownload();
@@ -154,7 +162,9 @@ public class ReportGrabber
 
   public void downloadAttendanceReport()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[3]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Attendance Report");
     selectStoreNumberFromDropdown();
     // selectDateXDaysBeforeCurrent(1);
     selectYesterdayFromDropdown();
@@ -236,37 +246,38 @@ public class ReportGrabber
     }
   }
 
-  public void downloadLast6UPK()
+  public void downloadMissingUPKs(ArrayList<int[]> missingWeeks)
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[20]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("UPK Expected Usage Report");
     selectStoreCheckBox();
-    selectLastXWeeksFromWeekDropdownAndDownload(6);
-  }
-
-  private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks)
-  {
-    int currentWeekIndex = JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1;
-    for (int ii = numWeeks; ii > 0; ii--)
+    for (int[] i : missingWeeks)
     {
-      if (currentWeekIndex - ii < 0)
-      {
-        selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
-        Select select = new Select(
-            driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-        select.selectByIndex(select.getOptions().size() + currentWeekIndex - ii);
-      }
-      else
-      {
-        selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR));
-        Select select = new Select(
-            driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
-        select.selectByIndex(currentWeekIndex - ii);
-      }
+      selectFiscalYear(i[0]);
+      Select select = new Select(
+          driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+      select.selectByIndex(i[1] - 1);
       changeToCSVAndDownload();
       numReports++;
     }
   }
 
+  /*
+   * public void downloadLast6UPK() {
+   * driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[20]")).click();
+   * selectStoreCheckBox(); selectLastXWeeksFromWeekDropdownAndDownload(6); }
+   * 
+   * private void selectLastXWeeksFromWeekDropdownAndDownload(int numWeeks) { int currentWeekIndex =
+   * JimmyCalendarUtil.getWeekNumber(new GregorianCalendar()) - 1; for (int ii = numWeeks; ii > 0;
+   * ii--) { if (currentWeekIndex - ii < 0) { selectFiscalYear(new
+   * GregorianCalendar().get(Calendar.YEAR) - 1); Select select = new Select(
+   * driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+   * select.selectByIndex(select.getOptions().size() + currentWeekIndex - ii); } else {
+   * selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR)); Select select = new Select(
+   * driver.findElement(By.xpath("//*[@id=\"ctl00_ph_DropDownListPeriod\"]")));
+   * select.selectByIndex(currentWeekIndex - ii); } changeToCSVAndDownload(); numReports++; } }
+   */
   private void selectStoreNumberFromDropdown()
   {
     WebElement storeComboBox = driver
@@ -287,18 +298,19 @@ public class ReportGrabber
 
   public void downloadLastAMPhoneAuditReport()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[2]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Area Manager Phone Audit Report");
     selectStoreCheckBox();
     changeToCSVAndDownload();
     numReports++;
   }
 
-  public void downloadLast4WSR()
-  {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
-    selectStoreNumberFromDropdown();
-    selectLastXWeeksFromWeekDropdownAndDownload(4);
-  }
+  /*
+   * public void downloadLast4WSR() {
+   * driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+   * selectStoreNumberFromDropdown(); selectLastXWeeksFromWeekDropdownAndDownload(4); }
+   */
 
   /**
    * @param missingWeeks[0]
@@ -306,11 +318,13 @@ public class ReportGrabber
    */
   public void downloadMissingWSR(ArrayList<int[]> missingWeeks)
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Weekly Sales Report");
     selectStoreNumberFromDropdown();
     for (int[] ii : missingWeeks)
     {
-      System.out.println("Year: " + ii[0] + " Week: " + ii[1]);
+      // System.out.println("Year: " + ii[0] + " Week: " + ii[1]);
       selectWeekYearPairAndDownload(ii);
     }
   }
@@ -328,7 +342,9 @@ public class ReportGrabber
 
   public void downloadLastYearWSR()
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[22]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Weekly Sales Report");
     selectStoreNumberFromDropdown();
     selectFiscalYear(new GregorianCalendar().get(Calendar.YEAR) - 1);
 
@@ -359,7 +375,9 @@ public class ReportGrabber
 
   public void downloadHourlySalesReport(String date)
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Hourly Sales Report");
     selectStoreCheckBox();
     selectDate(date);
     changeToCSVAndDownload();
@@ -384,7 +402,9 @@ public class ReportGrabber
 
   public void downloadHourlySalesReports(ArrayList<String> downloadQueue)
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[12]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Hourly Sales Report");
     selectStoreCheckBox();
     for (String date : downloadQueue)
     {
@@ -397,7 +417,9 @@ public class ReportGrabber
 
   public void downloadTrendSheet(Integer year)
   {
-    driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]/option[19]")).click();
+    reportSelector = new Select(
+        driver.findElement(By.xpath("//*[@id=\"ctl00_ph_ListBoxReports\"]")));
+    reportSelector.selectByVisibleText("Trend Sheet");
     selectFiscalYear(year);
     selectStoreCheckBox();
     changeToCSVAndDownload();

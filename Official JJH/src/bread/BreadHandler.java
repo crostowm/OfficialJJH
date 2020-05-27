@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 
 import app.AppDirector;
 import util.DataHub;
+import util.Setting;
 
 /**
  * Maintains Bread Requests and creates a Tray Log with tray process status 
@@ -34,9 +35,9 @@ public class BreadHandler
       trayLog.clear();
       Collections.sort(breadRequests);
 
-      int processTime = ((int) data.getSetting(DataHub.PROOF_TIME))
-          + ((int) data.getSetting(DataHub.BAKE_TIME)) + ((int) data.getSetting(DataHub.COOL_TIME));
-      int numDecks = (int) data.getSetting(DataHub.NUMDECKS);
+      int processTime = ((int) data.getSettings().getSetting(Setting.PROOF_TIME))
+          + ((int) data.getSettings().getSetting(Setting.BAKE_TIME)) + ((int) data.getSettings().getSetting(Setting.COOL_TIME));
+      int numDecks = (int) data.getSettings().getSetting(Setting.NUMDECKS);
       GregorianCalendar timerTick = (GregorianCalendar) breadRequests.get(breadRequests.size() - 1)
           .getTimeDue().clone();
       timerTick.add(Calendar.MINUTE, -processTime);
@@ -63,7 +64,7 @@ public class BreadHandler
             trayLog.add(new BreadTray6((GregorianCalendar) timerTick.clone()));
             numTraysRequired--;
           }
-          timerTick.add(Calendar.MINUTE, (int)-AppDirector.dataHub.getSetting(DataHub.BAKE_TIME));
+          timerTick.add(Calendar.MINUTE, (int)-AppDirector.dataHub.getSettings().getSetting(Setting.BAKE_TIME));
         }
       }
     }

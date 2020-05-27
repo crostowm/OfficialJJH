@@ -122,6 +122,7 @@ public class CateringCalculatorTabController
       AppDirector.dataHub.removeCateringOrder(cateringChoiceBox.getValue());
       breadManagementArea.setText("");
     }
+    updateAllFields();
   }
 
 }

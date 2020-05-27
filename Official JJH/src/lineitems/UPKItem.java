@@ -1,7 +1,10 @@
 package lineitems;
 
-public class UPKItem implements Comparable<UPKItem>
+import java.io.Serializable;
+
+public class UPKItem implements Comparable<UPKItem>, Serializable
 {
+  private static final long serialVersionUID = 4426366137785075881L;
   private String name, category, unit;
   private double actualUsage, theoreticalUsage, usageVariance, usageVariance$, actualUPK,
       averageUPK, upkVariance, caseValue;

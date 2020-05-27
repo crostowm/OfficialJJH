@@ -16,7 +16,6 @@ public class TimeFile extends ComparableFile<TimeFile>
     if (getName().endsWith(".csv"))
     {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss");
-      System.out.println(getName());
       downloadTime
           .setTime(sdf.parse(getName().substring(getName().length() - 25, getName().length() - 8)));
     }

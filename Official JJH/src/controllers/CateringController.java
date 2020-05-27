@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import app.AppDirector;
+import app.CateringStage;
 import error_handling.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import util.CateringOrder;
 
 public class CateringController
@@ -31,6 +33,8 @@ public class CateringController
 
   @FXML
   private Button addButton;
+
+  private Stage stage;
 
   public void initialize()
   {
@@ -104,11 +108,19 @@ public class CateringController
         numSticks = Integer.parseInt(numSticksField.getText());
       
       AppDirector.dataHub.addCateringOrder(new CateringOrder(Double.parseDouble(dollarField.getText()), cal, numSticks, infoArea.getText()));
+      if(stage != null)
+        stage.close();
     }
     catch (NumberFormatException e)
     {
       System.out.println("Unable to parse Catering order");
       ErrorHandler.addError(e);
     }
+  }
+
+  public void setStage(Stage stage)
+  {
+    // TODO Auto-generated method stub
+    this.stage = stage;
   }
 }

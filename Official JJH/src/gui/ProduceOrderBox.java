@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import util.DataHub;
 
 public class ProduceOrderBox extends HBox
 {
@@ -111,8 +110,7 @@ public class ProduceOrderBox extends HBox
 
   private void figureUPKAndUsage()
   {
-    upk = name.equals("Sprouts") ? AppDirector.dataHub.getSetting(DataHub.SPROUT_UPK)
-        : AppDirector.dataHub.getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK();
+    upk = AppDirector.dataHub.getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK();
     expectedUsage = (projections / 1000) * upk;
     
     upkField.setText(String.format("%.2f", upk));

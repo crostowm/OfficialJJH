@@ -23,20 +23,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import observers.DataObserver;
 import observers.TimeObserver;
 import personnel.Manager;
-import util.CateringOrder;
 import util.CompletableTask;
-import util.DataHub;
 import util.JimmyCalendarUtil;
+import util.Setting;
 
 /**
  * 
  * @author crost
  *
  */
-public class HubController implements DataObserver
+public class HubController
 {
   private int currentShift = 1;
 
@@ -107,7 +105,6 @@ public class HubController implements DataObserver
   public void initialize()
   {
     System.out.println("HC");
-    AppDirector.dataHub.addObserver(this);
     // Setup Labor
     // Tabs that require time updates
     timeObservers.add(projectionTabController);
@@ -159,7 +156,6 @@ public class HubController implements DataObserver
     }
     // Fill mgr dbls
     populateMgrDBLs();
-    updateAllFields();
 
     amBreadMathButton = new Button("AM Bread Math");
     amBreadMathButton.setOnAction(new EventHandler<ActionEvent>()
@@ -187,7 +183,7 @@ public class HubController implements DataObserver
     System.out.println("HC-");
   }
 
-  private void updateAllFields()
+  public void updateAllFields()
   {
     projectionTabController.updateAllFields();
     produceOrderGuideTabController.updateProjections();
@@ -195,9 +191,9 @@ public class HubController implements DataObserver
     settingsTabController.updateAllFields();
 
     todayProjAMField.setText(String.format("%.2f", AppDirector.dataHub
-        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1)));
+        .getProjectionWeek().getDataForIndex(currentShift % 2 == 0 ? currentShift - 2 : currentShift - 1)));
     todayProjPMField.setText(String.format("%.2f", AppDirector.dataHub
-        .getProjectionDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
+        .getProjectionWeek().getDataForIndex(currentShift % 2 == 0 ? currentShift - 1 : currentShift)));
 
     /*lastYearProjAMField
         .setText(String.format("%.2f", AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()).getLineItem(
@@ -251,7 +247,7 @@ public class HubController implements DataObserver
         projectionTabController.timeUpdateMinute();
 
         // update current proj vals
-        double sc = AppDirector.dataHub.getSetting(DataHub.STORESC_TIME);
+        double sc = AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME);
         if (currentTimeAndDate.get(Calendar.HOUR_OF_DAY) >= 4
             && currentTimeAndDate.get(Calendar.HOUR_OF_DAY) < 10)
         {
@@ -356,13 +352,13 @@ public class HubController implements DataObserver
                 JimmyCalendarUtil.normalizeHour(currentHour), false)
                 + AppDirector.dataHub.getAverageHourlySales("Total",
                     JimmyCalendarUtil.normalizeHour(currentHour) + 1, false))
-                / AppDirector.dataHub.getSetting(DataHub.B9TV)));
+                / AppDirector.dataHub.getSettings().getSetting(Setting.B9TV)));
         currentPaneInProcess12Field.setText(String.format("%.1f",
             (AppDirector.dataHub.getAverageHourlySales("Total",
                 JimmyCalendarUtil.normalizeHour(currentHour) + 2, false)
                 + AppDirector.dataHub.getAverageHourlySales("Total",
                     JimmyCalendarUtil.normalizeHour(currentHour) + 3, false))
-                / AppDirector.dataHub.getSetting(DataHub.BTV)));
+                / AppDirector.dataHub.getSettings().getSetting(Setting.BTV)));
       }
     });
   }
@@ -372,29 +368,6 @@ public class HubController implements DataObserver
   {
     ca = new CateringStage();
     ca.show();
-  }
-
-  @Override
-  public void cateringOrderAdded(CateringOrder co)
-  {
-    if (ca != null)
-      ca.close();
-    updateAllFields();
-  }
-
-  @Override
-  public void cateringOrderRemoved(CateringOrder co)
-  {
-    cateringCalculatorTabController.updateAllFields();
-    updateAllFields();
-  }
-
-  // TODO if you highlight an entire sampling field and backspace it will not update
-
-  @Override
-  public void toolBoxDataUpdated()
-  {
-    updateAllFields();
   }
 
   @FXML

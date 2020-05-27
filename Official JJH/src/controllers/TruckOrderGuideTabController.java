@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -31,6 +32,9 @@ public class TruckOrderGuideTabController
   @FXML
   private GridPane grid;
 
+  @FXML
+  private CheckBox isTwoWeekCheckBox;
+  
   @FXML
   private TextField projField;
 
@@ -99,6 +103,18 @@ public class TruckOrderGuideTabController
         }
       }
     });
+    
+    isTwoWeekCheckBox.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent arg0)
+      {
+        if (orderingOnChoice.getValue() != null && forDeliveryOnChoice.getValue() != null)
+        {
+          figureNewProjections();
+        }
+      }
+    });
     HBox thb = GuiUtilFactory.createTruckOrderHBoxTitle();
     thb.setPadding(new Insets(15, 0, 0, 0));
     grid.add(thb, 0, 1, 2, 1);
@@ -121,7 +137,7 @@ public class TruckOrderGuideTabController
 
   protected void figureNewProjections()
   {
-    double week = AppDirector.dataHub.getWeekProj();
+    double week = AppDirector.dataHub.getWeekProj() * (isTwoWeekCheckBox.isSelected()? 2:1);
     double extra = AppDirector.dataHub.getProjectionsForShifts(
         JimmyCalendarUtil.getAMShiftFor(orderingOnChoice.getValue()),
         JimmyCalendarUtil.getAMShiftFor(forDeliveryOnChoice.getValue()));

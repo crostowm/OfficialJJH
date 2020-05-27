@@ -1,13 +1,15 @@
 package lineitems;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 import app.AppDirector;
 
-public class UPKWeek
+public class UPKWeek implements Serializable
 {
+  private static final long serialVersionUID = 2312149658722251514L;
   private ArrayList<UPKItem> upkItems = new ArrayList<UPKItem>();
   private HashMap<String, HashMap<Integer, Double>> cogsMap = new HashMap<String, HashMap<Integer, Double>>();
   public static final int ACTUAL_COGS = 1, THEORETICAL_COGS = 2, COGS_VARIANCE = 3;

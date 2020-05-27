@@ -15,16 +15,15 @@ public class JimmyCalendarUtil
       dow = dow - 3;
     else
       dow = dow + 4;
-    if (calendar.get(Calendar.HOUR_OF_DAY) >= AppDirector.dataHub
-        .getSetting(DataHub.STORESC_TIME))
+    if (calendar.get(Calendar.HOUR_OF_DAY) >= AppDirector.dataHub.getSettings().getSetting(Setting.STORESC_TIME))
       return dow * 2;
     else
       return dow * 2 - 1;
   }
 
-  public static boolean isInCurrentWeek(GregorianCalendar currentDate, GregorianCalendar date)
+  public static boolean isInCurrentWeek(GregorianCalendar date)
   {
-    return getWeekNumber(currentDate) == getWeekNumber(date);
+    return getWeekNumber(date) == getWeekNumber(new GregorianCalendar());
   }
 
   private static int getDayOfStartOfFirstWeek(int year)
@@ -43,13 +42,30 @@ public class JimmyCalendarUtil
   public static int getWeekNumber(GregorianCalendar cal)
   {
     int week = 1;
-    for (int ii = getDayOfStartOfFirstWeek(cal.get(Calendar.YEAR)); ii < 366; ii += 7)
+    int firstWedOfYear = getDayOfStartOfFirstWeek(cal.get(GregorianCalendar.YEAR));
+    for (int ii = firstWedOfYear; ii < 366; ii += 7)
     {
-      if (cal.get(Calendar.DAY_OF_YEAR) >= ii && cal.get(Calendar.DAY_OF_YEAR) < ii + 7)
+      if (getDayOfYear(cal) >= ii
+          && getDayOfYear(cal) < ii + 7)
         return week;
       week++;
     }
     return -1;
+  }
+
+  private static int getDayOfYear(GregorianCalendar cal)
+  {
+    GregorianCalendar index = new GregorianCalendar(cal.get(GregorianCalendar.YEAR), 0, 0);
+    int day = 1;
+    while (cal.get(GregorianCalendar.MONTH) != index.get(GregorianCalendar.MONTH)
+        || cal.get(GregorianCalendar.DAY_OF_MONTH) != index.get(GregorianCalendar.DAY_OF_MONTH))
+    {
+      day++;
+      index.add(GregorianCalendar.DAY_OF_YEAR, 1);
+      if (day > 366)
+        return -1;
+    }
+    return day;
   }
 
   public static int convertTo24Hr(int value, String ampm)
@@ -201,15 +217,15 @@ public class JimmyCalendarUtil
     gc.set(Calendar.DAY_OF_YEAR, 365);
     return getWeekNumber(gc);
   }
-  
-  public static int[][] getLast4WeeksInYearPairs()
+
+  public static int[][] getLastXWeeksInYearWeekPairs(int x)
   {
-    int[][] pairs = new int[4][2];
+    int[][] pairs = new int[x][2];
     int currentWeek = JimmyCalendarUtil.getCurrentWeek();
     int currentYear = JimmyCalendarUtil.getCurrentYear();
-    for(int ii = 0; ii < 4; ii++)
+    for (int ii = 0; ii < x; ii++)
     {
-      int ww = currentWeek - 4 + ii;
+      int ww = currentWeek - x + ii;
       int year;
       int week;
       if (ww < 1)
@@ -225,7 +241,6 @@ public class JimmyCalendarUtil
       pairs[ii][0] = year;
       pairs[ii][1] = week;
     }
-    System.out.println("Last 4 Weeks: \n");
     return pairs;
   }
 }

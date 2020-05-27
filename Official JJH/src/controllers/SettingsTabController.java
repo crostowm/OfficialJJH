@@ -11,7 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import personnel.Manager;
 import selenium.ReportGrabber;
-import util.DataHub;
+import util.Setting;
 
 public class SettingsTabController
 {
@@ -44,26 +44,26 @@ public class SettingsTabController
         .setItems(FXCollections.observableArrayList(AppDirector.dataHub.getManagers()));
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.AMBUFFER,
+      AppDirector.dataHub.getSettings().setSetting(Setting.AMBUFFER,
           Double.parseDouble(amBufferField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.PMBUFFER,
+      AppDirector.dataHub.getSettings().setSetting(Setting.PMBUFFER,
           Double.parseDouble(pmBufferField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.BAKEDAT11,
+      AppDirector.dataHub.getSettings().setSetting(Setting.BTV, Double.parseDouble(btvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.B9TV, Double.parseDouble(b9tvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.WLV, Double.parseDouble(wlvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.BAKEDAT11,
           Double.parseDouble(bakedAt11Field.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.BAKEDATSC,
+      AppDirector.dataHub.getSettings().setSetting(Setting.BAKEDATSC,
           Double.parseDouble(bakedAtSCField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.LETTUCEBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.LETTUCEBV,
           Double.parseDouble(lettuceBVField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.TOMATOBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.TOMATOBV,
           Double.parseDouble(tomatoBVField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.ONIONBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.ONIONBV,
           Double.parseDouble(onionBVField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.CUCUMBERBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.CUCUMBERBV,
           Double.parseDouble(cucumberBVField.getText()));
-      AppDirector.dataHub.changeSetting(DataHub.PICKLEBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.PICKLEBV,
           Double.parseDouble(pickleBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -118,10 +118,10 @@ public class SettingsTabController
         rg.downloadTrendSheets();
         break;
       case "UPK (Last 6 Weeks)":
-        rg.downloadLast6UPK();
+        rg.downloadMissingUPKs(AppDirector.dataHub.getMissingOfLast6UPKYearWeekPairs());
         break;
       case "Weekly Sales (Last 4 Weeks)":
-        rg.downloadLast4WSR();
+        rg.downloadMissingWSR(AppDirector.dataHub.getMissingOfLast41WSRYearWeekPairs());
         break;
       case "Weekly Sales (Last Year)":
         rg.downloadLastYearWSR();
@@ -136,7 +136,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.AMBUFFER,
+      AppDirector.dataHub.getSettings().setSetting(Setting.AMBUFFER,
           Double.parseDouble(amBufferField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -151,7 +151,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.PMBUFFER,
+      AppDirector.dataHub.getSettings().setSetting(Setting.PMBUFFER,
           Double.parseDouble(pmBufferField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -166,7 +166,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.BTV, Double.parseDouble(btvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.BTV, Double.parseDouble(btvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -180,7 +180,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.B9TV, Double.parseDouble(b9tvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.B9TV, Double.parseDouble(b9tvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -194,7 +194,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.WLV, Double.parseDouble(wlvField.getText()));
+      AppDirector.dataHub.getSettings().setSetting(Setting.WLV, Double.parseDouble(wlvField.getText()));
     }
     catch (NumberFormatException nfe)
     {
@@ -208,7 +208,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.BAKEDAT11,
+      AppDirector.dataHub.getSettings().setSetting(Setting.BAKEDAT11,
           Double.parseDouble(bakedAt11Field.getText()));
     }
     catch (NumberFormatException nfe)
@@ -223,7 +223,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.BAKEDATSC,
+      AppDirector.dataHub.getSettings().setSetting(Setting.BAKEDATSC,
           Double.parseDouble(bakedAtSCField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -238,7 +238,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.LETTUCEBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.LETTUCEBV,
           Double.parseDouble(lettuceBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -253,7 +253,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.TOMATOBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.TOMATOBV,
           Double.parseDouble(tomatoBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -268,7 +268,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.ONIONBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.ONIONBV,
           Double.parseDouble(onionBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -283,7 +283,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.CUCUMBERBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.CUCUMBERBV,
           Double.parseDouble(cucumberBVField.getText()));
     }
     catch (NumberFormatException nfe)
@@ -298,7 +298,7 @@ public class SettingsTabController
   {
     try
     {
-      AppDirector.dataHub.changeSetting(DataHub.PICKLEBV,
+      AppDirector.dataHub.getSettings().setSetting(Setting.PICKLEBV,
           Double.parseDouble(pickleBVField.getText()));
     }
     catch (NumberFormatException nfe)

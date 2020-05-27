@@ -3,7 +3,7 @@ package lineitems;
 import java.util.GregorianCalendar;
 
 import app.AppDirector;
-import util.DataHub;
+import util.Setting;
 
 public class AttendanceShift
 {
@@ -121,7 +121,7 @@ public class AttendanceShift
     switch(position)
     {
       case "In Shop":
-        flag = flag && payRate >= AppDirector.dataHub.getSetting(DataHub.INSHOP_MIN_PAY);
+        flag = flag && payRate >= AppDirector.dataHub.getSettings().getSetting(Setting.INSHOP_MIN_PAY);
         break;
       case "Driver - In Shop":
         flag = flag && payRate == 7.25;

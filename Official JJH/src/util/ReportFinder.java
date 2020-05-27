@@ -58,8 +58,7 @@ public class ReportFinder
     ArrayList<DupFile> fs = findLatestDuplicates(getAllCSVFilesThatStartWith("WeeklySales"), numMissingWeeks);
     AppDirector.reportsUsed += "Weekly Sales Report\n";
     AppDirector.reportsUsed += "\tThis Year\n";
-    System.out.println("Uploadaddad" + numMissingWeeks);
-
+    System.out.println("Missing Weeks" + numMissingWeeks);
     for (int ii = 0; ii < numMissingWeeks; ii++)
     {
       AppDirector.reportsUsed += "\t\t" + fs.get(ii).getFile().getName() + "\n";
@@ -67,10 +66,10 @@ public class ReportFinder
     }
   }
 
-  public void uploadUPKToDataHub()
+  public void uploadMissingUPKsToDataHub(ArrayList<int[]> missingWeeks)
   {
     ArrayList<DupFile> fs = findLatestDuplicates(
-        getAllCSVFilesThatStartWith("UPK Expected Usage Report"), 6);
+        getAllCSVFilesThatStartWith("UPK Expected Usage Report"), missingWeeks.size());
     ArrayList<UPKWeek> past6UPKWeeks = new ArrayList<UPKWeek>();
     AppDirector.reportsUsed += "UPK Expected Usage Report\n";
     for (int ii = 0; ii < fs.size(); ii++)
@@ -78,9 +77,8 @@ public class ReportFinder
       AppDirector.reportsUsed += "\t" + fs.get(ii).getFile().getName() + "\n";
       UPKReader ur = new UPKReader(fs.get(ii).getFile());
       UPKWeek wk = ur.getWeek();
-      past6UPKWeeks.add(wk);
+      AppDirector.dataHub.setUPKWeek(missingWeeks.get(ii)[0], missingWeeks.get(ii)[1], wk);
     }
-    AppDirector.dataHub.setPast6UPKWeeks(past6UPKWeeks);
   }
 
   public void uploadCateringTransactionsToDataHub()
@@ -130,7 +128,6 @@ public class ReportFinder
       }
       catch (Exception pe)
       {
-        System.out.println("Thrown");
         break;
       }
     }
@@ -161,7 +158,6 @@ public class ReportFinder
     ArrayList<TimeFile> tfs = findLatestItemUsageDuplicates(
         getAllCSVFilesThatStartWith("MxItemUsageAnalysisReport"),
         AppDirector.dataHub.getInventoryItemNames().size());
-    System.out.println(tfs.size() + "-----------------");
     ArrayList<DupFile> fs = null;
     if (tfs.size() < AppDirector.dataHub.getInventoryItemNames().size())
     {
@@ -210,7 +206,6 @@ public class ReportFinder
         downloadQueue.size());
     for (int ii = 0; ii < fs.size(); ii++)
     {
-      System.out.println(downloadQueue.get(ii));
       int year = Integer.parseInt(downloadQueue.get(ii)
           .substring(downloadQueue.get(ii).length() - 4, downloadQueue.get(ii).length()));
       int month = Integer.parseInt(downloadQueue.get(ii).substring(0, 2));

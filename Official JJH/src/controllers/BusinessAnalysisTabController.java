@@ -113,7 +113,7 @@ public class BusinessAnalysisTabController
             if (AppDirector.dataHub.getTrendSheetForYear(periodBox.getValue()) == null)
               downloadButton.setVisible(true);
             else
-            generateChart();
+              generateChart();
           }
         });
         break;
@@ -137,7 +137,10 @@ public class BusinessAnalysisTabController
     {
       case "Weekly Sales Report":
         itemNamesTS = new ArrayList<String>();
-        for(WeeklySalesLineItem wsli: AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[0][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[0][1]).getItems())
+        for (WeeklySalesLineItem wsli : AppDirector.dataHub
+            .getWSRWeek(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[0][0],
+                JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[0][1])
+            .getItems())
         {
           itemNamesTS.add(wsli.getName());
         }
@@ -257,19 +260,27 @@ public class BusinessAnalysisTabController
                 switch (rangeBox.getValue())
                 {
                   case "By Day":
-                    ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
-                        .getLineItem(r.getText()).getDataForShift((int)x)
-                        + AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
-                        .getLineItem(r.getText()).getDataForShift(((int)x) + 1));
+                    ys.add(AppDirector.dataHub
+                        .getWSRWeek(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][0],
+                            JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][1])
+                        .getLineItem(r.getText()).getDataForShift((int) x)
+                        + AppDirector.dataHub
+                            .getWSRWeek(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][0],
+                                JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][1])
+                            .getLineItem(r.getText()).getDataForShift(((int) x) + 1));
                     break;
                   case "By Shift":
-                    ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
-                        .getLineItem(r.getText()).getDataForShift((int)x));
+                    ys.add(AppDirector.dataHub
+                        .getWSRWeek(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][0],
+                            JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][1])
+                        .getLineItem(r.getText()).getDataForShift((int) x));
                     break;
                   case "By Week":
                     for (int ii = 1; ii < 5; ii++)
                     {
-                      ys.add(AppDirector.dataHub.getWSRWeek(JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][0], JimmyCalendarUtil.getLast4WeeksInYearPairs()[index][1])
+                      ys.add(AppDirector.dataHub
+                          .getWSRWeek(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][0],
+                              JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[index][1])
                           .getLineItem(r.getText()).getSummary());
                     }
                     break;

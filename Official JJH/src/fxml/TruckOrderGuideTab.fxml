@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -45,6 +46,7 @@
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin></ChoiceBox>
+                        <CheckBox fx:id="isTwoWeekCheckBox" mnemonicParsing="false" text="Two Week Order" />
                         <Label text="Projections" />
                         <TextField fx:id="projField" alignment="CENTER" editable="false" prefWidth="90.0" styleClass="dark-pane" />
                      </children>

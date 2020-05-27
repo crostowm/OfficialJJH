@@ -2,6 +2,7 @@ package app;
 
 import java.io.IOException;
 
+import controllers.CateringController;
 import error_handling.ErrorHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ public class CateringStage extends Stage
     {
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Catering Order.fxml"));
       root = loader.load();
+      ((CateringController)loader.getController()).setStage(this);
       getIcons().add(new Image("resources/jjhr.png"));
       Scene scene = new Scene(root);
       setScene(scene);

@@ -54,6 +54,11 @@
 	-fx-text-fill: white;
 }
 
+.check-box {
+	-fx-text-fill: white;
+	-fx-font-weight: bolder;
+}
+
 .tab-pane .tab-header-area .tab-header-background {
 	-fx-opacity: 0;
 }

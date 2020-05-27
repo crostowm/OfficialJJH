@@ -15,25 +15,27 @@ import lineitems.InventoryItem;
 import lineitems.UPKWeek;
 import lineitems.WeeklySalesWeek;
 import lineitems.WeeklySummaryItem;
-import observers.DataObserver;
 import personnel.Manager;
 import readers.AMPhoneAuditReader;
 import readers.ManagerDBLReader;
 import readers.TrendSheetReader;
 import readers.WSRReader;
+import week_data.AveragePlusBufferWeek;
+import week_data.DualValWeekData;
+import week_data.PercentageWeek;
+import week_data.ProjectionWeek;
+import week_data.SlicingWeek;
+import week_data.ThawedWeek;
+import week_data.WeekData;
+import week_data.WheatWeek;
 
 public class DataHub implements Serializable
 {
-  public static final int AMBUFFER = 1, PMBUFFER = 2, BTV = 3, B9TV = 4, WLV = 5, BAKEDAT11 = 6,
-      BAKEDATSC = 7, LETTUCEBV = 8, TOMATOBV = 9, ONIONBV = 10, CUCUMBERBV = 11, PICKLEBV = 12,
-      STORESC_TIME = 13, NUMDECKS = 14, PROOF_TIME = 15, BAKE_TIME = 16, COOL_TIME = 17,
-      SPROUT_UPK = 18, INSHOP_MIN_PAY = 19;
   private static final long serialVersionUID = 2092175547020407363L;
-  private transient ArrayList<DataObserver> observers = new ArrayList<DataObserver>();
   /**
    * index 5 is last completed week index 0 is earliest week
    */
-  private transient ArrayList<UPKWeek> past6UPKWeeks;
+  // private transient ArrayList<UPKWeek> past6UPKWeeks;
   private transient ArrayList<ArrayList<CateringTransaction>> past4DaysCatering;
   private transient AMPhoneAuditItem amPhoneAuditItem;
   private transient ArrayList<AttendanceShift> yesterdaysAttendanceShifts;
@@ -43,17 +45,16 @@ public class DataHub implements Serializable
   private ArrayList<String> inventoryItemNames;
   private ArrayList<Manager> managers = new ArrayList<Manager>();
   private ArrayList<CateringOrder> cateringOrders = new ArrayList<CateringOrder>();
-  private ArrayList<Double> average = new ArrayList<Double>();
-  private ArrayList<Double> averagePlusBuffer = new ArrayList<Double>();
-  private ArrayList<Double> catering = new ArrayList<Double>();
-  private ArrayList<Integer> sampling = new ArrayList<Integer>();
-  private ArrayList<Double> projections = new ArrayList<Double>();
-  private ArrayList<Double> thawed = new ArrayList<Double>();
-  private ArrayList<Double> percentage = new ArrayList<Double>();
-  private ArrayList<Double> wheat = new ArrayList<Double>();
-  private HashMap<Integer, Double> settings = new HashMap<Integer, Double>();
-  // Index 0 = Shift 1 <String-Protein <String-msc/gec, Double packs>>
-  private ArrayList<HashMap<String, HashMap<String, Double>>> slicingPars = new ArrayList<HashMap<String, HashMap<String, Double>>>();
+  private WeekData average;
+  private AveragePlusBufferWeek averagePlusBufferWeek;
+  private WeekData cateringWeek;
+  private WeekData sampleWeek = new WeekData();
+  private ProjectionWeek projectionWeek;
+  private ThawedWeek thawed;
+  private PercentageWeek percentage;
+  private WheatWeek wheat;
+  private Setting settings;
+  private SlicingWeek slicingPars;
   private ArrayList<String> weeklySupplyItems;
   private ArrayList<CompletableTask> managerDBLs;
   // Year-Month-Day
@@ -62,174 +63,53 @@ public class DataHub implements Serializable
   private HashMap<Integer, TrendSheetReader> trendSheetCalendar;
   // Year-Week
   private HashMap<Integer, HashMap<Integer, WeeklySalesWeek>> weeklySalesCalendar;
+  // Year-Week
+  private HashMap<Integer, HashMap<Integer, UPKWeek>> upkCalendar;
 
   public DataHub()
   {
-    for (int ii = 0; ii < 14; ii++)
-    {
-      average.add(0.0);
-      averagePlusBuffer.add(0.0);
-      catering.add(0.0);
-      sampling.add(0);
-      projections.add(0.0);
-      thawed.add(0.0);
-      percentage.add(0.0);
-      wheat.add(0.0);
-      slicingPars.add(new HashMap<String, HashMap<String, Double>>());
-      slicingPars.get(ii).put("Cheese", new HashMap<String, Double>());
-      slicingPars.get(ii).put("Ham", new HashMap<String, Double>());
-      slicingPars.get(ii).put("Turkey", new HashMap<String, Double>());
-      slicingPars.get(ii).put("Beef", new HashMap<String, Double>());
-      slicingPars.get(ii).put("Salami", new HashMap<String, Double>());
-      slicingPars.get(ii).put("Capicola", new HashMap<String, Double>());
-    }
+    average = new WeekData();
+    averagePlusBufferWeek = new AveragePlusBufferWeek();
+    sampleWeek = new WeekData();
+    cateringWeek = new WeekData();
+    projectionWeek = new ProjectionWeek();
+    thawed = new ThawedWeek(Setting.BTV);
+    percentage = new PercentageWeek(Setting.BTV);
+    wheat = new WheatWeek(Setting.WLV);
+    settings = new Setting();
+    slicingPars = new SlicingWeek();
+
     setupWeeklySupplyItems();
     setupManagerDBLs();
-    settings.put(AMBUFFER, 1.2);
-    settings.put(PMBUFFER, 1.2);
-    settings.put(BTV, 200.0);
-    settings.put(B9TV, 190.0);
-    settings.put(WLV, 800.0);
-    settings.put(BAKEDAT11, .75);
-    settings.put(BAKEDATSC, .5);
-    settings.put(LETTUCEBV, 500.0);
-    settings.put(TOMATOBV, 900.0);
-    settings.put(ONIONBV, 1200.0);
-    settings.put(CUCUMBERBV, 2200.0);
-    settings.put(PICKLEBV, 1200.0);
-    settings.put(STORESC_TIME, 15.0);
-    settings.put(NUMDECKS, 4.0);
-    settings.put(PROOF_TIME, 50.0);
-    settings.put(BAKE_TIME, 20.0);
-    settings.put(COOL_TIME, 25.0);
-    settings.put(SPROUT_UPK, 1.0);
-    settings.put(INSHOP_MIN_PAY, 8.0);
     hourlySalesCalendar = new HashMap<Integer, HashMap<Integer, HashMap<Integer, HourlySalesDay>>>();
     trendSheetCalendar = new HashMap<Integer, TrendSheetReader>();
     weeklySalesCalendar = new HashMap<Integer, HashMap<Integer, WeeklySalesWeek>>();
+    upkCalendar = new HashMap<Integer, HashMap<Integer, UPKWeek>>();
   }
 
-  /**
-   * Should update average + buffer, proj
-   * 
-   * @param shift
-   * @param value
-   */
-  public void setAverageForShift(int shift, double value)
+  public void newSlice()
   {
-    average.set(shift - 1, value);
-    updateAveragePlusBufferForShift(shift);
+    slicingPars = new SlicingWeek();
   }
-
-  public void updateAveragePlusBufferForShift(int shift)
-  {
-    averagePlusBuffer.set(shift - 1, average.get(shift - 1)
-        * (shift % 2 == 0 ? settings.get(PMBUFFER) : settings.get(AMBUFFER)));
-    updateProjForShift(shift);
-  }
-
-  public void updateAllAveragePlusBuffer()
-  {
-    for (int ii = 0; ii < 14; ii++)
-    {
-      averagePlusBuffer.set(ii,
-          average.get(ii) * (ii % 2 == 0 ? settings.get(AMBUFFER) : settings.get(PMBUFFER)));
-    }
-  }
-
-  /**
-   * @param shift
-   */
-  private void updateProjForShift(int shift)
-  {
-    int index = shift - 1;
-    double proj = averagePlusBuffer.get(index) + catering.get(index) + sampling.get(index);
-    projections.set(index, proj);
-    if (shift % 2 == 1)
-    {
-      double pmProj = averagePlusBuffer.get(index + 1) + catering.get(index + 1)
-          + sampling.get(index + 1);
-      thawed.set(index, proj);
-      percentage.set(index, proj * settings.get(BAKEDAT11));
-      wheat.set(index, proj + pmProj);
-    }
-    else
-    {
-      double amProj = averagePlusBuffer.get(index - 1) + catering.get(index - 1)
-          + sampling.get(index - 1);
-      thawed.set(index, Math.max(0,
-          proj - (proj * settings.get(BAKEDATSC)) - ((1 - settings.get(BAKEDAT11)) * amProj)));
-      percentage.set(index, proj * settings.get(BAKEDATSC));
-      wheat.set(index, proj);
-    }
-    // Slicing Pars
-    updateAllSlicingPars("Cheese");
-    updateAllSlicingPars("Ham");
-    updateAllSlicingPars("Turkey");
-    updateAllSlicingPars("Beef");
-    updateAllSlicingPars("Salami");
-    updateAllSlicingPars("Capicola");
-    for (DataObserver dato : observers)
-    {
-      dato.toolBoxDataUpdated();
-    }
-  }
-
-  private void updateAllSlicingPars(String name)
-  {
-    System.out.println("UpdatingSlicingPars");
-    for (int index = 0; index < 14; index++)
-    {
-      int nextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 2) - 1;
-      int nextNextShiftIndex = JimmyCalendarUtil.convertToShiftNumber(index + 3) - 1;
-      slicingPars.get(index).get(name).put("msc",
-          ((getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK() * projections.get(index))
-              / 1000) / 3.307);
-      slicingPars.get(index).get(name).put("gec",
-          ((getLastCompletedWeekUPKWeek().getUPKItem(name).getAverageUPK()
-              * (projections.get(nextShiftIndex) + projections.get(nextNextShiftIndex))) / 1000)
-              / 3.307);
-    }
-  }
-
-  public double getThawedDataForShift(int shift)
-  {
-    return thawed.get(shift - 1);
-  }
-
-  public double getThawedDataForIndex(int index)
-  {
-    return thawed.get(index);
-  }
-
   public void addCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.add(cateringOrder);
-    if (JimmyCalendarUtil.isInCurrentWeek(new GregorianCalendar(), cateringOrder.getTime()))
+    if (JimmyCalendarUtil.isInCurrentWeek(cateringOrder.getTime()))
     {
-      catering.add(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()) - 1,
-          cateringOrder.getDollarValue());
-      updateProjForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()));
-    }
-    for (DataObserver dato : observers)
-    {
-      dato.cateringOrderAdded(cateringOrder);
+      cateringWeek.setDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()),
+          cateringWeek.getDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()))
+              + cateringOrder.getDollarValue());
     }
   }
 
   public void removeCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.remove(cateringOrder);
-    Double eq = Double.valueOf(0);
-    for (Double d : catering)
+    if (JimmyCalendarUtil.isInCurrentWeek(cateringOrder.getTime()))
     {
-      if (d.equals(cateringOrder.getDollarValue()))
-        eq = d;
-    }
-    catering.remove(eq);
-    for (DataObserver dato : observers)
-    {
-      dato.cateringOrderRemoved(cateringOrder);
+      cateringWeek.setDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()),
+          cateringWeek.getDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()))
+              - cateringOrder.getDollarValue());
     }
   }
 
@@ -238,75 +118,21 @@ public class DataHub implements Serializable
     return cateringOrders;
   }
 
-  public void changeSetting(int setting, double val)
-  {
-    settings.put(setting, val);
-    for (DataObserver dato : observers)
-    {
-      dato.toolBoxDataUpdated();
-    }
-  }
-
-  public void addObserver(DataObserver observer)
-  {
-    observers.add(observer);
-  }
-
-  public double getProjectionDataForIndex(int ii)
-  {
-    return projections.get(ii);
-  }
-
-  public double getSetting(int setting)
-  {
-    return settings.get(setting);
-  }
-
-  public double getPercentageDataForIndex(int ii)
-  {
-    return percentage.get(ii);
-  }
-
-  public double getWheatDataForIndex(int ii)
-  {
-    return wheat.get(ii);
-  }
-
-  public double getAverageDataForIndex(int ii)
-  {
-    return average.get(ii);
-  }
-
-  public double getAveragePlusBufferData(int ii)
-  {
-    return averagePlusBuffer.get(ii);
-  }
-
-  public void setSamplingForShift(int shift, int val)
-  {
-    sampling.set(shift - 1, val);
-    updateProjForShift(shift);
-  }
-
   public UPKWeek getLastCompletedWeekUPKWeek()
   {
-    return past6UPKWeeks.get(past6UPKWeeks.size() - 1);
-  }
-
-  public double getSlicingPars(String food, String dataType, int shift)
-  {
-    int index = shift - 1;
-    return slicingPars.get(index).get(food).get(dataType);
-  }
-
-  public void setPast6UPKWeeks(ArrayList<UPKWeek> past6UPKWeeks)
-  {
-    this.past6UPKWeeks = past6UPKWeeks;
+    int[][] lastWeek = JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(1);
+    return upkCalendar.get(lastWeek[0][0]).get(lastWeek[0][1]);
   }
 
   public ArrayList<UPKWeek> getPast6UPKMaps()
   {
-    return past6UPKWeeks;
+    ArrayList<UPKWeek> weeks = new ArrayList<UPKWeek>();
+    int[][] last6Weeks = JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(6);
+    for (int ii = 0; ii < last6Weeks.length; ii++)
+    {
+      weeks.add(upkCalendar.get(last6Weeks[ii][0]).get(last6Weeks[ii][1]));
+    }
+    return weeks;
   }
 
   public double getProjectionsForShifts(int startShift, int endShift)
@@ -318,7 +144,7 @@ public class DataHub implements Serializable
     {
       if (ii > 13)
         ii = ii - 14;
-      totalProj += projections.get(ii);
+      totalProj += projectionWeek.getDataForIndex(ii);
       ii++;
     }
     return totalProj;
@@ -336,13 +162,8 @@ public class DataHub implements Serializable
   public double getProduceRequiredForShifts(int startShift, int endShift, String produceName,
       int unit)
   {
-    System.out.println("OOP");
     double proj = getProjectionsForShifts(startShift, endShift);
-    double upk;
-    if (produceName.equals("Sprouts"))
-      upk = getSetting(DataHub.SPROUT_UPK);
-    else
-      upk = getLastCompletedWeekUPKWeek().getUPKItem(produceName).getAverageUPK();
+    double upk = getLastCompletedWeekUPKWeek().getUPKItem(produceName).getAverageUPK();
     double req = ((proj / 1000) * upk) / unit;
     return MathUtil.ceilHalf(req);
   }
@@ -420,6 +241,8 @@ public class DataHub implements Serializable
 
   private double getCateringForHour(int hour)
   {
+    if(past4DaysCatering == null)
+      return 0;
     double cat = 0;
     for (ArrayList<CateringTransaction> ac : past4DaysCatering)
     {
@@ -430,11 +253,6 @@ public class DataHub implements Serializable
       }
     }
     return cat;
-  }
-
-  public void initializeTransientValues()
-  {
-    observers = new ArrayList<DataObserver>();
   }
 
   public ArrayList<String> getWeeklySupplyItems()
@@ -500,19 +318,11 @@ public class DataHub implements Serializable
   public void addManager(Manager manager)
   {
     managers.add(manager);
-    for (DataObserver dato : observers)
-    {
-      dato.toolBoxDataUpdated();
-    }
   }
 
   public void removeManager(Manager manager)
   {
     managers.remove(manager);
-    for (DataObserver dato : observers)
-    {
-      dato.toolBoxDataUpdated();
-    }
   }
 
   public Manager getManager(String username, String password)
@@ -555,7 +365,7 @@ public class DataHub implements Serializable
     double proj = 0;
     for (int ii = 0; ii < 14; ii++)
     {
-      proj += getProjectionDataForIndex(ii);
+      proj += projectionWeek.getDataForIndex(ii);
     }
     return proj;
   }
@@ -663,7 +473,7 @@ public class DataHub implements Serializable
         missingDates.add(date);
       }
     }
-    for(String s: missingDates)
+    for (String s : missingDates)
     {
       System.out.println("Missing hourly " + s);
     }
@@ -674,6 +484,8 @@ public class DataHub implements Serializable
   {
     if (weeklySalesCalendar.get(weeklySalesWeek.getYear()) == null)
       weeklySalesCalendar.put(weeklySalesWeek.getYear(), new HashMap<Integer, WeeklySalesWeek>());
+    System.out.println("Adding WSR for year " + weeklySalesWeek.getYear() + " week "
+        + weeklySalesWeek.getWeekNumber());
     weeklySalesCalendar.get(weeklySalesWeek.getYear()).put(weeklySalesWeek.getWeekNumber(),
         weeklySalesWeek);
     System.out.println("UAA");
@@ -682,32 +494,39 @@ public class DataHub implements Serializable
 
   private void updateAllAverages()
   {
-    int[][] pairs = JimmyCalendarUtil.getLast4WeeksInYearPairs();
+    int[][] pairs = JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4);
     boolean all4WSRUploaded = true;
     for (int yw = 0; yw < 4; yw++)
     {
-      if (weeklySalesCalendar.get(pairs[yw][0]) == null || weeklySalesCalendar.get(pairs[yw][0]).get(pairs[yw][1]) == null)
+      if (weeklySalesCalendar.get(pairs[yw][0]) == null
+          || weeklySalesCalendar.get(pairs[yw][0]).get(pairs[yw][1]) == null)
+      {
         all4WSRUploaded = false;
+        System.out.println("Missing the week " + pairs[3][1] + " to average for projections");
+      }
     }
 
     if (all4WSRUploaded)
     {
-      ArrayList<Double> averages = new ArrayList<Double>();
+      ArrayList<Double> tempAvg = new ArrayList<Double>();
       for (int ii = 0; ii < 14; ii++)
       {
-        averages.add(0.0);
+        tempAvg.add(0.0);
       }
       for (int yw = 0; yw < 4; yw++)
       {
+        System.out.println("Week " + (yw + 1));
         for (int ii = 0; ii < 14; ii++)
         {
-          averages.add(ii, averages.get(ii) + weeklySalesCalendar.get(pairs[yw][0])
-              .get(pairs[yw][1]).getLineItem("= Royalty Sales").getDataForIndex(ii));
+          double avgForShift = weeklySalesCalendar.get(pairs[yw][0]).get(pairs[yw][1])
+              .getLineItem("= Royalty Sales").getDataForIndex(ii);
+          System.out.println("Shift " + (ii + 1) + ": " + tempAvg.get(ii));
+          tempAvg.set(ii, tempAvg.get(ii) + avgForShift);
         }
       }
       for (int ii = 0; ii < 14; ii++)
       {
-        setAverageForShift(ii + 1, averages.get(ii) / 4);
+        average.setDataForIndex(ii, tempAvg.get(ii) / 4);
       }
     }
   }
@@ -717,8 +536,167 @@ public class DataHub implements Serializable
     return weeklySalesCalendar;
   }
 
+  public HashMap<Integer, HashMap<Integer, UPKWeek>> getUPKCalendar()
+  {
+    return upkCalendar;
+  }
+
   public WeeklySalesWeek getWSRWeek(int year, int week)
   {
     return weeklySalesCalendar.get(year).get(week);
   }
+
+  public ArrayList<String> getSavedWeeklySales()
+  {
+    ArrayList<String> savedWeeks = new ArrayList<String>();
+    int year = JimmyCalendarUtil.getCurrentYear() - 1;
+    int week = 1;
+    while (year <= JimmyCalendarUtil.getCurrentYear())
+    {
+      if (getWeeklySalesCalendar().get(year) == null)
+      {
+        week = 1;
+        year++;
+        continue;
+      }
+      if (getWeeklySalesCalendar().get(year).get(week) != null)
+        savedWeeks.add(year + " : " + week);
+      if (week == 53)
+      {
+        week = 1;
+        year++;
+      }
+      else
+        week++;
+    }
+    return savedWeeks;
+  }
+
+  public ArrayList<String> getSavedUPKs()
+  {
+    ArrayList<String> savedWeeks = new ArrayList<String>();
+    int year = JimmyCalendarUtil.getCurrentYear() - 1;
+    int week = 1;
+    while (year <= JimmyCalendarUtil.getCurrentYear())
+    {
+      if (getUPKCalendar().get(year) == null)
+      {
+        week = 1;
+        year++;
+        continue;
+      }
+      if (getUPKCalendar().get(year).get(week) != null)
+        savedWeeks.add(year + " : " + week);
+      if (week == 53)
+      {
+        week = 1;
+        year++;
+      }
+      else
+        week++;
+    }
+    return savedWeeks;
+  }
+
+  public ArrayList<int[]> getMissingOfLast6UPKYearWeekPairs()
+  {
+    ArrayList<int[]> missingWeeks = new ArrayList<int[]>();
+    for (int ii = 0; ii < 6; ii++)
+    {
+      if (getUPKCalendar().get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(6)[ii][0]) == null
+          || getUPKCalendar().get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(6)[ii][0])
+              .get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(6)[ii][1]) == null)
+        missingWeeks.add(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(6)[ii]);
+    }
+    return missingWeeks;
+  }
+
+  public ArrayList<int[]> getMissingOfLast41WSRYearWeekPairs()
+  {
+    ArrayList<int[]> missingWeeks = new ArrayList<int[]>();
+    if (getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1) == null
+        || getWeeklySalesCalendar().get(JimmyCalendarUtil.getCurrentYear() - 1)
+            .get(JimmyCalendarUtil.getCurrentWeek()) == null)
+      missingWeeks.add(
+          new int[] {JimmyCalendarUtil.getCurrentYear() - 1, JimmyCalendarUtil.getCurrentWeek()});
+    for (int ii = 0; ii < 4; ii++)
+    {
+      if (getWeeklySalesCalendar()
+          .get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[ii][0]) == null
+          || getWeeklySalesCalendar().get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[ii][0])
+              .get(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[ii][1]) == null)
+        missingWeeks.add(JimmyCalendarUtil.getLastXWeeksInYearWeekPairs(4)[ii]);
+    }
+    return missingWeeks;
+  }
+
+  public void setUPKWeek(int year, int week, UPKWeek wk)
+  {
+    if (upkCalendar.get(year) == null)
+      upkCalendar.put(year, new HashMap<Integer, UPKWeek>());
+    upkCalendar.get(year).put(week, wk);
+  }
+
+  public AveragePlusBufferWeek getAveragePlusBufferWeek()
+  {
+    return averagePlusBufferWeek;
+  }
+
+  public WeekData getAverageWeek()
+  {
+    return average;
+  }
+
+  public ProjectionWeek getProjectionWeek()
+  {
+    return projectionWeek;
+  }
+
+  public WeekData getSampleWeek()
+  {
+    return sampleWeek;
+  }
+  
+  public WeekData getCateringWeek()
+  {
+    return cateringWeek;
+  }
+
+  public Setting getSettings()
+  {
+    return settings;
+  }
+
+  public DualValWeekData getThawedWeek()
+  {
+    return thawed;
+  }
+
+  public DualValWeekData getPercentageWeek()
+  {
+    return percentage;
+  }
+  
+  public DualValWeekData getWheatWeek()
+  {
+    return wheat;
+  }
+  
+  public SlicingWeek getSlicingPars()
+  {
+    return slicingPars;
+  }
+
+  public void setupObservers()
+  {
+    average.addObserver(averagePlusBufferWeek);
+    averagePlusBufferWeek.addObserver(projectionWeek);
+    sampleWeek.addObserver(projectionWeek);
+    cateringWeek.addObserver(projectionWeek);
+    projectionWeek.addObserver(slicingPars);
+    projectionWeek.addObserver(percentage);
+    projectionWeek.addObserver(thawed);
+    projectionWeek.addObserver(wheat);
+  }
+
 }

@@ -11,14 +11,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import observers.DataObserver;
-import util.CateringOrder;
 import util.JimmyCalendarUtil;
 
-public class ProduceOrderGuideTabController implements DataObserver
+public class ProduceOrderGuideTabController
 {
   @FXML
-  private TextField letMinField, tomMinField, onMinField, celMinField, sprMinField;
+  private TextField letMinField, tomMinField, onMinField, celMinField;
   
   // 1 is for case
   @FXML
@@ -34,7 +32,7 @@ public class ProduceOrderGuideTabController implements DataObserver
 
   private double projections = 0;
 
-  private ProduceOrderBox letBox, tomBox, onBox, celBox, sprBox, cucBox;
+  private ProduceOrderBox letBox, tomBox, onBox, celBox, cucBox;
 
   @FXML
   private VBox itemBox;
@@ -78,7 +76,6 @@ public class ProduceOrderGuideTabController implements DataObserver
     });
     // Minimums
     int nextAMShift = JimmyCalendarUtil.getNextAMShift();
-    System.out.println("OOO");
     letMinField
         .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Lettuce", 24) + "");
@@ -91,9 +88,6 @@ public class ProduceOrderGuideTabController implements DataObserver
     celMinField
         .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1) + "");
-    sprMinField
-        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
-            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Sprouts", 1) + "");
 
     // Proj
     projections = AppDirector.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
@@ -105,10 +99,9 @@ public class ProduceOrderGuideTabController implements DataObserver
         "25lb Box(es) of Roma Tomatoes");
     onBox = new ProduceOrderBox("Onions", 50, projections, "lbs", "50lb Bag(s) of Onions");
     celBox = new ProduceOrderBox("Celery", 1, projections, "ea", "Stalk(s) of Celery");
-    sprBox = new ProduceOrderBox("Sprouts", 1, projections, "ea", "Pint(s) of Clover Sprouts");
     cucBox = new ProduceOrderBox("Cucumbers", 1, projections, "lbs", "Lbs of Cucumbers");
     
-    itemBox.getChildren().addAll(letBox, tomBox, onBox, celBox, sprBox, cucBox);
+    itemBox.getChildren().addAll(letBox, tomBox, onBox, celBox, cucBox);
     System.out.println("POGTC-");
   }
 
@@ -128,9 +121,6 @@ public class ProduceOrderGuideTabController implements DataObserver
     celMinField
         .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
             JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Celery", 1) + "");
-    sprMinField
-        .setText(AppDirector.dataHub.getProduceRequiredForShifts(nextAMShift,
-            JimmyCalendarUtil.convertToShiftNumber(nextAMShift + 3), "Sprouts", 1) + "");
 
     // Proj
     projections = AppDirector.dataHub.getProjectionsForShifts(firstShiftProduceWillBeUsed,
@@ -142,24 +132,7 @@ public class ProduceOrderGuideTabController implements DataObserver
     tomBox.updateProjections(projections);
     onBox.updateProjections(projections);
     celBox.updateProjections(projections);
-    sprBox.updateProjections(projections);
     cucBox.updateProjections(projections);
-  }
-
-  @Override
-  public void cateringOrderAdded(CateringOrder co)
-  {
-  }
-
-  @Override
-  public void cateringOrderRemoved(CateringOrder co)
-  {
-  }
-
-  @Override
-  public void toolBoxDataUpdated()
-  {
-    updateProjections();
   }
 
 }
