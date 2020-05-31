@@ -220,6 +220,7 @@ public class AppDirector extends Application
       loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/JJH.fxml"));
       root = loader.load();
       HubController hc = (HubController)loader.getController();
+      dataHub.getCateringWeek().addObserver(hc.getCateringCalculatorController());
       hc.updateAllFields();
       timerSec = new Timer();
       timerSec.scheduleAtFixedRate(new TimeUpdateSecond((HubController) loader.getController()), 0,

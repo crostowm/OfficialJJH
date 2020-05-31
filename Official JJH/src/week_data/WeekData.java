@@ -20,6 +20,14 @@ public class WeekData implements Serializable
     }
   }
   
+  public void clearData()
+  {
+    data.clear();
+    for(int ii = 0; ii < 14; ii++)
+    {
+      data.add(0.0);
+    }
+  }
   public void setDataForShift(int shift, double datum)
   {
     setDataForIndex(shift-1, datum);
@@ -41,7 +49,7 @@ public class WeekData implements Serializable
     return data.get(index);
   }
 
-  protected void notify(int index)
+  public void notify(int index)
   {
     if(observers == null)
       observers = new ArrayList<IndexDataObserver>();

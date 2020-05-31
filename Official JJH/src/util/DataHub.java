@@ -91,6 +91,7 @@ public class DataHub implements Serializable
   {
     slicingPars = new SlicingWeek();
   }
+  
   public void addCateringOrder(CateringOrder cateringOrder)
   {
     cateringOrders.add(cateringOrder);
@@ -100,6 +101,7 @@ public class DataHub implements Serializable
           cateringWeek.getDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()))
               + cateringOrder.getDollarValue());
     }
+    cateringWeek.notify(0);
   }
 
   public void removeCateringOrder(CateringOrder cateringOrder)
@@ -111,6 +113,7 @@ public class DataHub implements Serializable
           cateringWeek.getDataForShift(JimmyCalendarUtil.getShiftNumber(cateringOrder.getTime()))
               - cateringOrder.getDollarValue());
     }
+    cateringWeek.notify(0);
   }
 
   public ArrayList<CateringOrder> getCateringOrders()

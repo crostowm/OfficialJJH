@@ -13,9 +13,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import observers.IndexDataObserver;
 import util.CateringOrder;
 
-public class CateringCalculatorTabController
+//Observes CateringWeek
+public class CateringCalculatorTabController implements IndexDataObserver
 {
   @FXML
   private ChoiceBox<CateringOrder> cateringChoiceBox;
@@ -122,6 +124,11 @@ public class CateringCalculatorTabController
       AppDirector.dataHub.removeCateringOrder(cateringChoiceBox.getValue());
       breadManagementArea.setText("");
     }
+  }
+
+  @Override
+  public void indexDataUpdated(int index)
+  {
     updateAllFields();
   }
 

@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import observers.IndexDataObserver;
 import observers.TimeObserver;
 import personnel.Manager;
 import util.CompletableTask;
@@ -499,5 +500,10 @@ public class HubController
   public void settingsTabSelected()
   {
     helpArea.setText("Produce");
+  }
+
+  public CateringCalculatorTabController getCateringCalculatorController()
+  {
+    return cateringCalculatorTabController;
   }
 }
